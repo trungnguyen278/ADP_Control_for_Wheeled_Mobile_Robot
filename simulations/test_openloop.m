@@ -13,7 +13,7 @@ p = wmr_params();
 fprintf('\n========== WMR DYNAMIC MODEL - OPEN LOOP TESTS ==========\n');
 fprintf('Robot: m=%.1f kg, I=%.2f kg*m^2, r=%.3f m, L=%.3f m\n', ...
     p.m, p.I, p.r, p.L);
-fprintf('Ma sat: fv=%.1f, fw=%.1f, fc=%.1f, fcw=%.1f\n', ...
+fprintf('Ma sat: fv=%.2f, fw=%.2f, fc=%.2f, fcw=%.2f\n', ...
     p.fv, p.fw, p.fc, p.fcw);
 fprintf('tau_max = %.1f N*m\n\n', p.tau_max);
 
@@ -27,7 +27,7 @@ fprintf('--- Test 1: Coasting (tau = 0) ---\n');
 
 state0_coast = [0; 0; 0; 0.5; 0.3];  % v0=0.5, w0=0.3
 tau_zero = [0; 0];
-T1 = 30;
+T1 = 60;
 
 odefun1 = @(t, s) wmr_full_model(t, s, tau_zero, p);
 [t1, s1] = ode45(odefun1, [0 T1], state0_coast);
@@ -59,7 +59,7 @@ grid on;
 fprintf('--- Test 2: Constant torque (di thang) ---\n');
 
 tau_const = [5; 5];
-T2 = 60;
+T2 = 120;
 
 odefun2 = @(t, s) wmr_full_model(t, s, tau_const, p);
 [t2, s2] = ode45(odefun2, [0 T2], state0_rest);
@@ -107,7 +107,7 @@ axis equal; grid on;
 fprintf('--- Test 3: Differential torque (quay) ---\n');
 
 tau_turn = [5; 3];
-T3 = 60;
+T3 = 120;
 
 odefun3 = @(t, s) wmr_full_model(t, s, tau_turn, p);
 [t3, s3] = ode45(odefun3, [0 T3], state0_rest);
@@ -153,7 +153,7 @@ grid on;
 fprintf('--- Test 4: Saturation ---\n');
 
 tau_overload = [100; 100];
-T4 = 60;
+T4 = 120;
 
 odefun4 = @(t, s) wmr_full_model(t, s, tau_overload, p);
 [t4, s4] = ode45(odefun4, [0 T4], state0_rest);

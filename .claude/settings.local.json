@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(matlab -batch \"test_openloop\")"
+    ]
+  }
+}

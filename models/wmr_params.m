@@ -28,8 +28,8 @@ p.fv = 0.5;             % [N*s/m]     tinh tien
 p.fw = 0.1;             % [N*m*s/rad] quay
 
 % Ma sat Coulomb (dry friction)
-p.fc = 0.3;             % [N]         tinh tien
-p.fcw = 0.1;            % [N*m]       quay
+p.fc = 0.05;            % [N]         tinh tien
+p.fcw = 0.02;           % [N*m]       quay
 
 % Xap xi muot cho sign(): tanh(v/epsilon)
 p.eps_sign = 0.01;
