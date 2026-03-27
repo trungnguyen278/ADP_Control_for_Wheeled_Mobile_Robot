@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(matlab -batch \"test_openloop\")"
+      "Bash(matlab -batch \"test_openloop\")",
+      "Bash(matlab -batch \"sim_sm1\")"
     ]
   }
 }
