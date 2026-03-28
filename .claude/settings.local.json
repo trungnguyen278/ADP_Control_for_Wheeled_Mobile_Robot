@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(matlab -batch \"test_openloop\")",
-      "Bash(matlab -batch \"sim_sm1\")"
+      "Bash(matlab -batch \"sim_sm1\")",
+      "Bash(matlab -batch \"export_sm1_figures\")",
+      "Bash(export PATH=\"/c/Users/LEGION/AppData/Local/Programs/MiKTeX/miktex/bin/x64:$PATH\")",
+      "Bash(pdflatex -interaction=nonstopmode sm1_report.tex)"
     ]
   }
 }
