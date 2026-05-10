@@ -48,8 +48,8 @@ s.uo_max = 1.0;                 % [m/s] va [rad/s]
 % Day la HAN CHE cua Actor-Critic: can chinh sach ban dau on dinh.
 % V ~ 1*(zx^2 + zy^2 + zth^2) → uo ~ [0.5*zx; 0.5*zth] gan z=0
 % Yeu, chi du on dinh — buoc ADP phai hoc de cai thien
-s.Wc0 = [1; 1; 1; 0; 0; 0];
-s.Wa0 = [1; 1; 1; 0; 0; 0];
+s.Wc0 = [3; 3; 3; 0; 0; 0];
+s.Wa0 = [3; 3; 3; 0; 0; 0];
 
 %% === PE SIGNAL (Persistence of Excitation) ===
 % n(t) = sum( A_i * sin(w_i * t) )
@@ -63,9 +63,9 @@ s.pe_off_time = 30;             % tat PE sau 30s (weights da hoi tu)
 % v   = vr*cos(zth) + k1*zx
 % w   = wr + k2*vr*zy + k3*sin(zth)
 
-s.k1 = 3;
-s.k2 = 5;                      % lon hon vi zy hoi tu cham tren circle
-s.k3 = 3;
+s.k1 = 1.5;                     % giam cho phu hop dynamic (v accel cham)
+s.k2 = 3;
+s.k3 = 2;
 
 %% === QUY DAO THAM CHIEU ===
 
@@ -82,7 +82,7 @@ s.line_angle = 0;               % [rad] huong di (0 = truc x)
 %% === DIEU KIEN BAN DAU ===
 % Robot bat dau lech so voi diem tham chieu tai t=0
 
-s.q0_offset = [0.5; -0.3; 0.2]; % [dx; dy; dtheta]
+s.q0_offset = [0.2; -0.1; 0.1]; % [dx; dy; dtheta] nho hon cho full model
 
 %% === MO PHONG ===
 
@@ -92,7 +92,63 @@ s.T_sim = 120;                  % [s] tong thoi gian (du de ADP hoi tu)
 %% === GIOI HAN DIEU KHIEN ===
 % Clamp output de tranh mat on dinh
 
-s.v_max = 1.0;                  % [m/s]
+s.v_max = 0.5;                  % [m/s]
 s.w_max = 2.0;                  % [rad/s]
+
+%% === DYNAMIC BACKSTEPPING (VONG TRONG, Fierro & Lewis 1997) ===
+% tau = B_inv * [ M*(eta_d_dot + Kd*e) + F(eta) ]
+% Kd lon => vong trong nhanh (separation of timescales)
+
+s.Kd_v = 20;                    % gain van toc dai
+s.Kd_w = 20;                    % gain van toc goc
+
+%% === SMC KINEMATIC (VONG NGOAI) ===
+% uo1 = zy*(wr+uo2) + lambda1*zx + eta1*tanh(zx/delta)
+% uo2 = lambda2*zth + eta2*tanh(zth/delta)
+
+s.smc_lambda1 = 3;              % equivalent gain zx
+s.smc_lambda2 = 3;              % equivalent gain zth
+s.smc_eta1    = 1.0;            % reaching gain zx
+s.smc_eta2    = 1.0;            % reaching gain zth
+s.smc_delta   = 0.05;           % boundary layer (tanh thay sign)
+s.smc_c_zy    = 1.0;            % coupling zy vao mat truot sigma_2 = zth + c_zy*zy
+
+%% === NHIEU TAN SO CAO ===
+% d(t) = d_amp * tau_max * sin(w_d * t), cong vao tau truoc plant
+% Mo phong nhieu ngoai (rung, mat duong, ...)
+
+s.dist_amp   = 0.2;             % 20% tau_max
+s.dist_freq  = 30;              % [rad/s] ~ 4.8 Hz
+
+%% === ADP FIXED-TIME (WANG ET AL. 2025, eq.16-18) ===
+% Controller chinh cua luan van
+% u = uf + uo_adp - g_pinv * robust
+% robust = lambda.*tanh(z/rho) + mu.*z + alpha.*sig(z,p/q) + beta.*z^3
+% W_dot = 0.5*Gamma*(nabla_phi*g*R_inv*g'*z - kappa1*W - kappa2*(W'W)*W)
+
+s.ft_p = 17;                    % fixed-time exponent (tu so)
+s.ft_q = 19;                    % fixed-time exponent (mau so), p/q < 1
+s.ft_Gamma = 2 * eye(s.l);     % 6x6 learning rate matrix
+s.ft_kappa1 = 0.02;            % sigma-modification (chuan)
+s.ft_kappa2 = 0.01;            % sigma-modification bac 3 (fixed-time)
+s.ft_lambda = [0.3; 0.3; 0.2]; % robust gain: tanh term
+s.ft_mu     = [0.3; 0.3; 0.2]; % robust gain: linear term
+s.ft_alpha  = [0.3; 0.3; 0.2]; % robust gain: fractional power |z|^{p/q}*sign(z)
+s.ft_beta   = [1; 1; 0.5];    % robust gain: cubic (dam bao fixed-time)
+s.ft_rho    = 0.05;            % boundary layer cho tanh(z/rho)
+s.ft_W0     = [3; 3; 3; 0; 0; 0]; % warm start (tuong tu CL, can feedback ban dau)
+
+%% === CRITIC-ONLY + CONCURRENT LEARNING (SM2) ===
+% 1 mang Critic, khong can PE, dung history stack
+% uo = -0.5 * R_inv * g' * nabla_phi' * W
+% W_dot = -alpha*sigma_bar*delta - alpha_hist*CL_term - kappa*W
+
+s.cl_alpha      = 0.5;         % online learning rate
+s.cl_alpha_hist = 0.5;         % concurrent learning rate (tu history stack)
+s.cl_kappa      = 0.01;        % sigma-modification (weight decay)
+s.cl_stack_max  = 200;         % so diem lich su toi da
+s.cl_record_dt  = 0.05;        % ghi moi 50ms = 20 Hz
+s.cl_W0 = [3; 3; 3; 0; 0; 0]; % warm start (can feedback ban dau de on dinh)
+s.cl_uo_max     = 1.5;         % gioi han feedback [m/s] va [rad/s]
 
 end

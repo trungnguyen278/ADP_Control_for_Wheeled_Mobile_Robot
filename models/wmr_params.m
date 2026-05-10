@@ -36,7 +36,7 @@ p.eps_sign = 0.01;
 
 %% === GIOI HAN CO CAU CHAP HANH ===
 
-p.tau_max = 5;          % [N*m] mo-men toi da moi banh
+p.tau_max = 20;         % [N*m] mo-men toi da moi banh (sau hop giam toc)
 p.v_max   = 1.0;        % [m/s]
 p.w_max   = 2.0;        % [rad/s]
 
