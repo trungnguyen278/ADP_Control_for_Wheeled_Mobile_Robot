@@ -28,7 +28,7 @@ function [eta_d, z] = smc_kinematic(q, qr, vr, omegar, s)
 %   qr     = [xr; yr; thetar]  (3x1)
 %   vr     -- van toc tham chieu [m/s]
 %   omegar -- van toc goc tham chieu [rad/s]
-%   s      -- sm1_params struct (chua smc_lambda1, smc_eta1, smc_delta, ...)
+%   s      -- ctrl_params struct (chua smc_lambda1, smc_eta1, smc_delta, ...)
 %
 % Output:
 %   eta_d = [v_d; w_d]  (2x1) van toc mong muon

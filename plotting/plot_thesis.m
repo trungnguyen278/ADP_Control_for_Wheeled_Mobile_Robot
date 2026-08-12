@@ -20,11 +20,9 @@ function plot_thesis(results_A, results_B, results_C, s, p, ...
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    05/2026
 
-colors_5.bs     = [1 0 0];
-colors_5.adp    = [0 0 1];
-colors_5.smc    = [0 0.6 0];
-colors_5.cl     = [0.8 0 0.8];
-colors_5.adp_ft = [0.9 0.5 0];
+% Mau theo THU TU trong 'methods', khong dung ten truong => khong phu thuoc
+% so luong phuong phap. Them phuong phap = them 1 dong vao cmap_M.
+cmap_M = [1 0 0; 0 0 1; 0 0.6 0; 0 0.7 0.7; 0.8 0 0.8; 0.9 0.5 0];
 
 colors_3.bs     = [1 0 0];
 colors_3.cl     = [0.8 0 0.8];
@@ -46,7 +44,7 @@ for t_idx = 1:length(trajs)
     plot(d.qr(1,:), d.qr(2,:), 'k--', 'LineWidth', 1.5); hold on;
     for i = 1:n_methods
         d = results_A.([trajs{t_idx} '_' methods{i}]);
-        plot(d.q(1,:), d.q(2,:), '-', 'Color', colors_5.(methods{i}), 'LineWidth', 1.2);
+        plot(d.q(1,:), d.q(2,:), '-', 'Color', cmap_M(i,:), 'LineWidth', 1.2);
     end
     xlabel('x [m]'); ylabel('y [m]');
     title(sprintf('%s (co nhieu)', traj_titles{t_idx}));
@@ -65,7 +63,7 @@ for t_idx = 1:length(trajs)
         subplot(3,1,j);
         for i = 1:n_methods
             d = results_A.([trajs{t_idx} '_' methods{i}]);
-            plot(d.t, d.z(j,:), '-', 'Color', colors_5.(methods{i}), 'LineWidth', 1);
+            plot(d.t, d.z(j,:), '-', 'Color', cmap_M(i,:), 'LineWidth', 1);
             hold on;
         end
         ylabel(zlabels{j}, 'Interpreter', 'latex');
@@ -91,7 +89,7 @@ for t_idx = 1:length(trajs)
 end
 
 b = bar(Jc_mat);
-bar_colors = [colors_5.bs; colors_5.adp; colors_5.smc; colors_5.cl; colors_5.adp_ft];
+bar_colors = cmap_M(1:n_methods, :);
 for i = 1:n_methods
     b(i).FaceColor = bar_colors(i,:);
 end

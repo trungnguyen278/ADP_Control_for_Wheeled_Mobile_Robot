@@ -1,18 +1,24 @@
-function s = sm1_params()
-% SM1_PARAMS  Tham so cho Seminar 1: Actor-Critic ADP kinematic tracking
+function s = ctrl_params()
+% CTRL_PARAMS  Tham so controller + mo phong dung chung cho CA 6 phuong phap
 %
-% Cach dung: s = sm1_params();
+% Cach dung: s = ctrl_params();
 %
-% Bao gom: tham so cost function, ADP learning, PE signal,
-%           backstepping gains, quy dao tham chieu, mo phong.
+% Bao gom: cost function, ADP learning, PE signal, backstepping gains,
+%          SMC, NTSMC, ADP fixed-time, Concurrent Learning,
+%          quy dao tham chieu, nhieu, tham so mo phong.
+%
+% LUU Y: file nay truoc day ten sm1_params.m (chi phuc vu Seminar 1).
+% Da doi ten 2026-08-12 vi no giu tham so cho toan bo cac phuong phap,
+% khong con gioi han o SM1.
 %
 % Tham khao:
 %   - Vamvoudakis & Lewis (2010): Actor-Critic ADP
-%   - Wang et al. (2025): basis function, Q, R
+%   - Wang et al. (2025): basis function, Q, R, ADP fixed-time
 %   - Kanayama (1990): error dynamics, backstepping
+%   - Feng et al. (2002): Non-singular Terminal SMC
 %
 % Tac gia: Nguyen Thanh Trung
-% Ngay:    03/2026
+% Ngay:    03/2026 (doi ten 08/2026)
 
 %% === COST FUNCTION ===
 % J = integral( z'*Q*z + uo'*R*uo ) dt
@@ -118,6 +124,41 @@ s.smc_eta1    = 1.0;            % reaching gain zx
 s.smc_eta2    = 1.0;            % reaching gain zth
 s.smc_delta   = 0.05;           % boundary layer (tanh thay sign)
 s.smc_c_zy    = 1.0;            % coupling zy vao mat truot sigma_2 = zth + c_zy*zy
+
+%% === NTSMC KINEMATIC (Non-singular Fast Terminal SMC, VONG NGOAI) ===
+% sigma_2 = zth + c_zy*zy + (1/beta)*sig_ns(zy, alpha_s)
+% uo      = lambda*sigma + eta*sig_ns(sigma, alpha_r)
+%
+% Khac SMC thuong o 2 diem:
+%   1. Mat truot co so hang |zy|^alpha_s  => zy hoi tu HUU HAN thoi gian
+%   2. Luat tien toi dung |sigma|^alpha_r => den mat truot HUU HAN thoi gian
+% (SMC thuong chi hoi tu MU vi toan bo la tuyen tinh + tanh)
+
+% Gain duoi day CHON BANG SWEEP tren full model (circle, T=60s, co nhieu),
+% khong phai copy tu bai bao. Chi tiet sweep: xem PROGRESS.md muc 2026-08-12.
+% Gain ban dau (lambda=3, eta=1.0 copy tu SMC) cho Jc=1458 -- qua manh cho
+% dual-loop, dung bai hoc trong memory/feedback_adp_ft_tuning.md.
+
+s.nt_lambda1 = 0.7;             % equivalent gain sigma_1 (sweep: 0.7 toi uu)
+s.nt_lambda2 = 0.7;             % equivalent gain sigma_2
+s.nt_eta1    = 0.05;            % reaching gain sigma_1 (sweep: 0.05)
+s.nt_eta2    = 0.05;            % reaching gain sigma_2
+s.nt_c_zy    = 1.0;             % coupling zy vao mat truot (giong smc_c_zy)
+s.nt_beta    = 10.0;            % he so so hang lu thua phan so tren zy
+                                % beta lon => so hang terminal yeu di
+s.nt_alpha_s = 0.6;             % lu thua mat truot, 0<alpha_s<1 (huu han thoi gian)
+s.nt_alpha_r = 0.7;             % lu thua luat tien toi, 0<alpha_r<1
+s.nt_eps     = 0.02;            % nguong noi tuyen tinh chong ky di
+                                % nho => bam sat |x|^a; lon => muot hon, chan tot hon
+
+% ===== KET QUA SWEEP (trung thuc, can biet khi viet luan van) =====
+% 1. Optimum thuc su nam o beta -> vo cung, tuc TAT HAN so hang terminal.
+%    beta=10 cho Jc=80.12; beta=1e6 cho Jc=79.97. Chenh 0.2%.
+% 2. alpha_s KHONG anh huong gi (4 gia tri cho ket qua giong het chu so).
+% 3. alpha_r anh huong ~0.08%.
+% => Cai thien tu Jc=1458 xuong Jc=80 den TU VIEC GIAM GAIN, khong phai tu
+%    cau truc terminal. Tren bai toan nay NTSMC khong hon SMC tune tot.
+%    KHONG duoc viet trong luan van rang NTSMC tot hon SMC nho hoi tu huu han.
 
 %% === NHIEU TAN SO CAO ===
 % d(t) = d_amp * tau_max * sin(w_d * t), cong vao tau truoc plant

@@ -24,7 +24,7 @@ function [tau, info] = dynamic_backstepping(eta, eta_d, eta_d_prev, dt, p, s)
 %   eta_d_prev = [v_d; w_d]   (2x1) van toc mong muon buoc truoc
 %   dt         -- buoc thoi gian [s]
 %   p          -- wmr_params struct
-%   s          -- sm1_params struct (chua Kd_v, Kd_w)
+%   s          -- ctrl_params struct (chua Kd_v, Kd_w)
 %
 % Output:
 %   tau  = [tauR; tauL]  (2x1) mo-men banh

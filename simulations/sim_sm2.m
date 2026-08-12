@@ -20,7 +20,7 @@ clear; close all; clc;
 addpath('../models', '../controllers', '../plotting');
 
 %% 1. Load tham so
-s = sm1_params();
+s = ctrl_params();
 s.T_sim = 120;
 
 fprintf('\n========== SM2: CRITIC-ONLY + CONCURRENT LEARNING ==========\n');

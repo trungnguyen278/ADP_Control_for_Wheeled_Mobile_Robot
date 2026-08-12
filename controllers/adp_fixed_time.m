@@ -27,7 +27,7 @@ function [u, W, info] = adp_fixed_time(q, qr, vr, omegar, W, s)
 %   vr     -- van toc dai tham chieu [m/s]
 %   omegar -- van toc goc tham chieu [rad/s]
 %   W      -- (lx1) trong so Critic
-%   s      -- struct tham so tu sm1_params()
+%   s      -- struct tham so tu ctrl_params()
 %
 % Output:
 %   u    = [v; omega]  (2x1) lenh dieu khien tong

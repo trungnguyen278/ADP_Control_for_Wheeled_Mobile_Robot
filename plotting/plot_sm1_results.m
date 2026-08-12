@@ -6,7 +6,7 @@ function plot_sm1_results(results, s)
 % Input:
 %   results -- struct chua: circle_bc, circle_adp, circle_nope,
 %                           line_bc, line_adp, line_nope
-%   s       -- sm1_params struct
+%   s       -- ctrl_params struct
 %
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    03/2026

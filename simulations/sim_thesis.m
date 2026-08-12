@@ -16,7 +16,7 @@ addpath('../models', '../controllers', '../plotting');
 
 %% Tham so chung
 p = wmr_params();
-s = sm1_params();
+s = ctrl_params();
 s.T_sim = 60;
 
 fprintf('\n========== MO PHONG TONG HOP LUAN VAN ==========\n');
@@ -26,8 +26,8 @@ fprintf('\n========== MO PHONG TONG HOP LUAN VAN ==========\n');
 %  ================================================================
 fprintf('\n--- PHAN A: 3 QUY DAO x 5 PHUONG PHAP ---\n');
 
-methods = {'bs', 'adp', 'smc', 'cl', 'adp_ft'};
-method_names = {'BS', 'ADP-AC', 'SMC', 'CL', 'ADP-FT'};
+methods = {'bs', 'adp', 'smc', 'ntsmc', 'cl', 'adp_ft'};
+method_names = {'BS', 'ADP-AC', 'SMC', 'NTSMC', 'CL', 'ADP-FT'};
 trajs = {'circle', 'line', 'figure8'};
 results_A = struct();
 
@@ -234,6 +234,9 @@ function data = run_full_sim(method, use_dist, s, p)
             case 'smc'
                 [eta_d, z] = smc_kinematic(q, qr, vr, omegar, s);
 
+            case 'ntsmc'
+                [eta_d, z] = ntsmc_kinematic(q, qr, vr, omegar, s);
+
             case 'cl'
                 [u_kin, cl, info] = critic_only_cl(t, q, qr, vr, omegar, cl, s);
                 eta_d = u_kin;
@@ -351,6 +354,9 @@ function data = run_full_sim_uncertain(method, use_dist, s, p_ctrl, p_plant)
                 data.Wc(:,k) = adp.Wc; data.Wa(:,k) = adp.Wa;
             case 'smc'
                 [eta_d, z] = smc_kinematic(q, qr, vr, omegar, s);
+
+            case 'ntsmc'
+                [eta_d, z] = ntsmc_kinematic(q, qr, vr, omegar, s);
             case 'cl'
                 [u_kin, cl, info] = critic_only_cl(t, q, qr, vr, omegar, cl, s);
                 eta_d = u_kin; z = info.z; data.W(:,k) = cl.W;

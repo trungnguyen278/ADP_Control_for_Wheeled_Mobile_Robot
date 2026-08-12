@@ -5,7 +5,7 @@ function [qr, vr, omegar] = ref_trajectory(t, s)
 %
 % Input:
 %   t -- thoi gian hien tai [s] (scalar)
-%   s -- struct tham so tu sm1_params()
+%   s -- struct tham so tu ctrl_params()
 %
 % Output:
 %   qr     = [xr; yr; thetar]  (3x1) trang thai tham chieu

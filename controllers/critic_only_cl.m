@@ -25,7 +25,7 @@ function [u, cl, info] = critic_only_cl(t, q, qr, vr, omegar, cl, s)
 %   omegar -- van toc goc tham chieu [rad/s]
 %   cl     -- struct: cl.W (6x1), cl.sigma_stack, cl.cost_stack,
 %              cl.stack_count, cl.last_record_time
-%   s      -- struct tham so tu sm1_params()
+%   s      -- struct tham so tu ctrl_params()
 %
 % Output:
 %   u    = [v; omega]  (2x1) lenh dieu khien

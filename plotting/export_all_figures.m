@@ -135,13 +135,12 @@ clear results;
 load('../results/thesis_results.mat', 'results_A', 'results_B', 'results_C', 's', 'p');
 fig_dir = '../docs/thesis/figures';
 
-colors5.bs     = [1 0 0];
-colors5.adp    = [0 0 1];
-colors5.smc    = [0 0.6 0];
-colors5.cl     = [0.8 0 0.8];
-colors5.adp_ft = [0.9 0.5 0];
-m5 = {'bs', 'adp', 'smc', 'cl', 'adp_ft'};
-l5 = {'BS', 'ADP-AC', 'SMC', 'CL', 'ADP-FT'};
+% Danh sach phuong phap + mau, KHONG hardcode so luong.
+% Them phuong phap moi = them 1 dong vao m5/l5/cmap5, phan con lai tu dong theo.
+m5    = {'bs', 'adp', 'smc', 'ntsmc', 'cl', 'adp_ft'};
+l5    = {'BS', 'ADP-AC', 'SMC', 'NTSMC', 'CL', 'ADP-FT'};
+cmap5 = [1 0 0; 0 0 1; 0 0.6 0; 0 0.7 0.7; 0.8 0 0.8; 0.9 0.5 0];
+nM    = numel(m5);
 trajs = {'circle', 'line', 'figure8'};
 traj_titles = {'Circle', 'Line', 'Figure-8'};
 
@@ -150,9 +149,9 @@ for t_idx = 1:3
     f = figure('Position', [100 100 500 420], 'Visible', 'off');
     d = results_A.([trajs{t_idx} '_bs']);
     plot(d.qr(1,:), d.qr(2,:), 'k--', 'LineWidth', 1.5); hold on;
-    for i = 1:5
+    for i = 1:nM
         d = results_A.([trajs{t_idx} '_' m5{i}]);
-        plot(d.q(1,:), d.q(2,:), '-', 'Color', colors5.(m5{i}), 'LineWidth', 1.2);
+        plot(d.q(1,:), d.q(2,:), '-', 'Color', cmap5(i,:), 'LineWidth', 1.2);
     end
     xlabel('$x$ [m]', 'Interpreter', 'latex'); ylabel('$y$ [m]', 'Interpreter', 'latex');
     legend(['Ref', l5], 'Location', 'best'); axis equal; grid on;
@@ -165,9 +164,9 @@ for t_idx = 1:3
     f = figure('Position', [100 100 600 480], 'Visible', 'off');
     for j = 1:3
         subplot(3,1,j);
-        for i = 1:5
+        for i = 1:nM
             d = results_A.([trajs{t_idx} '_' m5{i}]);
-            plot(d.t, d.z(j,:), '-', 'Color', colors5.(m5{i}), 'LineWidth', 1); hold on;
+            plot(d.t, d.z(j,:), '-', 'Color', cmap5(i,:), 'LineWidth', 1); hold on;
         end
         ylabel(zlabels{j}, 'Interpreter', 'latex');
         if j == 1, legend(l5, 'Location', 'ne'); end
@@ -180,16 +179,17 @@ end
 
 % TH-7: Bar chart Jc
 f = figure('Position', [100 100 650 380], 'Visible', 'off');
-Jc_mat = zeros(3, 5);
+Jc_mat = zeros(3, nM);
 for t_idx = 1:3
-    for mi = 1:5
+    for mi = 1:nM
         Jc_mat(t_idx, mi) = results_A.([trajs{t_idx} '_' m5{mi}]).Jc;
     end
 end
-Jc_mat_plot = Jc_mat; Jc_mat_plot(3,3) = 500; % cap SMC figure8 for readability
+Jc_mat_plot = Jc_mat;
+% Cap gia tri SMC tren figure-8 cho de doc (SMC phan ky manh, nuot het thang do)
+Jc_mat_plot(3, strcmp(m5,'smc')) = 500;
 b = bar(Jc_mat_plot);
-bar_colors = [colors5.bs; colors5.adp; colors5.smc; colors5.cl; colors5.adp_ft];
-for i = 1:5, b(i).FaceColor = bar_colors(i,:); end
+for i = 1:nM, b(i).FaceColor = cmap5(i,:); end
 set(gca, 'XTickLabel', traj_titles);
 ylabel('$J_c$', 'Interpreter', 'latex');
 legend(l5, 'Location', 'northwest'); grid on;

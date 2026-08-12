@@ -16,7 +16,7 @@ addpath('../models', '../controllers', '../plotting');
 
 %% 1. Load tham so
 p = wmr_params();
-s = sm1_params();
+s = ctrl_params();
 s.traj_type = 'circle';
 s.T_sim = 60;
 
@@ -26,8 +26,8 @@ fprintf('Nhieu: d = %.1f*tau_max*sin(%.0f*t)\n', s.dist_amp, s.dist_freq);
 fprintf('Vong trong: Kd_v=%.0f, Kd_w=%.0f\n\n', s.Kd_v, s.Kd_w);
 
 %% 2. Chay 10 kich ban
-methods = {'bs', 'adp', 'smc', 'cl', 'adp_ft'};
-method_names = {'Backstepping', 'ADP Actor-Critic', 'SMC', 'Critic-only CL', 'ADP Fixed-time'};
+methods = {'bs', 'adp', 'smc', 'ntsmc', 'cl', 'adp_ft'};
+method_names = {'Backstepping', 'ADP Actor-Critic', 'SMC', 'NTSMC', 'Critic-only CL', 'ADP Fixed-time'};
 results = struct();
 
 for m_idx = 1:length(methods)
@@ -152,6 +152,9 @@ function data = run_full_sim(method, use_dist, s, p)
 
             case 'smc'
                 [eta_d, z] = smc_kinematic(q, qr, vr, omegar, s);
+
+            case 'ntsmc'
+                [eta_d, z] = ntsmc_kinematic(q, qr, vr, omegar, s);
 
             case 'cl'
                 [u_kin, cl, info] = critic_only_cl(t, q, qr, vr, omegar, cl, s);

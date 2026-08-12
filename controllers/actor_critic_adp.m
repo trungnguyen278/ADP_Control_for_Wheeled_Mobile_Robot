@@ -10,7 +10,7 @@ function [u, adp, info] = actor_critic_adp(t, q, qr, vr, omegar, adp, s)
 %   vr     -- van toc dai tham chieu [m/s]
 %   omegar -- van toc goc tham chieu [rad/s]
 %   adp    -- struct chua weights: adp.Wc (6x1), adp.Wa (6x1)
-%   s      -- struct tham so tu sm1_params()
+%   s      -- struct tham so tu ctrl_params()
 %
 % Output:
 %   u    = [v; omega]  (2x1) lenh dieu khien tong

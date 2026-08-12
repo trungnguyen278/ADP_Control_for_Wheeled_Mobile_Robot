@@ -19,7 +19,7 @@ clear; close all; clc;
 addpath('../models', '../controllers', '../plotting');
 
 %% 1. Load tham so
-s = sm1_params();
+s = ctrl_params();
 
 fprintf('\n========== SM1: Actor-Critic ADP vs Backstepping ==========\n');
 fprintf('Q = diag(%.0f,%.0f,%.0f), R = diag(%.0f,%.0f)\n', ...
@@ -98,7 +98,7 @@ function data = run_simulation(method, s)
 %
 % Input:
 %   method -- 'bc' hoac 'adp'
-%   s      -- sm1_params struct
+%   s      -- ctrl_params struct
 %
 % Output:
 %   data -- struct chua tat ca ket qua
