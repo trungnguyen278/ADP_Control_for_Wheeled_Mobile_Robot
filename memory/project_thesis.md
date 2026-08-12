@@ -1,7 +1,8 @@
 ---
-name: Thesis project overview
+name: project-thesis
 description: ADP Fixed-Time Optimal Control dual-loop for differential-drive WMR, extending Wang et al. 2025 with dynamic model
-type: project
+metadata:
+  type: project
 ---
 
 **Đề tài**: Mở rộng ADP-based Fixed-time Optimal Control (Wang et al., IEEE RA-L 2025) từ kinematic-only sang dual-loop kinematic + dynamic cho WMR vi sai.

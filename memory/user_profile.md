@@ -1,7 +1,8 @@
 ---
-name: Trung - Master student profile
+name: user-profile
 description: Trung is a master student in Control & Automation at HUST, working on ADP fixed-time optimal control for WMR thesis
-type: user
+metadata:
+  type: user
 ---
 
 - Học viên cao học Điều khiển & Tự động hóa, ĐHBK Hà Nội
