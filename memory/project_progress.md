@@ -1,48 +1,36 @@
 ---
 name: project-progress
-description: Thesis deliverable status — thesis v2 43pp submitted to advisor 2026-05-26; repo restructured 2026-08-12
+description: Luận văn đã nộp bản v2 cho GVHD 2026-05-26, đang chờ phản hồi (tính đến 2026-08-12 vẫn chưa có), chưa có lịch bảo vệ
 metadata:
   type: project
 ---
 
-## Tiến độ tính đến 2026-08-12
+## Trạng thái tính đến 2026-08-12
 
-### ĐÃ HOÀN THÀNH
-- Tuần 1-3: Mô hình + SM1 Actor-Critic + Báo cáo SM1
-- Sprint 2026-05-06: 5 phương pháp x full model, tune tham số
-- Sprint 2026-05-25: SM2 sim, thesis sim, robustness analysis, export figures, viết báo cáo
-- 2026-05-26: Cải thiện luận văn v2 — logo trường, 8+ hình TikZ, sửa figure placement, mở rộng nội dung
+**Đang chờ phản hồi GVHD.** Gửi bản v2 cho thầy Nam qua Teams ngày 2026-05-26.
+Đến 2026-08-12 vẫn chưa có phản hồi — đã 2,5 tháng. Repo không có commit nào
+trong khoảng này (ngoài đợt tái cấu trúc 2026-08-12).
 
-### DELIVERABLES (compiled PDF, tiếng Việt có dấu)
-- **thesis.pdf** — 43 trang, 6 chương, 20+ hình (gồm 8 TikZ + 12 MATLAB PDF)
-- **summary_report.pdf** — 13 trang (đã bỏ mục 7.2 việc cần làm + 7.3 timeline)
-- **sm2_report.pdf** — 15 trang (Critic-only + Concurrent Learning)
-- **19 figures PDF** — exported từ MATLAB .mat data
+**Chưa có lịch bảo vệ.** Kế hoạch gốc 16 tuần (02→06/2026) đã quá hạn và không
+còn dùng làm mốc thời gian.
 
-### SỬA LỖI HÌNH (2026-05-26)
-- Figure placement: dời hình ra khỏi giữa công thức và giải thích (ADP structure, architecture, CL concept)
-- Reference trajectories: legend ra ngoài plot (bên phải) tránh che quỹ đạo
-- Body frame error (Hình 2.3): thiết kế lại 3 lần — tách θ arc, zx arrow, X_B label
-- Parameter tuning table: thu hẹp cột tránh overfull hbox
+### Đã nộp (PDF tiếng Việt có dấu)
+- `docs/thesis/thesis.pdf` — 43 trang, 6 chương, 20 hình
+- `docs/reports/summary/summary_report.pdf` — 13 trang
+- `docs/reports/sm2/sm2_report.pdf` — 15 trang
+- `docs/reports/sm1/sm1_report.pdf` — 10 trang (báo cáo 2026-03-28)
 
-### CHƯA LÀM
-- [ ] Cải thiện SMC (z_rms còn cao, xem xét NTSMC)
-- [ ] Chuẩn bị slide bảo vệ
-- [ ] Hoàn thiện luận văn sau phản hồi thầy
+Toàn bộ code mô phỏng + 19 figure PDF đã xong.
 
-### TÁI CẤU TRÚC REPO (2026-08-12)
-- `results/*.mat` (565MB) đã gỡ khỏi git tracking — GitHub chặn cứng file >100MB,
-  commit cũ 2b6cfef không push được. Giờ tái tạo bằng `sim_*.m`.
-- Thư mục mới: `references/` (bài báo gốc), `docs/reports/{sm1,sm2,summary}/`, `docs/guides/`
-- Thêm `CLAUDE.md`, `.claude/settings.json`, 3 skills: `run-sim`, `build-doc`, `checkpoint`
-- `memory/` giờ là junction từ `~/.claude/projects/<slug>/memory` → memory được version trong git
-- Commit theo Conventional Commits, mô tả tiếng Việt không dấu
+### Còn lại
+Bị chặn bởi GVHD: hoàn thiện luận văn theo phản hồi, chuẩn bị slide bảo vệ.
+Làm được ngay: cải thiện SMC (z_rms 0.276 còn cao, xem xét NTSMC).
 
-### TRẠNG THÁI HIỆN TẠI
-Đã gửi báo cáo cho thầy Nam qua Teams (2026-05-26). Chưa ghi nhận phản hồi.
+**Why:** Trung hỏi lại tiến độ sau thời gian dài không đụng tới dự án — cần biết
+ngay là đang chờ ai, và việc gì làm được mà không phải chờ.
 
-**Why:** Goal "báo cáo nộp cho thầy cùng báo cáo luận văn bản v1" — đã hoàn thành và gửi.
-**How to apply:** Đây là bản v2. Dự kiến sẽ có chỉnh sửa sau khi thầy review.
-Khi có feedback mới của thầy → ghi vào memory `feedback_*` rồi cập nhật file này.
+**How to apply:** Khi thầy Nam phản hồi → tạo memory `feedback_*` mới cho nội dung
+góp ý, rồi cập nhật file này. Đừng giả định đã bảo vệ xong hay đã có phản hồi
+nếu không có bằng chứng — kiểm tra `git log` và ngày sửa file trước khi kết luận.
 
-Related: [[feedback-vietnamese]], [[feedback-advisor-nam]], [[feedback-adp-ft-tuning]]
+Related: [[feedback-advisor-nam]], [[feedback-vietnamese]], [[feedback-adp-ft-tuning]]

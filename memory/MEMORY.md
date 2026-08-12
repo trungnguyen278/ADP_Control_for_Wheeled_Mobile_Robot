@@ -5,4 +5,4 @@
 - [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
 - [MATLAB CLI](reference_matlab_cli.md) — Chạy MATLAB batch từ terminal: R2023a, cờ -batch
-- [Progress](project_progress.md) — 2026-08-12: repo đã tái cấu trúc; luận văn v2 43tr chờ phản hồi GVHD
+- [Progress](project_progress.md) — Đã nộp v2 cho GVHD 2026-05-26, chờ phản hồi 2,5 tháng chưa có; chưa có lịch bảo vệ

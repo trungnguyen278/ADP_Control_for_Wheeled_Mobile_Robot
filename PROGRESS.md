@@ -7,22 +7,42 @@ tu kinematic-only sang dual-loop kinematic + dynamic cho WMR vi sai.
 
 GVHD: PGS.TS. Nguyen Hoai Nam
 Hoc vien: Nguyen Thanh Trung
-Thoi gian: 16 tuan (~02/2026 - 06/2026)
 
 ---
 
-## KE HOACH GOC (16 TUAN)
+## TRANG THAI (cap nhat 2026-08-12)
+
+**Dang cho phan hoi cua GVHD.** Da gui ban v2 qua Teams ngay 2026-05-26,
+den nay (2026-08-12) chua nhan duoc phan hoi — da 2,5 thang.
+
+**Chua co lich bao ve.** Ke hoach goc 16 tuan (02/2026 - 06/2026) da qua han;
+khong con dung lam moc thoi gian nua, giu lai duoi day chi de tham chieu lich su.
+
+San pham da hoan thanh va nop:
+
+| Tai lieu | Trang | Trang thai |
+|----------|-------|------------|
+| docs/thesis/thesis.pdf | 43 | Da nop 2026-05-26 (ban v2) |
+| docs/reports/summary/summary_report.pdf | 13 | Da nop 2026-05-26 |
+| docs/reports/sm2/sm2_report.pdf | 15 | Da nop 2026-05-26 |
+| docs/reports/sm1/sm1_report.pdf | 10 | Da bao cao 2026-03-28 |
+
+Toan bo code mo phong + 19 figure da xong. Xem muc VIEC CAN LAM cho phan con lai.
+
+---
+
+## KE HOACH GOC 16 TUAN (da qua han — luu de tham chieu)
 
 | Tuan | Noi dung | Trang thai |
 |------|----------|------------|
 | 1 | Mo hinh Dynamic WMR (models/*.m, test_openloop.m) | DA XONG |
 | 2-3 | SM1: Actor-Critic ADP kinematic (2 mang, can PE) | DA XONG |
 | 4 | Hoan thien SM1, viet bao cao | DA XONG |
-| 5-7 | SM2: Critic-only + Concurrent Learning (1 mang, bo PE) | DA XONG (code) |
-| 8 | Hoan thien SM1 + SM2 | DA XONG (code) |
-| 9-11 | Luan van: ADP Fixed-time + Dual-loop (Wang et al.) | DA XONG (code) |
-| 12-13 | Mo phong tong hop + Viet luan van | DA XONG (code) |
-| 14-16 | Hoan thien + Bao ve | CHUA LAM |
+| 5-7 | SM2: Critic-only + Concurrent Learning (1 mang, bo PE) | DA XONG |
+| 8 | Hoan thien SM1 + SM2 | DA XONG |
+| 9-11 | Luan van: ADP Fixed-time + Dual-loop (Wang et al.) | DA XONG |
+| 12-13 | Mo phong tong hop + Viet luan van | DA XONG |
+| 14-16 | Hoan thien + Bao ve | CHUA LAM — cho GVHD |
 
 > **Ghi chu**: Sau bao cao SM1 (2026-03-28), thay Nam yeu cau thay doi kien truc:
 > phai co 2 vong (kinematic + dynamic), them disturbance, them SMC baseline.
@@ -83,8 +103,8 @@ Vong ngoai (kinematic):     Vong trong (dynamic):     Plant:
   - 6 SM2: sm2_xy_circle/line, sm2_error_circle, sm2_weights, sm2_bellman, sm2_cost
   - 12 thesis: xy/error x3 traj, bar_jc_traj, weights_adp_ft, robust_mass/dist, bar_jc_mass/dist
   - 1 torque: torque_dist
-- [x] docs/sm2_report/sm2_report.tex: bao cao SM2 (CL thay PE, 7 sections, tieng Viet co dau)
-- [x] docs/summary/summary_report.tex: bao cao tom tat cho thay (tieng Viet co dau)
+- [x] docs/reports/sm2/sm2_report.tex: bao cao SM2 (CL thay PE, 7 sections, tieng Viet co dau)
+- [x] docs/reports/summary/summary_report.tex: bao cao tom tat cho thay (tieng Viet co dau)
 - [x] docs/thesis/thesis.tex: luan van 6 chuong (tieng Viet co dau)
 - [x] Compile LaTeX → PDF: thesis 36pp, summary 13pp, sm2_report 15pp
 
@@ -96,6 +116,12 @@ Vong ngoai (kinematic):     Vong trong (dynamic):     Plant:
 - [x] Mo rong noi dung: bang tham so robot, so sanh AC vs Critic-only, bang tong hop 5 PP,
   khuyen nghi su dung, phan tich mo-men chi tiet, ket luan mo rong
 - [x] Compile → thesis 43pp (tang 7 trang, 20 hinh)
+
+### 2026-05-26 → 2026-08-12 — Giai doan cho phan hoi (khong co hoat dong)
+- Gui ban v2 cho thay Nam qua Teams ngay 2026-05-26, sau do khong co phan hoi.
+- Repo khong co commit nao trong 2,5 thang. File noi dung sua cuoi cung:
+  docs/thesis/thesis.tex (2026-05-26 10:01).
+- Ghi lai khoang trong nay de sau nay khong hieu nham la du lieu bi mat.
 
 ### 2026-08-12 — Tai cau truc repo
 - [x] Sua loi git nghiem trong: results/*.mat (565MB, file lon nhat 300MB) bi commit
@@ -141,26 +167,28 @@ Vong ngoai (kinematic):     Vong trong (dynamic):     Plant:
 
 ---
 
-## VIEC CAN LAM (uu tien giam dan)
+## VIEC CAN LAM
 
-### Uu tien cao
-- [x] sim_sm2.m: mo phong rieng SM2 (kinematic-only, AC vs CL) -- XONG
-- [x] plot_sm2.m: 7 figures (XY, error, weights, Bellman, cost)
-- [x] Viet bao cao SM2 (docs/sm2_report/sm2_report.tex)
+### Dang bi chan (cho GVHD)
+- [ ] Hoan thien luan van theo phan hoi cua thay Nam -- CHUA CO PHAN HOI tu 2026-05-26
+- [ ] Chuan bi slide bao ve -- chua co lich bao ve
+
+### Lam duoc ngay, khong phu thuoc GVHD
+- [ ] Cai thien SMC (z_rms = 0.276 con cao so voi ADP-FT 0.060, xem xet NTSMC)
+- [ ] Gom trung lap giua plot_sm1_results.m va plot_sm1_full.m
+- [ ] Can nhac doi ten sm1_params.m -> ctrl_params.m (dang giu tham so cho CA 5 phuong phap,
+      ten khong con phan anh pham vi)
+
+### Da xong
+- [x] sim_sm2.m + plot_sm2.m: mo phong rieng SM2 (kinematic-only, AC vs CL)
+- [x] sim_thesis.m + plot_thesis.m: robustness (3 quy dao, 3 mass, 4 dist_amp)
+- [x] ref_trajectory.m + sm1_params.m: them quy dao figure-8
 - [x] export_all_figures.m: 19 figures PDF (6 SM2 + 12 thesis + 1 torque)
-
-### Uu tien trung binh
-- [x] sim_thesis.m: robustness analysis (3 quy dao, 3 mass, 4 dist_amp)
-- [x] plot_thesis.m: 12 figures (A: 3 traj, B: mass, C: dist)
-- [x] ref_trajectory.m: them quy dao figure-8
-- [x] sm1_params.m: them tham so figure-8
-- [x] Viet luan van ban nhap (docs/thesis/thesis.tex, 5 chuong)
-- [x] Viet bao cao tom tat cho thay (docs/summary/summary_report.tex)
-- [ ] Cai thien SMC (z_rms con cao, xem xet NTSMC)
-
-### Uu tien thap (cuoi ky)
-- [x] Compile LaTeX sang PDF (MiKTeX, pdflatex x2 cho cross-ref) -- XONG 2026-05-25
-- [ ] Chuan bi slide bao ve
+- [x] docs/reports/sm2/sm2_report.tex -- bao cao SM2
+- [x] docs/reports/summary/summary_report.tex -- bao cao tom tat cho thay
+- [x] docs/thesis/thesis.tex -- luan van 6 chuong
+- [x] Compile LaTeX sang PDF (MiKTeX, pdflatex x2 cho cross-ref) -- 2026-05-25
+- [x] Tai cau truc repo + tai lieu quy uoc -- 2026-08-12
 
 ---
 
@@ -180,7 +208,8 @@ Vong ngoai (kinematic):     Vong trong (dynamic):     Plant:
 - V_m = 0 CHI KHI d=0 (trong tam trung truc banh). Neu ro gia thiet khi viet luan van.
 - B(z) trong Wang eq.5c KHAC B trong dynamic model — can than ky hieu
 - g_pinv = (g'g)^{-1}g', det(g'g) = zx^2+1 > 0 luon ton tai
-- Tham so goc (claude_code_prompt.md): fc=0.3, tau_max=5 → da sua: fc=0.05, tau_max=20
+- Tham so ban dau fc=0.3, tau_max=5 → da sua thanh fc=0.05, tau_max=20 (models/wmr_params.m).
+  (Nguon goc la file claude_code_prompt.md, da bo tu commit cfae86b)
 - CL vectorized: S_bar * deltas' thay loop, nhanh hon ~100x trong MATLAB
 
 ---
