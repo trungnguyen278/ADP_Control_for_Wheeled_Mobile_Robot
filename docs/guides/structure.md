@@ -28,8 +28,7 @@ ADP_Control_for_Wheeled_Mobile_Robot/
 │   ├── critic_only_cl.m            SM2: Critic-only + Concurrent Learning
 │   ├── adp_fixed_time.m            LUẬN VĂN: ADP fixed-time (Wang eq.16-18)
 │   │  ── Vòng trong (dynamic): η_d → τ = [τ_R, τ_L] ──
-│   ├── dynamic_backstepping.m      Backstepping bậc 2 (Fierro & Lewis 1997)
-│   └── inner_loop_pi.m             ⚠ FILE RỖNG — placeholder chưa implement
+│   └── dynamic_backstepping.m      Backstepping bậc 2 (Fierro & Lewis 1997)
 │
 ├── simulations/                ── TẦNG 3: Kịch bản mô phỏng ──
 │   ├── sm1_params.m            Tham số controller + mô phỏng (dùng chung)
@@ -118,9 +117,6 @@ ADP_Control_for_Wheeled_Mobile_Robot/
 
 ## Nợ kỹ thuật đã biết
 
-- `controllers/inner_loop_pi.m` — file rỗng 0 byte. README cũ mô tả nó là "vòng trong
-  PI robust" của luận văn, nhưng thực tế vòng trong dùng `dynamic_backstepping.m`.
-  Không script nào gọi tới. Nên xóa.
 - `plotting/plot_sm1_results.m` và `plot_sm1_full.m` trùng lặp nhiều đoạn vẽ.
 - `simulations/sm1_params.m` giữ tham số cho **tất cả** phương pháp (kể cả luận văn),
   tên file không còn phản ánh phạm vi — cân nhắc đổi thành `ctrl_params.m`.
