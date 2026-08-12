@@ -9,7 +9,7 @@ clear; close all; clc;
 addpath('../simulations', '../models');
 
 load('../results/sm1_results.mat', 'results', 's');
-fig_dir = '../docs/sm1_report/figures';
+fig_dir = '../docs/reports/sm1/figures';
 
 set(0, 'DefaultAxesFontSize', 11);
 set(0, 'DefaultLineLineWidth', 1.2);
