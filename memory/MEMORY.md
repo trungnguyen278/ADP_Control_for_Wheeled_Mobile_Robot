@@ -2,6 +2,7 @@
 - [Thesis project](project_thesis.md) — ADP Fixed-time dual-loop cho WMR, mở rộng Wang et al. 2025
 - [Advisor feedback](feedback_advisor_nam.md) — SM1 review: bắt buộc disturbance, SMC baseline, kiến trúc 2 vòng
 - [ADP-FT tuning](feedback_adp_ft_tuning.md) — Robust gain phải nhỏ cho dual-loop; clamp uo là bắt buộc
+- [Baseline fairness](feedback_baseline_fairness.md) — ⚠ SMC bị tune tệ 7x; tune công bằng thì SMC thắng ADP-FT, ADP-FT sụp ở 14kg
 - [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
 - [MATLAB CLI](reference_matlab_cli.md) — Chạy MATLAB batch từ terminal: R2023a, cờ -batch

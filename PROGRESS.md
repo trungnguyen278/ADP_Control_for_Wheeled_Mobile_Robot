@@ -92,7 +92,7 @@ Vong ngoai (kinematic):     Vong trong (dynamic):     Plant:
 - [x] plot_sm2.m: 7 figures (XY, error, weights, Bellman error, running cost)
 - [x] sim_thesis.m: full model robustness analysis
   - Phan A: 3 quy dao (circle, line, figure8) x 5 phuong phap
-  - Phan B: 3 khoi luong (10, 15, 20 kg) x 3 pp (BS, CL, ADP-FT)
+  - Phan B: 3 khoi luong (10, 12, 14 kg) x 3 pp (BS, CL, ADP-FT)
   - Phan C: 4 muc nhieu (0, 20, 40, 60%) x 3 pp
 - [x] plot_thesis.m: 12 figures tong hop
 - [x] ref_trajectory.m: them quy dao figure-8 (lemniscate)
@@ -146,7 +146,81 @@ Vong ngoai (kinematic):     Vong trong (dynamic):     Plant:
   (README cu con ghi gain goc cua Wang: beta=1e5, rho=10, tau_max=5, fc=0.3)
 - [x] results/README.md: bang tai tao .mat tu script nao
 
-**Ket qua so sanh hien tai (circle, T=60s):**
+### 2026-08-12 (chieu) — Them NTSMC + PHAT HIEN VAN DE VOI SO SANH SMC
+- [x] Doi ten sm1_params.m -> ctrl_params.m (giu tham so cho ca 6 pp, ten cu sai pham vi)
+- [x] controllers/ntsmc_kinematic.m: Non-singular Fast Terminal SMC
+  - Chong ky di bang NOI TUYEN TINH duoi nguong eps_ns (kiem chung: huu han tai zy=1e-12 va zy=0)
+  - Ban THICH NGHI cho he bac nhat, KHONG phai chep nguyen Feng et al. (he bac hai)
+- [x] Wire 'ntsmc' vao sim_sm1_full.m + sim_thesis.m (thanh 6 phuong phap)
+- [x] plotting: bo hardcode 5 pp, dung cmap theo thu tu => them pp moi khong phai sua ve
+
+> ### !!! CANH BAO: SO SANH SMC TRONG LUAN VAN KHONG CONG BANG !!!
+>
+> Sweep gain (140+ lan chay full model) cho ket qua sau:
+>
+> | SMC | Jc (0% nhieu) | Jc (20%) | z_rms 5s cuoi |
+> |-----|---------------|----------|----------------|
+> | gain DANG DUNG trong luan van (lambda=3, eta=1.0) | 475.1 | 555.5 | 0.276 |
+> | gain sau sweep (lambda=0.7, eta=0.05) | **61.8** | **79.9** | **0.00011** |
+>
+> **SMC tot hon 7.0 lan CHI nho doi gain.** Ket luan "ADP-FT tot nhat" cua luan van
+> dua tren baseline SMC bi tune te.
+>
+> So sanh cong bang (circle, T=60s), Jc theo muc nhieu:
+>
+> | Method       | 0%    | 20%   | 40%   | 60%   |
+> |--------------|-------|-------|-------|-------|
+> | SMC (tuned)  | 61.8  | 79.9  | 107.3 | 150.9 |
+> | NTSMC(tuned) | 62.0  | 80.2  | 107.8 | 151.5 |
+> | ADP-FT       | 70.7  | 85.2  | 111.8 | 157.7 |
+> | BS           | 70.7  | 90.1  | 116.6 | 156.7 |
+> | CL           | 87.5  | 101.1 | 124.2 | 162.3 |
+>
+> SMC tuned thang ADP-FT o MOI muc nhieu. z_rms 5s cuoi: SMC tuned 0.00011
+> vs ADP-FT 0.038-0.060 (kem hon ~400 lan).
+>
+> Sai lech khoi luong (controller tuong m=10, nhieu 20%), Jc:
+>
+> | Method       | 10kg | 12kg  | 14kg   | 16kg   | 20kg    |
+> |--------------|------|-------|--------|--------|---------|
+> | NTSMC(tuned) | 80.2 | 149.0 | 264.8  | 494.8  | 1537.3  |
+> | SMC (tuned)  | 79.9 | 148.6 | 267.0  | 530.0  | 1916.8  |
+> | BS           | 90.1 | 156.4 | 264.2  | 619.8  | 5722.7  |
+> | CL           | 101.1| 159.8 | 334.6  | 3000.4 | 2929.9  |
+> | ADP-FT       | 85.2 | 157.2 | **4283.0** | 8241.1 | 10518.8 |
+>
+> ADP-FT la bo TE NHAT duoi sai lech khoi luong, sup o 14 kg (z_rms=3.03, mat bam).
+> 14 kg NAM TRONG Phan B cua luan van (masses = [10,12,14]) => du lieu nay DA CO
+> trong luan van, chi la chua doi chieu voi baseline duoc tune tuong duong.
+>
+> **CHUA SUA gain SMC trong ctrl_params.m** — doi Trung quyet dinh, vi viec nay
+> thay doi toan bo bang so lieu + hinh + ket luan cua luan van da nop.
+>
+> Lap luan con bao ve duoc cho ADP-FT (trung thuc):
+> 1. ADP-FT dat ket qua do KHONG can sweep offline 140 lan chay va KHONG can biet
+>    mo hinh; gain SMC tim duoc bang brute-force co mo hinh.
+> 2. Diem ban cua ADP-FT la BAO DAM hoi tu co dinh thoi gian, khong phai Jc nho nhat.
+> => Nen dat lai tuyen bo theo 2 huong nay, thay vi tuyen bo "Jc tot nhat".
+
+### 2026-08-12 — Ket qua NTSMC sau khi tune (sim_sm1_full, circle T=60s)
+
+| Method | Jc (no dist) | Jc (dist) | z_rms 5s cuoi (no dist) |
+|--------|--------------|-----------|--------------------------|
+| NTSMC  | **62.01**    | **80.20** | **0.000091**             |
+| BS     | 70.72        | 90.08     | 0.000244                 |
+| ADP-FT | 70.66        | 85.22     | 0.059807                 |
+| CL     | 87.50        | 101.06    | 0.086265                 |
+| ADP-AC | 107.26       | 121.20    | 0.135562                 |
+| SMC    | 475.05       | 555.51    | 0.276272                 |
+
+> Ket qua sweep NTSMC (phai biet khi viet luan van):
+> - Optimum nam o beta -> vo cung, tuc TAT so hang terminal tren mat truot
+> - alpha_s KHONG anh huong (4 gia tri cho ket qua giong het chu so)
+> - alpha_r anh huong ~0.08%
+> => Cai thien den TU VIEC GIAM GAIN, khong phai tu cau truc terminal.
+>    KHONG duoc viet "NTSMC tot hon SMC nho hoi tu huu han thoi gian".
+
+**Ket qua so sanh CU (gain SMC chua tune) — giu de doi chieu:**
 
 | Method | Jc (no dist) | Jc (dist) | z_rms(5s) no dist |
 |--------|-------------|-----------|-------------------|
