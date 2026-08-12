@@ -46,6 +46,26 @@ switch s.traj_type
 
         qr = [xr; yr; thetar];
 
+    case 'figure8'
+        % Hinh so 8 (lemniscate): x = a*sin(wt), y = b*sin(2wt)
+        a = s.fig8_a;
+        b = s.fig8_b;
+        w = s.fig8_omega;
+
+        xr  = a * sin(w * t);
+        yr  = b * sin(2 * w * t);
+        dxr = a * w * cos(w * t);
+        dyr = 2 * b * w * cos(2 * w * t);
+
+        vr = sqrt(dxr^2 + dyr^2);
+        thetar = atan2(dyr, dxr);
+
+        ddxr = -a * w^2 * sin(w * t);
+        ddyr = -4 * b * w^2 * sin(2 * w * t);
+        omegar = (dxr * ddyr - dyr * ddxr) / (dxr^2 + dyr^2 + 1e-12);
+
+        qr = [xr; yr; thetar];
+
     otherwise
         error('Loai quy dao khong ho tro: %s', s.traj_type);
 end

@@ -79,6 +79,12 @@ s.circle_vr = 0.3;              % [m/s]
 s.line_vr    = 0.3;             % [m/s]
 s.line_angle = 0;               % [rad] huong di (0 = truc x)
 
+%% === QUY DAO HINH SO 8 ===
+% x(t) = a*sin(w*t), y(t) = b*sin(2*w*t)
+s.fig8_a     = 2;               % [m] bien do x
+s.fig8_b     = 1;               % [m] bien do y
+s.fig8_omega = 0.1;             % [rad/s] => T ~ 63s (cham hon de ADP hoi tu)
+
 %% === DIEU KIEN BAN DAU ===
 % Robot bat dau lech so voi diem tham chieu tai t=0
 
@@ -128,14 +134,15 @@ s.dist_freq  = 30;              % [rad/s] ~ 4.8 Hz
 
 s.ft_p = 17;                    % fixed-time exponent (tu so)
 s.ft_q = 19;                    % fixed-time exponent (mau so), p/q < 1
-s.ft_Gamma = 2 * eye(s.l);     % 6x6 learning rate matrix
-s.ft_kappa1 = 0.02;            % sigma-modification (chuan)
+s.ft_Gamma = 1 * eye(s.l);     % 6x6 learning rate (giam tu 2 cho on dinh dual-loop)
+s.ft_kappa1 = 0.04;            % sigma-modification (tang tu 0.02 chong weight drift)
 s.ft_kappa2 = 0.01;            % sigma-modification bac 3 (fixed-time)
-s.ft_lambda = [0.3; 0.3; 0.2]; % robust gain: tanh term
-s.ft_mu     = [0.3; 0.3; 0.2]; % robust gain: linear term
-s.ft_alpha  = [0.3; 0.3; 0.2]; % robust gain: fractional power |z|^{p/q}*sign(z)
-s.ft_beta   = [1; 1; 0.5];    % robust gain: cubic (dam bao fixed-time)
-s.ft_rho    = 0.05;            % boundary layer cho tanh(z/rho)
+s.ft_lambda = [0.08; 0.08; 0.05]; % robust gain: tanh term (giam cho dual-loop)
+s.ft_mu     = [0.08; 0.08; 0.05]; % robust gain: linear term
+s.ft_alpha  = [0.08; 0.08; 0.05]; % robust gain: fractional power |z|^{p/q}*sign(z)
+s.ft_beta   = [0.15; 0.15; 0.08]; % robust gain: cubic (giam manh, inner loop da reject dist)
+s.ft_rho    = 0.1;                 % boundary layer cho tanh(z/rho)
+s.ft_uo_max = 1.5;                 % gioi han feedback uo (chong phat tan dual-loop)
 s.ft_W0     = [3; 3; 3; 0; 0; 0]; % warm start (tuong tu CL, can feedback ban dau)
 
 %% === CRITIC-ONLY + CONCURRENT LEARNING (SM2) ===
