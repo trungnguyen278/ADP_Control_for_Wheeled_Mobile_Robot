@@ -85,6 +85,12 @@ robust = s.ft_lambda .* tanh(z / s.ft_rho) ...
 %% Total feedback (eq.18): uo = uo_adp - g_pinv * robust
 uo = uo_adp - g_pinv * robust;
 
+% Gioi han feedback (chong phat tan khi W chua hoi tu hoac nhieu lon)
+if isfield(s, 'ft_uo_max')
+    uo(1) = max(-s.ft_uo_max, min(s.ft_uo_max, uo(1)));
+    uo(2) = max(-s.ft_uo_max, min(s.ft_uo_max, uo(2)));
+end
+
 %% Feedforward + total control
 uf = [vr * cos(zth); omegar];
 u = uf + uo;
