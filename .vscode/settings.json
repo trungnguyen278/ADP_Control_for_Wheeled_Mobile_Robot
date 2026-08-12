@@ -1,3 +1,27 @@
 {
-    "commentTranslate.targetLanguage": "vi"
+    "commentTranslate.targetLanguage": "vi",
+    "files.associations": {
+        "*.m": "matlab"
+    },
+    "files.encoding": "utf8",
+    "[matlab]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.rulers": [
+            80
+        ]
+    },
+    "[latex]": {
+        "editor.wordWrap": "on"
+    },
+    "search.exclude": {
+        "**/results/*.mat": true,
+        "**/*.aux": true,
+        "**/*.log": true,
+        "**/*.out": true,
+        "**/*.toc": true
+    },
+    "files.watcherExclude": {
+        "**/results/**": true
+    }
 }
