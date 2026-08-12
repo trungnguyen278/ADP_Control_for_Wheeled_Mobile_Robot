@@ -1,0 +1,52 @@
+# ============================================================
+#  .gitignore — ADP Control for Wheeled Mobile Robot
+#  Nguyen tac: KHONG commit thu tai tao duoc tu source.
+#  Chi tiet: docs/guides/structure.md
+# ============================================================
+
+# ---- Ket qua mo phong (tai tao bang: simulations/sim_*.m) ----
+# Cac file .mat rat lon (80-300 MB). GitHub chan cung file > 100 MB.
+results/*.mat
+results/*.fig
+
+# ---- LaTeX build artifacts (tai tao bang: pdflatex) ----
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+*.run.xml
+*.bcf
+*.auxlock
+
+# LUU Y: *.pdf KHONG bi ignore.
+#   - PDF san pham (thesis.pdf, *_report.pdf) can giu de luu tru.
+#   - PDF hinh ve trong docs/**/figures/ can giu de LaTeX compile duoc.
+
+# ---- MATLAB ----
+*.asv
+*.m~
+*.mex*
+slprj/
+codegen/
+
+# ---- He dieu hanh / editor ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*.swp
+*~
+
+# ---- Claude Code ----
+.claude/settings.local.json
