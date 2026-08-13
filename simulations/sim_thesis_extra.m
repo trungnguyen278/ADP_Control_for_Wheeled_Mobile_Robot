@@ -183,9 +183,62 @@ for t_idx = 1:length(trajs)
     end
 end
 
+%% ================================================================
+%  PHAN H: SMC voi tham so thong dung vs SMC da tune
+%  ================================================================
+% Luan van dung lambda=3, eta=1.0 (gia tri thong dung cho mo hinh kinematic),
+% trong khi ADP-FT duoc tune ky cho dual-loop. So sanh nhu vay khong cong bang.
+% Phan nay chay them SMC voi gain da quet tren full model (lambda=0.7, eta=0.05)
+% de co doi chieu dung muc.
+fprintf('\n--- PHAN H: SMC THONG DUNG vs SMC DA TUNE ---\n');
+
+results_H = struct();
+smc_cfgs = { struct('name','SMC thong dung', 'tag','base',  'lam',3.0, 'eta',1.00), ...
+             struct('name','SMC da tune',    'tag','tuned', 'lam',0.7, 'eta',0.05) };
+
+fprintf('\n  H1. Ba quy dao (nhieu 20%%)\n');
+fprintf('  %-16s | %10s | %10s | %10s\n', 'Cau hinh', 'circle', 'line', 'figure8');
+fprintf('  %s\n', repmat('-', 1, 54));
+for ci = 1:numel(smc_cfgs)
+    fprintf('  %-16s |', smc_cfgs{ci}.name);
+    for t_idx = 1:length(trajs)
+        s_h = s;
+        s_h.traj_type = trajs{t_idx};
+        s_h.smc_lambda1 = smc_cfgs{ci}.lam;  s_h.smc_lambda2 = smc_cfgs{ci}.lam;
+        s_h.smc_eta1    = smc_cfgs{ci}.eta;  s_h.smc_eta2    = smc_cfgs{ci}.eta;
+        d = run_extra_sim('smc', s_h, p, 'common');
+        results_H.(sprintf('%s_%s', smc_cfgs{ci}.tag, trajs{t_idx})) = d;
+        fprintf(' %10.1f |', d.Jc);
+    end
+    fprintf('\n');
+end
+
+fprintf('\n  H2. Bon muc nhieu (circle)\n');
+fprintf('  %-16s | %8s | %8s | %8s | %8s\n', 'Cau hinh', '0%', '20%', '40%', '60%');
+fprintf('  %s\n', repmat('-', 1, 58));
+for ci = 1:numel(smc_cfgs)
+    fprintf('  %-16s |', smc_cfgs{ci}.name);
+    for di = 1:numel(dist_amps)
+        s_h = s;  s_h.traj_type = 'circle';  s_h.dist_amp = dist_amps(di);
+        s_h.smc_lambda1 = smc_cfgs{ci}.lam;  s_h.smc_lambda2 = smc_cfgs{ci}.lam;
+        s_h.smc_eta1    = smc_cfgs{ci}.eta;  s_h.smc_eta2    = smc_cfgs{ci}.eta;
+        mode_k = 'common';  if dist_amps(di) == 0, mode_k = 'none'; end
+        d = run_extra_sim('smc', s_h, p, mode_k);
+        results_H.(sprintf('%s_d%d', smc_cfgs{ci}.tag, round(dist_amps(di)*100))) = d;
+        fprintf(' %8.1f |', d.Jc);
+    end
+    fprintf('\n');
+end
+
+fprintf('\n  H3. z_rms 5s cuoi (circle, nhieu 20%%)\n');
+for ci = 1:numel(smc_cfgs)
+    d = results_H.(sprintf('%s_d20', smc_cfgs{ci}.tag));
+    fprintf('    %-16s : %.3e\n', smc_cfgs{ci}.name, d.zrms);
+end
+
 %% Luu
 save('../results/thesis_extra.mat', ...
-     'results_D', 'results_E', 'results_F', 'results_G', ...
+     'results_D', 'results_E', 'results_F', 'results_G', 'results_H', ...
      'T_settle', 'z0_norm', 'tol_list', ...
      'z0_list', 'dist_amps', 'dist_modes', 's', 'p');
 fprintf('\nDa luu vao results/thesis_extra.mat\n');
