@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T5]{fontenc}
 \usepackage{amsmath, amssymb}
+\usepackage{bm}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{geometry}
@@ -17,6 +18,7 @@
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\T}{\mathsf{T}}
+\DeclareMathOperator{\diag}{diag}
 
 \begin{document}
 
@@ -30,7 +32,8 @@
     \begin{tabular}{rl}
         \textbf{Học viên:}      & Nguyễn Thành Trung \\
         \textbf{GVHD:}          & PGS.TS. Nguyễn Hoài Nam \\
-        \textbf{Chuyên ngành:}  & Kỹ thuật Điều khiển và Tự động hóa --- Đại học Bách khoa Hà Nội \\
+        \textbf{Chuyên ngành:}  & Kỹ thuật Điều khiển và Tự động hóa \\
+                                & Đại học Bách khoa Hà Nội \\
         \textbf{Ngày:}          & 26/05/2026 \\
     \end{tabular}
 \end{center}
@@ -45,7 +48,7 @@
 
 Robot di động hai bánh vi sai (Wheeled Mobile Robot -- WMR) là nền tảng phổ biến trong các ứng dụng tự hành, logistics nhà kho, và robot dịch vụ. Bài toán bám quỹ đạo cho WMR đặt ra nhiều thách thức do tính phi tuyến, ràng buộc nonholonomic, và sự hiện diện của nhiễu loạn cùng bất định mô hình trong thực tế. Các phương pháp điều khiển truyền thống như Backstepping hay Sliding Mode Control đã được nghiên cứu rộng rãi, tuy nhiên vấn đề tối ưu hóa hiệu năng điều khiển theo nghĩa chi phí năng lượng vẫn còn hạn chế.
 
-Gần đây, Wang và cộng sự (IEEE RA-L, 2025)~\cite{Wang2025} đã đề xuất phương pháp điều khiển tối ưu dựa trên Quy hoạch động thích nghi (Adaptive Dynamic Programming -- ADP) với tính chất hội tụ cố định thời gian (fixed-time convergence). Phương pháp này đảm bảo trọng số mạng nơ-ron Critic hội tụ về giá trị tối ưu trong thời gian hữu hạn, không phụ thuộc vào điều kiện đầu. Tuy nhiên, công trình gốc chỉ xét mô hình \textbf{kinematic} đơn giản, bỏ qua hoàn toàn động lực học (dynamic) của robot.
+Gần đây, Wang và cộng sự (IEEE RA-L, 2025)~\cite{Wang2025} đã đề xuất phương pháp điều khiển tối ưu dựa trên Quy hoạch động thích nghi (Adaptive Dynamic Programming -- ADP) với tính chất hội tụ cố định thời gian (fixed-time convergence). Phương pháp này đảm bảo sai số bám và sai số ước lượng trọng số hội tụ về \textit{lân cận} của không trong thời gian cố định, không phụ thuộc điều kiện đầu (practical fixed-time). Tuy nhiên, công trình gốc chỉ xét mô hình \textbf{kinematic} đơn giản, bỏ qua hoàn toàn động lực học (dynamic) của robot.
 
 \subsection{Mục tiêu nghiên cứu}
 
@@ -56,7 +59,7 @@ Luận văn này mở rộng phương pháp ADP Fixed-time từ mô hình kinema
 \begin{enumerate}
     \item \textbf{Kiến trúc 2 vòng lồng nhau:} Vòng ngoài sử dụng ADP Fixed-time (hoặc các bộ điều khiển so sánh) để sinh vận tốc tham chiếu; vòng trong sử dụng Dynamic Backstepping (Fierro \& Lewis, 1997)~\cite{Fierro1997} để chuyển đổi sang mô-men điều khiển thực tế, có tính đến quán tính, ma sát và giới hạn mô-men.
 
-    \item \textbf{Điều chỉnh tham số robust cho dual-loop:} Các hệ số robust (fractional power, cubic terms) trong Wang et al. được thiết kế cho kinematic-only. Khi kết hợp với vòng trong đã reject nhiễu, các hệ số này cần giảm 3--5 lần để tránh phát tán. Luận văn trình bày quy trình điều chỉnh chi tiết và phân tích nguyên nhân.
+    \item \textbf{Điều chỉnh tham số robust cho dual-loop:} Các hệ số robust (fractional power, cubic terms) trong Wang et al. được thiết kế cho kinematic-only. Khi kết hợp với vòng trong đã reject nhiễu, các hệ số này phải giảm mạnh để tránh phát tán -- riêng $\beta$ từ $10^5$ xuống $0{,}15$. Luận văn trình bày quy trình điều chỉnh chi tiết, phân tích nguyên nhân, và \textbf{nêu rõ cái giá phải trả} đối với đảm bảo hội tụ cố định thời gian.
 
     \item \textbf{So sánh toàn diện 5 phương pháp điều khiển:} Backstepping (BS), ADP Actor-Critic (AC), Sliding Mode Control (SMC), Critic-only Concurrent Learning (CL), và ADP Fixed-time (ADP-FT) được đánh giá trên 3 loại quỹ đạo với cùng điều kiện mô phỏng.
 
@@ -255,7 +258,7 @@ Chỉ số đánh giá:
 
     \item \textbf{Hình số 8:} ADP-FT ($J_c = 93.2$) kém đáng kể so với BS ($J_c = 12.1$). Nguyên nhân: quỹ đạo hình số 8 có độ cong biến thiên lớn, các robust terms cố định không thích ứng kịp. Đây là hạn chế cần cải thiện --- có thể cần cơ chế adaptive gain scheduling cho quỹ đạo phức tạp.
 
-    \item \textbf{SMC:} Hiệu năng kém nhất trên mọi quỹ đạo ($J_c = 555.5$ trên đường tròn, $J_c = 2457.6$ trên hình số 8). SMC cơ bản tạo ra chattering lớn, truyền qua vòng trong gây dao động mô-men liên tục. Kết luận: \textbf{SMC không phù hợp} với kiến trúc dual-loop kiểu này.
+    \item \textbf{SMC:} Chi phí cao nhất trên mọi quỹ đạo ($J_c = 555.5$ trên đường tròn, $J_c = 2457.6$ trên hình số 8). Reaching law tạo dao động lớn, truyền qua vòng trong gây dao động mô-men liên tục. \textbf{Lưu ý về tính công bằng:} tham số SMC ($\lambda = 3$, $\eta = 1$) lấy theo giá trị thông dụng, không qua tối ưu hóa trên mô hình đầy đủ như đã làm với ADP-FT; khảo sát sơ bộ cho thấy chi phí SMC rất nhạy với gain. Kết luận đúng là \textit{SMC với tham số thông dụng chưa phù hợp trực tiếp cho kiến trúc dual-loop và cần điều chỉnh lại}, chứ không phải SMC kém hơn ADP-FT.
 \end{itemize}
 
 \begin{figure}[H]
@@ -330,7 +333,11 @@ Mục tiêu: đánh giá khả năng chịu đựng bất định tham số củ
 
 \subsection{Phần C: Phân tích Robustness --- Nhiễu ngoài}
 
-Khảo sát ảnh hưởng của biên độ nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)$ với $A \in \{0, 0.2, 0.4, 0.6\}$ (tương ứng 0\%, 20\%, 40\%, 60\% mô-men cực đại). Quỹ đạo: đường tròn, $m = 10$\,kg.
+Khảo sát ảnh hưởng của biên độ nhiễu ngoài
+\begin{equation*}
+    d(t) = A \cdot \tau_\text{max} \cdot \sin(30t), \qquad A \in \{0;\ 0{,}2;\ 0{,}4;\ 0{,}6\}
+\end{equation*}
+tương ứng 0\%, 20\%, 40\%, 60\% mô-men cực đại. Quỹ đạo: đường tròn, $m = 10$\,kg.
 
 \begin{table}[H]
 \centering
@@ -378,18 +385,21 @@ Khảo sát ảnh hưởng của biên độ nhiễu ngoài $d(t) = A \cdot \tau
 \begin{table}[H]
 \centering
 \caption{So sánh tham số: Wang et al. (kinematic) vs. Dual-loop (luận văn)}
-\begin{tabular}{lccp{7cm}}
+\small
+\begin{tabular}{lccp{6.2cm}}
 \toprule
 \textbf{Tham số} & \textbf{Wang (kinematic)} & \textbf{Dual-loop} & \textbf{Giải thích} \\
 \midrule
-$\lambda_\text{ft}$ & 0.30 & 0.08 & Hệ số fractional power giảm 3.75$\times$ \\
-$\mu_\text{ft}$     & 0.30 & 0.08 & Tương tự $\lambda$ \\
-$\alpha_\text{ft}$   & 0.30 & 0.08 & Tương tự $\lambda$ \\
-$\beta_\text{ft}$    & 1.00 & 0.15 & Hệ số cubic term giảm 6.7$\times$ \\
-$\rho_\text{ft}$     & 0.05 & 0.10 & Tăng 2$\times$ (ổn định hơn) \\
-$\Gamma_\text{ft}$   & $2I$  & $1I$  & Tốc độ học giảm 2$\times$, tránh dao động trọng số \\
-$\kappa_1$           & 0.02 & 0.04 & Regularization mạnh hơn 2$\times$ \\
-$u_o^\text{max}$     & --- (không có) & 1.5  & \textbf{Clamp cốt lõi}, giới hạn biên độ robust \\
+$\lambda_\text{ft}$ & $\diag(1;\,1;\,0{,}4)$ & 0,08 & Giảm $\approx 12\times$ \\
+$\mu_\text{ft}$     & $\diag(1;\,1;\,0{,}4)$ & 0,08 & Tương tự $\lambda$ \\
+$\alpha_\text{ft}$  & $\diag(1;\,1;\,0{,}4)$ & 0,08 & Tương tự $\lambda$ \\
+$\beta_\text{ft}$   & $10^5$ & 0,15 & Hệ số cubic giảm $\approx 6{,}7\times10^5$ \\
+$\rho_\text{ft}$    & 10 & 0,10 & Thu hẹp vùng chuyển tiếp của $\tanh$ \\
+$\Gamma_\text{ft}$  & $2I$ & $1I$ & Tốc độ học giảm $2\times$, tránh dao động trọng số \\
+$\kappa_1$          & 0,1 & 0,04 & Giảm regularization tuyến tính \\
+$\kappa_2$          & 0,1 & 0,01 & Giảm regularization bậc ba \\
+$W(0)$              & $\bm{0}$ & $[3,3,3,0,0,0]^\T$ & Warm start bắt buộc sau khi giảm $\beta$ \\
+$u_o^\text{max}$    & --- (không có) & 1,5 & \textbf{Clamp cốt lõi}, giới hạn biên độ robust \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -403,7 +413,14 @@ Trong kiến trúc kinematic-only, robust terms phải đối phó trực tiếp
     \item Chuyển đổi lệnh vận tốc thành mô-men với độ chính xác cao.
 \end{enumerate}
 
-Do đó, vòng ngoài chỉ cần đối phó với sai lệch mô hình còn lại (residual), các hệ số robust cần giảm 3--5 lần. Ngoài ra, \textbf{clamp $u_o^\text{max} = 1.5$} là cơ chế an toàn cốt lõi: giới hạn biên độ tín hiệu robust, tránh trường hợp mạng Critic chưa hội tụ tạo ra lệnh quá lớn gây mất ổn định. Cơ chế này tương tự $u_o^\text{max}$ đã được sử dụng thành công trong bộ điều khiển CL.
+Do đó, vòng ngoài chỉ cần đối phó với sai lệch mô hình còn lại (residual), các hệ số robust được giảm mạnh -- riêng $\beta$ giảm từ $10^5$ xuống $0{,}15$. Ngoài ra, \textbf{clamp $u_o^\text{max} = 1.5$} là cơ chế an toàn cốt lõi: giới hạn biên độ tín hiệu robust, tránh trường hợp mạng Critic chưa hội tụ tạo ra lệnh quá lớn gây mất ổn định. Cơ chế này tương tự $u_o^\text{max}$ đã được sử dụng thành công trong bộ điều khiển CL.
+
+\textbf{Cái giá của điều chỉnh này.} Hai hệ quả cần nêu rõ, đã được khảo sát chi tiết trong luận văn:
+
+\begin{enumerate}[nosep]
+    \item \textbf{Warm start trở thành bắt buộc.} Wang et al. khởi tạo $W(0) = \bm{0}$ mà hệ vẫn ổn định, nhờ $\beta = 10^5$ tạo phản hồi đủ mạnh trong lúc mạng Critic chưa học. Sau khi giảm $\beta$, cơ chế dự phòng đó mất đi.
+    \item \textbf{Tính hội tụ cố định thời gian không còn được bảo đảm.} Clamp cắt phẳng nhánh $\beta z^3$ -- đúng thành phần chịu trách nhiệm hội tụ nhanh khi sai số lớn. Khảo sát 5 điều kiện đầu cho thấy ADP-FT mất bám ở 3/5 trường hợp, trong khi Backstepping ổn định ở cả 5. Luận văn do đó \textbf{không tuyên bố} hệ hai vòng có tính hội tụ cố định thời gian theo nghĩa chặt.
+\end{enumerate}
 
 \begin{figure}[H]
     \centering
@@ -437,8 +454,9 @@ Do đó, vòng ngoài chỉ cần đối phó với sai lệch mô hình còn l�
 \begin{thebibliography}{9}
 
 \bibitem{Wang2025}
-Y.~Wang, Z.~Li, C.~Yang, ``ADP-based fixed-time optimal tracking control for wheeled mobile robots,''
-\textit{IEEE Robotics and Automation Letters (RA-L)}, vol.~10, no.~1, pp.~460--467, 2025.
+C.~Wang, H.~Zhan, Q.~Guo, and T.~Li,
+``Adaptive dynamic programming-based fixed-time optimal control for wheeled mobile robot,''
+\textit{IEEE Robotics and Automation Letters}, vol.~10, no.~1, pp.~176--183, Jan. 2025.
 
 \bibitem{Vamvoudakis2010}
 K.~G.~Vamvoudakis, F.~L.~Lewis, ``Online actor-critic algorithm to solve the continuous-time infinite horizon optimal control problem,''
