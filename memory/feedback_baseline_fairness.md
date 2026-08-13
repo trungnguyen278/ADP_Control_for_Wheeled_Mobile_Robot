@@ -54,7 +54,37 @@ Luận văn đã đặt lại tuyên bố trung tâm cho đúng. Bài học phư
 nâng thành một đóng góp: *chất lượng tune tham số có thể lấn át khác biệt bản chất
 giữa các phương pháp* — cảnh báo áp dụng cho mọi nghiên cứu so sánh bộ điều khiển.
 
-**Việc còn thiếu:** chưa khảo sát độ bền của SMC-đã-tune với khối lượng, z0, nhiễu
-2 kênh. Đây là hướng số 1 ở §6.3 vì nó quyết định kết luận cuối của đề tài.
+## Cập nhật 2026-08-13 (tối): độ bền của SMC-đã-tune — thắng toàn diện
+
+Đã chạy SMC-tune qua đúng 3 bộ thí nghiệm áp cho ADP-FT (Phần I của
+`sim_thesis_extra.m`). Kết quả: **ưu thế là bền vững, không phải cục bộ**.
+
+| Khối lượng (Jc) | 10kg | 12kg | 14kg | 16kg |
+|---|---|---|---|---|
+| SMC tune | **79,9** | **148,6** | 267,0 | **530,0** |
+| BS | 90,1 | 156,4 | **264,2** | 619,8 |
+| ADP-FT+chiếu | 85,2 | 157,2 | 624,0 | 8109,5 |
+
+| z_rms theo z0 | 0,245 | 0,612 | 1,225 | 2,375 | 3,500 |
+|---|---|---|---|---|---|
+| SMC tune | 1,07e-4 | 1,07e-4 | 1,07e-4 | 1,07e-4 | 1,07e-4 |
+| ADP-FT+chiếu | 4,6e-2 | 1,84 | 1,3e-1 | 2,85 | 1,1e-3 |
+
+Nhiễu độc lập 2 kênh (Jc): SMC tune 61,8/77,2/96,4/123,3 — thấp nhất mọi mức.
+
+**Nghịch lý cần nhớ:** SMC không hề tuyên bố hội tụ cố định thời gian nhưng
+z_rms của nó **không đổi tới 3 chữ số** qua cả 5 điều kiện đầu — tức độc lập
+điều kiện đầu tốt hơn hẳn ADP-FT vốn thiết kế cho đúng mục tiêu đó.
+
+**Lập luận bào chữa PHẢI BỎ:** "ADP-FT không cần tune tham số". Sai — nó có 10
+tham số (λ, μ, α, β, ρ, Γ, κ₁, κ₂, W(0), uo_max) so với 2 của SMC.
+
+**Lập luận CÒN lại (chỉ một):** khả năng thích nghi khi hàm chi phí Q, R thay
+đổi — SMC phải quét lại từ đầu, ADP-FT nhận Q,R làm đầu vào. Nhưng đây mới là
+lập luận về cấu trúc, CHƯA có số liệu. Đã đặt thành hướng số 1 ở §6.3.
+
+Luận văn (bản 75 trang) đã phát biểu thẳng kết quả âm tính này.
+
+Related: [[feedback-projection-operator]], [[feedback-fixedtime-unverified]]
 
 Related: [[project-progress]], [[feedback-adp-ft-tuning]], [[feedback-advisor-nam]]

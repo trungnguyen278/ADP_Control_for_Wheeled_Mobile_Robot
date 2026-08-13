@@ -355,9 +355,40 @@ Theo muc nhieu (circle): SMC tune 61.8 / 79.9 / 107.3 / 150.9 — thang ADP-FT
 **Ket qua:** thesis.pdf 66 -> 73 trang, 0 loi / 0 undefined ref / 0 Overfull.
 Xuat lai 19 figure. Commit 8551f3c, e12ff7d, 4ec31f3, 28acb09.
 
-> **VIEC QUAN TRONG NHAT CON LAI:** chua khao sat do ben cua SMC-da-tune voi
-> khoi luong, z0, nhieu 2 kenh. Neu SMC tune cung sup o cac dieu kien do thi
-> ket luan cuoi cua de tai se khac han. Da dat thanh huong so 1 o §6.3.
+### 2026-08-13 (toi) — DO BEN CUA SMC DA TUNE: THANG TOAN DIEN
+
+Chay SMC-tune qua dung 3 bo thi nghiem da ap cho ADP-FT (Phan I).
+
+| Khoi luong (Jc) | 10kg | 12kg | 14kg | 16kg |
+|---|---|---|---|---|
+| SMC tune | **79.9** | **148.6** | 267.0 | **530.0** |
+| BS | 90.1 | 156.4 | **264.2** | 619.8 |
+| ADP-FT+chieu | 85.2 | 157.2 | 624.0 | 8109.5 |
+
+| z_rms theo z0 | 0.245 | 0.612 | 1.225 | 2.375 | 3.500 |
+|---|---|---|---|---|---|
+| SMC tune | 1.07e-4 | 1.07e-4 | 1.07e-4 | 1.07e-4 | 1.07e-4 |
+| ADP-FT+chieu | 4.6e-2 | 1.84 | 1.3e-1 | 2.85 | 1.1e-3 |
+
+Nhieu doc lap 2 kenh (Jc): SMC tune 61.8 / 77.2 / 96.4 / 123.3 — thap nhat moi muc.
+
+**KET LUAN: uu the cua SMC tune la BEN VUNG.** ADP-FT khong thang o BAT KY tieu
+chi nao. Nghich ly: SMC khong tuyen bo hoi tu co dinh thoi gian nhung z_rms
+khong doi qua ca 5 dieu kien dau — doc lap z0 tot hon han ADP-FT.
+
+Doi chung NTSMC (cung gain 0.7/0.05): 80.2 / 5.4 / 8.4 vs SMC 79.9 / 5.5 / 8.5.
+Chenh duoi 2% => cai thien den tu GIA TRI THAM SO, khong tu cau truc terminal.
+
+**Lap luan bao chua PHAI BO:** "ADP-FT khong can tune". Sai — 10 tham so vs 2.
+**Lap luan CON lai (chi mot):** thich nghi khi Q, R doi. Chua co so lieu.
+Da dat thanh huong so 1 o §6.3.
+
+Luan van da phat bieu thang ket qua am tinh nay. thesis.pdf 73 -> 75 trang.
+Commit 15466cc, 8da2b10.
+
+> **QUYET DINH CAN CUA TRUNG:** de tai gio co ket luan am tinh (phuong phap
+> nghien cuu thua baseline kinh dien). Ba huong xu ly da trao doi — xem tin
+> nhan cuoi phien 2026-08-13.
 
 ---
 
