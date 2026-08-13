@@ -19,7 +19,8 @@ Mục tiêu chính là lưu trữ có hệ thống + tái tạo được kết q
 > **Đây là mục quan trọng nhất của file này.** Luận văn khởi đầu bằng việc tái hiện một
 > bài báo, sau đó mở rộng. Nhầm lẫn ranh giới này = tuyên bố sai về tính mới → lỗi học thuật.
 
-**Bài báo gốc** (`references/Wang2025_ADP_FixedTime_WMR.pdf`):
+**Bài báo gốc** (`references/Adaptive_Dynamic_Programming-Based_Fixed-Time_Optimal_Control_for_Wheeled_Mobile_Robot.pdf`
+— giữ nguyên tên file tải về, không rút gọn):
 
 > C. Wang, H. Zhan, Q. Guo, T. Li, "Adaptive Dynamic Programming-Based Fixed-Time
 > Optimal Control for Wheeled Mobile Robot," *IEEE RA-L*, vol. 10, no. 1, pp. 176–183, 2025.

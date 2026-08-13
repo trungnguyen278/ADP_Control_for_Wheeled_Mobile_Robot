@@ -17,7 +17,7 @@ thực tế cho WMR kiểu vi sai.
 > C. Wang, H. Zhan, Q. Guo, and T. Li, "Adaptive Dynamic Programming-Based Fixed-Time
 > Optimal Control for Wheeled Mobile Robot," *IEEE Robotics and Automation Letters*,
 > vol. 10, no. 1, pp. 176–183, Jan. 2025.
-> → `references/Wang2025_ADP_FixedTime_WMR.pdf`
+> → `references/Adaptive_Dynamic_Programming-Based_Fixed-Time_Optimal_Control_for_Wheeled_Mobile_Robot.pdf`
 
 ### Ranh giới: bài báo vs. luận văn
 

@@ -66,7 +66,8 @@ ADP_Control_for_Wheeled_Mobile_Robot/
 │       └── summary/            Báo cáo tóm tắt nộp GVHD
 │
 ├── references/                 ── Tài liệu tham khảo PDF ──
-│   └── Wang2025_ADP_FixedTime_WMR.pdf    Bài báo gốc
+│   └── Adaptive_Dynamic_Programming-Based_Fixed-Time_Optimal_Control_for_Wheeled_Mobile_Robot.pdf
+│                               Bài báo gốc (giữ nguyên tên file tải về)
 │
 ├── memory/                     ── Bộ nhớ dài hạn Claude (junction) ──
 │   ├── MEMORY.md               Chỉ mục
