@@ -186,6 +186,15 @@ s.ft_rho    = 0.1;                 % boundary layer cho tanh(z/rho)
 s.ft_uo_max = 1.5;                 % gioi han feedback uo (chong phat tan dual-loop)
 s.ft_W0     = [3; 3; 3; 0; 0; 0]; % warm start (tuong tu CL, can feedback ban dau)
 
+% Toan tu chieu: giu V_hat = W'*phi xac dinh duong (Ioannou & Sun 1996)
+% Khong co rang buoc nay, W co the troi sang vung W1 < 0 khi z0 lon
+% => V_hat het la ham Lyapunov => mat bam. Da quan sat W1 = -1.486.
+% Bat mac dinh tu 2026-08-13. Khong kich hoat o dieu kien binh thuong nen
+% Jc tren 3 quy dao khong doi; chi co tac dung khi W co xu huong troi.
+s.ft_proj      = true;
+s.ft_proj_eps  = 0.05;             % tri rieng nho nhat cho phep cua P
+s.ft_proj_wmax = 20;               % chan ||W||
+
 %% === CRITIC-ONLY + CONCURRENT LEARNING (SM2) ===
 % 1 mang Critic, khong can PE, dung history stack
 % uo = -0.5 * R_inv * g' * nabla_phi' * W
