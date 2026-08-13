@@ -386,9 +386,43 @@ Da dat thanh huong so 1 o §6.3.
 Luan van da phat bieu thang ket qua am tinh nay. thesis.pdf 73 -> 75 trang.
 Commit 15466cc, 8da2b10.
 
-> **QUYET DINH CAN CUA TRUNG:** de tai gio co ket luan am tinh (phuong phap
-> nghien cuu thua baseline kinh dien). Ba huong xu ly da trao doi — xem tin
-> nhan cuoi phien 2026-08-13.
+### 2026-08-13 (khuya) — TIM RA NGUYEN NHAN THAT VA KHAC PHUC DUOC
+
+Trung yeu cau: "it nhat cung phai on dinh va hoi tu". Da dat duoc.
+
+**Chan doan (theo buoc thoi gian, khong quet mu):**
+Bon so hang robust tac dong len TUNG thanh phan z doc lap. Khi sai so don vao
+kenh ngang (zy lon, zx va zth ~ 0) thi ca uo_adp lan robust deu ~ 0 => diem can
+bang gia. Do duoc: ||z||=2.85 nhung ||uo||=0.085 — khong phan ung.
+
+Day la cascade nonholonomic (§2.5 luan van da mo ta). BS xu ly bang k2*vr*zy,
+SMC bang mat truot zth+c*zy. Wang KHONG co co che tuong duong.
+
+**Giai phap:** robust(3) += c_zy * vr * tanh(zy/sat), voi c_zy=2.0, sat=0.2.
+
+| | truoc | sau |
+|---|---|---|
+| max z_rms qua 5 z0 | 2.85 (hong 2/5) | **8.2e-5 (on dinh 5/5)** |
+| z_rms circle | 4.63e-2 | **7.8e-5** (thap nhat trong CA 6 PP) |
+| t_settle max/min | -- | **1.68** (BS 2.87) |
+| Jc figure8 | 93.2 | **75.3** |
+| Jc 14kg / 16kg | 624 / 8110 | **527 / 4238** |
+| Jc circle | 85.2 | 89.6 (gia phai tra) |
+| Jc 60% nhieu | 157.7 | 196.5 (chattering) |
+
+**Truoc khi tim ra, da thu va THAT BAI:** tang robust gain (k=1..20) — lam xau
+di moi thu. Ghi lai de khong thu lai.
+
+**TUYEN BO TRUNG TAM MOI:** ADP-FT dat SAI SO BAM NHO NHAT trong ca 5 phuong
+phap, on dinh moi dieu kien dau, t_settle it phu thuoc z0 hon BS. KHONG dat chi
+phi thap nhat (SMC tune van thap hon) va KHONG dat hoi tu co dinh thoi gian
+theo nghia chat (1.68 khac 1).
+
+thesis.pdf 75 -> 78 trang, 0 loi. Commit 47d384e, 57ddb91.
+
+> **CON LAI:** (1) do ben khoi luong van la diem yeu (527 vs BS 264 tai 14kg);
+> (2) Jc o nhieu 60% cao hon BS 25%; (3) chua kiem chung kha nang thich nghi khi
+> doi Q, R — huong so 1 o §6.3.
 
 ---
 
