@@ -148,6 +148,26 @@ end
 
 W = W + s.dt * W_dot;
 
+%% Toan tu chieu (projection operator) — TUY CHON, mac dinh TAT
+% Bat bang s.ft_proj = true.
+%
+% Van de: khong co rang buoc nao giu W trong vung ma V_hat = W'*phi xac dinh
+% duong. Khi z0 lon, W co the troi sang vung W1 < 0 (da quan sat: W1 = -1.486
+% tai ||z0||=2.375) => V_hat khong con la ham Lyapunov => chinh sach suy tu no
+% mat kha nang on dinh hoa => mat bam.
+%
+% Cach xu ly: V_hat = W'*phi = z'*P*z voi
+%   P = [ W1    W4/2  W6/2
+%         W4/2  W2    W5/2
+%         W6/2  W5/2  W3   ]
+% Sau moi buoc cap nhat, chieu W ve tap {W : P(W) >= eps_p * I}.
+%
+% Tham khao: Ioannou & Sun (1996), Robust Adaptive Control, muc 4.4;
+%            Kamalapurkar et al. (2018), chuong 4 (projection cho ADP).
+if isfield(s, 'ft_proj') && s.ft_proj
+    W = project_W(W, s);
+end
+
 %% Debug info
 info.z       = z;
 info.uo      = uo;
@@ -155,4 +175,46 @@ info.uo_adp  = uo_adp;
 info.robust  = robust;
 info.phi     = phi;
 
+end
+
+%% ====================================================================
+function W = project_W(W, s)
+% PROJECT_W  Chieu W ve tap dam bao V_hat = W'*phi(z) xac dinh duong,
+%            dong thoi chan ||W|| khong vuot nguong.
+%
+% Hai rang buoc:
+%   1. P(W) >= eps_p * I   (P la ma tran bac hai tuong ung V_hat)
+%   2. ||W|| <= W_max
+%
+% Rang buoc 1 duoc kiem tra truoc bang tieu chuan Sylvester (3 dinh thuc con,
+% rat re). Chi khi vi pham moi lam phan tich tri rieng — nen chi phi trung binh
+% gan nhu bang khong o che do xac lap.
+
+    if isfield(s, 'ft_proj_eps'),   eps_p = s.ft_proj_eps;   else, eps_p = 0.05; end
+    if isfield(s, 'ft_proj_wmax'),  W_max = s.ft_proj_wmax;  else, W_max = 20;   end
+
+    % Dung ma tran P tu W:  V_hat = z'*P*z
+    P = [ W(1),     W(4)/2,   W(6)/2;
+          W(4)/2,   W(2),     W(5)/2;
+          W(6)/2,   W(5)/2,   W(3)   ];
+
+    % Tieu chuan Sylvester: cac dinh thuc con chinh deu > eps_p
+    d1 = P(1,1) - eps_p;
+    d2 = det(P(1:2,1:2) - eps_p*eye(2));
+    d3 = det(P - eps_p*eye(3));
+
+    if ~(d1 > 0 && d2 > 0 && d3 > 0)
+        % Vi pham: chieu bang cach kep tri rieng ve san eps_p
+        [V, D] = eig((P + P')/2);        % doi xung hoa cho chac
+        lam = max(diag(D), eps_p);
+        P = V * diag(lam) * V';
+        % Lay lai W tu P (nghich dao cua phep dung P o tren)
+        W = [P(1,1); P(2,2); P(3,3); 2*P(1,2); 2*P(2,3); 2*P(1,3)];
+    end
+
+    % Chan bien do trong so
+    nW = norm(W);
+    if nW > W_max
+        W = W * (W_max / nW);
+    end
 end
