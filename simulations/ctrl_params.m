@@ -195,6 +195,18 @@ s.ft_proj      = true;
 s.ft_proj_eps  = 0.05;             % tri rieng nho nhat cho phep cua P
 s.ft_proj_wmax = 20;               % chan ||W||
 
+% Ghep nonholonomic zy -> kenh goc.
+% Bon so hang robust goc tac dong len tung thanh phan z doc lap, nen khi sai so
+% don het vao kenh ngang (zy lon, zx va zth ~ 0) thi ca uo_adp lan robust deu ~ 0
+% => he ket o diem can bang gia (da quan sat: ||z||=2.85 nhung uo=-0.085).
+% Day la cascade nonholonomic: zy chi hoi tu gian tiep qua vr*sin(zth), doi hoi
+% zth ~= 0. BS xu ly bang k2*vr*zy, SMC bang mat truot zth + c*zy. ADP-FT goc
+% khong co co che tuong duong.
+% Dang bao hoa (tanh) tranh xung lon khi zy lon lam vong trong khong bam kip.
+% Quet 12 cau hinh (c x sat): (2.0, 0.2) tot nhat — xem PROGRESS 2026-08-13.
+s.ft_c_zy     = 2.0;               % he so ghep
+s.ft_czy_sat  = 0.2;               % bao hoa: c*vr*tanh(zy/sat); 0 = tuyen tinh
+
 %% === CRITIC-ONLY + CONCURRENT LEARNING (SM2) ===
 % 1 mang Critic, khong can PE, dung history stack
 % uo = -0.5 * R_inv * g' * nabla_phi' * W

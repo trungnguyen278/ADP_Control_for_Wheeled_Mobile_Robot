@@ -82,6 +82,30 @@ robust = s.ft_lambda .* tanh(z / s.ft_rho) ...
        + s.ft_alpha .* z_pq ...
        + s.ft_beta .* (z.^3);
 
+%% Ghep nonholonomic zy -> kenh goc (TUY CHON, bat bang s.ft_c_zy > 0)
+%
+% Van de: bon so hang robust o tren tac dong len TUNG thanh phan z doc lap.
+% Khi sai so don het vao kenh ngang (zy lon, zx va zth ~ 0), ca uo_adp lan
+% robust deu ~ 0 => he ket o diem can bang gia, robot chay song song quy dao
+% ma khong ve. Da quan sat: ||z||=2.85 nhung uo=-0.085.
+%
+% Nguyen nhan goc la cascade nonholonomic: zy khong co kenh dieu khien truc
+% tiep, chi hoi tu gian tiep qua vr*sin(zth) — co che nay doi hoi zth ~= 0.
+%
+% Cach xu ly: chu dong lai zth theo zy, giong k2*vr*zy cua Backstepping va
+% mat truot sigma_2 = zth + c*zy cua SMC.
+% Hang 2 cua g_pinv la [0, -zx/(zx^2+1), -1/(zx^2+1)], nen them c*vr*zy vao
+% thanh phan thu 3 cua robust se cho uo2 += c*vr*zy/(zx^2+1) — dung dau.
+% s.ft_czy_sat > 0 => dung dang bao hoa c*vr*tanh(zy/sat) thay vi tuyen tinh.
+% Dang bao hoa tranh tao xung lon khi zy lon (vong trong khong bam kip).
+if isfield(s, 'ft_c_zy') && s.ft_c_zy > 0
+    if isfield(s, 'ft_czy_sat') && s.ft_czy_sat > 0
+        robust(3) = robust(3) + s.ft_c_zy * vr * tanh(zy / s.ft_czy_sat);
+    else
+        robust(3) = robust(3) + s.ft_c_zy * vr * zy;
+    end
+end
+
 %% Total feedback (eq.18): uo = uo_adp - g_pinv * robust
 uo = uo_adp - g_pinv * robust;
 
