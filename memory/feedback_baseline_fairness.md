@@ -31,11 +31,30 @@ Nếu không chuẩn bị trước thì kết luận trung tâm của luận vă
 
 **How to apply:**
 - KHÔNG được viết "ADP-FT có Jc tốt nhất" hay "NTSMC tốt hơn SMC nhờ hội tụ hữu hạn".
-- Hai lập luận CÒN bảo vệ được cho ADP-FT: (1) đạt kết quả tương đương mà không cần
-  sweep offline 140 lần chạy và không cần biết mô hình; (2) điểm bán là *bảo đảm*
-  hội tụ cố định thời gian, không phải Jc nhỏ nhất. Nên đặt lại tuyên bố theo 2 hướng này.
-- Gain SMC trong `ctrl_params.m` CHƯA sửa — đổi nó sẽ thay toàn bộ bảng số liệu, hình
-  và kết luận của luận văn đã nộp. Là quyết định của Trung.
-- Số liệu chi tiết: xem PROGRESS.md mục 2026-08-12.
+- Lập luận duy nhất CÒN bảo vệ được: ADP-FT đạt kết quả **cùng bậc** mà không cần
+  sweep offline 140 lần chạy và không cần biết mô hình. Lập luận thứ hai trước đây
+  ("điểm bán là bảo đảm hội tụ cố định thời gian") **KHÔNG dùng được nữa** — xem
+  [[feedback-fixedtime-unverified]], tính chất đó không đạt trên dual-loop.
+
+## Cập nhật 2026-08-13: đã đưa vào luận văn
+
+Quyết định của Trung: giữ nguyên gain SMC mặc định, nhưng **thêm hẳn một mục
+so sánh công bằng** (§5.10 của luận văn) thay vì chỉ ghi caveat. Số liệu chạy lại:
+
+| | circle | line | figure8 |
+|---|---|---|---|
+| SMC thông dụng (λ=3, η=1) | 555,5 | 64,7 | 2457,6 |
+| SMC đã tune (λ=0,7, η=0,05) | **79,9** | **5,5** | **8,5** |
+| ADP-FT | 85,2 | 8,5 | 93,2 |
+
+Theo mức nhiễu (circle): SMC tune 61,8 / 79,9 / 107,3 / 150,9 — thắng ADP-FT
+(70,7 / 85,2 / 111,8 / 157,7) ở **mọi** mức. z_rms: 1,07e-4 vs 4,63e-2 (433 lần).
+
+Luận văn đã đặt lại tuyên bố trung tâm cho đúng. Bài học phương pháp luận được
+nâng thành một đóng góp: *chất lượng tune tham số có thể lấn át khác biệt bản chất
+giữa các phương pháp* — cảnh báo áp dụng cho mọi nghiên cứu so sánh bộ điều khiển.
+
+**Việc còn thiếu:** chưa khảo sát độ bền của SMC-đã-tune với khối lượng, z0, nhiễu
+2 kênh. Đây là hướng số 1 ở §6.3 vì nó quyết định kết luận cuối của đề tài.
 
 Related: [[project-progress]], [[feedback-adp-ft-tuning]], [[feedback-advisor-nam]]

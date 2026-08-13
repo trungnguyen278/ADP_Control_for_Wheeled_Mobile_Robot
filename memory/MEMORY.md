@@ -6,6 +6,7 @@
 - [Wang citation mismatch](feedback_wang_citation_mismatch.md) — ⚠ Sai tên tác giả, eq.(17) không phải của Wang, cột "Wang" ở Bảng 4.1 sai toàn bộ
 - [Fixed-time chưa kiểm chứng](feedback_fixedtime_unverified.md) — ⚠ ADP-FT mất bám ở 3/5 điều kiện đầu; W đổi dấu làm V̂ mất xác định dương
 - [Kết quả ablation](feedback_ablation_results.md) — Số hạng fixed-time cải thiện 25x trên figure-8; Bellman vs Wang là đánh đổi hai chiều
+- [Toán tử chiếu](feedback_projection_operator.md) — Đóng góp riêng: giữ V̂ xác định dương, cứu 14kg (6,9x) nhưng không cứu miền hút
 - [Nhiễu chỉ 1 kênh](feedback_disturbance_one_channel.md) — ⚠ d=[1;1] bị B triệt tiêu ở kênh ω; yêu cầu "cả 2 kênh" của thầy Nam chưa đạt
 - [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot

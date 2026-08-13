@@ -313,8 +313,51 @@ Tat ca: 0 loi, 0 undefined ref, 0 Overfull hbox.
 (`Adaptive_Dynamic_Programming-Based_Fixed-Time_Optimal_Control_for_Wheeled_Mobile_Robot.pdf`)
 — session truoc doi thanh `Wang2025_...` ma khong ghi lai.
 
-> **CHUA LAM, cho Trung quyet:** doi gain SMC trong ctrl_params.m (xem canh bao
-> 2026-08-12 ben duoi). Luan van hien da co caveat trung thuc nhung so lieu chua doi.
+### 2026-08-13 (chieu) — NANG CAP: TOAN TU CHIEU + SO SANH CONG BANG SMC
+
+Trung chon phuong an "nang cap vua". Hai viec chinh.
+
+**1. Toan tu chieu (dong gop ky thuat moi)**
+
+V_hat = W'*phi = z'*P(W)*z. Rang buoc P(W) >= eps_p*I la tap loi nen chieu duoc.
+Kiem tra bang Sylvester (re), chi eig khi vi pham. Bat mac dinh trong ctrl_params.
+
+| | khong chieu | co chieu |
+|---|---|---|
+| Jc 3 quy dao (z0 chuan) | 85.2 / 8.5 / 93.2 | KHONG DOI |
+| Jc 14kg | 4283 | **624.0** |
+| z_rms 14kg | 3.03 | **0.172** |
+| z0=3.500 | 3.75 | **1.1e-3** |
+| z0=0.612 | 3.79 | 1.84 (van hong) |
+| z0=2.375 | 2.31 | 2.85 (xau di) |
+
+=> Cuu duoc van de khoi luong, KHONG cuu duoc mien hut (van 3/5).
+   Gia thuyet "W mat xac dinh duong" chi dung MOT PHAN. Phan con lai quy cho
+   nang luc bieu dien cua co so bac hai co dinh — phai doi cau truc xap xi.
+
+**2. So sanh cong bang voi SMC (§5.10 moi)**
+
+| | circle | line | figure8 |
+|---|---|---|---|
+| SMC thong dung (lambda=3, eta=1) | 555.5 | 64.7 | 2457.6 |
+| SMC da tune (lambda=0.7, eta=0.05) | **79.9** | **5.5** | **8.5** |
+| ADP-FT | 85.2 | 8.5 | 93.2 |
+
+Theo muc nhieu (circle): SMC tune 61.8 / 79.9 / 107.3 / 150.9 — thang ADP-FT
+(70.7 / 85.2 / 111.8 / 157.7) o MOI muc. z_rms 1.07e-4 vs 4.63e-2 (433 lan).
+
+=> DA DAT LAI tuyen bo trung tam cua luan van. ADP-FT KHONG phai phuong phap
+   co Jc thap nhat. Gia tri con bao ve duoc: dat hieu nang CUNG BAC ma khong
+   can biet mo hinh va khong can quet 140 lan chay ngoai tuyen.
+=> Bai hoc phuong phap luan duoc nang thanh mot dong gop: chat luong tune tham
+   so co the lan at khac biet ban chat giua cac phuong phap.
+
+**Ket qua:** thesis.pdf 66 -> 73 trang, 0 loi / 0 undefined ref / 0 Overfull.
+Xuat lai 19 figure. Commit 8551f3c, e12ff7d, 4ec31f3, 28acb09.
+
+> **VIEC QUAN TRONG NHAT CON LAI:** chua khao sat do ben cua SMC-da-tune voi
+> khoi luong, z0, nhieu 2 kenh. Neu SMC tune cung sup o cac dieu kien do thi
+> ket luan cuoi cua de tai se khac han. Da dat thanh huong so 1 o §6.3.
 
 ---
 
