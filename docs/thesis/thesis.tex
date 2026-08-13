@@ -159,7 +159,9 @@ Công trình gốc chỉ xét mô hình động học thuần túy ba trạng th
 
 Quá trình ghép nối cho thấy bộ tham số nguyên bản không dùng lại được: các hệ số robust thiết kế cho mô hình động học gây phát tán trên kiến trúc hai vòng. Luận văn đề xuất giảm mạnh các hệ số này (riêng $\bm{\beta}$ từ $10^5$ xuống $0{,}15$), bổ sung cơ chế giới hạn tín hiệu phản hồi, và thay luật cập nhật trọng số bằng gradient sai số Bellman. Đồng thời, luận văn phân tích thẳng thắn \textit{cái giá} của các điều chỉnh này đối với đảm bảo hội tụ cố định thời gian theo nghĩa chặt.
 
-Kết quả mô phỏng so sánh năm phương pháp điều khiển vòng ngoài trên ba dạng quỹ đạo, kèm khảo sát độ bền vững với bất định khối lượng, nhiễu ngoài và điều kiện đầu. Phương pháp đề xuất vượt Backstepping về chi phí tổng trên quỹ đạo đường tròn ở mọi mức nhiễu khảo sát, nhưng luận văn cũng báo cáo đầy đủ ba kết quả bất lợi: tính hội tụ cố định thời gian không quan sát được trên kiến trúc hai vòng; miền hút hữu hạn với mất bám ở ba trên năm điều kiện đầu; và khi bộ điều khiển trượt được tối ưu tham số tương đương thì nó cho chi phí thấp hơn ở mọi kịch bản. Từ các phát hiện này, luận văn đề xuất một toán tử chiếu giữ hàm giá trị xác định dương, giúp giảm chi phí ở sai lệch khối lượng 40\% khoảng 6,9 lần, và chỉ ra rằng giá trị thực của phương pháp nằm ở khả năng đạt hiệu năng cùng bậc mà không cần mô hình và không cần quét tham số ngoại tuyến.
+Kết quả mô phỏng so sánh năm phương pháp điều khiển vòng ngoài trên ba dạng quỹ đạo, kèm khảo sát độ bền với bất định khối lượng, nhiễu ngoài và điều kiện đầu. Phương pháp đề xuất vượt Backstepping về chi phí tổng trên quỹ đạo đường tròn ở mọi mức nhiễu. Tuy nhiên, luận văn báo cáo đầy đủ ba kết quả bất lợi: tính hội tụ cố định thời gian \textbf{không} được bảo toàn trên kiến trúc hai vòng; miền hút hữu hạn với mất bám ở ba trên năm điều kiện đầu khảo sát; và khi bộ điều khiển trượt được tối ưu tham số tương đương thì nó vượt phương pháp đề xuất ở \textbf{mọi} tiêu chí, bao gồm cả tính độc lập với điều kiện đầu.
+
+Từ các phát hiện này, luận văn đóng góp: (i) truy nguyên ba cơ chế làm mất tính hội tụ cố định thời gian khi ghép hai vòng; (ii) đề xuất toán tử chiếu giữ hàm giá trị xác định dương, giảm chi phí ở sai lệch khối lượng 40\% khoảng 6,9 lần; (iii) chỉ ra một rủi ro phương pháp luận -- chất lượng điều chỉnh tham số có thể lấn át khác biệt bản chất giữa các phương pháp, khiến kết luận so sánh bị sai lệch nếu không kiểm soát yếu tố này.
 
 \vspace{0.4cm}
 \noindent\textbf{Từ khóa:} robot di động bánh xe, quy hoạch động thích nghi, điều khiển tối ưu, hội tụ cố định thời gian, điều khiển hai vòng, mạng Critic.
@@ -175,7 +177,9 @@ The original work considers only a purely kinematic three-state model $[x, y, \t
 
 The integration reveals that the original parameter set cannot be reused: robust gains designed for the kinematic model cause divergence in the dual-loop setting. This thesis proposes a substantial reduction of these gains (in particular $\bm{\beta}$ from $10^5$ to $0.15$), introduces a feedback saturation mechanism, and replaces the weight update law with Bellman-error gradient descent. The cost of these modifications with respect to strict fixed-time convergence guarantees is analysed explicitly.
 
-Simulation results compare five outer-loop control methods across three trajectory types, together with robustness studies against mass uncertainty, external disturbance and initial conditions. The proposed method outperforms Backstepping in total cost on the circular trajectory at all disturbance levels examined. Three adverse findings are also reported in full: fixed-time convergence is not observed under the dual-loop architecture; the region of attraction is finite, with loss of tracking in three of five initial conditions tested; and a sliding mode controller with equivalently tuned parameters achieves lower cost in every scenario. Motivated by these findings, the thesis proposes a projection operator that keeps the approximated value function positive definite, reducing cost under 40\% mass mismatch by a factor of 6.9, and argues that the practical value of the method lies in attaining comparable performance without requiring a model or offline parameter sweeps.
+Simulation results compare five outer-loop control methods across three trajectory types, together with robustness studies against mass uncertainty, external disturbance and initial conditions. The proposed method outperforms Backstepping in total cost on the circular trajectory at all disturbance levels examined. However, three adverse findings are reported in full: fixed-time convergence is \textbf{not} preserved under the dual-loop architecture; the region of attraction is finite, with loss of tracking in three of five initial conditions tested; and a sliding mode controller with equivalently tuned parameters outperforms the proposed method on \textbf{every} criterion, including independence from initial conditions.
+
+The resulting contributions are: (i) identification of three mechanisms by which fixed-time convergence is lost when the two loops are coupled; (ii) a projection operator that keeps the approximated value function positive definite, reducing cost under 40\% mass mismatch by a factor of 6.9; and (iii) a methodological caution -- differences in parameter tuning quality can outweigh intrinsic differences between control methods, so comparative studies that do not control for this may reach misleading conclusions.
 
 \vspace{0.4cm}
 \noindent\textbf{Keywords:} wheeled mobile robot, adaptive dynamic programming, optimal control, fixed-time convergence, dual-loop control, critic neural network.
@@ -1679,7 +1683,7 @@ Thí nghiệm này đánh giá ảnh hưởng của bất định tham số: b�
 \textbf{Phân tích chi tiết:}
 
 \begin{enumerate}
-    \item \textbf{Tại khối lượng danh nghĩa (10\,kg):} ADP-FT tốt nhất ($85.2$), vòng trong bù chính xác (không bất định), robust terms hoạt động hiệu quả chống nhiễu.
+    \item \textbf{Tại khối lượng danh nghĩa (10\,kg):} ADP-FT thấp nhất trong ba phương pháp khảo sát ở đây ($85.2$), vòng trong bù chính xác (không bất định), robust terms hoạt động hiệu quả chống nhiễu.
 
     \item \textbf{Tại +20\% (12\,kg):} Ba phương pháp tương đương ($J_c \sim 156$--$160$). Vòng trong vẫn hoạt động chấp nhận được vì sai lệch mô hình chỉ 20\%, phản hồi $K_d e_\eta$ bù đắp phần lớn. ADP-FT ($157.2$) không còn tốt nhất do robust terms thiết kế cho $m = 10$\,kg hơi quá mạnh cho $m = 12$\,kg.
 
@@ -1727,7 +1731,7 @@ Thí nghiệm thay đổi biên độ nhiễu $A \in \{0, 0.2, 0.4, 0.6\}$ (tỉ
 \end{minipage}
 \end{figure}
 
-\textbf{Kết quả nổi bật: ADP-FT đạt chi phí thấp nhất tại MỌI mức nhiễu:}
+\textbf{Kết quả nổi bật: trong ba phương pháp khảo sát ở phần này, ADP-FT đạt chi phí thấp nhất tại mọi mức nhiễu.} (So sánh mở rộng với SMC được tối ưu tham số: xem Mục \ref{sec:smc_fair}.)
 
 \begin{itemize}
     \item \textbf{Tại 0\%} (không nhiễu): ADP-FT bằng BS ($70.7$). Khi không có nhiễu, robust terms gần như không hoạt động (sai số nhỏ $\to$ $r(z) \approx 0$), ADP-FT thu gọn về ADP thuần túy, và hiệu năng tương đương BS.
@@ -2144,21 +2148,107 @@ Kết quả phải được phát biểu thẳng thắn: \textbf{chỉ nhờ tha
     \item Đạt sai số xác lập $z_\text{rms} = 1{,}07\times10^{-4}$, tốt hơn ADP-FT ($4{,}63\times10^{-2}$) khoảng \textbf{433 lần}.
 \end{itemize}
 
-\subsubsection*{5.10.3\quad Diễn giải: điều này có ý nghĩa gì với luận văn}
+\subsubsection*{5.10.3\quad Đối chứng thêm: NTSMC không mang lại cải thiện so với SMC cùng gain}
 
-Kết quả trên buộc phải điều chỉnh tuyên bố trung tâm. \textbf{ADP-FT không phải phương pháp cho chi phí thấp nhất} khi tất cả các phương pháp được điều chỉnh tham số với công sức tương đương. Mọi phát biểu dạng ``ADP-FT tốt nhất'' trong luận văn cần được hiểu trong phạm vi: \textit{so với các phương pháp dùng tham số thông dụng, chưa qua tối ưu riêng cho kiến trúc hai vòng}.
+Để kiểm tra xem cải thiện đến từ \textit{giá trị tham số} hay từ \textit{cấu trúc bộ điều khiển}, luận văn chạy thêm một biến thể: Non-singular Fast Terminal SMC (NTSMC), trong đó mặt trượt được bổ sung số hạng lũy thừa phân số $|z_y|^{\alpha_s}$ để đạt hội tụ hữu hạn thời gian, và luật tiến tới cũng dùng dạng lũy thừa. Đây là cấu trúc phức tạp hơn SMC thông thường về mặt lý thuyết.
 
-Tuy vậy, so sánh này cũng không nên bị diễn giải quá đà theo chiều ngược lại. Ba khác biệt về phương pháp luận cần được tính đến khi đánh giá:
+\begin{table}[H]
+\centering
+\caption{SMC và NTSMC với cùng bộ tham số $\lambda = 0{,}7$, $\eta = 0{,}05$ ($J_c$, nhiễu 20\%)}
+\label{tab:ntsmc_compare}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Phương pháp} & \textbf{Đường tròn} & \textbf{Đường thẳng} & \textbf{Hình số 8} \\
+\midrule
+SMC (đã tối ưu)   & 79.9 & 5.5 & 8.5 \\
+NTSMC (cùng gain) & 80.2 & 5.4 & 8.4 \\
+\midrule
+Chênh lệch & $+0{,}4\%$ & $-1{,}8\%$ & $-1{,}2\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Chênh lệch dưới $2\%$ trên cả ba quỹ đạo -- nằm trong mức nhiễu số của mô phỏng. Khảo sát quét tham số còn cho thấy hai chi tiết đáng chú ý: điểm tối ưu của hệ số $\beta$ (trọng số số hạng terminal) nằm ở $\beta \to \infty$, tức \textit{tắt hẳn} số hạng terminal; và số mũ $\alpha_s$ của mặt trượt không ảnh hưởng tới kết quả ở bốn giá trị thử nghiệm.
+
+\textbf{Kết luận:} toàn bộ cải thiện của họ phương pháp trượt trên bài toán này đến từ \textbf{giá trị tham số}, không từ cấu trúc hội tụ hữu hạn thời gian. Đây là một đối chứng độc lập củng cố nhận định ở mục trước: khi so sánh bộ điều khiển, khác biệt về chất lượng điều chỉnh tham số dễ bị nhầm thành khác biệt về bản chất phương pháp. Luận văn do đó \textbf{không} phát biểu rằng NTSMC ưu việt hơn SMC nhờ tính hội tụ hữu hạn thời gian -- dữ liệu không ủng hộ điều đó.
+
+\subsubsection*{5.10.4\quad Độ bền của SMC đã tối ưu}
+
+Bộ tham số $\lambda = 0{,}7$, $\eta = 0{,}05$ được tìm bằng quét \textit{tại đúng điểm vận hành danh nghĩa}. Câu hỏi tự nhiên: ưu thế đó có bền không, hay chỉ tồn tại quanh điểm quét? Mục này chạy SMC đã tối ưu qua đúng ba bộ thí nghiệm đã áp dụng cho ADP-FT.
+
+\begin{table}[H]
+\centering
+\caption{Độ bền với bất định khối lượng ($J_c$, đường tròn, nhiễu 20\%)}
+\label{tab:smc_robust_mass}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Phương pháp} & \textbf{10\,kg} & \textbf{12\,kg} & \textbf{14\,kg} & \textbf{16\,kg} \\
+\midrule
+SMC (đã tối ưu)   & \textbf{79.9} & \textbf{148.6} & 267.0 & \textbf{530.0} \\
+BS                & 90.1 & 156.4 & \textbf{264.2} & 619.8 \\
+ADP-FT + chiếu    & 85.2 & 157.2 & 624.0 & 8109.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Độ bền với điều kiện đầu ($z_\text{rms}$ 5\,s cuối, đường tròn, nhiễu 20\%)}
+\label{tab:smc_robust_z0}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+$\|z_0\|$ & \textbf{0,245} & \textbf{0,612} & \textbf{1,225} & \textbf{2,375} & \textbf{3,500} \\
+\midrule
+SMC (đã tối ưu) & $\bm{1{,}07e{-}4}$ & $\bm{1{,}07e{-}4}$ & $\bm{1{,}07e{-}4}$ & $\bm{1{,}07e{-}4}$ & $\bm{1{,}07e{-}4}$ \\
+BS              & $2{,}5e{-}4$ & $2{,}0e{-}4$ & $1{,}1e{-}4$ & $1{,}6e{-}4$ & $2{,}9e{-}3$ \\
+ADP-FT + chiếu  & $4{,}6e{-}2$ & 1,84 & $1{,}3e{-}1$ & 2,85 & $1{,}1e{-}3$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Độ bền với nhiễu độc lập hai kênh ($J_c$, đường tròn)}
+\label{tab:smc_robust_dist}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Phương pháp} & \textbf{0\%} & \textbf{20\%} & \textbf{40\%} & \textbf{60\%} \\
+\midrule
+SMC (đã tối ưu) & \textbf{61.8} & \textbf{77.2} & \textbf{96.4} & \textbf{123.3} \\
+ADP-FT + chiếu  & 70.7 & 85.4 & 102.8 & 124.5 \\
+BS              & 70.7 & 87.4 & 108.7 & 136.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kết quả nhất quán trên cả ba thí nghiệm: \textbf{ưu thế của SMC đã tối ưu là bền vững, không phải hiện tượng cục bộ quanh điểm quét tham số.} Cụ thể:
+
+\begin{itemize}
+    \item \textbf{Bất định khối lượng:} SMC bền hơn cả Backstepping ở mức lệch lớn nhất ($530{,}0$ so với $619{,}8$ tại 16\,kg), trong khi ADP-FT phát tán ($8109{,}5$).
+
+    \item \textbf{Điều kiện đầu:} $z_\text{rms}$ của SMC \textbf{giống hệt nhau tới ba chữ số có nghĩa} ở cả năm điều kiện đầu, từ $\|z_0\| = 0{,}245$ đến $3{,}500$. Đây là biểu hiện kinh điển của điều khiển trượt: một khi trạng thái tới được mặt trượt, động học tiếp theo chỉ phụ thuộc mặt trượt chứ không phụ thuộc điểm xuất phát.
+
+    \item \textbf{Nhiễu hai kênh:} SMC thấp nhất ở mọi mức, kể cả kịch bản nhiễu đầy đủ nhất.
+\end{itemize}
+
+Cần ghi nhận một nghịch lý đáng chú ý ở bảng \ref{tab:smc_robust_z0}: \textbf{bộ điều khiển trượt -- vốn không hề tuyên bố tính chất hội tụ cố định thời gian -- lại thể hiện tính độc lập với điều kiện đầu tốt hơn hẳn bộ ADP-FT được thiết kế riêng cho mục tiêu đó.} Kết quả này khép lại nhất quán với Mục \ref{sec:z0_sweep}: trên kiến trúc hai vòng, tính chất mang tên phương pháp đã không được bảo toàn, trong khi một cơ chế đơn giản hơn nhiều lại đạt được điều tương đương về mặt thực nghiệm.
+
+\subsubsection*{5.10.5\quad Diễn giải: điều này có ý nghĩa gì với luận văn}
+
+Kết quả ở bốn tiểu mục trên buộc phải phát biểu lại tuyên bố trung tâm một cách dứt khoát: \textbf{trên bài toán và kiến trúc được khảo sát trong luận văn này, ADP Fixed-time không vượt được bộ điều khiển trượt có tham số tối ưu ở bất kỳ tiêu chí nào} -- không về chi phí, không về sai số xác lập, không về độ bền với khối lượng, điều kiện đầu hay nhiễu. Đây là kết luận mà dữ liệu bắt buộc, và luận văn ghi nhận nó thay vì tìm cách giảm nhẹ.
+
+Cần đặc biệt tránh một lập luận bào chữa dễ mắc phải: cho rằng ADP-FT ``không cần điều chỉnh tham số''. Điều đó \textbf{không đúng}. Bảng \ref{tab:ft_tuning} cho thấy ADP-FT có ít nhất mười tham số phải chọn ($\bm\lambda, \bm\mu, \bm\alpha, \bm\beta, \rho, \Gamma, \kappa_1, \kappa_2, W(0), u_{o,\max}$), và toàn bộ quá trình phát triển trong luận văn cho thấy chúng phải được điều chỉnh rất công phu để hệ không phát tán. SMC chỉ có hai tham số. Xét về công sức thiết kế, ADP-FT \textit{tốn hơn} chứ không tiết kiệm hơn.
+
+Vậy điều gì còn lại có giá trị? Hai điểm, và cần phát biểu chúng ở mức đúng:
 
 \begin{enumerate}
-    \item \textbf{Chi phí thiết kế rất khác nhau.} Bộ tham số SMC nói trên tìm được bằng quét vét cạn hơn 140 lần chạy mô phỏng \textbf{trên mô hình đầy đủ đã biết chính xác}. Nói cách khác, nó là kết quả của một quá trình tối ưu hóa ngoại tuyến có sử dụng mô hình. ADP-FT đạt kết quả cùng bậc ($85{,}2$ so với $79{,}9$, chênh $6{,}6\%$) mà \textbf{không cần quét tham số và không cần biết mô hình động lực học} -- nó học trực tuyến từ dữ liệu vận hành. Với hệ thực, nơi mô hình không biết chính xác và không thể chạy 140 thí nghiệm quét gain, khác biệt này có ý nghĩa thực tiễn.
+    \item \textbf{Khả năng thích nghi khi bài toán tối ưu thay đổi.} Bộ tham số SMC tối ưu là kết quả của tìm kiếm ngoại tuyến gắn với \textit{một} hàm chi phí, \textit{một} quỹ đạo và \textit{một} bộ tham số robot cụ thể. Khi các yếu tố này thay đổi -- đổi trọng số $Q$, $R$ để ưu tiên tiết kiệm năng lượng hơn, đổi loại quỹ đạo, thay robot -- toàn bộ quá trình quét phải lặp lại. ADP-FT nhận hàm chi phí làm đầu vào và tự điều chỉnh trọng số theo nó. Đây là khác biệt về \textit{bản chất cơ chế}, không phụ thuộc kết quả số cụ thể của luận văn. Cần nói thêm cho chính xác: khẳng định này chưa được kiểm chứng bằng thực nghiệm trong luận văn (sẽ cần chạy nhiều bộ $Q$, $R$ khác nhau), nên nó là lập luận về cấu trúc chứ chưa phải kết luận có số liệu.
 
-    \item \textbf{SMC không có cơ chế tối ưu hóa hàm chi phí.} Bộ tham số tốt tìm được là kết quả của tìm kiếm bên ngoài, không phải của cơ chế bên trong bộ điều khiển. Nếu bài toán đổi (đổi $Q$, $R$, đổi quỹ đạo, đổi robot), toàn bộ quá trình quét phải làm lại. ADP-FT tự điều chỉnh trọng số theo hàm chi phí được khai báo.
-
-    \item \textbf{Tính bền vững cần được khảo sát riêng.} So sánh trong mục này giới hạn ở $J_c$ tại điều kiện đầu và tham số danh nghĩa. Một khảo sát đầy đủ về độ bền của SMC đã tối ưu với bất định khối lượng và điều kiện đầu -- tương tự Mục 5.3 và \ref{sec:z0_sweep} -- chưa được thực hiện trong luận văn này và được đề xuất là hướng tiếp theo (Mục 6.3).
+    \item \textbf{Giá trị của chính cuộc khảo sát.} Việc chuyển một phương pháp từ mô hình động học sang kiến trúc điều khiển thực tế, rồi kiểm tra xem các đảm bảo lý thuyết có được bảo toàn hay không, là một câu hỏi nghiên cứu chính đáng. Luận văn trả lời câu hỏi đó bằng bằng chứng: chúng \textit{không} được bảo toàn, với ba cơ chế cụ thể đã được truy nguyên, một biện pháp khắc phục một phần đã được đề xuất và kiểm chứng, và giới hạn của biện pháp đó cũng được nêu rõ.
 \end{enumerate}
 
-\textbf{Kết luận của mục này:} đóng góp có thể bảo vệ được của luận văn \textbf{không} nằm ở việc ADP-FT cho chi phí thấp nhất -- điều đó không đúng. Nó nằm ở chỗ: ADP-FT đạt được hiệu năng \textit{cùng bậc} với một bộ điều khiển kinh điển đã được tối ưu ngoại tuyến bằng mô hình chính xác, trong khi bản thân nó không dùng mô hình và không cần quá trình tối ưu đó. Kèm theo là toàn bộ phân tích về điều kiện áp dụng, cơ chế hỏng và giới hạn của phương pháp trên kiến trúc hai vòng -- phần này giữ nguyên giá trị bất kể so sánh với SMC cho kết quả nào.
+\textbf{Kết luận của mục này:} đóng góp của luận văn không nằm ở việc chứng minh ADP Fixed-time là phương pháp tốt cho bài toán này -- kết quả cho thấy điều ngược lại. Nó nằm ở việc \textit{xác định được phương pháp này không chuyển giao trọn vẹn sang kiến trúc hai vòng, chỉ ra chính xác cơ chế nào bị mất và vì sao, và cảnh báo một rủi ro phương pháp luận có thể làm sai lệch kết luận của các nghiên cứu so sánh bộ điều khiển}. Một kết quả âm tính được chứng minh chắc chắn vẫn là một kết quả, và trong trường hợp này nó hữu ích hơn một kết luận khẳng định dựa trên so sánh không công bằng.
 
 \subsection*{5.11\quad Thảo luận tổng hợp}
 \addcontentsline{toc}{subsection}{5.11\quad Thảo luận tổng hợp}
@@ -2224,7 +2314,7 @@ $^{(c)}$ Với luật cập nhật nguyên bản của Wang et al., giá trị n
 \textbf{Khuyến nghị sử dụng:} Dựa trên Bảng~\ref{tab:summary_all}, ta đề xuất hướng dẫn chọn phương pháp theo bài toán cụ thể:
 
 \begin{itemize}
-    \item \textbf{Bám quỹ đạo tròn/elip trong môi trường nhiễu:} ADP-FT là lựa chọn tốt nhất. Quỹ đạo có độ cong hằng số hoặc biến thiên chậm phù hợp với robust terms cố định.
+    \item \textbf{Bám quỹ đạo tròn/elip trong môi trường nhiễu, khi mô hình không biết chính xác:} ADP-FT là lựa chọn hợp lý. Quỹ đạo có độ cong hằng số hoặc biến thiên chậm phù hợp với robust terms cố định, và phương pháp không đòi hỏi quét tham số ngoại tuyến.
 
     \item \textbf{Tham số robot không chính xác (mang tải thay đổi):} Backstepping an toàn nhất. Cơ chế phản hồi ``mềm'' không gây phát tán khi bất định lớn.
 
@@ -2290,7 +2380,7 @@ Luận văn đã mở rộng thành công phương pháp ADP Fixed-time (Wang et
 
     \item \textbf{Warm start bắt buộc:} Các phương pháp ADP cần khởi tạo $W_0 \neq 0$; với $W_0 = 0$ hệ mất bám ở mọi điều kiện đầu khảo sát. Cần nhấn mạnh đây là \textit{hệ quả của việc giảm} $\bm{\beta}$ trong luận văn, không phải hạn chế cố hữu của ADP -- Wang et al. khởi tạo $W(0) = \bm{0}$ vẫn ổn định nhờ giữ $\bm{\beta} = 10^5$ (Mục 4.7.3).
 
-    \item \textbf{Không vượt được SMC khi so sánh công bằng:} với tham số được tối ưu tương đương, SMC đạt $J_c$ thấp hơn ADP-FT ở mọi quỹ đạo và mọi mức nhiễu, đồng thời sai số xác lập nhỏ hơn 433 lần (Mục \ref{sec:smc_fair}). Giá trị của ADP-FT do đó không nằm ở hiệu năng tuyệt đối mà ở việc đạt hiệu năng cùng bậc không cần mô hình và không cần quét tham số ngoại tuyến. Ngoài ra, độ bền của SMC đã tối ưu với bất định khối lượng và điều kiện đầu chưa được khảo sát trong luận văn này, nên bức tranh so sánh vẫn chưa đầy đủ.
+    \item \textbf{Không vượt được SMC có tham số tối ưu ở bất kỳ tiêu chí nào.} Đây là hạn chế nặng nhất về mặt kết quả. Khảo sát đầy đủ (Mục \ref{sec:smc_fair}) cho thấy SMC đã tối ưu vượt ADP-FT về: chi phí trên cả ba quỹ đạo, chi phí ở mọi mức nhiễu kể cả nhiễu hai kênh, sai số xác lập (433 lần), độ bền khối lượng (tại 16\,kg: $530$ so với $8109$), và độ bền với điều kiện đầu ($z_\text{rms}$ không đổi qua cả năm điều kiện đầu, trong khi ADP-FT mất bám ở 2/5). Cũng không thể biện hộ bằng lập luận ``ADP-FT không cần điều chỉnh tham số'': nó có mười tham số cần chọn so với hai của SMC.
 
     \item \textbf{Chưa có thực nghiệm:} Toàn bộ kết quả dựa trên mô phỏng MATLAB. Mô hình robot Pioneer 3-DX được đơn giản hóa (bỏ qua trễ actuator, sai số encoder, trượt bánh). Đáng lưu ý là bài báo gốc \cite{Wang2025} có kèm thực nghiệm trên robot thật, nên việc so sánh trực tiếp giữa hai công trình cần tính đến khác biệt này.
 \end{enumerate}
@@ -2301,7 +2391,7 @@ Luận văn đã mở rộng thành công phương pháp ADP Fixed-time (Wang et
 \begin{enumerate}
     \item \textbf{Khôi phục tính hội tụ cố định thời gian cho kiến trúc hai vòng.} Đây là hướng quan trọng nhất, xuất phát trực tiếp từ hạn chế (1). Ba việc cụ thể: (i) thay clamp cứng $u_{o,\max}$ bằng hàm bão hòa trơn có đạo hàm bị chặn, để nhánh $\bm{\beta} \odot z^3$ không bị cắt phẳng hoàn toàn; (ii) xây dựng hàm Lyapunov chung cho hệ năm trạng thái thay vì phân tích tách rời hai vòng, từ đó suy ra điều kiện định lượng trên $\bm{\beta}$ và $K_d$ để bảo toàn cận $T_f$; (iii) chiếu trọng số $W$ về tập bảo đảm $\hat V = W^\T\phi$ xác định dương (projection operator), ngăn hiện tượng mất tính xác định dương đã quan sát ở Mục \ref{sec:z0_sweep}.
 
-    \item \textbf{Khảo sát độ bền của SMC đã tối ưu.} Mục \ref{sec:smc_fair} mới so sánh trên chỉ tiêu $J_c$ tại tham số danh nghĩa và một điều kiện đầu. Cần chạy SMC đã tối ưu qua đúng bộ thí nghiệm đã áp dụng cho ADP-FT: bất định khối lượng (Mục 5.3), quét điều kiện đầu (Mục \ref{sec:z0_sweep}), nhiễu hai kênh (Mục 5.9). Chỉ khi đó mới kết luận được liệu ưu thế của SMC có bền vững hay chỉ tồn tại quanh điểm vận hành mà nó được quét gain. Đây là việc cần làm trước tiên vì nó quyết định kết luận cuối cùng của cả đề tài.
+    \item \textbf{Kiểm chứng khả năng thích nghi khi bài toán tối ưu thay đổi.} Đây là lập luận cuối cùng còn lại ủng hộ hướng tiếp cận ADP (Mục 5.10.5), nhưng hiện mới là lập luận về cấu trúc, chưa có số liệu. Cần thiết kế thí nghiệm cụ thể: cố định bộ điều khiển, thay đổi trọng số $Q$, $R$ qua nhiều cấu hình (ưu tiên bám -- cân bằng -- ưu tiên tiết kiệm năng lượng), và đo xem ADP-FT tự điều chỉnh được tới đâu so với SMC phải quét lại tham số từ đầu. Nếu ADP-FT thể hiện được ưu thế ở đây, đó sẽ là cơ sở vững chắc cho việc lựa chọn phương pháp; nếu không, kết luận của đề tài cần được phát biểu thẳng theo hướng âm tính.
 
     \item \textbf{Adaptive robust gains:} Tự động điều chỉnh $\bm{\lambda}(t), \bm{\beta}(t)$ theo mức bất định ước lượng online. Ví dụ: dùng norm sai số $\|e_\eta\|$ làm chỉ báo bất định -- khi $\|e_\eta\|$ lớn (vòng trong bù không kịp), giảm gains robust. Hướng này có thể giải quyết đồng thời hạn chế (3) và (4).
 
@@ -2319,7 +2409,11 @@ Luận văn đã mở rộng thành công phương pháp ADP Fixed-time (Wang et
 \subsection*{6.4\quad Lời kết}
 \addcontentsline{toc}{subsection}{6.4\quad Lời kết}
 
-Luận văn đã đặt nền tảng cho việc ứng dụng phương pháp ADP Fixed-time vào hệ thống robot thực tế thông qua kiến trúc hai vòng. Kết quả mô phỏng cho thấy tiềm năng đáng kể của phương pháp trong bám quỹ đạo tối ưu dưới tác động nhiễu. Tuy còn hạn chế về robustness tham số, các hướng phát triển đã đề xuất -- đặc biệt adaptive robust gains và observer-based estimation -- hứa hẹn giải quyết được vấn đề này, mở đường cho ứng dụng trên robot thật trong tương lai gần.
+Luận văn đặt ra câu hỏi: phương pháp ADP hội tụ cố định thời gian, vốn được chứng minh trên mô hình động học thuần túy, có chuyển giao được sang một kiến trúc điều khiển sát thực tế hơn hay không? Câu trả lời thu được là \textit{không trọn vẹn} -- và luận văn cho rằng việc trả lời rõ ràng câu hỏi này, kèm bằng chứng và phân tích cơ chế, có giá trị hơn một kết luận khẳng định dựa trên so sánh thiếu công bằng.
+
+Ba điều đọng lại. Thứ nhất, các đảm bảo lý thuyết gắn với một cấu trúc điều khiển không tự động theo sang cấu trúc khác: bão hòa mô-men, giới hạn tín hiệu và sai lệch vận tốc giữa hai vòng đều can thiệp vào chính cơ chế tạo ra tính hội tụ cố định thời gian. Thứ hai, khi so sánh các bộ điều khiển, công sức điều chỉnh tham số phải được kiểm soát ngang nhau -- nếu không, kết luận thu được có thể chỉ phản ánh mức độ tinh chỉnh chứ không phản ánh năng lực phương pháp. Thứ ba, một bộ điều khiển kinh điển với hai tham số được chọn đúng vẫn có thể vượt một phương pháp hiện đại với mười tham số, và điều đó cần được báo cáo thay vì né tránh.
+
+Hướng đi tiếp theo đã được xác định cụ thể ở Mục 6.3, trong đó việc kiểm chứng khả năng thích nghi khi hàm chi phí thay đổi là phép thử quyết định: nếu hướng tiếp cận dựa trên học có ưu thế thực sự, đó là nơi ưu thế đó phải bộc lộ.
 
 % ================================================================
 % TÀI LIỆU THAM KHẢO
