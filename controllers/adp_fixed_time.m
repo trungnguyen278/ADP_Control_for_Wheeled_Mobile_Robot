@@ -102,14 +102,50 @@ u(2) = max(-s.w_max, min(s.w_max, u(2)));
 %% Error dynamics drift f(z) — can cho Bellman error
 f_z = [zy*omegar; -zx*omegar + vr*sin(zth); 0];  % 3x1
 
-%% Cap nhat trong so (eq.17) — Bellman error gradient + fixed-time sigma-mod
-sigma_w = nabla_phi * (f_z + g_z * uo_adp);                      % 6x1
-epsilon = W' * sigma_w + z' * s.Q * z + uo_adp' * s.R * uo_adp;  % scalar (HJB residual)
-sigma_bar = sigma_w / (1 + sigma_w' * sigma_w)^2;                 % 6x1 normalized
+%% Cap nhat trong so
+% Hai luat, chon bang s.ft_update_law (mac dinh 'bellman'):
+%
+%   'wang'    -- NGUYEN BAN Wang et al. eq.(17):
+%                W_dot = +0.5*Gamma*(nabla_phi*g*R_inv*g'*z - kappa1*W
+%                                    - kappa2*(W'W)*W)
+%                Khong dung sai so Bellman (bai bao co y tranh de bo dieu
+%                kien PE -- xem Remark 2 cua bai bao).
+%
+%   'bellman' -- LUAN VAN: gradient descent tren sai so Bellman.
+%                W_dot = -0.5*Gamma*(sigma_bar*epsilon + kappa1*W
+%                                    + kappa2*(W'W)*W)
+%                Giu lai hai so hang sigma-modification cua Wang.
+%
+% LUU Y: chung minh fixed-time cua Wang (Theorem 1) dua tren luat 'wang'.
+% Khi dung 'bellman', chung minh do KHONG con phu duoc.
 
-W_dot = -0.5 * s.ft_Gamma * (sigma_bar * epsilon ...
-        + s.ft_kappa1 * W ...
-        + s.ft_kappa2 * (W' * W) * W);
+if isfield(s, 'ft_update_law')
+    update_law = s.ft_update_law;
+else
+    update_law = 'bellman';   % mac dinh: giu nguyen hanh vi cu
+end
+
+sigma_w = nabla_phi * (f_z + g_z * uo_adp);                      % 6x1
+
+switch update_law
+    case 'wang'
+        % eq.(17) nguyen ban
+        W_dot = 0.5 * s.ft_Gamma * (nabla_phi * g_z * s.R_inv * g_z' * z ...
+                - s.ft_kappa1 * W ...
+                - s.ft_kappa2 * (W' * W) * W);
+        epsilon = W' * sigma_w + z' * s.Q * z + uo_adp' * s.R * uo_adp;
+
+    case 'bellman'
+        epsilon = W' * sigma_w + z' * s.Q * z + uo_adp' * s.R * uo_adp;  % HJB residual
+        sigma_bar = sigma_w / (1 + sigma_w' * sigma_w)^2;                % 6x1 normalized
+        W_dot = -0.5 * s.ft_Gamma * (sigma_bar * epsilon ...
+                + s.ft_kappa1 * W ...
+                + s.ft_kappa2 * (W' * W) * W);
+
+    otherwise
+        error('adp_fixed_time: ft_update_law khong hop le (dung ''wang'' hoac ''bellman'')');
+end
+
 W = W + s.dt * W_dot;
 
 %% Debug info
