@@ -236,10 +236,84 @@ for ci = 1:numel(smc_cfgs)
     fprintf('    %-16s : %.3e\n', smc_cfgs{ci}.name, d.zrms);
 end
 
+%% ================================================================
+%  PHAN I: DO BEN CUA SMC DA TUNE
+%  ================================================================
+% Phan H chi so sanh Jc tai tham so danh nghia va mot dieu kien dau.
+% Gain SMC (lambda=0.7, eta=0.05) duoc quet TAI DUNG diem van hanh do, nen can
+% kiem tra xem uu the co ben khong hay chi ton tai quanh diem quet.
+% Chay SMC da tune qua dung bo thi nghiem da ap cho ADP-FT.
+fprintf('\n--- PHAN I: DO BEN CUA SMC DA TUNE ---\n');
+
+results_I = struct();
+smct = @(ss) setfield(setfield(setfield(setfield(ss, ...
+    'smc_lambda1', 0.7), 'smc_lambda2', 0.7), 'smc_eta1', 0.05), 'smc_eta2', 0.05);
+
+% --- I1. Bat dinh khoi luong ---
+fprintf('\n  I1. Bat dinh khoi luong (circle, nhieu 20%%), Jc\n');
+masses_I = [10, 12, 14, 16];
+fprintf('  %-16s |', 'Phuong phap');
+for mi = 1:numel(masses_I), fprintf(' %8dkg |', masses_I(mi)); end
+fprintf('\n  %s\n', repmat('-', 1, 19 + 12*numel(masses_I)));
+
+pm_methods = {'smc_tuned', 'adp_ft', 'bs'};
+pm_names   = {'SMC da tune', 'ADP-FT+chieu', 'BS'};
+for mi = 1:numel(pm_methods)
+    fprintf('  %-16s |', pm_names{mi});
+    for k = 1:numel(masses_I)
+        s_i = s;  s_i.traj_type = 'circle';
+        meth = pm_methods{mi};
+        if strcmp(meth, 'smc_tuned'), s_i = smct(s_i);  meth = 'smc';  end
+        pp = p;  pp.m = masses_I(k);
+        pp.M = diag([pp.m, p.I]);  pp.M_inv = diag([1/pp.m, 1/p.I]);
+        d = run_extra_sim(meth, s_i, p, 'common', pp);
+        results_I.(sprintf('mass%d_%s', masses_I(k), pm_methods{mi})) = d;
+        fprintf(' %10.1f |', d.Jc);
+    end
+    fprintf('\n');
+end
+
+% --- I2. Quet dieu kien dau ---
+fprintf('\n  I2. Quet dieu kien dau (circle, nhieu 20%%), z_rms 5s cuoi\n');
+fprintf('  %-16s |', 'Phuong phap');
+for zi = 1:numel(z0_list), fprintf(' %9.3f |', z0_norm(zi)); end
+fprintf('  <- ||z0||\n  %s\n', repmat('-', 1, 19 + 12*numel(z0_list)));
+for mi = 1:numel(pm_methods)
+    fprintf('  %-16s |', pm_names{mi});
+    for zi = 1:numel(z0_list)
+        s_i = s;  s_i.traj_type = 'circle';  s_i.q0_offset = z0_list{zi};
+        meth = pm_methods{mi};
+        if strcmp(meth, 'smc_tuned'), s_i = smct(s_i);  meth = 'smc';  end
+        d = run_extra_sim(meth, s_i, p, 'common');
+        results_I.(sprintf('z%d_%s', zi, pm_methods{mi})) = d;
+        fprintf(' %9.2e |', d.zrms);
+    end
+    fprintf('\n');
+end
+
+% --- I3. Nhieu hai kenh doc lap ---
+fprintf('\n  I3. Nhieu doc lap hai kenh (circle), Jc\n');
+fprintf('  %-16s |', 'Phuong phap');
+for di = 1:numel(dist_amps), fprintf(' %8.0f%% |', dist_amps(di)*100); end
+fprintf('\n  %s\n', repmat('-', 1, 19 + 11*numel(dist_amps)));
+for mi = 1:numel(pm_methods)
+    fprintf('  %-16s |', pm_names{mi});
+    for di = 1:numel(dist_amps)
+        s_i = s;  s_i.traj_type = 'circle';  s_i.dist_amp = dist_amps(di);
+        meth = pm_methods{mi};
+        if strcmp(meth, 'smc_tuned'), s_i = smct(s_i);  meth = 'smc';  end
+        mode_k = 'indep';  if dist_amps(di) == 0, mode_k = 'none'; end
+        d = run_extra_sim(meth, s_i, p, mode_k);
+        results_I.(sprintf('ind%d_%s', round(dist_amps(di)*100), pm_methods{mi})) = d;
+        fprintf(' %9.1f |', d.Jc);
+    end
+    fprintf('\n');
+end
+
 %% Luu
 save('../results/thesis_extra.mat', ...
-     'results_D', 'results_E', 'results_F', 'results_G', 'results_H', ...
-     'T_settle', 'z0_norm', 'tol_list', ...
+     'results_D', 'results_E', 'results_F', 'results_G', 'results_H', 'results_I', ...
+     'T_settle', 'z0_norm', 'tol_list', 'masses_I', ...
      'z0_list', 'dist_amps', 'dist_modes', 's', 'p');
 fprintf('\nDa luu vao results/thesis_extra.mat\n');
 fprintf('\n========== HOAN THANH ==========\n');
@@ -256,9 +330,14 @@ function ts = settle_time(t, z, tol)
     end
 end
 
-function data = run_extra_sim(method, s, p, dist_mode)
+function data = run_extra_sim(method, s, p, dist_mode, p_plant)
 % Vong lap mo phong full model, giong run_full_sim trong sim_thesis.m
 % nhung cho phep chon kieu nhieu qua dist_mode.
+%
+% p       -- tham so controller dung (nominal)
+% p_plant -- tham so plant thuc (tuy chon; mac dinh = p, tuc khong co bat dinh)
+
+    if nargin < 5, p_plant = p; end
 
     N = round(s.T_sim / s.dt);  dt = s.dt;
     data.t   = zeros(1, N+1);
@@ -313,7 +392,7 @@ function data = run_extra_sim(method, s, p, dist_mode)
         [tau, ~] = dynamic_backstepping(eta, eta_d, edp, dt, p, s);
         eta_d_prev = eta_d;
 
-        a = s.dist_amp * p.tau_max;
+        a = s.dist_amp * p_plant.tau_max;
         w = s.dist_freq;
         switch dist_mode
             case 'none',   d_t = [0; 0];
@@ -327,7 +406,7 @@ function data = run_extra_sim(method, s, p, dist_mode)
 
         if k <= N
             st = [q; eta];
-            st = st + dt * wmr_full_model(t, st, tau + d_t, p);
+            st = st + dt * wmr_full_model(t, st, tau + d_t, p_plant);
             q = st(1:3);  q(3) = atan2(sin(q(3)), cos(q(3)));
             eta = st(4:5);
         end
