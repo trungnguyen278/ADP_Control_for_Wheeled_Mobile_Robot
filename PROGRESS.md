@@ -10,10 +10,14 @@ Hoc vien: Nguyen Thanh Trung
 
 ---
 
-## TRANG THAI (cap nhat 2026-08-12)
+## TRANG THAI (cap nhat 2026-08-13)
 
 **Dang cho phan hoi cua GVHD.** Da gui ban v2 qua Teams ngay 2026-05-26,
-den nay (2026-08-12) chua nhan duoc phan hoi — da 2,5 thang.
+den nay chua nhan duoc phan hoi — da 2,5 thang.
+
+**2026-08-13: da hoan thanh ban v3** sau dot tu ra soat toan bo luan van
+(doi chieu voi bai bao goc + chay them 4 thi nghiem kiem chung).
+Chi tiet o muc "2026-08-13" ben duoi. thesis.pdf: 43 -> 66 trang.
 
 **Chua co lich bao ve.** Ke hoach goc 16 tuan (02/2026 - 06/2026) da qua han;
 khong con dung lam moc thoi gian nua, giu lai duoi day chi de tham chieu lich su.
@@ -238,6 +242,79 @@ Vong ngoai (kinematic):     Vong trong (dynamic):     Plant:
 | 20%  | 90.1 | 101.1 | **85.2** |
 | 40%  | 116  | 124   | **112**  |
 | 60%  | 157  | 162   | **158**  |
+
+### 2026-08-13 — RA SOAT TOAN BO LUAN VAN + BAN v3
+
+Doi chieu tung cong thuc voi bai bao goc, chay 4 thi nghiem kiem chung moi.
+Ket qua: 3 loi trich dan + 1 loi tinh toan + 3 phat hien ky thuat.
+
+**A. Loi trich dan da sua (4 file .tex):**
+- Ten tac gia Wang: "Y. Wang, Z. Li, et al." -> **C. Wang, H. Zhan, Q. Guo, T. Li**
+  (loi co tu commit e63ec30 ngay 2026-03-28, lan sang ca 4 tai lieu).
+  summary_report con bia them "C. Yang" va sai so trang (460-467 -> 176-183).
+- **eq.(17) trong luan van KHONG phai cua Wang.** Wang dung
+  `nabla_phi*B*R_inv*B'*z`, luan van dung gradient sai so Bellman. Da tach ra
+  thanh dong gop rieng (§4.7.2) + ghi ro chung minh goc khong con phu duoc.
+- **Bang 4.1 cot "Wang" sai toan bo.** Gia tri that: lambda=mu=alpha=diag(1,1,0.4),
+  beta=1e5, rho=10, kappa1=kappa2=0.1, W(0)=0. Cot cu thuc ra la gia tri trung
+  gian cua chinh minh. "Giam 3-5 lan" -> that ra beta giam 666.000 lan.
+
+**B. Loi tinh toan da sua:**
+- §5.5: `Ju = Jc - Je*Q/R` SAI, phai la `Jc - 10*Je`.
+  ADP-FT: 47.3 -> **9.42**; SMC: 409.4 -> **263.25**; ti so 8.6x -> **27.9x**.
+  Phat hien them: 53% chi phi cua SMC la do BAM KEM, khong phai nang luong.
+
+**C. Ba thi nghiem moi (simulations/sim_thesis_extra.m):**
+
+1. **Ablation ADP-UUB** (bo kappa2, beta, p/q=1):
+
+   | Traj | ADP-FT | ADP-UUB |
+   |---|---|---|
+   | circle | **85.2** | 109.8 |
+   | line | 8.5 | **7.6** |
+   | figure8 | **93.2** | **2357.6** |
+
+   => So hang fixed-time cai thien **25 lan** tren figure8. Co gia tri that.
+
+2. **Quet dieu kien dau** — ADP-FT **MAT BAM 3/5**, CL mat 4/5, BS on dinh 5/5.
+   Nguyen nhan: W(T) doi dau => V_hat mat tinh xac dinh duong.
+   => Tinh hoi tu co dinh thoi gian KHONG ton tai tren kien truc 2 vong.
+
+3. **Nhieu 2 kenh**: `B*[1;1] = [r;0]` — nhieu dong pha bi triet tieu HOAN TOAN
+   o kenh omega. Yeu cau #2 cua thay Nam chua dat theo nghia kich thich 2 kenh.
+   TIN TOT: voi nhieu doc lap 2 kenh, ADP-FT van thang BS o moi muc va khoang
+   cach RONG HON (60%: 124.5 vs 136.7 = 8.9%, so voi kich ban cu la thua 0.6%).
+
+4. **Ablation luat cap nhat** (them `s.ft_update_law` vao adp_fixed_time.m):
+
+   | Luat | circle | line | fig8 | z0 on dinh | 14kg |
+   |---|---|---|---|---|---|
+   | bellman (mac dinh) | **85.2** | **8.5** | 93.2 | 2/5 | **4283** |
+   | wang nguyen ban | 89.4 | 9.2 | **62.8** | **3/5** | 6495 |
+
+   Danh doi 2 chieu, khong co phuong an thang tuyet doi. GIU bellman lam mac dinh.
+   Luu y: cai thien `Jc 4385 -> 123` (2026-05-11) KHONG phai do doi luat cap nhat
+   ma chu yeu do tune gain — truoc day quy nham.
+
+**D. Bo sung vao luan van:**
+- Front matter day du: loi cam doan, loi cam on, tom tat VI, abstract EN,
+  danh muc hinh/bang/tu viet tat/ky hieu, danh so La Ma.
+- §3.4: them dinh nghia **practical fixed-time** (hoi tu vao lan can).
+- §4.8 MOI: phan tich on dinh he ghep hai vong (cascade/ISS), dieu kien tach
+  thang thoi gian dinh luong `Kd >> ||mu||` (250 >> 1), va 3 gioi han cua dam bao.
+- §5.6 MOI (ablation), §5.7 MOI (quet z0), §5.8 MOI (nhieu 2 kenh).
+- §5.9 + Chuong 6: dat lai toan bo tuyen bo cho dung pham vi.
+- SMC: them caveat trung thuc ve viec chua tune cong bang (CHUA doi gain).
+
+**E. Build:** thesis 66 trang (tu 43), summary 13, sm1 10, sm2 15.
+Tat ca: 0 loi, 0 undefined ref, 0 Overfull hbox.
+
+**F. Khac:** khoi phuc ten goc file bai bao
+(`Adaptive_Dynamic_Programming-Based_Fixed-Time_Optimal_Control_for_Wheeled_Mobile_Robot.pdf`)
+— session truoc doi thanh `Wang2025_...` ma khong ghi lai.
+
+> **CHUA LAM, cho Trung quyet:** doi gain SMC trong ctrl_params.m (xem canh bao
+> 2026-08-12 ben duoi). Luan van hien da co caveat trung thuc nhung so lieu chua doi.
 
 ---
 
