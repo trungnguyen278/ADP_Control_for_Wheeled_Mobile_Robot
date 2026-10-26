@@ -10,12 +10,17 @@ Hoc vien: Nguyen Thanh Trung
 
 ---
 
-## TRANG THAI (cap nhat 2026-10-26, toi)
+## TRANG THAI (cap nhat 2026-10-26, khuya)
 
 **2026-10-26: da sua loi ma tran B, chinh gain deu nhau cho 5 PP, chay lai toan bo va
 VIET LAI luan van + bao cao tom tat** theo mo hinh dung. ADP-FT van la phuong phap chinh,
 khung luan van: "hoan thien ADP-FT cua Wang et al. cho robot dieu khien bang mo-men".
-Chi tiet o muc "2026-10-26 (toi)" ben duoi.
+
+**2026-10-26 (khuya): bo dieu khien la MOT bo backstepping hai buoc** -- buoc 2 co so hang
+cheo K_c*zeta (K_c = M) + so hang co dinh thoi gian, dung chung cho 5 PP; co ham Lyapunov
+chung (Dinh ly 4.1). Chinh gain + chay lai toan bo, viet lai Ch.4-6, tom tat, bao cao tom tat.
+Tat ca nam tren nhanh `claude/sweet-edison-vur249` (PR #1, draft) de Trung pull ve chay MATLAB.
+Chi tiet o muc "2026-10-26 (khuya)" ben duoi.
 
 **Con lai truoc khi in nop (Trung lam, xem VIEC CAN LAM muc 1):** chay MATLAB de xuat lai
 hinh (19 hinh trong docs/thesis/figures VAN LA MO HINH CU), build PDF bang MiKTeX, doc lai,
@@ -577,6 +582,56 @@ sua \ref muc rong (macro \seclabel), ten "Hinh/Bang/MUC LUC/DANH MUC" tieng Viet
 de "References" trung. **Bao cao tom tat** viet lai phan ket qua (11 trang).
 export_all_figures.m: legend ra ngoai vung ve [3c7a077].
 
+### 2026-10-26 (khuya) — BUOC 2 BACKSTEPPING DAY DU, VIET LAI CHUONG 4-6
+
+Theo y Trung: trinh bay MOT bo backstepping hai buoc (khong chia "vong ngoai/vong trong"
+thanh hai bo dieu khien), chung minh lai co trich dan, duoc phep sua bo dieu khien de BC
+dung chuan. So lieu muc "(toi)" ngay tren la voi buoc 2 cu (Fierro & Lewis).
+
+**Bo dieu khien** [fdec18c]: buoc 2 = Fierro & Lewis + so hang cheo K_c*zeta
+(zeta = -g'z = [z_x; z_theta]) + K_alpha*sig(e)^(p/q) + K_beta*e^3. Chon K_c = M
+=> V = V1 + 1/2*e'e, dV/dt = dV1/dt (dong hoc) - tieu tan(e) (Dinh ly 4.1); T2 <= 1 s khi
+chua bao hoa. dynamic_backstepping.m nhan them z, dung chung cho ca 5 PP.
+
+**Phat hien ly thuyet** (Bo de 4.1): buoc (19)-(20) cua Wang dung g*g^+ = I3, thuc te
+g*g^+ = I3 - n*n' (chieu len mat phang 2 chieu) => khong co so hang keo z_y ve khi
+z_x = z_theta = 0. Luat goc + W(0) = 0 tren quy dao thang: (0, z_y, 0) la diem can bang
+(kiem chung: z_y giu 0.5 m suot 60 s). Day la co so ly thuyet cua so hang ghep nonholonomic.
+Tham so beta goc cua Wang la diag(1e5, 1e5, 1), khong phai 1e5 ca ba kenh [dbe0857].
+
+**Chinh gain lai** voi buoc 2 moi: SMC k* = 1/8, ADP-FT 1/2, BS 1/4, CL 1/4,
+ADP-AC 1/4 (truoc la 1/2). NTSMC dung gain SMC.
+
+**Ket qua** (Octave, T = 60 s, nhieu dong pha 20%, buoc 2 day du):
+
+| PP | Jc tron | Jc thang | Jc so 8 | Tong | t(0.01) tron |
+|---|---|---|---|---|---|
+| SMC | **1.214** | **0.661** | **1.962** | **3.837** | 10.1 s |
+| NTSMC | 1.237 | 0.838 | 2.055 | 4.130 | 9.1 s |
+| ADP-FT | 1.318 | 0.790 | 2.033 | 4.140 | **6.0 s** |
+| BS | 1.277 | 0.877 | 2.136 | 4.290 | 9.9 s |
+| CL | 1.675 | 1.504 | 2.920 | 6.099 | 31.1 s |
+| ADP-AC | 3.760 | 5.139 | 5.051 | 13.951 | 37.5 s |
+
+- ADP-FT thu 2 trong 5 PP (kem SMC 7.9%, ngang bien the NTSMC), ve lan can 0.01 m som nhat.
+- Phan M (dong gop buoc 2, so voi Fierro & Lewis): Jc -1.2% (ADP-FT), -0.5% (BS),
+  +0.01% (SMC); z_rms -22% (5.36e-4 -> 4.20e-4 m); z0 lon: Jc -12% .. -35%.
+  K_c = 10M: ADP-FT 3.833 ~ SMC 3.844 nhung BS +13% => giu K_c = M (chon tu cau truc
+  Lyapunov, khong tune theo PP chinh); bao cao ca hai trong Muc 5.6.
+- z_rms ~4.1-4.3e-4 m; cong thuc ham mo ta K_eff = Kd + K_alpha*N(dv) khop < 7%
+  (luat cu: 5.23e-4, luat moi: 4.05e-4 du doan).
+- Khoi luong 16 kg / nhieu 60% (3 kieu): Jc doi < 3% moi PP.
+- Ablation: thieu ghep Jc x3.2-5.6; chieu khong kich hoat (lambda_min(P) > 0.12); bo so hang
+  FT buoc 1 giam Jc 1.4-1.8%; critic dong bang tot hon hoc 2.6-2.8%; z0 #5 (||z0|| = 3.5):
+  ADP-FT 42.3 s, dong bang 15.8 s, k = 1 36.3 s, BS 22.0 s.
+- Tham so goc Wang (beta dung): khong phat tan, Jc x7.0-23.4, sai so xac lap 0.5-1.7 cm.
+
+**Luan van** (82 trang, TeX Live: 0 loi, 0 ref treo, 0 Overfull): Ch.4 viet lai thanh mot bo
+backstepping hai buoc + Dinh ly 4.1, Bo de 4.1, He qua thoi gian co dinh buoc 2 [84404b4];
+Ch.5 (them Muc 5.6 "Dong gop cua buoc 2"), Ch.6, tom tat VI/EN sinh lai tu so lieu moi.
+**Bao cao tom tat** (12 trang): muc 1-2 [bdaa690], phan ket qua sinh lai.
+Hinh trong docs/thesis/figures VAN LA HINH CU -- can chay MATLAB de xuat lai.
+
 ---
 
 ## VIEC CAN LAM
@@ -587,7 +642,8 @@ export_all_figures.m: legend ra ngoai vung ve [3c7a077].
       Doi chieu so in ra voi Chuong 5 (Octave va MATLAB co the lech o chu so thu 3-4).
 - [ ] Build PDF bang MiKTeX (pdflatex x2): docs/thesis/thesis.tex,
       docs/reports/summary/summary_report.tex. Kiem tra Overfull, ref treo.
-- [ ] Doc lai toan bo, dac biet Ch.5-6 va hinh moi (legend da dua ra ngoai).
+- [ ] Doc lai toan bo, dac biet Ch.4 (Dinh ly 4.1, Bo de 4.1 -- chung minh moi), Ch.5-6
+      va hinh moi (legend da dua ra ngoai).
 - [ ] Commit thesis.pdf, summary_report.pdf, hinh PDF moi.
 - [ ] **Trung quyet:** tau_max that cua motor (dang tam 1 N*m). Doi gia tri => chay lai het.
 - [ ] Gui thay Nam ban moi + noi ro loi B va cac ket luan da doi so voi v2.
@@ -596,6 +652,8 @@ export_all_figures.m: legend ra ngoai vung ve [3c7a077].
 ### 2. Huong mo rong neu con thoi gian (Muc 6.3 luan van)
 - [ ] Luat hoc critic hop voi dual-loop (phai tot hon critic dong bang, nhat la khi z0 lon).
 - [ ] Them ghep nonholonomic cho CL (CL con sai so ngang cung nguyen nhan).
+- [ ] Ham Lyapunov kieu Kanayama cho buoc 1 de chung minh hoi tu kenh ngang z_y
+      (hien chi kiem chung bang mo phong).
 
 ### 3. Dang bi chan (cho GVHD)
 - [ ] Hoan thien luan van theo phan hoi cua thay Nam -- CHUA CO PHAN HOI tu 2026-05-26

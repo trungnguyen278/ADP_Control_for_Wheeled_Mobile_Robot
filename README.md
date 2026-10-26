@@ -199,28 +199,34 @@ kênh: Phần F của `sim_thesis_extra.m`.
 
 ## Kết quả
 
-> ⚠ Bảng dưới là số liệu với **bước 2 cũ** (luật Fierro & Lewis). Đang chạy lại với bước 2
-> đầy đủ; sẽ cập nhật cùng Chương 5–6 (PR #1).
-
-Mô hình đã sửa ma trận B, τ_max = 1 N·m (tạm), T = 60 s, nhiễu đồng pha 20%, gain chỉnh
-đều nhau (chạy bằng Octave 2026-10-26; chi tiết trong [PROGRESS.md](PROGRESS.md) và Chương 5
-luận văn):
+Mô hình đầy đủ 5 trạng thái, τ_max = 1 N·m (tạm), T = 60 s, nhiễu đồng pha 20%, **bước 2
+đầy đủ dùng chung** (số hạng chéo K_c = M + số hạng cố định thời gian), gain chỉnh đều nhau
+(chạy bằng Octave 2026-10-26; chi tiết trong [PROGRESS.md](PROGRESS.md) và Chương 5 luận văn):
 
 | Phương pháp | Jc tròn | Jc thẳng | Jc hình 8 | Tổng | t(‖z‖ < 0.01) tròn |
 |---|---|---|---|---|---|
-| SMC (k* = 1/8) | **1.213** | **0.663** | **1.960** | **3.836** | 10.0 s |
-| ADP-FT | 1.334 | 0.803 | 2.056 | 4.192 | **8.4 s** |
-| NTSMC (cùng gain SMC) | 1.257 | 0.857 | 2.079 | 4.193 | 9.9 s |
-| BS | 1.307 | 0.898 | 2.104 | 4.310 | 10.7 s |
-| CL | 1.598 | 1.347 | 2.832 | 5.778 | 25.6 s |
-| ADP-AC | 4.708 | 4.219 | 5.407 | 14.334 | 60.0 s |
+| SMC (k* = 1/8) | **1.214** | **0.661** | **1.962** | **3.837** | 10.1 s |
+| NTSMC (cùng gain SMC) | 1.237 | 0.838 | 2.055 | 4.130 | 9.1 s |
+| ADP-FT (k* = 1/2) | 1.318 | 0.790 | 2.033 | 4.140 | **6.0 s** |
+| BS (k* = 1/4) | 1.277 | 0.877 | 2.136 | 4.290 | 9.9 s |
+| CL (k* = 1/4) | 1.675 | 1.504 | 2.920 | 6.099 | 31.1 s |
+| ADP-AC (k* = 1/4) | 3.760 | 5.139 | 5.051 | 13.951 | 37.5 s |
 
-- Sai số xác lập ≈ 5.3–5.5e-4 m ở BS/SMC/NTSMC/ADP-FT = sàn do nhiễu lọt qua vòng trong;
-  công thức giải tích z_rms ≈ 2d₀/(√2·r·m·ω_n·√(ω_n²+K_d²)) khớp mô phỏng < 4%.
-- Khối lượng tới 16 kg và nhiễu tới 60% (ba kiểu): Jc đổi < 4% ở mọi phương pháp.
-- Ablation ADP-FT: ghép nonholonomic là quyết định (thiếu nó Jc ×3–5, kẹt ở điểm cân bằng
-  giả); toán tử chiếu không kích hoạt; bỏ số hạng fixed-time giảm Jc 1.5–2%; critic đóng
-  băng tốt hơn critic học 3% (danh nghĩa) và hội tụ nhanh ~3 lần khi ‖z0‖ = 3.5.
+- ADP-FT đứng **thứ hai trong năm phương pháp** (NTSMC là biến thể của SMC), cao hơn SMC 7,9%,
+  ngang NTSMC; về lân cận 0.01 m của quỹ đạo sớm nhất.
+- **Bước 2 đầy đủ** so với luật Fierro & Lewis cũ: Jc đổi −1.2% (ADP-FT), −0.5% (BS), +0.01% (SMC);
+  sàn nhiễu z_rms giảm 22% (5.36e-4 → 4.20e-4 m); sai lệch ban đầu lớn: Jc giảm 12–35%.
+  K_c = 10M cho ADP-FT 3.833 ≈ SMC 3.844 nhưng làm BS xấu ~13% → giữ K_c = M (xem Mục 5.6).
+- Sai số xác lập ≈ 4.1–4.3e-4 m ở BS/SMC/NTSMC/ADP-FT = sàn do nhiễu lọt qua bước 2; công thức
+  z_rms ≈ 2d₀/(√2·r·m·ω_n·√(ω_n²+K_eff²)), K_eff = K_d + K_α·N(δv) (hàm mô tả) khớp mô phỏng < 7%.
+- Khối lượng tới 16 kg và nhiễu tới 60% (ba kiểu): Jc đổi < 3% ở mọi phương pháp.
+- Ablation ADP-FT: ghép nonholonomic là quyết định (thiếu nó Jc ×3.2–5.6, kẹt ở điểm cân bằng
+  giả); toán tử chiếu không kích hoạt (λ_min P(W) > 0.12); bỏ số hạng fixed-time của bước 1 giảm
+  Jc 1.4–1.8%; critic đóng băng tốt hơn critic học 2.6–2.8% (danh nghĩa) và hội tụ nhanh hơn khi
+  ‖z0‖ = 3.5 (15.8 s so với 42.3 s).
+- Tham số gốc của Wang (β = diag(1e5, 1e5, 1)): không phát tán nhưng Jc ×7.0–23.4, sai số xác
+  lập tới 0.02 m. Luật gốc có điểm cân bằng giả (0, z_y, 0) trên quỹ đạo thẳng khi Ŵ(0) = 0
+  (Bổ đề 4.1, đã kiểm chứng: z_y giữ 0.5 m suốt 60 s).
 - Fixed-time không được bảo toàn: với |v| ≤ 0.5 m/s, thời gian quá độ buộc tăng theo ‖z0‖.
 
 ---

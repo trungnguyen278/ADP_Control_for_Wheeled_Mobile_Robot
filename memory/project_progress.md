@@ -1,9 +1,22 @@
 ---
 name: project-progress
-description: 26/10/2026 đã sửa lỗi B, chỉnh gain đều, viết lại luận văn (72 tr) + báo cáo tóm tắt; còn Trung chạy MATLAB xuất hình, build MiKTeX, đọc lại rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
+description: 26/10/2026 khuya — bộ backstepping hai bước, chạy lại, viết lại Ch.4–6 (82 tr) + báo cáo tóm tắt, trên PR #1 (draft); còn Trung pull về chạy MATLAB xuất hình, build MiKTeX, đọc lại rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
+
+## Cập nhật 2026-10-26 (khuya): một bộ backstepping hai bước
+
+- Theo ý Trung: trình bày MỘT bộ backstepping hai bước (không tách "vòng ngoài/vòng trong"
+  thành hai bộ điều khiển), chứng minh lại có trích dẫn; được phép sửa bộ điều khiển để BC
+  đúng chuẩn → bước 2 có số hạng chéo K_c·ζ (K_c = M) + số hạng cố định thời gian, Định lý 4.1
+  (hàm Lyapunov chung), Bổ đề 4.1 (khoảng hở của Wang). Xem [[feedback-backstepping-framing]],
+  [[feedback-wang-gap]].
+- Chỉnh gain lại + chạy lại toàn bộ bằng Octave; viết lại Ch.4–6, tóm tắt VI/EN, báo cáo tóm
+  tắt: luận văn 82 trang, báo cáo 12 trang, compile sạch (0 lỗi, 0 ref treo, 0 Overfull).
+  Số liệu chốt: [[ket-qua-cuoi]].
+- Tất cả trên nhánh `claude/sweet-edison-vur249`, PR #1 (draft) — Trung muốn pull về chạy
+  MATLAB local cho chắc. Còn lại như mục dưới, cộng đọc kỹ Ch.4 (phần chứng minh mới).
 
 ## Cập nhật 2026-10-26 (tối): đã viết lại xong
 

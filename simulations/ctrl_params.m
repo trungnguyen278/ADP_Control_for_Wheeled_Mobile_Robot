@@ -72,7 +72,8 @@ s.pe_off_time = 30;             % tat PE sau 30s (weights da hoi tu)
 % w   = wr + k2*vr*zy + k3*sin(zth)
 
 % Da chinh (sweep_gains.m, 2026-10-26): k* = 0.25 tren gain danh nghia
-% (1.5, 3, 2) -- tong Jc 3 quy dao 4.861 -> 4.310.
+% (1.5, 3, 2) -- tong Jc 3 quy dao 4.901 -> 4.290 voi buoc 2 day du
+% (buoc 2 cu cua Fierro & Lewis: 4.861 -> 4.310, cung k*).
 s.k1 = 0.375;
 s.k2 = 0.75;
 s.k3 = 0.5;
@@ -132,7 +133,8 @@ s.in_p = 17;  s.in_q = 19;      % so mu p/q cua buoc 2 (rieng, de ablation buoc 
 % uo2 = lambda2*sigma2 + eta2*tanh(sigma2/delta),  sigma2 = zth + c_zy*zy
 %
 % Da chinh (sweep_gains.m, 2026-10-26): k* = 1/8 tren gia tri thong dung
-% (lambda = 3, eta = 1) -- tong Jc 3 quy dao 4.984 -> 3.836. Gia tri thong dung
+% (lambda = 3, eta = 1) -- tong Jc 3 quy dao 4.887 -> 3.837 voi buoc 2 day du
+% (buoc 2 cu: 4.984 -> 3.836, cung k*). Gia tri thong dung
 % van dung de doi chieu o Phan H (sim_thesis_extra.m).
 s.smc_lambda1 = 0.375;          % equivalent gain zx
 s.smc_lambda2 = 0.375;          % equivalent gain sigma2
@@ -176,8 +178,8 @@ s.nt_eps     = 0.02;            % nguong noi tuyen tinh chong ky di
 % 4. Cac sweep tren lam tren mo hinh con loi B (truoc 2026-10-26).
 %    Tren mo hinh da sua, gain SMC lay theo quy trinh chinh deu nhau cho moi
 %    phuong phap (sweep_gains.m, k* = 1/8). Mat chi phi rat phang: tong Jc
-%    3 quy dao 3.836 (k = 1/8) .. 3.893 (k = 1/16 va 1/4).
-%    NTSMC dung cung gain: tong Jc 4.193, kem SMC 9% (Phan A sim_thesis.m).
+%    3 quy dao 3.837 (k = 1/8) .. 3.881 / 3.884 (k = 1/16 / 1/4), buoc 2 day du.
+%    NTSMC dung cung gain: tong Jc 4.130, cao hon SMC 7.6% (Phan A sim_thesis.m).
 
 %% === NHIEU TAN SO CAO ===
 % d(t) = d_amp * tau_max * sin(w_d * t), cong vao tau truoc plant
@@ -190,7 +192,8 @@ s.dist_freq  = 30;              % [rad/s] ~ 4.8 Hz
 % Controller chinh cua luan van
 %
 % Gain robust, c_zy va W0 da chinh (sweep_gains.m, 2026-10-26): k* = 0.5 tren
-% bo gia tri cu (tong Jc 3 quy dao 4.295 -> 4.192). Bo gia tri cu duoc chon khi
+% bo gia tri cu (tong Jc 3 quy dao 4.260 -> 4.140 voi buoc 2 day du; buoc 2 cu:
+% 4.295 -> 4.192, cung k*). Bo gia tri cu duoc chon khi
 % mo hinh con loi B; ly do "giam cho dual-loop / chong phat tan" ghi truoc day
 % la do bao hoa mo-men cua mo hinh sai (memory/feedback_b_matrix_error.md).
 % u = uf + uo_adp - g_pinv * robust
