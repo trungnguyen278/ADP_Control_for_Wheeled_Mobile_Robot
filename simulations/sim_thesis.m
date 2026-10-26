@@ -305,7 +305,7 @@ function data = run_full_sim(method, use_dist, s, p)
             eta_d_prev_k = eta_d_prev;
         end
 
-        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p, s);
+        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p, s, z);
         eta_d_prev = eta_d;
 
         if use_dist
@@ -418,7 +418,7 @@ function data = run_full_sim_uncertain(method, use_dist, s, p_ctrl, p_plant)
         else,      eta_d_prev_k = eta_d_prev; end
 
         % Inner loop dung p_ctrl (nominal) — KHONG biet mass thuc
-        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p_ctrl, s);
+        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p_ctrl, s, z);
         eta_d_prev = eta_d;
 
         if use_dist

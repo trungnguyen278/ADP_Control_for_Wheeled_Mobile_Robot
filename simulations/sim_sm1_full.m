@@ -179,7 +179,7 @@ function data = run_full_sim(method, use_dist, s, p)
             eta_d_prev_k = eta_d_prev;
         end
 
-        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p, s);
+        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p, s, z);
         eta_d_prev = eta_d;
 
         % === NHIEU ===

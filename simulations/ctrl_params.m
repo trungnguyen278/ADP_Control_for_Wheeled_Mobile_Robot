@@ -54,9 +54,10 @@ s.uo_max = 1.0;                 % [m/s] va [rad/s]
 % Day la HAN CHE cua Actor-Critic: can chinh sach ban dau on dinh.
 % V ~ 1*(zx^2 + zy^2 + zth^2) → uo ~ [0.5*zx; 0.5*zth] gan z=0
 % Yeu, chi du on dinh — buoc ADP phai hoc de cai thien
-% Gia tri da chinh (sweep_gains.m, 2026-10-26): k* = 0.5 tren [3 3 3 0 0 0].
-s.Wc0 = [1.5; 1.5; 1.5; 0; 0; 0];
-s.Wa0 = [1.5; 1.5; 1.5; 0; 0; 0];
+% Gia tri da chinh (sweep_gains.m): k* = 0.25 tren [3 3 3 0 0 0] voi buoc 2 day du
+% (2026-10-27; voi buoc 2 cu cua Fierro & Lewis la k* = 0.5, W0 = 1.5).
+s.Wc0 = [0.75; 0.75; 0.75; 0; 0; 0];
+s.Wa0 = [0.75; 0.75; 0.75; 0; 0; 0];
 
 %% === PE SIGNAL (Persistence of Excitation) ===
 % n(t) = sum( A_i * sin(w_i * t) )
@@ -110,12 +111,21 @@ s.T_sim = 120;                  % [s] tong thoi gian (du de ADP hoi tu)
 s.v_max = 0.5;                  % [m/s]
 s.w_max = 2.0;                  % [rad/s]
 
-%% === DYNAMIC BACKSTEPPING (VONG TRONG, Fierro & Lewis 1997) ===
-% tau = B_inv * [ M*(eta_d_dot + Kd*e) + F(eta) ]
-% Kd lon => vong trong nhanh (separation of timescales)
+%% === BUOC 2 BACKSTEPPING: LUAT MO-MEN (VONG TRONG) ===
+% B*tau = M*(eta_d_dot + Kd*e + Ka*sig(e)^(p/q) + Kb*e.^3) + F(eta) + Kc.*[zx; zth]
+% e = eta_d - eta. Ham Lyapunov chung V = V1 + 0.5*e'*inv(Kc)*M*e (luan van Muc 4.4).
+% Kc = M (ve gia tri so) => V = V1 + 0.5*e'*e: moi sai so cung trong so; so hang
+%   cheo tuong duong cong (1/Kd)*[zx; zth] = 0.05*[zx; zth] vao lenh van toc.
+% Ka = Kb = 10: e hoi tu co dinh thoi gian, T2 <= q/((q-p)*Ka) + 1/(2*Kb) = 1.0 s
+%   (khi mo-men chua bao hoa).
+% in_kc = in_alpha = in_beta = [0; 0] => luat cu cua Fierro & Lewis (truoc 2026-10-27).
 
 s.Kd_v = 20;                    % gain van toc dai
 s.Kd_w = 20;                    % gain van toc goc
+s.in_kc    = [10; 0.5];         % so hang cheo [N/m; N*m/rad] = [m; I] cua wmr_params
+s.in_alpha = [10; 10];          % so hang luy thua phan so p/q cua buoc 2
+s.in_beta  = [10; 10];          % so hang bac ba cua buoc 2
+s.in_p = 17;  s.in_q = 19;      % so mu p/q cua buoc 2 (rieng, de ablation buoc 1 khong doi buoc 2)
 
 %% === SMC KINEMATIC (VONG NGOAI) ===
 % uo1 = zy*(wr+uo2) + lambda1*zx + eta1*tanh(zx/delta)

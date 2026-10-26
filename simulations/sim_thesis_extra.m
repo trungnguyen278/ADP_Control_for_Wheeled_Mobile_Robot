@@ -32,6 +32,8 @@
 % Phan K. ADP-FT co thich nghi khi doi Q, R khong
 % Phan L. Vai tro cua hoc Critic theo dieu kien dau (Wang, Bellman, dong bang,
 %         W(0) = 0, gain k = 1)
+% Phan M. Buoc 2 cu (Fierro & Lewis) vs buoc 2 day du (so hang cheo + co dinh
+%         thoi gian), do nhay theo Kc
 %
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    08/2026
@@ -323,7 +325,7 @@ end
 %% ================================================================
 %  PHAN J: ABLATION CO CHE + DONG BANG CRITIC
 %  ================================================================
-% Truoc 2026-10-26 cac so lieu nay (Muc 4.7.3, 5.7-5.8 luan van) duoc chay rieng
+% Truoc 2026-10-26 cac so lieu nay (Muc 4.2.6, 5.6 luan van) duoc chay rieng
 % le, khong nam trong script nao. Gom lai day de tai tao duoc.
 %   Wang goc    -- tham so + luat cap nhat goc cua Wang et al. (muc IV-A bai bao),
 %                  W(0) = 0, khong clamp uo, khong chieu, khong ghep
@@ -357,7 +359,7 @@ for ci = 1:numel(j_cfgs)
     s_j.ft_Gamma = c.gam * s.ft_Gamma;
     if c.wang
         s_j.ft_lambda = [1; 1; 0.4];  s_j.ft_mu = [1; 1; 0.4];  s_j.ft_alpha = [1; 1; 0.4];
-        s_j.ft_beta   = 1e5 * [1; 1; 1];  s_j.ft_rho = 10;
+        s_j.ft_beta   = [1e5; 1e5; 1];  s_j.ft_rho = 10;   % Wang IV-A: beta = diag(1e5, 1e5, 1)
         s_j.ft_kappa1 = 0.1;  s_j.ft_kappa2 = 0.1;
         s_j.ft_Gamma  = 2 * eye(s.l);  s_j.ft_W0 = zeros(s.l, 1);
         s_j.ft_update_law = 'wang';  s_j.ft_uo_max = inf;
@@ -428,15 +430,18 @@ for ci = 1:numel(j_cfgs)
     fprintf('\n');
 end
 nz5 = numel(z0_list);
-for ci = [2, 5]      % 'Chua co che' va 'Day du'
+for ci = find(cellfun(@(c) any(strcmp(c.tag, {'goc', 'full'})), j_cfgs))   % 'Chua co che', 'Day du'
     d = results_J.(sprintf('%s_z%d', j_cfgs{ci}.tag, nz5));
     i30 = d.t >= 30;
     fprintf('  %-12s, ||z0|| = %.2f, t >= 30 s: mean|zx| = %.3f, mean|zy| = %.3f, mean|zth| = %.3f | W(T) = %s\n', ...
         j_cfgs{ci}.name, z0_norm(nz5), mean(abs(d.z(1, i30))), mean(abs(d.z(2, i30))), ...
         mean(abs(d.z(3, i30))), mat2str(d.W(:, end)', 3));
 end
-d = results_J.(sprintf('%s_circle', j_cfgs{5}.tag));
-fprintf('  Day du, circle, z0 chuan: W(T) = %s\n', mat2str(d.W(:, end)', 3));
+ci = find(cellfun(@(c) strcmp(c.tag, 'full'), j_cfgs));
+if ~isempty(ci)
+    d = results_J.(sprintf('%s_circle', j_cfgs{ci}.tag));
+    fprintf('  Day du, circle, z0 chuan: W(T) = %s\n', mat2str(d.W(:, end)', 3));
+end
 
 %% ================================================================
 %  PHAN K: ADP-FT CO THICH NGHI KHI DOI Q, R KHONG?
@@ -467,7 +472,7 @@ end
 % giam theo sigma-modification. Khi sai lech ban dau lon, so hang hoc
 % nabla_phi*g*R^-1*g'*z lon va thuc su doi W. Phan nay do xem viec hoc giup
 % hay hai, so voi:
-%   Bellman    -- bien the gradient sai so Bellman (Muc 4.7.2 luan van)
+%   Bellman    -- bien the gradient sai so Bellman (Muc 4.2.2 luan van)
 %   Dong bang  -- Gamma = 0, W giu nguyen W0 (critic khong hoc)
 %   W(0) = 0   -- hoc tu dau, khong warm start
 %   Gain k = 1 -- bo gain danh nghia truoc khi chinh deu (Muc 5.1 luan van)
@@ -487,10 +492,10 @@ for ci = 1:numel(l_cfgs)
             s_l.ft_Gamma = 0 * s.ft_Gamma;
         case 4
             s_l.ft_W0 = zeros(s.l, 1);
-        case 5
-            s_l.ft_lambda = 2 * s.ft_lambda;  s_l.ft_mu   = 2 * s.ft_mu;
-            s_l.ft_alpha  = 2 * s.ft_alpha;   s_l.ft_beta = 2 * s.ft_beta;
-            s_l.ft_c_zy   = 2 * s.ft_c_zy;    s_l.ft_W0   = 2 * s.ft_W0;
+        case 5      % bo gain danh nghia k = 1 (scale_gains trong sweep_gains.m)
+            s_l.ft_lambda = [0.08; 0.08; 0.05];  s_l.ft_mu   = [0.08; 0.08; 0.05];
+            s_l.ft_alpha  = [0.08; 0.08; 0.05];  s_l.ft_beta = [0.15; 0.15; 0.08];
+            s_l.ft_c_zy   = 2.0;                 s_l.ft_W0   = [3; 3; 3; 0; 0; 0];
     end
     for zi = 1:numel(z0_list)
         s_lz = s_l;  s_lz.q0_offset = z0_list{zi};
@@ -522,11 +527,87 @@ for ci = 1:numel(l_cfgs)
 end
 fprintf('\n  L2. W(0) = 0, z0 danh nghia, Jc: circle %.3f | line %.3f | figure8 %.3f\n', L_traj);
 
+%% ================================================================
+%  PHAN M: BUOC 2 CU (Fierro & Lewis) vs BUOC 2 DAY DU
+%  ================================================================
+% Buoc 2 day du (Muc 4.3 luan van) them vao luat Fierro & Lewis so hang cheo
+% Kc*[zx; zth] (triet so hang tuong tac trong dao ham V1) va hai so hang co dinh
+% thoi gian theo e = eta_d - eta. Phan nay tach dong gop tung thanh phan va do
+% nhay theo Kc tren ba PP tot nhat. Gain buoc 1 giu nguyen.
+%   t_e = thoi diem ||e_eta|| < 0.05 va o lai (Muc 4.4: T2 <= 1 s khi chua bao hoa)
+fprintf('\n--- PHAN M: BUOC 2 CU vs DAY DU ---\n');
+
+kc_M = s.in_kc;                          % = [m; I]
+m_cfgs = {'Fierro-Lewis (cu)', '+ co dinh TG', '+ so hang cheo', 'Day du', 'Kc = 4M', 'Kc = 10M'};
+m_kc   = {[0; 0], [0; 0], kc_M, kc_M, 4*kc_M, 10*kc_M};
+m_ft   = [0, 1, 0, 1, 1, 1];
+m_methods = {'bs', 'smc', 'adp_ft'};
+m_names   = {'BS', 'SMC', 'ADP-FT'};
+M_Jc   = nan(numel(m_cfgs), numel(m_methods), numel(trajs));
+M_zrms = nan(numel(m_cfgs), numel(m_methods), numel(trajs));
+M_sat  = nan(numel(m_cfgs), numel(m_methods), numel(trajs));
+M_te   = nan(numel(m_cfgs), numel(m_methods), numel(trajs));
+for ci = 1:numel(m_cfgs)
+    s_m = s;
+    s_m.in_kc    = m_kc{ci};
+    s_m.in_alpha = m_ft(ci) * s.in_alpha;
+    s_m.in_beta  = m_ft(ci) * s.in_beta;
+    for mi = 1:numel(m_methods)
+        for t_idx = 1:numel(trajs)
+            s_mt = s_m;  s_mt.traj_type = trajs{t_idx};
+            d = run_extra_sim(m_methods{mi}, s_mt, p, 'common');
+            M_Jc(ci, mi, t_idx)   = d.Jc;
+            M_zrms(ci, mi, t_idx) = d.zrms;
+            M_sat(ci, mi, t_idx)  = mean(any(abs(d.tau) >= p.tau_max - 1e-9, 1));
+            M_te(ci, mi, t_idx)   = settle_time(d.t, d.e_eta, 0.05);
+        end
+    end
+end
+
+% Sai lech ban dau lon (z0 #4, #5, duong tron): buoc 2 cu vs day du
+M_z0_Jc = nan(2, numel(m_methods), 2);
+M_z0_ts = nan(2, numel(m_methods), 2);
+for ci = 1:2
+    s_m = s;  s_m.traj_type = 'circle';
+    if ci == 1
+        s_m.in_kc = [0; 0];  s_m.in_alpha = [0; 0];  s_m.in_beta = [0; 0];
+    end
+    for mi = 1:numel(m_methods)
+        for zj = 1:2
+            s_mz = s_m;  s_mz.q0_offset = z0_list{3 + zj};
+            d = run_extra_sim(m_methods{mi}, s_mz, p, 'common');
+            M_z0_Jc(ci, mi, zj) = d.Jc;
+            M_z0_ts(ci, mi, zj) = settle_time(d.t, d.z, 0.05);
+        end
+    end
+end
+
+fprintf('\n  M1. Jc / z_rms / bao hoa mo-men / t_e(0.05) -- nhieu 20%%, z0 danh nghia\n');
+for mi = 1:numel(m_methods)
+    fprintf('  %s\n', m_names{mi});
+    for ci = 1:numel(m_cfgs)
+        fprintf('    %-18s |', m_cfgs{ci});
+        for t_idx = 1:numel(trajs)
+            fprintf(' %s Jc=%7.4f zrms=%.2e sat=%4.2f%% te=%5.3fs |', trajs{t_idx}(1:4), ...
+                M_Jc(ci, mi, t_idx), M_zrms(ci, mi, t_idx), 100*M_sat(ci, mi, t_idx), M_te(ci, mi, t_idx));
+        end
+        fprintf('  tong Jc = %.3f\n', sum(M_Jc(ci, mi, :)));
+    end
+end
+fprintf('\n  M2. Duong tron, z0 lon: Jc (t_settle 0.05) -- cu | day du\n');
+for mi = 1:numel(m_methods)
+    for zj = 1:2
+        fprintf('    %-7s ||z0|| = %.3f | %9.3f (%5.1fs) | %9.3f (%5.1fs)\n', m_names{mi}, ...
+            z0_norm(3 + zj), M_z0_Jc(1, mi, zj), M_z0_ts(1, mi, zj), M_z0_Jc(2, mi, zj), M_z0_ts(2, mi, zj));
+    end
+end
+
 %% Luu
 save('../results/thesis_extra.mat', ...
      'results_D', 'results_E', 'results_F', 'results_G', 'results_H', 'results_I', ...
      'results_J', 'J_traj', 'J_zrms', 'J_mass', 'J_satv', 'masses_J', 'results_K', 'qr_cfgs', ...
      'results_L', 'l_cfgs', 'L_Jc', 'L_ts', 'L_traj', ...
+     'm_cfgs', 'm_names', 'M_Jc', 'M_zrms', 'M_sat', 'M_te', 'M_z0_Jc', 'M_z0_ts', ...
      'T_settle', 'z0_norm', 'tol_list', 'masses_I', ...
      'z0_list', 'dist_amps', 'dist_modes', 's', 'p');
 fprintf('\nDa luu vao results/thesis_extra.mat\n');

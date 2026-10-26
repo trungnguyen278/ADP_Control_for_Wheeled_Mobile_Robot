@@ -15,7 +15,8 @@ function data = run_extra_sim(method, s, p, dist_mode, p_plant)
 %   p_plant   -- tham so plant thuc (tuy chon; mac dinh = p, khong bat dinh)
 %
 % Output:
-%   data -- struct: t, z, tau, W, Jc, Je, zrms (5 s cuoi), satv, method, dist_mode
+%   data -- struct: t, z, tau, e_eta, W, Jc, Je, zrms (5 s cuoi), satv, method, dist_mode
+%           e_eta = eta_d - eta (sai lech van toc giua hai buoc backstepping)
 %           satv = ti le thoi gian lenh van toc cham gioi han (|v_d| = v_max
 %           hoac |w_d| = w_max) -- dung o Phan J de kiem tra lenh bi cat
 %
@@ -28,6 +29,7 @@ N = round(s.T_sim / s.dt);  dt = s.dt;
 data.t   = zeros(1, N+1);
 data.z   = zeros(3, N+1);
 data.tau = zeros(2, N+1);
+data.e_eta = zeros(2, N+1);
 data.W   = zeros(s.l, N+1);
 cost     = zeros(1, N+1);
 satv     = false(1, N+1);
@@ -75,7 +77,7 @@ for k = 1:(N+1)
     uo = eta_d - [vr*cos(z(3)); omegar];
 
     if k == 1, edp = eta_d; else, edp = eta_d_prev; end
-    [tau, ~] = dynamic_backstepping(eta, eta_d, edp, dt, p, s);
+    [tau, ~] = dynamic_backstepping(eta, eta_d, edp, dt, p, s, z);
     eta_d_prev = eta_d;
 
     a = s.dist_amp * p_plant.tau_max;
@@ -87,7 +89,7 @@ for k = 1:(N+1)
         case 'indep',  d_t = a * [sin(w*t); sin(1.3*w*t + pi/3)];
     end
 
-    data.t(k) = t;  data.z(:,k) = z;  data.tau(:,k) = tau;
+    data.t(k) = t;  data.z(:,k) = z;  data.tau(:,k) = tau;  data.e_eta(:,k) = eta_d - eta;
     cost(k) = z'*s.Q*z + uo'*s.R*uo;
     satv(k) = abs(eta_d(1)) >= s.v_max - 1e-9 || abs(eta_d(2)) >= s.w_max - 1e-9;
 
