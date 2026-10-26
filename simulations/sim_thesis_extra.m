@@ -65,9 +65,9 @@ for t_idx = 1:length(trajs)
     results_D.([trajs{t_idx} '_ft'])  = d_ft;
     results_D.([trajs{t_idx} '_uub']) = d_uub;
 
-    fprintf('  %-8s ADP-FT : Jc=%8.1f  Je=%7.3f  z_rms=%.3e\n', ...
+    fprintf('  %-8s ADP-FT : Jc=%8.3f  Je=%7.3f  z_rms=%.3e\n', ...
         trajs{t_idx}, d_ft.Jc,  d_ft.Je,  d_ft.zrms);
-    fprintf('  %-8s ADP-UUB: Jc=%8.1f  Je=%7.3f  z_rms=%.3e\n', ...
+    fprintf('  %-8s ADP-UUB: Jc=%8.3f  Je=%7.3f  z_rms=%.3e\n', ...
         trajs{t_idx}, d_uub.Jc, d_uub.Je, d_uub.zrms);
 end
 
@@ -162,7 +162,7 @@ for dm = 1:numel(dist_modes)
             d = run_extra_sim(f_methods{mi}, s_f, p, mode_k);
             results_F.(sprintf('%s_d%d_%s', dist_modes{dm}, ...
                 round(dist_amps(di)*100), f_methods{mi})) = d;
-            fprintf('  %5.0f%% | %-8s | %8.1f | %8.3f | %10.3e\n', ...
+            fprintf('  %5.0f%% | %-8s | %8.3f | %8.3f | %10.3e\n', ...
                 dist_amps(di)*100, f_names{mi}, d.Jc, d.Je, d.zrms);
         end
     end
@@ -187,7 +187,7 @@ for t_idx = 1:length(trajs)
         s_g.ft_update_law = law{1};
         d = run_extra_sim('adp_ft', s_g, p, 'common');
         results_G.([trajs{t_idx} '_' law{1}]) = d;
-        fprintf('  %-8s | %-16s | %8.1f | %8.3f | %10.3e | %9.3f\n', ...
+        fprintf('  %-8s | %-16s | %8.3f | %8.3f | %10.3e | %9.3f\n', ...
             trajs{t_idx}, law{1}, d.Jc, d.Je, d.zrms, norm(d.W(:,end)));
     end
 end
@@ -218,7 +218,7 @@ for ci = 1:numel(smc_cfgs)
         s_h.smc_eta1    = smc_cfgs{ci}.eta;  s_h.smc_eta2    = smc_cfgs{ci}.eta;
         d = run_extra_sim('smc', s_h, p, 'common');
         results_H.(sprintf('%s_%s', smc_cfgs{ci}.tag, trajs{t_idx})) = d;
-        fprintf(' %10.1f |', d.Jc);
+        fprintf(' %10.3f |', d.Jc);
     end
     fprintf('\n');
 end
@@ -235,7 +235,7 @@ for ci = 1:numel(smc_cfgs)
         mode_k = 'common';  if dist_amps(di) == 0, mode_k = 'none'; end
         d = run_extra_sim('smc', s_h, p, mode_k);
         results_H.(sprintf('%s_d%d', smc_cfgs{ci}.tag, round(dist_amps(di)*100))) = d;
-        fprintf(' %8.1f |', d.Jc);
+        fprintf(' %8.3f |', d.Jc);
     end
     fprintf('\n');
 end
@@ -278,7 +278,7 @@ for mi = 1:numel(pm_methods)
         pp.M = diag([pp.m, p.I]);  pp.M_inv = diag([1/pp.m, 1/p.I]);
         d = run_extra_sim(meth, s_i, p, 'common', pp);
         results_I.(sprintf('mass%d_%s', masses_I(k), pm_methods{mi})) = d;
-        fprintf(' %10.1f |', d.Jc);
+        fprintf(' %10.3f |', d.Jc);
     end
     fprintf('\n');
 end
@@ -315,7 +315,7 @@ for mi = 1:numel(pm_methods)
         mode_k = 'indep';  if dist_amps(di) == 0, mode_k = 'none'; end
         d = run_extra_sim(meth, s_i, p, mode_k);
         results_I.(sprintf('ind%d_%s', round(dist_amps(di)*100), pm_methods{mi})) = d;
-        fprintf(' %9.1f |', d.Jc);
+        fprintf(' %9.3f |', d.Jc);
     end
     fprintf('\n');
 end
