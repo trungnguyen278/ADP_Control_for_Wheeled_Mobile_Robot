@@ -155,25 +155,26 @@ for t_idx = 1:3
         plot(d.q(1,:), d.q(2,:), '-', 'Color', cmap5(i,:), 'LineWidth', 1.2);
     end
     xlabel('$x$ [m]', 'Interpreter', 'latex'); ylabel('$y$ [m]', 'Interpreter', 'latex');
-    legend(['Ref', l5], 'Location', 'best'); axis equal; grid on;
+    legend(['Ref', l5], 'Location', 'eastoutside'); axis equal; grid on;
     exportgraphics(f, fullfile(fig_dir, sprintf('xy_%s.pdf', trajs{t_idx})), 'ContentType', 'vector');
     fprintf('  xy_%s.pdf\n', trajs{t_idx});
 end
 
 % TH-4,5,6: Error (3 quy dao)
 for t_idx = 1:3
-    f = figure('Position', [100 100 600 480], 'Visible', 'off');
+    f = figure('Position', [100 100 680 480], 'Visible', 'off');
+    ax = gobjects(1, 3);
     for j = 1:3
-        subplot(3,1,j);
+        ax(j) = subplot(3,1,j);
         for i = 1:nM
             d = results_A.([trajs{t_idx} '_' m5{i}]);
             plot(d.t, d.z(j,:), '-', 'Color', cmap5(i,:), 'LineWidth', 1); hold on;
         end
         ylabel(zlabels{j}, 'Interpreter', 'latex');
-        if j == 1, legend(l5, 'Location', 'ne'); end
         if j == 3, xlabel('$t$ [s]', 'Interpreter', 'latex'); end
         grid on;
     end
+    legend_out(ax, l5);
     exportgraphics(f, fullfile(fig_dir, sprintf('error_%s.pdf', trajs{t_idx})), 'ContentType', 'vector');
     fprintf('  error_%s.pdf\n', trajs{t_idx});
 end
@@ -192,14 +193,15 @@ b = bar(Jc_mat);
 for i = 1:nM, b(i).FaceColor = cmap5(i,:); end
 set(gca, 'XTickLabel', traj_titles);
 ylabel('$J_c$', 'Interpreter', 'latex');
-legend(l5, 'Location', 'northwest'); grid on;
+legend(l5, 'Location', 'eastoutside'); grid on;
 exportgraphics(f, fullfile(fig_dir, 'bar_jc_traj.pdf'), 'ContentType', 'vector');
 fprintf('  bar_jc_traj.pdf\n');
 
 % TH-8: Weight evolution ADP-FT
-f = figure('Position', [100 100 640 480], 'Visible', 'off');
+f = figure('Position', [100 100 680 480], 'Visible', 'off');
+ax = gobjects(1, 3);
 for t_idx = 1:3
-    subplot(3,1,t_idx);
+    ax(t_idx) = subplot(3,1,t_idx);
     d = results_A.([trajs{t_idx} '_adp_ft']);
     for i = 1:6, plot(d.t, d.W(i,:), '-', 'Color', w_colors(i,:)); hold on; end
     ylabel('$W$', 'Interpreter', 'latex');
@@ -207,6 +209,7 @@ for t_idx = 1:3
     if t_idx == 3, xlabel('$t$ [s]', 'Interpreter', 'latex'); end
     grid on;
 end
+legend_out(ax, {'$W_1$', '$W_2$', '$W_3$', '$W_4$', '$W_5$', '$W_6$'}, 'Interpreter', 'latex');
 exportgraphics(f, fullfile(fig_dir, 'weights_adp_ft.pdf'), 'ContentType', 'vector');
 fprintf('  weights_adp_ft.pdf\n');
 
@@ -215,9 +218,11 @@ colors3.bs = [1 0 0]; colors3.cl = [0.8 0 0.8]; colors3.adp_ft = [0.9 0.5 0];
 rm = {'bs', 'cl', 'adp_ft'}; rl = {'BS', 'CL', 'ADP-FT'};
 masses = [10, 12, 14];
 
-f = figure('Position', [100 100 640 480], 'Visible', 'off');
+% Voi mo hinh da sua, qua do ket thuc trong ~10 s: chi ve 20 s dau cho de doc.
+f = figure('Position', [100 100 680 480], 'Visible', 'off');
+ax = gobjects(1, 3);
 for mi = 1:3
-    subplot(3,1,mi);
+    ax(mi) = subplot(3,1,mi);
     for m_idx = 1:3
         tag = sprintf('m%d_%s', masses(mi), rm{m_idx});
         d = results_B.(tag);
@@ -226,10 +231,10 @@ for mi = 1:3
     end
     ylabel('$\|z\|$', 'Interpreter', 'latex');
     title(sprintf('$m = %d$ kg', masses(mi)), 'Interpreter', 'latex');
-    if mi == 1, legend(rl, 'Location', 'ne'); end
     if mi == 3, xlabel('$t$ [s]', 'Interpreter', 'latex'); end
-    grid on; ylim([0 1]);
+    grid on; xlim([0 20]); ylim([0 0.3]);
 end
+legend_out(ax, rl);
 exportgraphics(f, fullfile(fig_dir, 'robust_mass.pdf'), 'ContentType', 'vector');
 fprintf('  robust_mass.pdf\n');
 
@@ -248,15 +253,16 @@ rob_colors = [colors3.bs; colors3.cl; colors3.adp_ft];
 for i = 1:3, b(i).FaceColor = rob_colors(i,:); end
 set(gca, 'XTickLabel', {'10 kg', '12 kg', '14 kg'});
 ylabel('$J_c$', 'Interpreter', 'latex');
-legend(rl, 'Location', 'northwest'); grid on;
+legend(rl, 'Location', 'eastoutside'); grid on;
 exportgraphics(f, fullfile(fig_dir, 'bar_jc_mass.pdf'), 'ContentType', 'vector');
 fprintf('  bar_jc_mass.pdf\n');
 
 % TH-11: Robustness disturbance - ||z|| vs time
 dist_amps = [0, 0.2, 0.4, 0.6];
-f = figure('Position', [100 100 640 550], 'Visible', 'off');
+f = figure('Position', [100 100 680 550], 'Visible', 'off');
+ax = gobjects(1, 4);
 for di = 1:4
-    subplot(4,1,di);
+    ax(di) = subplot(4,1,di);
     for m_idx = 1:3
         tag = sprintf('d%d_%s', round(dist_amps(di)*100), rm{m_idx});
         d = results_C.(tag);
@@ -265,10 +271,10 @@ for di = 1:4
     end
     ylabel('$\|z\|$', 'Interpreter', 'latex');
     title(sprintf('$d = %.0f\\%%\\,\\tau_{\\max}$', dist_amps(di)*100), 'Interpreter', 'latex');
-    if di == 1, legend(rl, 'Location', 'ne'); end
     if di == 4, xlabel('$t$ [s]', 'Interpreter', 'latex'); end
-    grid on; ylim([0 0.6]);
+    grid on; xlim([0 20]); ylim([0 0.3]);
 end
+legend_out(ax, rl);
 exportgraphics(f, fullfile(fig_dir, 'robust_dist.pdf'), 'ContentType', 'vector');
 fprintf('  robust_dist.pdf\n');
 
@@ -286,7 +292,7 @@ for i = 1:3, b(i).FaceColor = rob_colors(i,:); end
 set(gca, 'XTickLabel', {'0%', '20%', '40%', '60%'});
 xlabel('Disturbance amplitude ($\%\,\tau_{\max}$)', 'Interpreter', 'latex');
 ylabel('$J_c$', 'Interpreter', 'latex');
-legend(rl, 'Location', 'northwest'); grid on;
+legend(rl, 'Location', 'eastoutside'); grid on;
 exportgraphics(f, fullfile(fig_dir, 'bar_jc_dist.pdf'), 'ContentType', 'vector');
 fprintf('  bar_jc_dist.pdf\n');
 
@@ -297,17 +303,34 @@ load('../results/sm1_full_results.mat', 'results', 's', 'p');
 fig_dir_th = '../docs/thesis/figures';
 
 % Torque + disturbance (ADP-FT, dist)
-f = figure('Position', [100 100 560 380], 'Visible', 'off');
+f = figure('Position', [100 100 620 380], 'Visible', 'off');
 d = results.adp_ft_dist;
-subplot(2,1,1);
+ax = gobjects(1, 2);
+ax(1) = subplot(2,1,1);
 plot(d.t, d.tau(1,:), 'b-', d.t, d.tau(2,:), 'r-', 'LineWidth', 0.8);
-ylabel('$\tau$ [N$\cdot$m]', 'Interpreter', 'latex');
-legend('$\tau_R$', '$\tau_L$', 'Interpreter', 'latex', 'Location', 'ne'); grid on;
-subplot(2,1,2);
+ylabel('$\tau$ [N$\cdot$m]', 'Interpreter', 'latex'); grid on;
+ax(2) = subplot(2,1,2);
 plot(d.t, d.dist(1,:), 'm-', 'LineWidth', 0.8);
 ylabel('$d(t)$ [N$\cdot$m]', 'Interpreter', 'latex');
 xlabel('$t$ [s]', 'Interpreter', 'latex'); grid on;
+legend_out(ax, {'$\tau_R$', '$\tau_L$'}, 'Interpreter', 'latex');
 exportgraphics(f, fullfile(fig_dir_th, 'torque_dist.pdf'), 'ContentType', 'vector');
 fprintf('  torque_dist.pdf\n');
 
 fprintf('\n=== ALL FIGURES EXPORTED ===\n');
+
+%% ====================================================================
+%  HAM PHU TRO
+%  ====================================================================
+
+function legend_out(ax, labels, varargin)
+% LEGEND_OUT  Dat legend ben phai, ngoai vung ve (quy tac: legend khong che noi
+% dung plot). Truc dau mang legend bi thu hep; cac truc con lai duoc ep cung do
+% rong de cac subplot thang hang.
+legend(ax(1), labels, 'Location', 'eastoutside', varargin{:});
+drawnow;
+w = ax(1).Position(3);
+for k = 2:numel(ax)
+    ax(k).Position(3) = w;
+end
+end
