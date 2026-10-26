@@ -28,6 +28,7 @@
 % Phan G. Ablation luat cap nhat trong so (Wang eq.17 vs gradient Bellman)
 % Phan H. SMC tham so thong dung vs SMC da tune
 % Phan I. Do ben cua SMC da tune (khoi luong, z0, nhieu doc lap)
+% Phan J. Ablation co che (toan tu chieu, ghep nonholonomic) + dong bang critic
 %
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    08/2026
@@ -319,9 +320,83 @@ for mi = 1:numel(pm_methods)
     fprintf('\n');
 end
 
+%% ================================================================
+%  PHAN J: ABLATION CO CHE + DONG BANG CRITIC
+%  ================================================================
+% Truoc 2026-10-26 cac so lieu nay (Muc 5.7-5.8 luan van) duoc chay rieng le,
+% khong nam trong script nao. Gom lai day de tai tao duoc.
+%   Goc       -- ADP-FT nguyen ban: khong chieu, khong ghep nonholonomic
+%   + chieu   -- chi bat toan tu chieu
+%   + ghep    -- chi bat ghep nonholonomic
+%   Day du    -- ca hai (mac dinh trong ctrl_params)
+%   Dong bang -- day du nhung Gamma = 0: W giu nguyen W0, critic KHONG hoc.
+%                Tra loi cau hoi "critic hoc duoc gi?"
+fprintf('\n--- PHAN J: ABLATION CO CHE + DONG BANG CRITIC ---\n');
+
+results_J = struct();
+j_cfgs = { struct('name','Goc',       'tag','goc',    'proj',false, 'czy',0,         'gam',1), ...
+           struct('name','+ chieu',   'tag','chieu',  'proj',true,  'czy',0,         'gam',1), ...
+           struct('name','+ ghep',    'tag','ghep',   'proj',false, 'czy',s.ft_c_zy, 'gam',1), ...
+           struct('name','Day du',    'tag','full',   'proj',true,  'czy',s.ft_c_zy, 'gam',1), ...
+           struct('name','Dong bang', 'tag','frozen', 'proj',true,  'czy',s.ft_c_zy, 'gam',0) };
+masses_J = [14, 16];
+
+J_traj = nan(numel(j_cfgs), numel(trajs));
+J_zrms = nan(numel(j_cfgs), numel(z0_list));
+J_mass = nan(numel(j_cfgs), numel(masses_J));
+
+for ci = 1:numel(j_cfgs)
+    c = j_cfgs{ci};
+    s_j = s;
+    s_j.ft_proj  = c.proj;
+    s_j.ft_c_zy  = c.czy;
+    s_j.ft_Gamma = c.gam * s.ft_Gamma;
+
+    for t_idx = 1:numel(trajs)
+        s_jt = s_j;  s_jt.traj_type = trajs{t_idx};
+        d = run_extra_sim('adp_ft', s_jt, p, 'common');
+        results_J.(sprintf('%s_%s', c.tag, trajs{t_idx})) = d;
+        J_traj(ci, t_idx) = d.Jc;
+    end
+    for zi = 1:numel(z0_list)
+        s_jz = s_j;  s_jz.traj_type = 'circle';  s_jz.q0_offset = z0_list{zi};
+        d = run_extra_sim('adp_ft', s_jz, p, 'common');
+        results_J.(sprintf('%s_z%d', c.tag, zi)) = d;
+        J_zrms(ci, zi) = d.zrms;
+    end
+    for k = 1:numel(masses_J)
+        s_jm = s_j;  s_jm.traj_type = 'circle';
+        pp = p;  pp.m = masses_J(k);
+        pp.M = diag([pp.m, p.I]);  pp.M_inv = diag([1/pp.m, 1/p.I]);
+        d = run_extra_sim('adp_ft', s_jm, p, 'common', pp);
+        results_J.(sprintf('%s_m%d', c.tag, masses_J(k))) = d;
+        J_mass(ci, k) = d.Jc;
+    end
+end
+
+fprintf('\n  J1. Jc (nhieu 20%%)\n');
+fprintf('  %-10s | %8s | %8s | %8s | %8s | %8s\n', ...
+    'Cau hinh', 'circle', 'line', 'figure8', '14kg', '16kg');
+fprintf('  %s\n', repmat('-', 1, 66));
+for ci = 1:numel(j_cfgs)
+    fprintf('  %-10s | %8.3f | %8.3f | %8.3f | %8.3f | %8.3f\n', ...
+        j_cfgs{ci}.name, J_traj(ci,:), J_mass(ci,:));
+end
+
+fprintf('\n  J2. z_rms 5s cuoi theo dieu kien dau (circle, nhieu 20%%)\n');
+fprintf('  %-10s |', 'Cau hinh');
+for zi = 1:numel(z0_list), fprintf(' %9.3f |', z0_norm(zi)); end
+fprintf('  <- ||z0||\n  %s\n', repmat('-', 1, 13 + 12*numel(z0_list)));
+for ci = 1:numel(j_cfgs)
+    fprintf('  %-10s |', j_cfgs{ci}.name);
+    fprintf(' %9.2e |', J_zrms(ci,:));
+    fprintf('\n');
+end
+
 %% Luu
 save('../results/thesis_extra.mat', ...
      'results_D', 'results_E', 'results_F', 'results_G', 'results_H', 'results_I', ...
+     'results_J', 'J_traj', 'J_zrms', 'J_mass', 'masses_J', ...
      'T_settle', 'z0_norm', 'tol_list', 'masses_I', ...
      'z0_list', 'dist_amps', 'dist_modes', 's', 'p');
 fprintf('\nDa luu vao results/thesis_extra.mat\n');
