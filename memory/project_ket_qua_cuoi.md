@@ -6,7 +6,7 @@ metadata:
 ---
 
 Chạy bằng MATLAB R2023a (trùng Octave tới 4 chữ số), T = 60 s, nhiễu đồng pha 20%, τ_max = 1 N·m
-(tạm), vòng 2 đầy đủ K_d = 20I, K_c = M, K_α = K_β = 10I. Gain (`sweep_gains.m`, kiểm lại bằng
+(tham số mô phỏng đã chốt), vòng 2 đầy đủ K_d = 20I, K_c = M, K_α = K_β = 10I. Gain (`sweep_gains.m`, kiểm lại bằng
 MATLAB): SMC 1/8, ADP-FT 1/2, BS 1/4, CL 1/4, ADP-AC 1/4 (vòng 2 cũ: ADP-AC 1/2).
 
 | PP | Jc tròn / thẳng / số 8 | Tổng | t(‖z‖<0.01) tròn |

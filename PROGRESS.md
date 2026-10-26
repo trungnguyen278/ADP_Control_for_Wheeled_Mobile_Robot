@@ -21,7 +21,7 @@ Chi tiet o muc "2026-10-26 (khuya)" ben duoi.
 **Da build:** thesis.pdf 84 trang, summary_report.pdf 12 trang (MiKTeX, 0 loi, 0 ref treo,
 0 Overfull); 13 hinh luan van xuat lai tu MATLAB. Hinh SM2 giu nguyen ban da nop.
 
-**Con lai (Trung lam, xem VIEC CAN LAM muc 1):** doc lai Ch.4-6, chot tau_max that, gui thay.
+**Con lai (Trung lam, xem VIEC CAN LAM muc 1):** doc lai Ch.4-6 va bao cao tom tat, gui thay.
 
 **GVHD:** thay Nam da nhan ban v2 (43 trang, commit 7fedea9) + bao cao tom tat
 (13 trang, commit 5e1a452) qua Teams 2026-05-26 nhung CHUA DOC. Hai ban nay mang loi B.
@@ -658,9 +658,10 @@ Trung chon goi **vong 1 (vong ngoai, dong hoc) / vong 2 (vong trong, dong luc ho
 - [x] Chay MATLAB, xuat hinh, build PDF bang MiKTeX, commit PDF (2026-10-26 khuya).
 - [ ] Doc lai toan bo, dac biet Ch.4-6 (Muc 4.1, 4.4 viet lai theo hai vong; Muc 5.6 moi; Muc 5.4
       viet lai theo ham mo ta) va Muc 2 bao cao tom tat.
-- [ ] **Trung quyet:** tau_max that cua motor (dang tam 1 N*m). Doi gia tri => chay lai het.
-- [ ] **Trung quyet:** co bao hoa so hang cheo de van toc thuc khong vuot v_max khong (hien vuot
-      toi 0.62 m/s khi z0 lon; neu sua => chay lai Phan E, L, M).
+- [x] tau_max = 1 N*m la tham so mo phong da chot (2026-10-27: luan van chi thiet ke + mo phong,
+      khong co robot/motor that => khong con "chot thong so that").
+- [x] Van toc thuc vuot v_max (toi 0.62 m/s khi z0 lon) do so hang cheo: da ghi trong luan van
+      (Muc 4.3, 5.6, 5.8); chi mo phong nen khong phai van de an toan, khong sua.
 - [ ] Gui thay Nam ban moi + noi ro loi B, vong 2 (backstepping) va cac ket luan da doi so voi v2.
 - [ ] Doi chieu cau ve luat Fierro & Lewis (Muc 4.3) voi bai goc neu co PDF.
 - [ ] (khong gap) Gom trung lap plot_sm1_results.m va plot_sm1_full.m.

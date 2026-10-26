@@ -170,7 +170,7 @@ Số hạng chéo `K_c·[z_x; z_θ] = −K_c·gᵀz` triệt số hạng tương
 | Nửa khoảng cách trục | L | 0.15 | m |
 | Ma sát nhớt | f_v / f_ω | 0.5 / 0.1 | N·s/m, N·m·s/rad |
 | Ma sát Coulomb | f_c / f_cω | 0.05 / 0.02 | N, N·m |
-| Mô-men max/bánh | τ_max | 1 (tạm, chờ thông số motor thật) | N·m |
+| Mô-men max/bánh | τ_max | 1 (chọn cho mô phỏng) | N·m |
 
 **Vòng 1 ADP-FT** (`simulations/ctrl_params.m` — **đã chỉnh cho robot điều khiển bằng mô-men**,
 khác giá trị gốc của Wang dành cho kinematic-only: λ = μ = α = diag(1, 1, 0.4),
@@ -201,7 +201,7 @@ kênh: Phần F của `sim_thesis_extra.m`.
 
 ## Kết quả
 
-Mô hình đã sửa ma trận B, τ_max = 1 N·m (tạm), vòng 2 đầy đủ (K_c = M, K_α = K_β = 10I),
+Mô hình đã sửa ma trận B, τ_max = 1 N·m, vòng 2 đầy đủ (K_c = M, K_α = K_β = 10I),
 T = 60 s, nhiễu đồng pha 20%, gain chỉnh đều nhau (MATLAB R2023a, 2026-10-26; chi tiết trong
 [PROGRESS.md](PROGRESS.md) và Chương 5 luận văn):
 

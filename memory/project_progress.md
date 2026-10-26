@@ -12,7 +12,9 @@ metadata:
   có chứng minh rút gọn.
 - Sửa bookmark PDF (chương sau bị gộp vào Chương 1 do anchor trùng) và anchor công thức trùng giữa các
   chương. Mọi thay đổi nằm trên nhánh `docs/ket-qua-buoc-2-matlab` (PR #3), chưa merge.
-- Còn lại như dưới; thêm: quyết có bão hòa số hạng chéo không (v thực vượt v_max tới 0,62 m/s).
+- Còn lại (Trung): đọc lại Ch.4–6 và Mục 2 báo cáo tóm tắt, merge PR #3, gửi thầy Nam bản mới kèm
+  giải thích lỗi B và vòng 2. Không còn thông số nào phải "chốt theo phần cứng": luận văn chỉ thiết kế
+  và mô phỏng ([[feedback-simulation-only]]); việc v thực vượt v_max đã ghi trong luận văn, không sửa.
 
 ## Cập nhật 2026-10-26 (khuya): vòng 2 đầy đủ, chạy lại bằng MATLAB, build xong
 
@@ -23,8 +25,8 @@ metadata:
   phần kết quả báo cáo tóm tắt; README, workflow, CLAUDE.md (đường dẫn MATLAB/MiKTeX mới).
   Số liệu: [[ket-qua-cuoi]]. Build MiKTeX: 0 lỗi, 0 ref treo, 0 Overfull.
 - Kết quả đổi so với bản 72 trang: ADP-FT không còn "thứ hai" mà ngang NTSMC (4,140 vs 4,130).
-- Còn lại (Trung): đọc lại Ch.4–6, quyết τ_max thật của motor (đổi → chạy lại hết), gửi thầy
-  Nam bản mới kèm giải thích lỗi B và vòng 2.
+- Còn lại (Trung): đọc lại Ch.4–6, gửi thầy Nam bản mới kèm giải thích lỗi B và vòng 2.
+  (Ghi "quyết τ_max thật" ở bản ghi này là hiểu nhầm — xem cập nhật 27/10.)
 
 ## Cập nhật 2026-10-26 (tối): đã viết lại xong
 
@@ -36,7 +38,7 @@ metadata:
   SMC đã chỉnh thấp nhất) báo cáo đầy đủ.
 - Còn lại (Trung): chạy MATLAB `sim_sm2; sim_sm1_full; sim_thesis; sim_thesis_extra` rồi
   `export_all_figures` (hình trong repo VẪN là mô hình cũ), build MiKTeX, đọc lại, commit
-  PDF, gửi thầy kèm giải thích lỗi B. τ_max thật của motor vẫn chưa chốt (đang 1 N·m).
+  PDF, gửi thầy kèm giải thích lỗi B. τ_max = 1 N·m (tham số mô phỏng, Trung đã chốt chiều 26/10).
 
 ## Cập nhật 2026-10-26 (chiều): quyết định của Trung
 

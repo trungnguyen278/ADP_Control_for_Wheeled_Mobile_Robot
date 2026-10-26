@@ -87,10 +87,8 @@ từ mô hình gốc (02/2026), nên cả bản v2 đã gửi thầy Nam cũng m
   B đúng + τ_max tạm 1 N·m (`9b3fcf0`), quét lại SMC giữ 0,7/0,05 (`d9a9532`),
   Phần J ablation cơ chế + đóng băng critic + "Wang gốc" (`5babecd`, commit sau đó).
   Số mới: PROGRESS.md mục 2026-10-26.
-- **Luận văn CHƯA viết lại.** Checklist đầy đủ: PROGRESS.md → VIEC CAN LAM mục 2.
-  Không sửa chữ trước khi Trung chốt τ_max và chạy lại trên MATLAB (số sẽ đổi).
-- Còn chờ Trung quyết: τ_max thật của motor; có tune lại gain ADP-FT/BS trên mô hình
-  mới không (gain hiện tại chọn trên mô hình sai).
-- Hình trong `docs/thesis/figures/` vẫn của mô hình cũ — phải xuất lại bằng MATLAB.
+- **[Cập nhật 2026-10-27] Đã xong:** luận văn viết lại, chạy lại bằng MATLAB, xuất lại hình,
+  gain chỉnh đều nhau (`sweep_gains.m`). τ_max = 1 N·m là tham số mô phỏng đã chốt — luận văn
+  chỉ thiết kế và mô phỏng, không có motor thật nên không còn gì chờ chốt (xem [[ket-qua-cuoi]]).
 
 Related: [[feedback-nonholonomic-coupling]], [[feedback-baseline-fairness]], [[feedback-fixedtime-unverified]], [[feedback-adp-ft-tuning]], [[project-progress]]

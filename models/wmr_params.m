@@ -37,7 +37,8 @@ p.eps_sign = 0.01;
 %% === GIOI HAN CO CAU CHAP HANH ===
 
 p.tau_max = 1;          % [N*m] mo-men toi da moi banh (sau hop giam toc)
-                        % TAM THOI (2026-10-26): chua co thong so motor that.
+                        % Tham so chon cho mo phong (luan van chi mo phong, khong
+                        % co robot/motor that), chot 2026-10-26.
                         % Gia toc toi da = 2*tau_max/(r*m) = 4 m/s^2.
                         % Gia tri 20 truoc day chi chay duoc voi B sai.
 p.v_max   = 1.0;        % [m/s]
