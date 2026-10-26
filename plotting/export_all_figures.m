@@ -1,6 +1,7 @@
 %% EXPORT_ALL_FIGURES  Xuat hinh SM2 + Thesis sang PDF
 %
-% Chay SAU sim_sm2.m va sim_thesis.m
+% Chay SAU sim_sm2.m, sim_sm1_full.m va sim_thesis.m (can ca ba file .mat:
+% sm2_results, sm1_full_results -- hinh torque_dist -- va thesis_results).
 %
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    05/2026
@@ -185,10 +186,9 @@ for t_idx = 1:3
         Jc_mat(t_idx, mi) = results_A.([trajs{t_idx} '_' m5{mi}]).Jc;
     end
 end
-Jc_mat_plot = Jc_mat;
-% Cap gia tri SMC tren figure-8 cho de doc (SMC phan ky manh, nuot het thang do)
-Jc_mat_plot(3, strcmp(m5,'smc')) = 500;
-b = bar(Jc_mat_plot);
+% Truoc 2026-10-26 o day ghi cung Jc SMC hinh 8 = 500 (mo hinh B sai lam SMC phan
+% ky). Voi mo hinh da sua, Jc cac PP cung bac nen bo cap.
+b = bar(Jc_mat);
 for i = 1:nM, b(i).FaceColor = cmap5(i,:); end
 set(gca, 'XTickLabel', traj_titles);
 ylabel('$J_c$', 'Interpreter', 'latex');
