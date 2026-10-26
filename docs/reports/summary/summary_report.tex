@@ -16,6 +16,10 @@
 \renewcommand{\baselinestretch}{1.2}
 \graphicspath{{../../thesis/figures/}{../sm2/figures/}}
 
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\refname}{Tài liệu tham khảo}
+
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\T}{\mathsf{T}}
 \DeclareMathOperator{\diag}{diag}
@@ -34,7 +38,7 @@
         \textbf{GVHD:}          & PGS.TS. Nguyễn Hoài Nam \\
         \textbf{Chuyên ngành:}  & Kỹ thuật Điều khiển và Tự động hóa \\
                                 & Đại học Bách khoa Hà Nội \\
-        \textbf{Ngày:}          & 26/05/2026 \\
+        \textbf{Ngày:}          & 10/2026 (cập nhật bản 26/05/2026) \\
     \end{tabular}
 \end{center}
 
@@ -48,22 +52,22 @@
 
 Robot di động hai bánh vi sai (Wheeled Mobile Robot -- WMR) là nền tảng phổ biến trong các ứng dụng tự hành, logistics nhà kho, và robot dịch vụ. Bài toán bám quỹ đạo cho WMR đặt ra nhiều thách thức do tính phi tuyến, ràng buộc nonholonomic, và sự hiện diện của nhiễu loạn cùng bất định mô hình trong thực tế. Các phương pháp điều khiển truyền thống như Backstepping hay Sliding Mode Control đã được nghiên cứu rộng rãi, tuy nhiên vấn đề tối ưu hóa hiệu năng điều khiển theo nghĩa chi phí năng lượng vẫn còn hạn chế.
 
-Gần đây, Wang và cộng sự (IEEE RA-L, 2025)~\cite{Wang2025} đã đề xuất phương pháp điều khiển tối ưu dựa trên Quy hoạch động thích nghi (Adaptive Dynamic Programming -- ADP) với tính chất hội tụ cố định thời gian (fixed-time convergence). Phương pháp này đảm bảo sai số bám và sai số ước lượng trọng số hội tụ về \textit{lân cận} của không trong thời gian cố định, không phụ thuộc điều kiện đầu (practical fixed-time). Tuy nhiên, công trình gốc chỉ xét mô hình \textbf{kinematic} đơn giản, bỏ qua hoàn toàn động lực học (dynamic) của robot.
+Gần đây, Wang và cộng sự (IEEE RA-L, 2025)~\cite{Wang2025} đã đề xuất phương pháp điều khiển tối ưu dựa trên Quy hoạch động thích nghi (Adaptive Dynamic Programming -- ADP) với tính chất hội tụ cố định thời gian (fixed-time convergence): sai số bám và sai số ước lượng trọng số đi vào \textit{lân cận} của không trong thời gian bị chặn bởi một hằng số không phụ thuộc điều kiện đầu. Tuy nhiên, công trình gốc chỉ xét mô hình \textbf{động học}, trong đó tín hiệu điều khiển là vận tốc; robot thực lại nhận lệnh \textbf{mô-men}.
 
 \subsection{Mục tiêu nghiên cứu}
 
-Luận văn này mở rộng phương pháp ADP Fixed-time từ mô hình kinematic-only sang \textbf{kiến trúc điều khiển 2 vòng} (dual-loop) bao gồm cả kinematic và dynamic cho WMR, nhằm tiến gần hơn đến ứng dụng thực tế.
+Hoàn thiện phương pháp ADP-FT của Wang et al. cho robot di động hai bánh được điều khiển bằng mô-men, trên mô hình đầy đủ 5 trạng thái có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men, thông qua \textbf{kiến trúc điều khiển hai vòng}; đồng thời so sánh công bằng với các phương pháp kinh điển và đánh giá trung thực những gì còn được bảo toàn.
 
 \subsection{Bốn đóng góp chính}
 
 \begin{enumerate}
-    \item \textbf{Kiến trúc 2 vòng lồng nhau:} Vòng ngoài sử dụng ADP Fixed-time (hoặc các bộ điều khiển so sánh) để sinh vận tốc tham chiếu; vòng trong sử dụng Dynamic Backstepping (Fierro \& Lewis, 1997)~\cite{Fierro1997} để chuyển đổi sang mô-men điều khiển thực tế, có tính đến quán tính, ma sát và giới hạn mô-men.
+    \item \textbf{Kiến trúc hai vòng:} vòng ngoài ADP-FT (giữ nguyên luật cập nhật và cấu trúc luật điều khiển (16)--(18) của Wang et al.), vòng trong Dynamic Backstepping (Fierro \& Lewis, 1997)~\cite{Fierro1997} chuyển lệnh vận tốc thành mô-men; phân tích điều kiện ghép hai vòng.
 
-    \item \textbf{Điều chỉnh tham số robust cho dual-loop:} Các hệ số robust (fractional power, cubic terms) trong Wang et al. được thiết kế cho kinematic-only. Khi kết hợp với vòng trong đã reject nhiễu, các hệ số này phải giảm mạnh để tránh phát tán -- riêng $\beta$ từ $10^5$ xuống $0{,}15$. Luận văn trình bày quy trình điều chỉnh chi tiết, phân tích nguyên nhân, và \textbf{nêu rõ cái giá phải trả} đối với đảm bảo hội tụ cố định thời gian.
+    \item \textbf{Điều chỉnh ADP-FT cho kiến trúc hai vòng:} chỉnh lại gain cho lệnh vận tốc bị chặn, giới hạn tín hiệu phản hồi, khởi tạo trọng số; bổ sung \textbf{cơ chế ghép nonholonomic} cho kênh sai số ngang (thành phần quyết định) và \textbf{toán tử chiếu} giữ hàm giá trị xác định dương.
 
-    \item \textbf{So sánh toàn diện 5 phương pháp điều khiển:} Backstepping (BS), ADP Actor-Critic (AC), Sliding Mode Control (SMC), Critic-only Concurrent Learning (CL), và ADP Fixed-time (ADP-FT) được đánh giá trên 3 loại quỹ đạo với cùng điều kiện mô phỏng.
+    \item \textbf{So sánh công bằng 5 phương pháp} (BS, ADP-AC, SMC kèm biến thể NTSMC, CL, ADP-FT) trên 3 quỹ đạo, sau khi mọi phương pháp được chỉnh gain theo cùng một quy trình.
 
-    \item \textbf{Phân tích robustness:} Khảo sát ảnh hưởng của bất định khối lượng (0--40\%) và nhiễu ngoài (0--60\% mô-men cực đại) lên hiệu năng các bộ điều khiển.
+    \item \textbf{Phân tích robustness và phân tích thành phần:} bất định khối lượng tới $+60\%$, ba dạng nhiễu tới $60\%\,\tau_\text{max}$, năm điều kiện đầu; công thức giải tích dự đoán sai số xác lập do nhiễu; thí nghiệm loại bỏ từng thành phần của ADP-FT.
 \end{enumerate}
 
 % ================================================================
@@ -84,6 +88,7 @@ Kiến trúc điều khiển gồm hai vòng lồng nhau:
 3. Sliding Mode (SMC) & (Fierro \& Lewis 1997) & 5 trạng thái \\
 4. Critic-only CL & $\boldsymbol{\tau} = B^{-1}[M(\cdot)+F]$ & + nhiễu $d(t)$ \\
 5. ADP Fixed-time (FT) & & \\
+(+ biến thể NTSMC của 3) & & \\
 \hline
 \end{tabular}
 \end{center}
@@ -91,7 +96,7 @@ Kiến trúc điều khiển gồm hai vòng lồng nhau:
 \noindent
 \textbf{Vòng ngoài} nhận sai lệch quỹ đạo $(e_x, e_y, e_\theta)$ và sinh ra tín hiệu vận tốc tham chiếu $(v_c, \omega_c)$. \textbf{Vòng trong} nhận sai lệch vận tốc $(v - v_c, \omega - \omega_c)$ và tính mô-men bánh trái/phải $(\tau_L, \tau_R)$ để bám theo vận tốc yêu cầu, đồng thời bù các thành phần phi tuyến và ma sát.
 
-Nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)$ được cộng trực tiếp vào mô-men trên cả hai kênh, mô phỏng nhiễu loạn tần số cao trong thực tế (theo yêu cầu của thầy hướng dẫn sau Seminar 1).
+Nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)\,[1,\ 1]^\T$, mặc định $A = 20\%$, được cộng vào mô-men hai bánh ở vòng trong, mô phỏng nhiễu loạn tần số cao (theo yêu cầu của thầy hướng dẫn sau Seminar 1). Ngoài dạng đồng pha này, luận văn khảo sát thêm nhiễu vi sai $[1,\ -1]^\T$ và nhiễu độc lập trên hai bánh.
 
 \subsection{Mô hình robot di động}
 
@@ -106,18 +111,18 @@ Khối lượng robot & $m$ & 10\,kg \\
 Mô-men quán tính & $I$ & 0.5\,kg$\cdot$m$^2$ \\
 Bán kính bánh xe & $r$ & 0.05\,m \\
 Nửa khoảng cách trục & $L$ & 0.15\,m \\
-Mô-men cực đại mỗi bánh & $\tau_\text{max}$ & 20\,N$\cdot$m \\
+Mô-men cực đại mỗi bánh & $\tau_\text{max}$ & 1\,N$\cdot$m \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Phương trình động lực học:
+Phương trình động lực học (Fierro \& Lewis~\cite{Fierro1997}), $M\dot\eta = B(\tau + d) - F(\eta)$ với $B = \frac{1}{r}\begin{bmatrix} 1 & 1 \\ L & -L \end{bmatrix}$:
 \begin{align}
     \dot{x} &= v\cos\theta, \quad \dot{y} = v\sin\theta, \quad \dot{\theta} = \omega \\
-    m\dot{v} &= \frac{1}{r}(\tau_R + \tau_L) + d_v(t) \\
-    I\dot{\omega} &= \frac{L}{r}(\tau_R - \tau_L) + d_\omega(t)
+    m\dot{v} &= \frac{1}{r}(\tau_R + \tau_L + d_R + d_L) - F_v(v) \\
+    I\dot{\omega} &= \frac{L}{r}(\tau_R - \tau_L + d_R - d_L) - F_\omega(\omega)
 \end{align}
-trong đó $d_v(t), d_\omega(t)$ là nhiễu ngoài tác động lên kênh tịnh tiến và kênh quay.
+trong đó $F_v$, $F_\omega$ là ma sát nhớt -- Coulomb. Với $\tau_\text{max} = 1$\,N$\cdot$m, gia tốc tịnh tiến lớn nhất là $2\tau_\text{max}/(rm) = 4$\,m/s$^2$. Lưu ý: nhiễu đồng pha ($d_R = d_L$) chỉ tác động lên kênh tịnh tiến.
 
 % ================================================================
 \section{Kết quả Seminar 1: Actor-Critic ADP trên mô hình Kinematic}
@@ -195,49 +200,48 @@ Seminar 2 (tháng 4/2026) triển khai phương pháp Critic-only kết hợp Co
 \end{figure}
 
 % ================================================================
-\section{Kết quả chính: Mô hình đầy đủ, 5 phương pháp điều khiển}
+\section{Kết quả chính: mô hình đầy đủ, kiến trúc hai vòng}
 % ================================================================
 
-Đây là phần kết quả chính của luận văn, thực hiện trên \textbf{mô hình đầy đủ 5 trạng thái} với kiến trúc 2 vòng. Tất cả 5 phương pháp vòng ngoài đều sử dụng chung bộ điều khiển vòng trong Dynamic Backstepping.
+Phần này thực hiện trên \textbf{mô hình đầy đủ 5 trạng thái} với kiến trúc hai vòng; mọi phương pháp vòng ngoài dùng chung vòng trong Dynamic Backstepping ($K_d = 20$). Điều kiện mô phỏng: $T = 60$\,s, Euler $\Delta t = 1$\,ms, $Q = 10I_3$, $R = 2I_2$, sai lệch ban đầu $z_0 = [0{,}2;\ -0{,}1;\ 0{,}1]$, robot xuất phát đứng yên, nhiễu đồng pha 20\%. Ba quỹ đạo: đường tròn ($R_c = 2$\,m, $v_r = 0{,}3$\,m/s), đường thẳng ($v_r = 0{,}3$\,m/s) và hình số 8 (lemniscate, $\omega_8 = 0{,}1$\,rad/s).
 
-\subsection{Phần A: So sánh 3 quỹ đạo $\times$ 5 phương pháp ($T=60$\,s, nhiễu 20\%)}
+\subsection{Chỉnh gain đều nhau trước khi so sánh}
 
-Điều kiện mô phỏng: thời gian $T = 60$\,s, nhiễu ngoài $d(t) = 0.2 \cdot \tau_\text{max} \cdot \sin(30t)$ trên cả hai kênh mô-men. Ba quỹ đạo tham chiếu: đường tròn (bán kính 1\,m, $\omega_r = 0.5$\,rad/s), đường thẳng ($v_r = 0.5$\,m/s, $\omega_r = 0$), và hình số 8 (lissajous).
-
-Chỉ số đánh giá:
-\begin{itemize}[nosep]
-    \item $J_c$: Tổng chi phí tích lũy (cumulative cost), bao gồm sai lệch bám + năng lượng điều khiển.
-    \item $J_e$: Chi phí sai lệch thuần túy (chỉ tính tracking error).
-    \item $z_\text{rms}$: Sai số RMS trung bình trong 5 giây cuối cùng, đánh giá chất lượng xác lập.
-\end{itemize}
+Mỗi phương pháp xuất phát từ bộ gain danh nghĩa, nhân \textit{toàn bộ} gain phản hồi với cùng một hệ số $k \in \{1/16, \dots, 4\}$ và chọn $k^*$ cho tổng $J_c$ trên ba quỹ đạo nhỏ nhất (21 lần chạy mỗi phương pháp). NTSMC dùng đúng gain của SMC.
 
 \begin{table}[H]
 \centering
-\caption{So sánh toàn diện 5 phương pháp (mô hình đầy đủ, dual-loop, $T=60$\,s, nhiễu 20\%)}
-\begin{tabular}{llrrr}
+\caption{Kết quả chỉnh gain đều nhau (tổng $J_c$ trên 3 quỹ đạo)}
+\begin{tabular}{lcrrr}
 \toprule
-\textbf{Quỹ đạo} & \textbf{Phương pháp} & $J_c$ & $J_e$ & $z_\text{rms}$ (5\,s cuối) \\
+\textbf{Phương pháp} & $k^*$ & \textbf{Tổng $J_c$ ($k = 1$)} & \textbf{Tổng $J_c$ ($k^*$)} & \textbf{Thay đổi} \\
 \midrule
-\multirow{5}{*}{Đường tròn}
-    & BS                        &  90.1 &  6.62 & 0.000 \\
-    & ADP-AC                    & 121.2 & 11.01 & 0.113 \\
-    & SMC                       & 555.5 & 29.23 & 0.743 \\
-    & CL                        & 101.1 &  9.11 & 0.058 \\
-    & \textbf{ADP-FT}           & \textbf{85.2} & \textbf{7.58} & 0.046 \\
+SMC    & 1/8 & 4.984 & 3.836 & $-23.0\%$ \\
+ADP-FT & 1/2 & 4.295 & 4.192 & $-2.4\%$ \\
+BS     & 1/4 & 4.861 & 4.310 & $-11.3\%$ \\
+CL     & 1/4 & 21.095 & 5.778 & $-72.6\%$ \\
+ADP-AC & 1/2 & 20.505 & 14.334 & $-30.1\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Bước này là điều kiện tiên quyết: ở gain thông dụng, SMC có tổng chi phí $4{,}984$ -- \textit{cao hơn} ADP-FT; sau khi chỉnh như mọi phương pháp, giảm xuống $3{,}836$ và trở thành thấp nhất. So sánh không chỉnh gain đều sẽ cho kết luận ngược.
+
+\subsection{Phần A: So sánh trên 3 quỹ đạo}
+
+\begin{table}[H]
+\centering
+\caption{$J_c$ và thời gian về $\|z\| < 0{,}01$\,m trên đường tròn (nhiễu 20\%, gain đã chỉnh đều)}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Phương pháp} & \textbf{Tròn} & \textbf{Thẳng} & \textbf{Số 8} & \textbf{Tổng} & $t_{0,01}$ (s) \\
 \midrule
-\multirow{5}{*}{Đường thẳng}
-    & BS                        &   5.9 &  0.50 & 0.000 \\
-    & ADP-AC                    &  11.6 &  0.92 & 0.003 \\
-    & SMC                       &  64.7 &  2.14 & 0.000 \\
-    & CL                        &  10.8 &  1.01 & 0.102 \\
-    & \textbf{ADP-FT}           &  \textbf{8.5} &  \textbf{0.78} & 0.048 \\
-\midrule
-\multirow{5}{*}{Hình số 8}
-    & BS                        &  12.1 &  0.94 & 0.002 \\
-    & ADP-AC                    &  22.4 &  1.74 & 0.027 \\
-    & SMC                       & 2457.6& 215.0 & 2.118 \\
-    & CL                        &  72.2 &  5.74 & 0.119 \\
-    & ADP-FT                    &  93.2 &  7.48 & 0.057 \\
+BS     & 1.307 & 0.898 & 2.104 & 4.310 & 10.7 \\
+ADP-AC & 4.708 & 4.219 & 5.407 & 14.334 & 60.0 \\
+SMC    & \textbf{1.213} & \textbf{0.663} & \textbf{1.960} & \textbf{3.836} & 10.0 \\
+NTSMC  & 1.257 & 0.857 & 2.079 & 4.193 & 9.9 \\
+CL     & 1.598 & 1.347 & 2.832 & 5.778 & 25.6 \\
+ADP-FT & 1.334 & 0.803 & 2.056 & 4.192 & \textbf{8.4} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -245,20 +249,16 @@ Chỉ số đánh giá:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{bar_jc_traj.pdf}
-    \caption{Biểu đồ cột so sánh $J_c$ của 5 phương pháp trên 3 quỹ đạo.}
+    \caption{$J_c$ của các phương pháp trên 3 quỹ đạo.}
     \label{fig:bar_jc_traj}
 \end{figure}
 
-\textbf{Phân tích chi tiết theo từng quỹ đạo:}
-
+\textbf{Nhận xét:}
 \begin{itemize}
-    \item \textbf{Đường tròn:} ADP-FT đạt $J_c = 85.2$, tốt nhất trong 5 phương pháp, vượt BS khoảng 5.4\%. Các thành phần robust (fractional power + cubic term) trong ADP-FT chủ động bù nhiễu, giúp giảm chi phí tổng thể. CL đứng thứ ba ($J_c = 101.1$), xác nhận giá trị của phương pháp Critic-only trên mô hình đầy đủ.
-
-    \item \textbf{Đường thẳng:} ADP-FT đạt $J_c = 8.5$, đứng thứ hai sau BS ($J_c = 5.9$). Khoảng cách giữa ADP-FT và BS lớn hơn trên đường thẳng do quỹ đạo đơn giản không cần robust bổ sung. CL ($J_c = 10.8$) cũng hoạt động tốt, xác nhận kết quả SM2.
-
-    \item \textbf{Hình số 8:} ADP-FT ($J_c = 93.2$) kém đáng kể so với BS ($J_c = 12.1$). Nguyên nhân: quỹ đạo hình số 8 có độ cong biến thiên lớn, các robust terms cố định không thích ứng kịp. Đây là hạn chế cần cải thiện --- có thể cần cơ chế adaptive gain scheduling cho quỹ đạo phức tạp.
-
-    \item \textbf{SMC:} Chi phí cao nhất trên mọi quỹ đạo ($J_c = 555.5$ trên đường tròn, $J_c = 2457.6$ trên hình số 8). Reaching law tạo dao động lớn, truyền qua vòng trong gây dao động mô-men liên tục. \textbf{Lưu ý về tính công bằng:} tham số SMC ($\lambda = 3$, $\eta = 1$) lấy theo giá trị thông dụng, không qua tối ưu hóa trên mô hình đầy đủ như đã làm với ADP-FT; khảo sát sơ bộ cho thấy chi phí SMC rất nhạy với gain. Kết luận đúng là \textit{SMC với tham số thông dụng chưa phù hợp trực tiếp cho kiến trúc dual-loop và cần điều chỉnh lại}, chứ không phải SMC kém hơn ADP-FT.
+    \item \textbf{SMC thấp nhất} trên cả ba quỹ đạo. \textbf{ADP-FT đứng thứ hai} về tổng chi phí (cao hơn SMC $9{,}3\%$), ngang NTSMC, tốt hơn BS, CL và ADP-AC; trên đường tròn ADP-FT cao hơn BS $2{,}1\%$.
+    \item ADP-FT \textbf{về lân cận nhỏ của quỹ đạo sớm nhất} trên cả ba quỹ đạo (ngưỡng $0{,}05$; $0{,}02$; $0{,}01$\,m). $J_c$ của SMC vẫn thấp hơn vì $J_c$ bị chi phối bởi vài giây đầu, khi SMC giảm sai số lớn nhanh hơn.
+    \item Với BS, SMC, NTSMC, ADP-FT, sai số xác lập đều $\approx 5{,}3$--$5{,}5\times10^{-4}$\,m: đây là \textbf{sàn do nhiễu} lọt qua vòng trong, không do vòng ngoài (Mục 5.3 dưới đây). ADP-AC (tín hiệu PE tới giây 30) và CL hội tụ chậm hơn.
+    \item Năng lượng $J_u = J_c - 10J_e$ chỉ chiếm dưới $9\%$ $J_c$ (trừ ADP-AC): so sánh $J_c$ thực chất là so sánh sai số tích lũy.
 \end{itemize}
 
 \begin{figure}[H]
@@ -278,174 +278,95 @@ Chỉ số đánh giá:
     \end{minipage}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{xy_line.pdf}
-        \caption{Quỹ đạo bám đường thẳng.}
-        \label{fig:xy_line}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{xy_figure8.pdf}
-        \caption{Quỹ đạo bám hình số 8.}
-        \label{fig:xy_figure8}
-    \end{minipage}
-\end{figure}
-
-\subsection{Phần B: Phân tích Robustness --- Bất định khối lượng}
-
-Mục tiêu: đánh giá khả năng chịu đựng bất định tham số của các bộ điều khiển. Bộ điều khiển được thiết kế với khối lượng danh nghĩa $m_\text{nom} = 10$\,kg, trong khi đối tượng thực tế sử dụng $m_\text{actual} \in \{10, 12, 14\}$\,kg (tương ứng bất định 0\%, +20\%, +40\%). Quỹ đạo: đường tròn, nhiễu 20\%.
+\subsection{Phần B, C: Bất định khối lượng và nhiễu}
 
 \begin{table}[H]
 \centering
-\caption{Robustness bất định khối lượng ($J_c$, đường tròn, nhiễu 20\%)}
-\begin{tabular}{lrrr}
+\caption{Mức tăng $J_c$ so với điều kiện danh nghĩa (đường tròn)}
+\begin{tabular}{lrrrr}
 \toprule
-\textbf{Khối lượng} & \textbf{BS} & \textbf{CL} & \textbf{ADP-FT} \\
+\textbf{Kịch bản} & \textbf{BS} & \textbf{SMC} & \textbf{CL} & \textbf{ADP-FT} \\
 \midrule
-10\,kg (danh nghĩa)    & 90.1   & 101.1  & \textbf{85.2} \\
-12\,kg (+20\%)          & 156.4  & 159.8  & \textbf{157.2} \\
-14\,kg (+40\%)          & 264.2  & 334.6  & 4283 (phát tán) \\
+Khối lượng thực $16$\,kg ($+60\%$) & $+3.1\%$ & $+1.3\%$ & $+1.5\%^{(*)}$ & $+0.9\%$ \\
+Nhiễu đồng pha $60\%$ (so với $0\%$) & $+0.7\%$ & $+0.8\%$ & $+2.3\%$ & $+0.5\%$ \\
 \bottomrule
 \end{tabular}
-\end{table}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{bar_jc_mass.pdf}
-    \caption{Biểu đồ $J_c$ theo bất định khối lượng (BS, CL, ADP-FT).}
-    \label{fig:bar_jc_mass}
-\end{figure}
-
-\textbf{Phân tích kết quả:}
-\begin{itemize}
-    \item \textbf{Tại danh nghĩa (10\,kg):} ADP-FT tốt nhất ($J_c = 85.2$), vượt BS 5.4\% nhờ cơ chế robust chủ động.
-
-    \item \textbf{Tại +20\% (12\,kg):} Cả ba phương pháp tăng chi phí đáng kể. ADP-FT ($J_c = 157.2$) tương đương BS ($J_c = 156.4$), cho thấy robust terms vẫn hiệu quả ở mức bất định vừa phải.
-
-    \item \textbf{Tại +40\% (14\,kg):} ADP-FT \textbf{phát tán} ($J_c = 4283$), trong khi BS vẫn ổn định ($J_c = 264.2$). Nguyên nhân: các thành phần robust tạo ra tín hiệu điều khiển quá lớn, vòng trong không theo kịp, hình thành vòng phản hồi dương. Đây là hạn chế nghiêm trọng cần khắc phục.
-
-    \item \textbf{Bài học rút ra:} Cần cơ chế adaptive gain (tự động giảm hệ số robust khi bất định quá lớn) hoặc observer ước lượng khối lượng thực để cập nhật mô hình.
-\end{itemize}
-
-\subsection{Phần C: Phân tích Robustness --- Nhiễu ngoài}
-
-Khảo sát ảnh hưởng của biên độ nhiễu ngoài
-\begin{equation*}
-    d(t) = A \cdot \tau_\text{max} \cdot \sin(30t), \qquad A \in \{0;\ 0{,}2;\ 0{,}4;\ 0{,}6\}
-\end{equation*}
-tương ứng 0\%, 20\%, 40\%, 60\% mô-men cực đại. Quỹ đạo: đường tròn, $m = 10$\,kg.
-
-\begin{table}[H]
-\centering
-\caption{Robustness nhiễu ngoài ($J_c$, đường tròn, $m = 10$\,kg)}
-\begin{tabular}{lrrr}
-\toprule
-\textbf{Mức nhiễu} & \textbf{BS} & \textbf{CL} & \textbf{ADP-FT} \\
-\midrule
-0\%  (không nhiễu)  &  70.7 &  87.5 & \textbf{70.7} \\
-20\%                &  90.1 & 101.1 & \textbf{85.2} \\
-40\%                & 116.5 & 124.2 & \textbf{111.8} \\
-60\%                & 156.7 & 162.3 & \textbf{157.7} \\
-\bottomrule
-\end{tabular}
+\vspace{0.1cm}
+{\footnotesize $^{(*)}$ CL tại $14$\,kg.}
 \end{table}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{bar_jc_dist.pdf}
-    \caption{Biểu đồ $J_c$ theo mức nhiễu ngoài (BS, CL, ADP-FT).}
+    \caption{$J_c$ theo mức nhiễu (BS, CL, ADP-FT).}
     \label{fig:bar_jc_dist}
 \end{figure}
 
-\textbf{Phân tích kết quả:}
-\begin{itemize}
-    \item \textbf{ADP-FT đạt chi phí thấp nhất tại MỌI mức nhiễu} từ 0\% đến 60\%. Đây là kết quả quan trọng nhất của luận văn, chứng minh giá trị thực tiễn của robust terms trong ADP-FT.
+Bất định khối lượng và nhiễu chỉ làm chi phí thay đổi vài phần trăm ở \textit{mọi} phương pháp: vòng trong hấp thụ phần lớn tác động. Sai lệch khối lượng đi vào vòng trong như một nhiễu tỉ lệ với gia tốc thực, chỉ đáng kể khi khởi động. Với nhiễu, sai số xác lập được dự đoán bằng giải tích:
+\begin{equation}
+    z_\text{rms} \approx \frac{1}{\sqrt 2}\cdot\frac{2 d_0}{r\, m\, \omega_n \sqrt{\omega_n^2 + K_d^2}}, \qquad d_0 = A\,\tau_\text{max},\ \omega_n = 30\ \text{rad/s},
+\end{equation}
+cho $5{,}23\times10^{-4}$\,m ở $A = 20\%$, khớp mô phỏng (BS: $5{,}44\times10^{-4}$; ADP-FT: $5{,}32\times10^{-4}$) với sai lệch dưới $4\%$ ở mọi biên độ; dạng tương tự đúng cho nhiễu vi sai và nhiễu độc lập hai bánh. Công thức không chứa tham số nào của vòng ngoài: trong kiến trúc hai vòng, \textbf{kháng nhiễu ở tầng mô-men là nhiệm vụ của vòng trong}, và các thí nghiệm khối lượng, nhiễu không phân biệt được các phương pháp vòng ngoài.
 
-    \item \textbf{Tại 0\% nhiễu:} ADP-FT bằng BS ($J_c = 70.7$). Khi không có nhiễu, robust terms gần như không kích hoạt, ADP-FT hoạt động tương đương bộ điều khiển tối ưu thuần túy.
+\subsection{Điều kiện đầu và tính cố định thời gian}
 
-    \item \textbf{Tại 20\%:} ADP-FT ($J_c = 85.2$) vượt BS ($J_c = 90.1$) khoảng 5.4\%. Robust terms bắt đầu phát huy tác dụng bù nhiễu.
-
-    \item \textbf{Tại 40\%:} ADP-FT ($J_c = 111.8$) vượt BS ($J_c = 116.5$) khoảng 4.0\%. Khoảng cách tương đối giữa hai phương pháp duy trì ổn định.
-
-    \item \textbf{Tại 60\%:} ADP-FT ($J_c = 157.7$) gần bằng BS ($J_c = 156.7$). Ở mức nhiễu rất cao, robust terms đạt giới hạn clamp ($u_o^\text{max} = 1.5$), hiệu quả bù nhiễu bão hòa.
-
-    \item \textbf{CL:} Luôn đứng sau BS và ADP-FT, nhưng khoảng cách không quá lớn (10--15\%). CL vẫn là phương pháp ADP có giá trị, đặc biệt khi không cần PE.
-\end{itemize}
+Quét 5 điều kiện đầu với $\|z_0\|$ từ $0{,}245$ đến $3{,}5$: BS, SMC, ADP-FT hội tụ ở cả 5 (CL chỉ 1/5). Thời gian về $\|z\| < 0{,}05$ tại $\|z_0\| = 3{,}5$: ADP-FT $55{,}1$\,s, BS $23{,}4$\,s, ADP-FT với Critic đóng băng $19{,}0$\,s. Vì $|v| \leq 0{,}5$\,m/s và $v_r = 0{,}3$\,m/s, tốc độ đuổi kịp tối đa $0{,}2$\,m/s nên thời gian quá độ buộc phải tăng tuyến tính theo sai lệch ban đầu: \textbf{với lệnh vận tốc bị chặn, không bộ điều khiển nào hội tụ cố định thời gian trên toàn miền}. Luận văn vì vậy không tuyên bố tính chất này cho hệ hai vòng.
 
 % ================================================================
-\section{Điều chỉnh tham số cho kiến trúc Dual-loop}
+\section{Điều chỉnh ADP-FT và phân tích thành phần}
 % ================================================================
-
-Đây là đóng góp kỹ thuật quan trọng của luận văn. Wang et al.~\cite{Wang2025} thiết kế các hệ số robust cho mô hình kinematic-only, không có vòng trong dynamic. Khi áp dụng trực tiếp lên kiến trúc dual-loop, hệ thống phát tán do vòng trong đã reject nhiễu một phần, nếu vòng ngoài vẫn dùng hệ số lớn sẽ tạo tín hiệu điều khiển quá mạnh.
 
 \begin{table}[H]
 \centering
-\caption{So sánh tham số: Wang et al. (kinematic) vs. Dual-loop (luận văn)}
+\caption{Tham số ADP-FT: Wang et al. (động học) và đề xuất cho kiến trúc hai vòng}
 \small
-\begin{tabular}{lccp{6.2cm}}
+\begin{tabular}{lccp{5.0cm}}
 \toprule
-\textbf{Tham số} & \textbf{Wang (kinematic)} & \textbf{Dual-loop} & \textbf{Giải thích} \\
+\textbf{Tham số} & \textbf{Wang et al.} & \textbf{Đề xuất} & \textbf{Ghi chú} \\
 \midrule
-$\lambda_\text{ft}$ & $\diag(1;\,1;\,0{,}4)$ & 0,08 & Giảm $\approx 12\times$ \\
-$\mu_\text{ft}$     & $\diag(1;\,1;\,0{,}4)$ & 0,08 & Tương tự $\lambda$ \\
-$\alpha_\text{ft}$  & $\diag(1;\,1;\,0{,}4)$ & 0,08 & Tương tự $\lambda$ \\
-$\beta_\text{ft}$   & $10^5$ & 0,15 & Hệ số cubic giảm $\approx 6{,}7\times10^5$ \\
-$\rho_\text{ft}$    & 10 & 0,10 & Thu hẹp vùng chuyển tiếp của $\tanh$ \\
-$\Gamma_\text{ft}$  & $2I$ & $1I$ & Tốc độ học giảm $2\times$, tránh dao động trọng số \\
-$\kappa_1$          & 0,1 & 0,04 & Giảm regularization tuyến tính \\
-$\kappa_2$          & 0,1 & 0,01 & Giảm regularization bậc ba \\
-$W(0)$              & $\bm{0}$ & $[3,3,3,0,0,0]^\T$ & Warm start bắt buộc sau khi giảm $\beta$ \\
-$u_o^\text{max}$    & --- (không có) & 1,5 & \textbf{Clamp cốt lõi}, giới hạn biên độ robust \\
+$\bm\lambda, \bm\mu, \bm\alpha$ & $\diag(1;\,1;\,0{,}4)$ & $[0{,}04;\, 0{,}04;\, 0{,}025]$ & Chọn bằng quy trình chỉnh gain đều \\
+$\bm\beta$ & $10^5$ & $[0{,}075;\, 0{,}075;\, 0{,}04]$ & \\
+$\rho$ & 10 & 0,1 & Thu hẹp vùng chuyển tiếp của $\tanh$ \\
+$\Gamma$; $\kappa_1$; $\kappa_2$ & $2I$; 0,1; 0,1 & $I$; 0,04; 0,01 & \\
+$W(0)$ & $\bm 0$ & $[1{,}5;\,1{,}5;\,1{,}5;\,0;\,0;\,0]^\T$ & Không cần cho ổn định, cần cho hiệu năng \\
+$u_{o,\max}$ & không có & 1,5 & Giới hạn phản hồi \\
+$c_{zy}$; $\varsigma$ & không có & 1,0; 0,2 & \textbf{Ghép nonholonomic} (mới) \\
+Toán tử chiếu & không có & $P(W) \succeq 0{,}05\,I$ & Lưới an toàn (mới) \\
+Luật cập nhật $W$ & eq.(17) & eq.(17) & Giữ nguyên \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Giải thích nguyên lý:}
-
-Trong kiến trúc kinematic-only, robust terms phải đối phó trực tiếp với mọi loại nhiễu và bất định. Trong kiến trúc dual-loop, vòng trong Dynamic Backstepping đã đảm nhận việc:
-\begin{enumerate}[nosep]
-    \item Bù các thành phần phi tuyến (quán tính, Coriolis, ma sát).
-    \item Reject một phần nhiễu ngoài nhờ cơ chế phản hồi tốc độ.
-    \item Chuyển đổi lệnh vận tốc thành mô-men với độ chính xác cao.
-\end{enumerate}
-
-Do đó, vòng ngoài chỉ cần đối phó với sai lệch mô hình còn lại (residual), các hệ số robust được giảm mạnh -- riêng $\beta$ giảm từ $10^5$ xuống $0{,}15$. Ngoài ra, \textbf{clamp $u_o^\text{max} = 1.5$} là cơ chế an toàn cốt lõi: giới hạn biên độ tín hiệu robust, tránh trường hợp mạng Critic chưa hội tụ tạo ra lệnh quá lớn gây mất ổn định. Cơ chế này tương tự $u_o^\text{max}$ đã được sử dụng thành công trong bộ điều khiển CL.
-
-\textbf{Cái giá của điều chỉnh này.} Hai hệ quả cần nêu rõ, đã được khảo sát chi tiết trong luận văn:
-
-\begin{enumerate}[nosep]
-    \item \textbf{Warm start trở thành bắt buộc.} Wang et al. khởi tạo $W(0) = \bm{0}$ mà hệ vẫn ổn định, nhờ $\beta = 10^5$ tạo phản hồi đủ mạnh trong lúc mạng Critic chưa học. Sau khi giảm $\beta$, cơ chế dự phòng đó mất đi.
-    \item \textbf{Tính hội tụ cố định thời gian không còn được bảo đảm.} Clamp cắt phẳng nhánh $\beta z^3$ -- đúng thành phần chịu trách nhiệm hội tụ nhanh khi sai số lớn. Khảo sát 5 điều kiện đầu cho thấy ADP-FT mất bám ở 3/5 trường hợp, trong khi Backstepping ổn định ở cả 5. Luận văn do đó \textbf{không tuyên bố} hệ hai vòng có tính hội tụ cố định thời gian theo nghĩa chặt.
-\end{enumerate}
+\textbf{Kết quả phân tích thành phần} (bỏ hoặc thay từng thành phần, nhiễu 20\%):
+\begin{itemize}
+    \item \textbf{Tham số gốc của Wang et al.:} không phát tán nhưng bám kém -- chi phí gấp $3{,}6$ / $16{,}2$ / $45{,}7$ lần trên tròn / thẳng / số 8, sai số xác lập $0{,}35$--$0{,}71$\,m ở 4/5 điều kiện đầu.
+    \item \textbf{Ghép nonholonomic là thành phần quyết định:} thiếu nó, chi phí gấp $3$--$5$ lần và robot kẹt ở điểm cân bằng giả (tại $\|z_0\| = 3{,}5$: $|z_y| \approx 2{,}4$\,m trong khi $|z_x|, |z_\theta| \approx 0$).
+    \item \textbf{Toán tử chiếu} không kích hoạt trong mọi kịch bản ($\lambda_{\min}(P(W)) > 0{,}12$).
+    \item \textbf{Các số hạng cố định thời gian} không cải thiện chi phí: bỏ chúng (ADP-UUB, eq.32--33 của bài báo) còn giảm nhẹ $1{,}5$--$2\%$.
+    \item \textbf{Việc học của Critic:} số hạng $\sigma$-modification chi phối hoàn toàn $W(t)$ ở điều kiện danh nghĩa -- $\|W(60)\| = 0{,}494$, so với $0{,}492$ nếu bỏ hẳn số hạng học; đóng băng Critic cho chi phí thấp hơn $3\%$. Ở sai lệch lớn, luật học làm hội tụ chậm gần ba lần so với đóng băng.
+    \item \textbf{Đổi $Q$, $R$:} $Q$ không có mặt trong luật điều khiển và luật cập nhật nên không có tác dụng; đổi $R$ theo cả hai hướng đều làm xấu cả sai số lẫn năng lượng.
+\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{weights_adp_ft.pdf}
-    \caption{Quá trình hội tụ trọng số Critic của ADP-FT (đường tròn, nhiễu 20\%).}
+    \caption{Trọng số Critic $W(t)$ của ADP-FT trên 3 quỹ đạo.}
     \label{fig:weights_adp_ft}
 \end{figure}
 
 % ================================================================
-\section{Tổng kết và kế hoạch}
+\section{Tổng kết}
 % ================================================================
 
-\subsection{Các công việc đã hoàn thành}
-
 \begin{enumerate}
-    \item \textbf{Xây dựng mô hình:} Mô hình dynamic WMR 5 trạng thái đầy đủ, bao gồm quán tính, ma sát, và giới hạn mô-men. Bộ điều khiển vòng trong Dynamic Backstepping (Fierro \& Lewis 1997) đã được triển khai và kiểm chứng.
-
-    \item \textbf{Seminar 1 --- Actor-Critic ADP:} Triển khai ADP Actor-Critic (2 mạng nơ-ron) trên mô hình kinematic, so sánh với Backstepping. Xác định hạn chế: phụ thuộc PE, hiệu năng kém trên đường thẳng. Báo cáo đã nộp và nhận phản hồi từ GVHD.
-
-    \item \textbf{Seminar 2 --- Critic-only Concurrent Learning:} Triển khai CL (1 mạng nơ-ron, không PE) trên kinematic. CL vượt trội AC trên đường thẳng (gấp 13 lần). Báo cáo hoàn thành.
-
-    \item \textbf{Kết quả chính --- ADP Fixed-time trên dual-loop:} Triển khai 5 bộ điều khiển vòng ngoài trên mô hình đầy đủ. ADP-FT đạt chi phí thấp nhất trên đường tròn và đường thẳng. Robust nhất với nhiễu ngoài (0--60\%).
-
-    \item \textbf{Phân tích và đánh giá:} 5 bộ điều khiển $\times$ 3 quỹ đạo + phân tích robustness khối lượng + phân tích robustness nhiễu. Tổng cộng 19 hình vẽ PDF và 5 file dữ liệu .mat.
+    \item \textbf{Mục tiêu đạt được:} ADP-FT của Wang et al. đã được hoàn thiện cho robot điều khiển bằng mô-men qua kiến trúc hai vòng; phương pháp bám được cả ba quỹ đạo, hội tụ ở mọi điều kiện đầu khảo sát, đứng thứ hai về chi phí khi so sánh công bằng và về lân cận nhỏ của quỹ đạo nhanh nhất.
+    \item \textbf{Điều chỉnh then chốt:} cơ chế ghép nonholonomic cho kênh sai số ngang -- phần mà luật gốc thiếu.
+    \item \textbf{Kết quả bất lợi được báo cáo đầy đủ:} tính hội tụ cố định thời gian không được bảo toàn khi lệnh vận tốc bị chặn; số hạng cố định thời gian và việc học của Critic không cải thiện chi phí trong cấu hình này; SMC đã chỉnh gain vẫn cho chi phí thấp nhất.
+    \item \textbf{Hướng tiếp theo:} luật học phù hợp với kiến trúc hai vòng (phải tốt hơn Critic đóng băng), mục tiêu hội tụ có tính đến giới hạn lệnh, hàm Lyapunov chung cho hệ hai vòng, kiểm chứng phần cứng.
 \end{enumerate}
+
+Lưu ý: so với bản báo cáo 26/05/2026, toàn bộ số liệu mô hình đầy đủ đã được tính lại sau khi sửa ma trận chuyển đổi mô-men $B$ theo đúng Fierro \& Lewis và đặt lại $\tau_\text{max} = 1$\,N$\cdot$m; kết quả Seminar 1, 2 (mô hình động học) không bị ảnh hưởng.
 
 % ================================================================
 % TÀI LIỆU THAM KHẢO
