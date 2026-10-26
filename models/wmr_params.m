@@ -36,7 +36,10 @@ p.eps_sign = 0.01;
 
 %% === GIOI HAN CO CAU CHAP HANH ===
 
-p.tau_max = 20;         % [N*m] mo-men toi da moi banh (sau hop giam toc)
+p.tau_max = 1;          % [N*m] mo-men toi da moi banh (sau hop giam toc)
+                        % TAM THOI (2026-10-26): chua co thong so motor that.
+                        % Gia toc toi da = 2*tau_max/(r*m) = 4 m/s^2.
+                        % Gia tri 20 truoc day chi chay duoc voi B sai.
 p.v_max   = 1.0;        % [m/s]
 p.w_max   = 2.0;        % [rad/s]
 
@@ -47,8 +50,14 @@ p.M     = diag([p.m, p.I]);
 p.M_inv = diag([1/p.m, 1/p.I]);
 
 % Ma tran chuyen doi mo-men: tau_eq = B * [tauR; tauL]
-p.B = [p.r/2,        p.r/2;
-       p.r/(2*p.L), -p.r/(2*p.L)];
+%   Luc day doc: F = (tauR + tauL) / r
+%   Mo-men quay: N = L*(tauR - tauL) / r
+% Fierro & Lewis (1997): B = S'*B(q) = (1/r)*[1 1; L -L].
+% KHONG nham voi Jacobian dong hoc J = [r/2 r/2; r/(2L) -r/(2L)] (van toc
+% banh -> v, omega). Theo nguyen ly cong ao, B = J^{-T}. Truoc 2026-10-26
+% code dung nham J => kenh v yeu 800 lan, kenh omega yeu 18 lan.
+p.B = (1/p.r) * [1,    1;
+                 p.L, -p.L];
 
 % Nghich dao: [tauR; tauL] = B_inv * [Fv; Tw]
 p.B_inv = inv(p.B);
