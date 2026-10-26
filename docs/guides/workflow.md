@@ -30,7 +30,7 @@ luận văn sẽ không khớp với số liệu đang mô tả.
 MATLAB R2023a. Script dùng `addpath` tương đối nên **bắt buộc `cd` vào `simulations/`**.
 
 ```powershell
-$MATLAB = "C:\Program Files\MATLAB\R2023a\bin\matlab.exe"
+$MATLAB = "C:\MATLAB\R2023a\bin\matlab.exe"
 $REPO   = "c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot"
 
 & $MATLAB -batch "cd('$REPO\simulations'); sim_thesis"
@@ -41,13 +41,20 @@ $REPO   = "c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot
 | `test_openloop` | 5 test mô hình vòng hở | ~10 s | `test_openloop_results.mat` |
 | `sim_sm1` | SM1 kinematic, AC vs BS | ~1 phút | `sm1_results.mat` |
 | `sim_sm2` | SM2 kinematic, 4 phương pháp × 2 quỹ đạo | ~2 phút | `sm2_results.mat` |
-| `sim_sm1_full` | 5 phương pháp × 2 điều kiện, full model (hình `torque_dist`) | ~3 phút | `sm1_full_results.mat` |
-| `sim_thesis` | Phần A–C: 3 quỹ đạo (kèm bảng A2 quá độ, A3 mô-men) + robustness khối lượng + nhiễu | **~5 phút** | `thesis_results.mat` (300 MB) |
-| `sim_thesis_extra` | Phần D–L: ablation, quét z0, nhiễu 2 kênh, SMC, cơ chế, đổi Q/R, vai trò học critic | ~25–30 phút | `thesis_extra.mat` |
-| `sweep_gains` | Chỉnh gain đều nhau cho 5 phương pháp (chỉ chạy khi đổi mô hình) | ~15 phút | `sweep_gains.mat` |
+| `sim_sm1_full` | 5 phương pháp × 2 điều kiện, full model (hình `torque_dist`) | ~2 phút | `sm1_full_results.mat` |
+| `sim_thesis` | Phần A–C: 3 quỹ đạo (kèm bảng A2 quá độ, A3 mô-men) + robustness khối lượng + nhiễu | **~5 phút** | `thesis_results.mat` (340 MB) |
+| `sim_thesis_extra` | Phần D–M: ablation, quét z0, nhiễu 2 kênh, SMC, cơ chế, đổi Q/R, vai trò học critic, bước 2 cũ/đầy đủ | ~20 phút | `thesis_extra.mat` (970 MB) |
+| `sweep_gains` | Chỉnh gain đều nhau cho 5 phương pháp (chạy lại khi đổi mô hình hoặc bước 2) | ~6 phút | `sweep_gains.mat` |
 
 > `-batch` chạy rồi thoát, không mở GUI, in output ra terminal.
-> Đặt timeout ≥ 300000 ms cho `sim_thesis`.
+> Đặt timeout ≥ 300000 ms cho `sim_thesis`; các script dài nên chạy nền. Ba tiến trình MATLAB
+> (`sim_thesis; sim_sm1_full` / `sim_thesis_extra` / `sweep_gains`) chạy song song được.
+> Thời gian đo trên MATLAB R2023a (2026-10-26); Octave chậm hơn nhiều lần.
+>
+> **Không chạy lại `sim_sm2`** khi chỉ cập nhật luận văn: gain trong `ctrl_params.m` đã chỉnh cho
+> mô hình đầy đủ, chạy lại sẽ làm hình báo cáo SM2 (đã nộp) lệch với nội dung báo cáo.
+> `export_all_figures` vẫn vẽ lại hình SM2 từ `sm2_results.mat` cũ; nếu hình SM2 bị đổi, khôi phục
+> bằng `git checkout -- docs/reports/sm2/figures`.
 
 ---
 
@@ -73,7 +80,7 @@ Hình xuất dạng vector (`'ContentType','vector'`) — chữ trong hình vẫ
 MiKTeX. Chạy `pdflatex` **2 lần** để cross-reference (`\ref`, `\cite`, mục lục) đúng.
 
 ```powershell
-$env:PATH = "C:\Users\LEGION\AppData\Local\Programs\MiKTeX\miktex\bin\x64;$env:PATH"
+$env:PATH = "C:\Program Files\MiKTeX\miktex\bin\x64;$env:PATH"
 Set-Location "$REPO\docs\thesis"
 pdflatex -interaction=nonstopmode thesis.tex
 pdflatex -interaction=nonstopmode thesis.tex
@@ -110,14 +117,14 @@ Ví dụ đổi gain của ADP-FT trong `simulations/ctrl_params.m`:
 
 ```powershell
 # 1. Chạy lại mô phỏng bị ảnh hưởng (export_all_figures cần cả ba file .mat)
-& $MATLAB -batch "cd('$REPO\simulations'); sim_sm2; sim_sm1_full; sim_thesis"
-& $MATLAB -batch "cd('$REPO\simulations'); sim_thesis_extra"   # số liệu Phần D-L
+& $MATLAB -batch "cd('$REPO\simulations'); sim_sm1_full; sim_thesis"
+& $MATLAB -batch "cd('$REPO\simulations'); sim_thesis_extra"   # số liệu Phần D-M
 
 # 2. Xuất lại hình
 & $MATLAB -batch "cd('$REPO\plotting'); export_all_figures"
 
 # 3. Build lại luận văn
-$env:PATH = "C:\Users\LEGION\AppData\Local\Programs\MiKTeX\miktex\bin\x64;$env:PATH"
+$env:PATH = "C:\Program Files\MiKTeX\miktex\bin\x64;$env:PATH"
 Set-Location "$REPO\docs\thesis"
 pdflatex -interaction=nonstopmode thesis.tex; pdflatex -interaction=nonstopmode thesis.tex
 ```

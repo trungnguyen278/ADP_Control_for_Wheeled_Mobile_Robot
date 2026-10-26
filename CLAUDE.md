@@ -95,13 +95,13 @@ các script MATLAB hardcode `addpath('../models', ...)`, đổi chỗ sẽ làm 
 MATLAB R2023a, batch mode (không GUI):
 
 ```powershell
-& "C:\Program Files\MATLAB\R2023a\bin\matlab.exe" -batch "cd('<repo>\simulations'); sim_thesis"
+& "C:\MATLAB\R2023a\bin\matlab.exe" -batch "cd('<repo>\simulations'); sim_thesis"
 ```
 
 Build LaTeX (MiKTeX, chạy `pdflatex` 2 lần cho cross-reference):
 
 ```powershell
-$env:PATH = "C:\Users\LEGION\AppData\Local\Programs\MiKTeX\miktex\bin\x64;$env:PATH"
+$env:PATH = "C:\Program Files\MiKTeX\miktex\bin\x64;$env:PATH"
 pdflatex -interaction=nonstopmode thesis.tex; pdflatex -interaction=nonstopmode thesis.tex
 ```
 

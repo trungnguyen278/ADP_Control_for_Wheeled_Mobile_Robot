@@ -1,39 +1,45 @@
 ---
 name: ket-qua-cuoi
-description: Số liệu và kết luận CUỐI (2026-10-26, mô hình B đúng, gain chỉnh đều nhau) — ADP-FT thứ 2 sau SMC; ghép nonholonomic quyết định; học critic không giúp, còn hại khi z0 lớn
+description: Số liệu và kết luận CUỐI (2026-10-26 khuya, bước 2 đầy đủ, MATLAB) — ADP-FT ngang NTSMC, sau SMC 7,9%; ghép nonholonomic quyết định; học critic không giúp; số hạng chéo vượt v_max
 metadata:
   type: project
 ---
 
-Chạy bằng Octave 8.4 (cùng code MATLAB), T = 60 s, nhiễu đồng pha 20%, τ_max = 1 N·m (tạm).
-Gain chọn bằng `sweep_gains.m` (một hệ số k cho toàn bộ gain mỗi PP): SMC 1/8, ADP-FT 1/2,
-BS 1/4, CL 1/4, ADP-AC 1/2. Luận văn đã viết lại theo các số này (Ch.5–6, 72 trang).
+Chạy bằng MATLAB R2023a (trùng Octave tới 4 chữ số), T = 60 s, nhiễu đồng pha 20%, τ_max = 1 N·m
+(tạm), bước 2 đầy đủ K_d = 20I, K_c = M, K_α = K_β = 10I. Gain (`sweep_gains.m`, kiểm lại bằng
+MATLAB): SMC 1/8, ADP-FT 1/2, BS 1/4, CL 1/4, ADP-AC 1/4 (bước 2 cũ: ADP-AC 1/2).
 
 | PP | Jc tròn / thẳng / số 8 | Tổng | t(‖z‖<0.01) tròn |
 |---|---|---|---|
-| SMC | 1.213 / 0.663 / 1.960 | 3.836 | 10.0 s |
-| ADP-FT | 1.334 / 0.803 / 2.056 | 4.192 | 8.4 s (nhanh nhất) |
-| NTSMC | 1.257 / 0.857 / 2.079 | 4.193 | 9.9 s |
-| BS | 1.307 / 0.898 / 2.104 | 4.310 | 10.7 s |
-| CL | 1.598 / 1.347 / 2.832 | 5.778 | 25.6 s |
-| ADP-AC | 4.708 / 4.219 / 5.407 | 14.334 | 60.0 s |
+| SMC | 1.214 / 0.661 / 1.962 | 3.837 | 10.1 s |
+| NTSMC | 1.237 / 0.838 / 2.055 | 4.130 | 9.1 s |
+| ADP-FT | 1.318 / 0.790 / 2.033 | 4.140 | 6.0 s (nhanh nhất) |
+| BS | 1.277 / 0.877 / 2.136 | 4.290 | 9.9 s |
+| CL | 1.675 / 1.504 / 2.920 | 6.099 | 31.1 s |
+| ADP-AC | 3.760 / 5.139 / 5.051 | 13.951 | 37.5 s |
 
-Kết luận chính (đều có trong luận văn, báo cáo trung thực):
-- z_rms ≈ 5.3e-4 = sàn nhiễu, dự đoán bằng z_rms = 2d₀/(√2·r·m·ω_n·√(ω_n²+K_d²)), khớp < 4%.
-  Khối lượng 16 kg, nhiễu 60% (3 kiểu): Jc đổi < 4% → robustness thuộc về vòng trong.
-- Ghép nonholonomic quyết định (thiếu → Jc ×3–5, kẹt |z_y| ≈ 2.4 m). Toán tử chiếu không
-  bao giờ kích hoạt (λmin(P) > 0.12). Bỏ số hạng fixed-time (ADP-UUB) giảm Jc 1.5–2%.
-- Critic: W(t) chỉ suy giảm theo σ-mod (‖W(60)‖ 0.494 vs 0.492 nếu bỏ số hạng học); đóng
-  băng tốt hơn 3%; ở ‖z0‖ = 3.5 luật Wang làm chậm: t(0.05) 55.1 s vs đóng băng 19.0 s,
-  Bellman 32.0 s, BS 23.4 s. W(0) = 0 vẫn hội tụ nhưng Jc ×2.4–3.6.
-- Q không có trong luật (đổi Q → y hệt); đổi R hai chiều đều xấu. Tham số gốc Wang: không
-  phát tán, Jc ×3.6/16.2/45.7, lệnh vận tốc chạm giới hạn 3% (tròn) / 18.7% (số 8).
-- Fixed-time không bảo toàn được khi |v| ≤ 0.5 (cận dưới ≈ z_x0/0.2 s).
+Kết luận chính (đều có trong luận văn 84 trang):
 
-**Why:** đây là bộ số chốt sau khi sửa lỗi B; mọi số cũ hơn trong memory đều lỗi thời.
+- ADP-FT ngang NTSMC (chênh 0,2% < độ phân giải lưới gain) → trình bày là "nhóm thứ hai", hạng 3
+  có chú thích. Kém SMC 7,9%.
+- Sàn nhiễu z_rms ≈ 4,1–4,3e-4. Công thức cũ (chỉ K_d) KHÔNG còn đúng: phải dùng hàm mô tả
+  K_eq = K_d + 1,021·K_α·E^(p/q−1) + ¾K_β·E², E = 2d₀/(rm√(ω_n²+K_eq²)) → K_eq = 35,7, z_rms
+  4,05e-4, khớp < 3% cả 3 dạng nhiễu. Tương quan τ_R/−d = K_eq/√(ω_n²+K_eq²) = 0,76 (cũ 0,55).
+- Phần M (bước 2): số hạng FT hạ z_rms 21–23%; t_e ≤ 0,17 s; K_c = M đổi Jc nhỏ (ADP-FT −1,2%).
+  K_c = 10M: ADP-FT 3,833 < SMC nhưng BS +12,8% → tương đương chỉnh gain bước 1 không đều, giữ K_c = M.
+- **Số hạng chéo đi vòng qua bộ kẹp η_d**: khi z_x lớn, v thực tới 0,57–0,62 m/s (> v_max 0,5);
+  bước 2 cũ ≤ 0,52. Hàng "cận dưới vật lý" ở Bảng 5.16 vì thế chỉ còn là tham chiếu.
+- Tham số gốc Wang (β = diag(1e5,1e5,1)): Jc ×23,4/13,3/7,0, Ju chiếm 58–78%, z_y dư 1,7–3,2 cm
+  khi z_x, z_θ ≈ 0 — xác nhận Bổ đề 4.1(b) trên mô hình đầy đủ.
+- Thiếu ghép nonholonomic: Jc ×3,2–5,6, kẹt |z_y| ≈ 1,4 m ở ‖z0‖ = 3,5. Chiếu không kích hoạt (λmin ≥ 0,121).
+- Critic: đóng băng tốt hơn học 2,6–2,8%; ở ‖z0‖ = 3,5: Wang 42,3 s, đóng băng 15,8 s, SMC 17,0 s,
+  BS 22,0 s, Bellman 19,3 s (nhưng 39,1 s ở 2,375 — không nhất quán). ADP-UUB giảm Jc 1,4–1,8%.
+- Khối lượng 16 kg / nhiễu 60%: Jc đổi < 3% mọi PP.
+
+**Why:** đây là bộ số chốt sau khi có bước 2 đầy đủ; mọi số cũ hơn trong memory đều lỗi thời.
 
 **How to apply:** khi viết slide/bài báo hay trả lời thầy, lấy số ở đây hoặc chạy lại
-`sim_thesis.m` (Bảng A, A2, A3) và `sim_thesis_extra.m` (Phần D–L). Đừng dùng số trong
-các memory feedback-* cũ (đánh dấu ⚠).
+`sim_thesis.m` + `sim_thesis_extra.m`; script trích số dùng lần này (`extract_numbers.m`) nằm
+trong scratchpad phiên 2026-10-26, không có trong repo. Đừng dùng số trong memory feedback-* cũ (⚠).
 
-Related: [[feedback-b-matrix-error]], [[feedback-nonholonomic-coupling]], [[project-progress]]
+Related: [[feedback-b-matrix-error]], [[feedback-nonholonomic-coupling]], [[feedback-backstepping-framing]], [[project-progress]]

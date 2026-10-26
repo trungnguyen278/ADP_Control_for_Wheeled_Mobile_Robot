@@ -11,6 +11,8 @@
 \usepackage{enumitem}
 \usepackage{float}
 \usepackage{multirow}
+\usepackage{array}
+\usepackage[tableposition=top]{caption}
 
 \geometry{right=2cm, left=3cm, top=2cm, bottom=2.5cm}
 \renewcommand{\baselinestretch}{1.2}
@@ -196,10 +198,10 @@ Seminar 2 (tháng 4/2026) triển khai phương pháp Critic-only kết hợp Co
 \end{figure}
 
 % ================================================================
-\section{Kết quả chính: mô hình đầy đủ, kiến trúc hai vòng}
+\section{Kết quả chính: mô hình đầy đủ, bộ backstepping hai bước}
 % ================================================================
 
-Phần này thực hiện trên \textbf{mô hình đầy đủ 5 trạng thái} với kiến trúc hai vòng; mọi phương pháp vòng ngoài dùng chung vòng trong Dynamic Backstepping ($K_d = 20$). Điều kiện mô phỏng: $T = 60$\,s, Euler $\Delta t = 1$\,ms, $Q = 10I_3$, $R = 2I_2$, sai lệch ban đầu $z_0 = [0{,}2;\ -0{,}1;\ 0{,}1]$, robot xuất phát đứng yên, nhiễu đồng pha 20\%. Ba quỹ đạo: đường tròn ($R_c = 2$\,m, $v_r = 0{,}3$\,m/s), đường thẳng ($v_r = 0{,}3$\,m/s) và hình số 8 (lemniscate, $\omega_8 = 0{,}1$\,rad/s).
+Phần này thực hiện trên \textbf{mô hình đầy đủ 5 trạng thái} (MATLAB R2023a); mọi luật bước 1 dùng chung bước 2 đầy đủ ($K_d = 20I$, $K_c = M$, $K_\alpha = K_\beta = 10I$). Điều kiện mô phỏng: $T = 60$\,s, Euler $\Delta t = 1$\,ms, $Q = 10I_3$, $R = 2I_2$, sai lệch ban đầu $z_0 = [0{,}2;\ -0{,}1;\ 0{,}1]$, robot xuất phát đứng yên, nhiễu đồng pha 20\%. Ba quỹ đạo: đường tròn ($R_c = 2$\,m, $v_r = 0{,}3$\,m/s), đường thẳng ($v_r = 0{,}3$\,m/s) và hình số 8 (lemniscate, $\omega_8 = 0{,}1$\,rad/s).
 
 \subsection{Chỉnh gain đều nhau trước khi so sánh}
 
@@ -212,16 +214,16 @@ Mỗi phương pháp xuất phát từ bộ gain danh nghĩa, nhân \textit{toà
 \toprule
 \textbf{Phương pháp} & $k^*$ & \textbf{Tổng $J_c$ ($k = 1$)} & \textbf{Tổng $J_c$ ($k^*$)} & \textbf{Thay đổi} \\
 \midrule
-SMC    & 1/8 & 4.984 & 3.836 & $-23.0\%$ \\
-ADP-FT & 1/2 & 4.295 & 4.192 & $-2.4\%$ \\
-BS     & 1/4 & 4.861 & 4.310 & $-11.3\%$ \\
-CL     & 1/4 & 21.095 & 5.778 & $-72.6\%$ \\
-ADP-AC & 1/2 & 20.505 & 14.334 & $-30.1\%$ \\
+SMC    & 1/8 & 4.887 & 3.837 & $-21.5\%$ \\
+ADP-FT & 1/2 & 4.260 & 4.140 & $-2.8\%$ \\
+BS     & 1/4 & 4.901 & 4.290 & $-12.5\%$ \\
+CL     & 1/4 & 21.437 & 6.099 & $-71.5\%$ \\
+ADP-AC & 1/4 & 20.833 & 13.951 & $-33.0\%$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Bước này là điều kiện tiên quyết: ở gain thông dụng, SMC có tổng chi phí $4{,}984$ -- \textit{cao hơn} ADP-FT; sau khi chỉnh như mọi phương pháp, giảm xuống $3{,}836$ và trở thành thấp nhất. So sánh không chỉnh gain đều sẽ cho kết luận ngược.
+Bước này là điều kiện tiên quyết: ở gain thông dụng, SMC có tổng chi phí $4{,}887$ -- \textit{cao hơn} ADP-FT; sau khi chỉnh như mọi phương pháp, giảm xuống $3{,}837$ và trở thành thấp nhất. So sánh không chỉnh gain đều sẽ cho kết luận ngược.
 
 \subsection{Phần A: So sánh trên 3 quỹ đạo}
 
@@ -232,12 +234,12 @@ Bước này là điều kiện tiên quyết: ở gain thông dụng, SMC có t
 \toprule
 \textbf{Phương pháp} & \textbf{Tròn} & \textbf{Thẳng} & \textbf{Số 8} & \textbf{Tổng} & $t_{0,01}$ (s) \\
 \midrule
-BS     & 1.307 & 0.898 & 2.104 & 4.310 & 10.7 \\
-ADP-AC & 4.708 & 4.219 & 5.407 & 14.334 & 60.0 \\
-SMC    & \textbf{1.213} & \textbf{0.663} & \textbf{1.960} & \textbf{3.836} & 10.0 \\
-NTSMC  & 1.257 & 0.857 & 2.079 & 4.193 & 9.9 \\
-CL     & 1.598 & 1.347 & 2.832 & 5.778 & 25.6 \\
-ADP-FT & 1.334 & 0.803 & 2.056 & 4.192 & \textbf{8.4} \\
+BS     & 1.277 & 0.877 & 2.136 & 4.290 & 9.9 \\
+ADP-AC & 3.760 & 5.139 & 5.051 & 13.951 & 37.5 \\
+SMC    & \textbf{1.214} & \textbf{0.661} & \textbf{1.962} & \textbf{3.837} & 10.1 \\
+NTSMC  & 1.237 & 0.838 & 2.055 & 4.130 & 9.1 \\
+CL     & 1.675 & 1.504 & 2.920 & 6.099 & 31.1 \\
+ADP-FT & 1.318 & 0.790 & 2.033 & 4.140 & \textbf{6.0} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -251,9 +253,9 @@ ADP-FT & 1.334 & 0.803 & 2.056 & 4.192 & \textbf{8.4} \\
 
 \textbf{Nhận xét:}
 \begin{itemize}
-    \item \textbf{SMC thấp nhất} trên cả ba quỹ đạo. \textbf{ADP-FT đứng thứ hai} về tổng chi phí (cao hơn SMC $9{,}3\%$), ngang NTSMC, tốt hơn BS, CL và ADP-AC; trên đường tròn ADP-FT cao hơn BS $2{,}1\%$.
+    \item \textbf{SMC thấp nhất} trên cả ba quỹ đạo. \textbf{ADP-FT ngang NTSMC} về tổng chi phí ($4{,}140$ so với $4{,}130$, chênh $0{,}2\%$ -- nhỏ hơn độ phân giải của quy trình chỉnh gain), cao hơn SMC $7{,}9\%$, tốt hơn BS, CL và ADP-AC; trên đường tròn ADP-FT cao hơn BS $3{,}2\%$.
     \item ADP-FT \textbf{về lân cận nhỏ của quỹ đạo sớm nhất} trên cả ba quỹ đạo (ngưỡng $0{,}05$; $0{,}02$; $0{,}01$\,m). $J_c$ của SMC vẫn thấp hơn vì $J_c$ bị chi phối bởi vài giây đầu, khi SMC giảm sai số lớn nhanh hơn.
-    \item Với BS, SMC, NTSMC, ADP-FT, sai số xác lập đều $\approx 5{,}3$--$5{,}5\times10^{-4}$\,m: đây là \textbf{sàn do nhiễu} lọt qua vòng trong, không do vòng ngoài (Mục 5.3 dưới đây). ADP-AC (tín hiệu PE tới giây 30) và CL hội tụ chậm hơn.
+    \item Với BS, SMC, NTSMC, ADP-FT, sai số xác lập đều $\approx 4{,}1$--$4{,}3\times10^{-4}$\,m: đây là \textbf{sàn do nhiễu} lọt qua bước 2, không do bước 1 (Mục \ref{sec:bc} dưới đây). ADP-AC (tín hiệu PE tới giây 30) và CL hội tụ chậm hơn.
     \item Năng lượng $J_u = J_c - 10J_e$ chỉ chiếm dưới $9\%$ $J_c$ (trừ ADP-AC): so sánh $J_c$ thực chất là so sánh sai số tích lũy.
 \end{itemize}
 
@@ -275,6 +277,7 @@ ADP-FT & 1.334 & 0.803 & 2.056 & 4.192 & \textbf{8.4} \\
 \end{figure}
 
 \subsection{Phần B, C: Bất định khối lượng và nhiễu}
+\label{sec:bc}
 
 \begin{table}[H]
 \centering
@@ -283,8 +286,8 @@ ADP-FT & 1.334 & 0.803 & 2.056 & 4.192 & \textbf{8.4} \\
 \toprule
 \textbf{Kịch bản} & \textbf{BS} & \textbf{SMC} & \textbf{CL} & \textbf{ADP-FT} \\
 \midrule
-Khối lượng thực $16$\,kg ($+60\%$) & $+3.1\%$ & $+1.3\%$ & $+1.5\%^{(*)}$ & $+0.9\%$ \\
-Nhiễu đồng pha $60\%$ (so với $0\%$) & $+0.7\%$ & $+0.8\%$ & $+2.3\%$ & $+0.5\%$ \\
+Khối lượng thực $16$\,kg ($+60\%$) & $+2.7\%$ & $+2.1\%$ & $+1.5\%^{(*)}$ & $+1.5\%$ \\
+Nhiễu đồng pha $60\%$ (so với $0\%$) & $+0.3\%$ & $+0.3\%$ & $+1.7\%$ & $+0.2\%$ \\
 \bottomrule
 \end{tabular}
 
@@ -299,15 +302,39 @@ Nhiễu đồng pha $60\%$ (so với $0\%$) & $+0.7\%$ & $+0.8\%$ & $+2.3\%$ & $
     \label{fig:bar_jc_dist}
 \end{figure}
 
-Bất định khối lượng và nhiễu chỉ làm chi phí thay đổi vài phần trăm ở \textit{mọi} phương pháp: vòng trong hấp thụ phần lớn tác động. Sai lệch khối lượng đi vào vòng trong như một nhiễu tỉ lệ với gia tốc thực, chỉ đáng kể khi khởi động. Với nhiễu, sai số xác lập được dự đoán bằng giải tích:
+Bất định khối lượng và nhiễu chỉ làm chi phí thay đổi không quá $3\%$ ở \textit{mọi} phương pháp: bước 2 hấp thụ phần lớn tác động. Sai lệch khối lượng đi vào bước 2 như một nhiễu tỉ lệ với gia tốc thực, chỉ đáng kể khi khởi động. Với nhiễu, sai số xác lập được dự đoán bằng giải tích. Hai số hạng cố định thời gian của bước 2 được thay bằng hệ số khuếch đại tương đương theo phương pháp hàm mô tả (Slotine \& Li~\cite{Slotine1991}, chương 5), $K_\text{eq}(E) = K_d + c_{p/q}K_\alpha E^{p/q-1} + \frac34 K_\beta E^2$ với $c_{17/19} = 1{,}021$ và $E$ là biên độ dao động của sai lệch vận tốc, nghiệm của $E = 2d_0/\big(rm\sqrt{\omega_n^2 + K_\text{eq}(E)^2}\big)$; từ đó
 \begin{equation}
-    z_\text{rms} \approx \frac{1}{\sqrt 2}\cdot\frac{2 d_0}{r\, m\, \omega_n \sqrt{\omega_n^2 + K_d^2}}, \qquad d_0 = A\,\tau_\text{max},\ \omega_n = 30\ \text{rad/s},
+    z_\text{rms} \approx \frac{1}{\sqrt 2}\cdot\frac{2 d_0}{r\, m\, \omega_n \sqrt{\omega_n^2 + K_\text{eq}^2}}, \qquad d_0 = A\,\tau_\text{max},\ \omega_n = 30\ \text{rad/s},
 \end{equation}
-cho $5{,}23\times10^{-4}$\,m ở $A = 20\%$, khớp mô phỏng (BS: $5{,}44\times10^{-4}$; ADP-FT: $5{,}32\times10^{-4}$) với sai lệch dưới $4\%$ ở mọi biên độ; dạng tương tự đúng cho nhiễu vi sai và nhiễu độc lập hai bánh. Công thức không chứa tham số nào của vòng ngoài: trong kiến trúc hai vòng, \textbf{kháng nhiễu ở tầng mô-men là nhiệm vụ của vòng trong}, và các thí nghiệm khối lượng, nhiễu không phân biệt được các phương pháp vòng ngoài.
+cho $K_\text{eq} = 35{,}7$ và $z_\text{rms} \approx 4{,}05\times10^{-4}$\,m ở $A = 20\%$, khớp mô phỏng (BS: $4{,}31\times10^{-4}$; ADP-FT: $4{,}15\times10^{-4}$) với sai lệch dưới $3\%$ ở mọi biên độ và cả ba dạng nhiễu (trừ BS ở $20\%$: $6{,}5\%$, do sai số dư không đến từ nhiễu). Với bước 2 cũ ($K_\text{eq} = K_d = 20$) công thức cho $5{,}23\times10^{-4}$\,m: các số hạng cố định thời gian của bước 2 hạ sàn nhiễu $23\%$. Công thức không chứa tham số nào của bước 1: \textbf{kháng nhiễu ở tầng mô-men là nhiệm vụ của bước 2}, và các thí nghiệm khối lượng, nhiễu không phân biệt được các luật bước 1.
+
+\subsection{Đóng góp của bước 2}
+
+Giữ nguyên gain bước 1, so sánh bước 2 cũ (luật Fierro \& Lewis, $K_c = K_\alpha = K_\beta = 0$) với bước 2 đầy đủ:
+
+\begin{table}[H]
+\centering
+\caption{Bước 2 cũ và đầy đủ: tổng $J_c$ trên 3 quỹ đạo, $z_\text{rms}$ của ADP-FT trên đường tròn}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Bước 2} & \textbf{BS} & \textbf{SMC} & \textbf{ADP-FT} & $z_\text{rms}$ ADP-FT \\
+\midrule
+Fierro \& Lewis (cũ) & 4.310 & 3.836 & 4.192 & $5.32\times10^{-4}$ \\
+Đầy đủ, $K_c = M$ (mặc định) & 4.290 & 3.837 & 4.140 & $4.15\times10^{-4}$ \\
+Đầy đủ, $K_c = 10M$ & 4.840 & 3.844 & 3.833 & $4.17\times10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+    \item Sai lệch vận tốc giữa hai bước về dưới $0{,}05$ trong không quá $0{,}17$\,s ở mọi luật và quỹ đạo -- nhanh hơn quá độ của bước 1 hàng chục lần, đúng với Định lý 4.1 và cận $T_2 \leq 1$\,s. Các số hạng cố định thời gian hạ $z_\text{rms}$ $21$--$23\%$; ảnh hưởng tới $J_c$ ở điều kiện danh nghĩa nhỏ.
+    \item $K_c$ lớn hơn có lợi cho ADP-FT (ở $K_c = 10M$ thấp hơn cả SMC) nhưng làm BS xấu đi $12{,}8\%$: số hạng chéo tương đương cộng phản hồi $k_c/(MK_d)$ vào lệnh vận tốc, bằng $0{,}5$ khi $K_c = 10M$ -- tức chỉnh thêm gain bước 1, không đều giữa các phương pháp. Luận văn giữ $K_c = M$, giá trị suy ra từ cấu trúc hàm Lyapunov.
+    \item Ở sai lệch ban đầu lớn, bước 2 đầy đủ giảm chi phí $12$--$35\%$ ở cả ba luật; một phần do số hạng chéo tác động thẳng vào mô-men nên vận tốc thực có thể vượt giới hạn lệnh $v_{\max} = 0{,}5$\,m/s (tới $0{,}62$\,m/s). Nếu $v_{\max}$ là giới hạn an toàn cứng, cần bão hòa số hạng chéo.
+\end{itemize}
 
 \subsection{Điều kiện đầu và tính cố định thời gian}
 
-Quét 5 điều kiện đầu với $\|z_0\|$ từ $0{,}245$ đến $3{,}5$: BS, SMC, ADP-FT hội tụ ở cả 5 (CL chỉ 1/5). Thời gian về $\|z\| < 0{,}05$ tại $\|z_0\| = 3{,}5$: ADP-FT $55{,}1$\,s, BS $23{,}4$\,s, ADP-FT với Critic đóng băng $19{,}0$\,s. Vì $|v| \leq 0{,}5$\,m/s và $v_r = 0{,}3$\,m/s, tốc độ đuổi kịp tối đa $0{,}2$\,m/s nên thời gian quá độ buộc phải tăng tuyến tính theo sai lệch ban đầu: \textbf{với lệnh vận tốc bị chặn, không bộ điều khiển nào hội tụ cố định thời gian trên toàn miền}. Luận văn vì vậy không tuyên bố tính chất này cho hệ hai vòng.
+Quét 5 điều kiện đầu với $\|z_0\|$ từ $0{,}245$ đến $3{,}5$: BS, SMC, ADP-FT hội tụ về sàn nhiễu ở cả 5 (CL chỉ 1/5). Thời gian về $\|z\| < 0{,}05$ tại $\|z_0\| = 3{,}5$: ADP-FT $42{,}3$\,s, BS $22{,}0$\,s, SMC $17{,}0$\,s, ADP-FT với Critic đóng băng $15{,}8$\,s. Vì lệnh $|v_d| \leq 0{,}5$\,m/s và $v_r = 0{,}3$\,m/s, tốc độ đuổi kịp chỉ cỡ $0{,}2$\,m/s nên thời gian quá độ buộc phải tăng theo sai lệch ban đầu: \textbf{với vận tốc bị chặn, không bộ điều khiển nào hội tụ cố định thời gian trên toàn miền}. Luận văn vì vậy không tuyên bố tính chất này cho robot điều khiển bằng mô-men.
 
 % ================================================================
 \section{Điều chỉnh ADP-FT và phân tích thành phần}
@@ -315,14 +342,14 @@ Quét 5 điều kiện đầu với $\|z_0\|$ từ $0{,}245$ đến $3{,}5$: BS,
 
 \begin{table}[H]
 \centering
-\caption{Tham số ADP-FT: Wang et al. (động học) và đề xuất cho kiến trúc hai vòng}
+\caption{Tham số ADP-FT: Wang et al. (động học) và đề xuất cho robot điều khiển bằng mô-men}
 \small
-\begin{tabular}{lccp{5.0cm}}
+\begin{tabular}{lcc>{\raggedright\arraybackslash}p{4.6cm}}
 \toprule
 \textbf{Tham số} & \textbf{Wang et al.} & \textbf{Đề xuất} & \textbf{Ghi chú} \\
 \midrule
 $\bm\lambda, \bm\mu, \bm\alpha$ & $\diag(1;\,1;\,0{,}4)$ & $[0{,}04;\, 0{,}04;\, 0{,}025]$ & Chọn bằng quy trình chỉnh gain đều \\
-$\bm\beta$ & $10^5$ & $[0{,}075;\, 0{,}075;\, 0{,}04]$ & \\
+$\bm\beta$ & $\diag(10^5;\,10^5;\,1)$ & $[0{,}075;\, 0{,}075;\, 0{,}04]$ & \\
 $\rho$ & 10 & 0,1 & Thu hẹp vùng chuyển tiếp của $\tanh$ \\
 $\Gamma$; $\kappa_1$; $\kappa_2$ & $2I$; 0,1; 0,1 & $I$; 0,04; 0,01 & \\
 $W(0)$ & $\bm 0$ & $[1{,}5;\,1{,}5;\,1{,}5;\,0;\,0;\,0]^\T$ & Không cần cho ổn định, cần cho hiệu năng \\
@@ -336,11 +363,11 @@ Luật cập nhật $W$ & eq.(17) & eq.(17) & Giữ nguyên \\
 
 \textbf{Kết quả phân tích thành phần} (bỏ hoặc thay từng thành phần, nhiễu 20\%):
 \begin{itemize}
-    \item \textbf{Tham số gốc của Wang et al.:} không phát tán nhưng bám kém -- chi phí gấp $3{,}6$ / $16{,}2$ / $45{,}7$ lần trên tròn / thẳng / số 8, sai số xác lập $0{,}35$--$0{,}71$\,m ở 4/5 điều kiện đầu.
-    \item \textbf{Ghép nonholonomic là thành phần quyết định:} thiếu nó, chi phí gấp $3$--$5$ lần và robot kẹt ở điểm cân bằng giả (tại $\|z_0\| = 3{,}5$: $|z_y| \approx 2{,}4$\,m trong khi $|z_x|, |z_\theta| \approx 0$).
+    \item \textbf{Tham số gốc của Wang et al.:} không phát tán nhưng bám kém -- chi phí gấp $23{,}4$ / $13{,}3$ / $7{,}0$ lần trên tròn / thẳng / số 8 (năng lượng điều khiển chiếm $58$--$78\%$ chi phí), và sai số ngang dư $1{,}7$--$3{,}2$\,cm khi $z_x, z_\theta \approx 0$ -- đúng tình huống của khoảng hở trong chứng minh gốc.
+    \item \textbf{Ghép nonholonomic là thành phần quyết định:} thiếu nó, chi phí gấp $3{,}2$--$5{,}6$ lần và robot kẹt gần điểm cân bằng giả (tại $\|z_0\| = 3{,}5$: $|z_y| \approx 1{,}4$\,m trong khi $|z_x| \approx 0{,}11$\,m, $|z_\theta| \approx 0{,}05$\,rad).
     \item \textbf{Toán tử chiếu} không kích hoạt trong mọi kịch bản ($\lambda_{\min}(P(W)) > 0{,}12$).
-    \item \textbf{Các số hạng cố định thời gian} không cải thiện chi phí: bỏ chúng (ADP-UUB, eq.32--33 của bài báo) còn giảm nhẹ $1{,}5$--$2\%$.
-    \item \textbf{Việc học của Critic:} số hạng $\sigma$-modification chi phối hoàn toàn $W(t)$ ở điều kiện danh nghĩa -- $\|W(60)\| = 0{,}494$, so với $0{,}492$ nếu bỏ hẳn số hạng học; đóng băng Critic cho chi phí thấp hơn $3\%$. Ở sai lệch lớn, luật học làm hội tụ chậm gần ba lần so với đóng băng.
+    \item \textbf{Các số hạng cố định thời gian ở bước 1} không cải thiện chi phí: bỏ chúng (ADP-UUB, eq.32--33 của bài báo) còn giảm nhẹ $1{,}4$--$1{,}8\%$.
+    \item \textbf{Việc học của Critic:} số hạng $\sigma$-modification chi phối hoàn toàn $W(t)$ ở điều kiện danh nghĩa -- $\|W(60)\| = 0{,}494$, so với $0{,}492$ nếu bỏ hẳn số hạng học; đóng băng Critic cho chi phí thấp hơn $3\%$. Ở sai lệch lớn, luật học làm hội tụ chậm gần ba lần so với đóng băng ($42{,}3$\,s so với $15{,}8$\,s).
     \item \textbf{Đổi $Q$, $R$:} $Q$ không có mặt trong luật điều khiển và luật cập nhật nên không có tác dụng; đổi $R$ theo cả hai hướng đều làm xấu cả sai số lẫn năng lượng.
 \end{itemize}
 
@@ -356,13 +383,13 @@ Luật cập nhật $W$ & eq.(17) & eq.(17) & Giữ nguyên \\
 % ================================================================
 
 \begin{enumerate}
-    \item \textbf{Mục tiêu đạt được:} ADP-FT của Wang et al. đã được hoàn thiện cho robot điều khiển bằng mô-men qua kiến trúc hai vòng; phương pháp bám được cả ba quỹ đạo, hội tụ ở mọi điều kiện đầu khảo sát, đứng thứ hai về chi phí khi so sánh công bằng và về lân cận nhỏ của quỹ đạo nhanh nhất.
-    \item \textbf{Điều chỉnh then chốt:} cơ chế ghép nonholonomic cho kênh sai số ngang -- phần mà luật gốc thiếu.
-    \item \textbf{Kết quả bất lợi được báo cáo đầy đủ:} tính hội tụ cố định thời gian không được bảo toàn khi lệnh vận tốc bị chặn; số hạng cố định thời gian và việc học của Critic không cải thiện chi phí trong cấu hình này; SMC đã chỉnh gain vẫn cho chi phí thấp nhất.
-    \item \textbf{Hướng tiếp theo:} luật học phù hợp với kiến trúc hai vòng (phải tốt hơn Critic đóng băng), mục tiêu hội tụ có tính đến giới hạn lệnh, hàm Lyapunov chung cho hệ hai vòng, kiểm chứng phần cứng.
+    \item \textbf{Mục tiêu đạt được:} ADP-FT của Wang et al. đã được hoàn thiện cho robot điều khiển bằng mô-men thành một bộ backstepping hai bước có hàm Lyapunov chung; phương pháp bám được cả ba quỹ đạo, hội tụ về sàn nhiễu ở mọi điều kiện đầu khảo sát, có chi phí ngang NTSMC (sau SMC) khi so sánh công bằng và về lân cận nhỏ của quỹ đạo nhanh nhất.
+    \item \textbf{Điều chỉnh then chốt:} số hạng chéo ở bước 2 (cơ sở lý thuyết cho việc ghép hai bước) và cơ chế ghép nonholonomic cho kênh sai số ngang -- phần mà luật gốc thiếu.
+    \item \textbf{Kết quả bất lợi được báo cáo đầy đủ:} tính hội tụ cố định thời gian không được bảo toàn khi vận tốc bị chặn; số hạng cố định thời gian ở bước 1 và việc học của Critic không cải thiện chi phí trong cấu hình này; SMC đã chỉnh gain vẫn cho chi phí thấp nhất.
+    \item \textbf{Hướng tiếp theo:} luật học phù hợp với bộ điều khiển hai bước (phải tốt hơn Critic đóng băng), mục tiêu hội tụ có tính đến giới hạn lệnh, hàm Lyapunov kiểu Kanayama cho bước 1 để chứng minh hội tụ của sai số ngang, kiểm chứng phần cứng.
 \end{enumerate}
 
-Lưu ý: so với bản báo cáo 26/05/2026, toàn bộ số liệu mô hình đầy đủ đã được tính lại sau khi sửa ma trận chuyển đổi mô-men $B$ theo đúng Fierro \& Lewis và đặt lại $\tau_\text{max} = 1$\,N$\cdot$m; kết quả Seminar 1, 2 (mô hình động học) không bị ảnh hưởng.
+Lưu ý: so với bản báo cáo 26/05/2026, toàn bộ số liệu mô hình đầy đủ đã được tính lại (MATLAB R2023a) sau khi sửa ma trận chuyển đổi mô-men $B$ theo đúng Fierro \& Lewis, đặt lại $\tau_\text{max} = 1$\,N$\cdot$m và thay luật mô-men cũ bằng bước 2 đầy đủ; kết quả Seminar 1, 2 (mô hình động học) không bị ảnh hưởng.
 
 % ================================================================
 % TÀI LIỆU THAM KHẢO
@@ -389,6 +416,9 @@ M.~Krstić, I.~Kanellakopoulos, P.~Kokotović, \textit{Nonlinear and Adaptive Co
 \bibitem{Fierro1997}
 R.~Fierro, F.~L.~Lewis, ``Control of a nonholonomic mobile robot: Backstepping kinematics into dynamics,''
 \textit{J. Robotic Systems}, vol.~14, no.~3, pp.~149--163, 1997.
+
+\bibitem{Slotine1991}
+J.-J.~E.~Slotine, W.~Li, \textit{Applied Nonlinear Control}, Prentice-Hall, 1991.
 
 \bibitem{Polyakov2012}
 A.~Polyakov, ``Nonlinear feedback design for fixed-time stabilization of linear control systems,''
