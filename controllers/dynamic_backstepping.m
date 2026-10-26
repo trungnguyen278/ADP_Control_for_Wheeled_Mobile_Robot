@@ -21,7 +21,7 @@ function [tau, info] = dynamic_backstepping(eta, eta_d, eta_d_prev, dt, p, s, z)
 %             - e'*inv(Kc)*M*( Kd*e + Ka*sig(e)^(p/q) + Kb*e.^3 ) - e'*inv(Kc)*B*d
 %   so hang cheo -z'*g*e va +e'*g'*z triet nhau => buoc 2 khong lam xau
 %   tinh chat cua buoc 1, va e hoi tu co dinh thoi gian (thuc dung neu co nhieu d).
-%   Kc = 0, Ka = Kb = 0: luat cu (truoc 2026-10-27), khong co ham Lyapunov chung.
+%   Kc = 0, Ka = Kb = 0: luat cu (truoc 2026-10-26 (toi)), khong co ham Lyapunov chung.
 %
 % Input:
 %   eta        = [v; omega]   (2x1) van toc hien tai

@@ -55,7 +55,7 @@ s.uo_max = 1.0;                 % [m/s] va [rad/s]
 % V ~ 1*(zx^2 + zy^2 + zth^2) → uo ~ [0.5*zx; 0.5*zth] gan z=0
 % Yeu, chi du on dinh — buoc ADP phai hoc de cai thien
 % Gia tri da chinh (sweep_gains.m): k* = 0.25 tren [3 3 3 0 0 0] voi buoc 2 day du
-% (2026-10-27; voi buoc 2 cu cua Fierro & Lewis la k* = 0.5, W0 = 1.5).
+% (2026-10-26, toi; voi buoc 2 cu cua Fierro & Lewis la k* = 0.5, W0 = 1.5).
 s.Wc0 = [0.75; 0.75; 0.75; 0; 0; 0];
 s.Wa0 = [0.75; 0.75; 0.75; 0; 0; 0];
 
@@ -118,7 +118,7 @@ s.w_max = 2.0;                  % [rad/s]
 %   cheo tuong duong cong (1/Kd)*[zx; zth] = 0.05*[zx; zth] vao lenh van toc.
 % Ka = Kb = 10: e hoi tu co dinh thoi gian, T2 <= q/((q-p)*Ka) + 1/(2*Kb) = 1.0 s
 %   (khi mo-men chua bao hoa).
-% in_kc = in_alpha = in_beta = [0; 0] => luat cu cua Fierro & Lewis (truoc 2026-10-27).
+% in_kc = in_alpha = in_beta = [0; 0] => luat cu cua Fierro & Lewis (truoc 2026-10-26 (toi)).
 
 s.Kd_v = 20;                    % gain van toc dai
 s.Kd_w = 20;                    % gain van toc goc

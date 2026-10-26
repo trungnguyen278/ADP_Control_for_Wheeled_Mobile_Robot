@@ -8,9 +8,10 @@ Học viên: Nguyễn Thành Trung
 
 ## Tổng quan
 
-Mở rộng phương pháp **ADP-based Fixed-time Optimal Control** (Wang et al., IEEE RA-L 2025)
-từ mô hình kinematic sang **dual-loop kinematic + dynamic**, tích hợp quán tính và ma sát
-thực tế cho WMR kiểu vi sai.
+Hoàn thiện phương pháp **ADP-based Fixed-time Optimal Control** (Wang et al., IEEE RA-L 2025)
+thành **một bộ điều khiển backstepping hai bước** cho WMR vi sai nhận lệnh mô-men: bước 1 là
+luật vận tốc ảo ADP-FT trên mô hình động học, bước 2 là luật mô-men trên mô hình động lực học
+(quán tính, ma sát), có hàm Lyapunov chung cho toàn hệ.
 
 ### Bài báo gốc
 
@@ -25,22 +26,23 @@ thực tế cho WMR kiểu vi sai.
 |---|---|---|
 | Mô hình | Kinematic 3 trạng thái | **Full model 5 trạng thái** |
 | Đầu ra | `u = [v, ω]` gán trực tiếp | **Mô-men `τ = [τ_R, τ_L]`** |
-| Kiến trúc | 1 vòng | **Dual-loop** (ADP ngoài + dynamic BS trong) |
-| Nhiễu | Không xét | **Sin tần số cao, 20% τ_max, cộng vào mô-men (vòng trong)** |
+| Bộ điều khiển | Chỉ bước 1 (luật vận tốc) | **Backstepping hai bước**: bước 1 ADP-FT + bước 2 luật mô-men có số hạng chéo |
+| Nhiễu | Không xét | **Sin tần số cao, 20% τ_max, cộng vào mô-men** |
 | So sánh | — | **5 phương pháp × 3 quỹ đạo + robustness** |
 
-Luật cập nhật eq.(17)–(18) và cấu trúc luật điều khiển eq.(16) **giữ nguyên của Wang**; luận văn
-chỉnh lại gain cho dual-loop và bổ sung số hạng ghép nonholonomic + toán tử chiếu.
+Luật cập nhật eq.(17) và cấu trúc luật điều khiển eq.(16), (18) **giữ nguyên của Wang**; luận văn
+chỉnh lại gain cho lệnh vận tốc bị chặn, bổ sung số hạng ghép nonholonomic (lấp khoảng hở kênh
+ngang trong chứng minh gốc) + toán tử chiếu, và thêm bước 2 của backstepping.
 Chi tiết ranh giới trích dẫn: [CLAUDE.md §2](CLAUDE.md).
 
 ### Đóng góp chính
 
 | # | Đóng góp | Ghi chú |
 |---|---|---|
-| 1 | Kiến trúc hai vòng cho ADP-FT trên full model, đầu ra mô-men | Vòng trong Fierro & Lewis |
-| 2 | Chỉnh ADP-FT cho dual-loop + **ghép nonholonomic** (quyết định) + toán tử chiếu | Mục 4.7 luận văn |
-| 3 | So sánh công bằng 5 phương pháp (chỉnh gain đều nhau) | `sweep_gains.m` |
-| 4 | Robustness + công thức dự đoán sai số do nhiễu + phân tích thành phần | Mục 5.3–5.8 |
+| 1 | Bộ backstepping hai bước cho robot điều khiển bằng mô-men, **hàm Lyapunov chung** | Định lý 4.1, `dynamic_backstepping.m` |
+| 2 | Phân tích lại chứng minh của Wang (**khoảng hở kênh ngang**, Bổ đề 4.1) + **ghép nonholonomic** (quyết định) + toán tử chiếu + tham số | Mục 4.2 luận văn |
+| 3 | So sánh công bằng 5 luật bước 1 với cùng bước 2 (chỉnh gain đều nhau) | `sweep_gains.m` |
+| 4 | Robustness + công thức dự đoán sai số do nhiễu + phân tích thành phần + đóng góp bước 2 | Mục 5.3–5.8 |
 
 SM1/SM2 (kinematic): Actor-Critic cần PE → Critic-only + Concurrent Learning bỏ PE.
 
@@ -56,6 +58,9 @@ $REPO   = "c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot
 
 # 1. Chạy mô phỏng chính (~5 phút) — sinh results/thesis_results.mat
 & $MATLAB -batch "cd('$REPO\simulations'); sim_thesis"
+#    Thí nghiệm bổ sung D–M (lâu hơn nhiều) và chỉnh gain đều nhau (tùy chọn)
+& $MATLAB -batch "cd('$REPO\simulations'); sim_thesis_extra"
+& $MATLAB -batch "cd('$REPO\simulations'); sweep_gains"
 
 # 2. Xuất figure PDF vào docs/
 & $MATLAB -batch "cd('$REPO\plotting'); export_all_figures"
@@ -75,7 +80,7 @@ pdflatex -interaction=nonstopmode thesis.tex; pdflatex -interaction=nonstopmode 
 
 ```
 models/        Mô hình WMR: kinematic, dynamic, full 5-state, tham số robot
-controllers/   5 bộ vòng ngoài (BS, ADP-AC, SMC, CL, ADP-FT) + 1 vòng trong (dynamic BS)
+controllers/   5 luật bước 1 (BS, ADP-AC, SMC, CL, ADP-FT) + bước 2 (dynamic_backstepping.m)
 simulations/   Kịch bản mô phỏng + tham số controller + quỹ đạo tham chiếu
 plotting/      Vẽ màn hình (plot_*) và xuất PDF vào docs/ (export_*)
 results/       File .mat — KHÔNG commit, tái tạo bằng sim_*.m
@@ -133,16 +138,21 @@ uf = [vr·cos(zθ), ωr]                                      feedforward
 uo = ûo − g†(λ·tanh(z/ρ) + μz + αz^{p/q} + βz³)            feedback
 ûo = −½ R⁻¹ gᵀ ∇φᵀ(z) Ŵ                                    critic-only ADP
 
-Ŵ̇ = −½Γ(σ̄·ε + κ₁Ŵ + κ₂(ŴᵀŴ)Ŵ)                            adaptive update
+Ŵ̇ = ½Γ(∇φ·g·R⁻¹·gᵀ·z − κ₁Ŵ − κ₂(ŴᵀŴ)Ŵ)                  eq.(17), mặc định
 ```
 
-**Dual-loop** (đóng góp luận văn):
+(Luận văn bổ sung `+ c_zy·v_r·tanh(z_y/ς)` vào thành phần θ của vector robust.)
+
+**Backstepping hai bước** (đóng góp luận văn, Mục 4.3–4.4):
 
 ```
-Vòng ngoài (1 kHz): z → ADP Fixed-time → (v_d, ω_d)
-Vòng trong (1 kHz): (v_d, ω_d) → Dynamic Backstepping → (τ_R, τ_L)
-Plant:              τ + d(t) → wmr_full_model → [x, y, θ, v, ω]
+Bước 1: η_d = u_f + u_o(z, Ŵ)                              (ADP-FT hoặc luật so sánh)
+Bước 2: B·τ = M(η̇_d + K_d·e + K_α·sig(e)^{p/q} + K_β·e³) + F(η) + K_c·[z_x; z_θ],  e = η_d − η
+V = ½zᵀz + ½W̃ᵀΓ⁻¹W̃ + ½eᵀK_c⁻¹M·e   →   V̇ = V̇₁|η=η_d − (tiêu tán theo e) − eᵀK_c⁻¹B·d
 ```
+
+Số hạng chéo `K_c·[z_x; z_θ] = −K_c·gᵀz` triệt số hạng tương tác trong `V̇₁`; đặt
+`K_c = K_α = K_β = 0` thì trở về luật computed-torque của Fierro & Lewis.
 
 ---
 
@@ -160,8 +170,9 @@ Plant:              τ + d(t) → wmr_full_model → [x, y, θ, v, ω]
 | Ma sát Coulomb | f_c / f_cω | 0.05 / 0.02 | N, N·m |
 | Mô-men max/bánh | τ_max | 1 (tạm, chờ thông số motor thật) | N·m |
 
-**Controller ADP-FT** (`simulations/ctrl_params.m` — **đã tune cho dual-loop**,
-khác giá trị gốc của Wang dành cho kinematic-only):
+**Bước 1 ADP-FT** (`simulations/ctrl_params.m` — **đã chỉnh cho robot điều khiển bằng mô-men**,
+khác giá trị gốc của Wang dành cho kinematic-only: λ = μ = α = diag(1, 1, 0.4),
+β = diag(1e5, 1e5, 1), ρ = 10, Γ = 2I, κ₁ = κ₂ = 0.1, Ŵ(0) = 0):
 
 ```
 p = 17, q = 19                      Q = diag(10,10,10),  R = diag(2,2)
@@ -173,9 +184,12 @@ p = 17, q = 19                      Q = diag(10,10,10),  R = diag(2,2)
 c_zy = 1.0, ς = 0.2                 (ghép nonholonomic)   luật cập nhật: 'wang' (eq.17)
 ```
 
+**Bước 2** (dùng chung cho mọi phương pháp): `K_d = 20·I`, `K_c = M = diag(10, 0.5)`
+(→ `V = V₁ + ½eᵀe`), `K_α = K_β = 10·I` (T₂ ≤ 1 s khi chưa bão hòa), `p/q = 17/19`.
+
 > Gain của mọi phương pháp chọn bằng `sweep_gains.m`: nhân toàn bộ gain danh nghĩa với
-> cùng hệ số k ∈ {1/16 … 4}, lấy k* cho tổng Jc 3 quỹ đạo nhỏ nhất (ADP-FT k* = 1/2,
-> SMC 1/8, BS 1/4, CL 1/4, ADP-AC 1/2).
+> cùng hệ số k ∈ {1/16 … 4}, lấy k* cho tổng Jc 3 quỹ đạo nhỏ nhất (với bước 2 đầy đủ:
+> ADP-FT k* = 1/2, SMC 1/8, BS 1/4, CL 1/4, ADP-AC 1/4).
 
 **Nhiễu:** `dist_amp = 0.2` (20% τ_max), `dist_freq = 30 rad/s` (~4.8 Hz), cộng cùng pha
 vào hai bánh — chỉ tác động kênh v (`B·[1;1] = [2/r; 0]`). Kịch bản nhiễu độc lập hai
@@ -184,6 +198,9 @@ kênh: Phần F của `sim_thesis_extra.m`.
 ---
 
 ## Kết quả
+
+> ⚠ Bảng dưới là số liệu với **bước 2 cũ** (luật Fierro & Lewis). Đang chạy lại với bước 2
+> đầy đủ; sẽ cập nhật cùng Chương 5–6 (PR #1).
 
 Mô hình đã sửa ma trận B, τ_max = 1 N·m (tạm), T = 60 s, nhiễu đồng pha 20%, gain chỉnh
 đều nhau (chạy bằng Octave 2026-10-26; chi tiết trong [PROGRESS.md](PROGRESS.md) và Chương 5
@@ -212,6 +229,7 @@ luận văn):
 
 1. Wang et al. (2025) — ADP fixed-time WMR, IEEE RA-L *(`references/`)*
 2. Fierro & Lewis (1997) — Mô hình dynamic WMR, backstepping 2 lớp
-3. Vamvoudakis & Lewis (2010) — Actor-Critic ADP online
-4. De La Cruz & Carelli (2008) — Mô hình dynamic WMR khi d ≠ 0
-5. Polyakov (2012) — Lý thuyết fixed-time stabilization
+3. Krstić, Kanellakopoulos & Kokotović (1995) — Thủ tục backstepping
+4. Vamvoudakis & Lewis (2010) — Actor-Critic ADP online
+5. De La Cruz & Carelli (2008) — Mô hình dynamic WMR khi d ≠ 0
+6. Polyakov (2012) — Lý thuyết fixed-time stabilization

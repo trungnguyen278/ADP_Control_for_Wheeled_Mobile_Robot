@@ -66,6 +66,6 @@ tên Wang) và nói rõ chứng minh gốc không còn phủ được luật m�
 
 Related: [[project-thesis]], [[feedback-adp-ft-tuning]], [[feedback-fixedtime-unverified]]
 
-**Đính chính 2026-10-27:** ghi chú cũ (và luận văn, `sim_thesis_extra.m` Phần J) chép
+**Đính chính 2026-10-26 (tối):** ghi chú cũ (và luận văn, `sim_thesis_extra.m` Phần J) chép
 β = diag(1e5, 1e5, 1e5). Đọc lại ảnh trang 180 của bài báo: β = diag(1e5, 1e5, **1**),
 cùng R = 2I, Q = 10I, p/q = 17/19. Đã sửa cấu hình "Wang gốc" và phải chạy lại Phần J.

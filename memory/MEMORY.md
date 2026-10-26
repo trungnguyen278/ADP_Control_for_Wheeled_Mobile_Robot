@@ -1,5 +1,5 @@
 - [User profile](user_profile.md) — Trung, cao học Điều khiển & Tự động hóa HUST, thích giải thích lý thuyết trước khi code
-- [Thesis project](project_thesis.md) — ADP Fixed-time dual-loop cho WMR, mở rộng Wang et al. 2025
+- [Thesis project](project_thesis.md) — ADP-FT của Wang et al. 2025 hoàn thiện thành bộ backstepping hai bước cho WMR điều khiển bằng mô-men
 - [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03: nhiễu sin 20% ở mô-men vòng trong, SMC cơ bản/NTSMC, bắt buộc vòng kinetic, BC bậc 2
 - [ADP-FT tuning](feedback_adp_ft_tuning.md) — Gain hiện dùng, chọn bằng chỉnh gain đều nhau (k* = 1/2); tham số gốc Wang không phát tán, chỉ bám kém
 - [Baseline fairness](feedback_baseline_fairness.md) — SMC tune vs thông dụng; số liệu mô hình B sai (7x → nay chỉ 1,2–1,4x)
@@ -15,3 +15,5 @@
 - [MATLAB CLI](reference_matlab_cli.md) — Chạy MATLAB batch từ terminal: R2023a, cờ -batch
 - [Progress](project_progress.md) — 26/10: đã viết lại luận văn + tóm tắt; còn chạy MATLAB xuất hình, build MiKTeX, gửi thầy (thầy chỉ có v2)
 - [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10: ADP-FT thứ 2 sau SMC; ghép nonholonomic quyết định; học critic không giúp
+- [Backstepping hai bước](feedback_backstepping_framing.md) — ⭐ MỘT bộ BC hai bước (bước 2 có số hạng chéo, K_c = M), không chia "vòng ngoài/vòng trong"; chứng minh lại có trích dẫn
+- [Khoảng hở chứng minh Wang](feedback_wang_gap.md) — ⭐ g·g† ≠ I₃; luật gốc có điểm cân bằng (0, z_y, 0) trên quỹ đạo thẳng (đã kiểm chứng); cơ sở của số hạng ghép

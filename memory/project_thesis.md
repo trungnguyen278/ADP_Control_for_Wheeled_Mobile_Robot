@@ -1,18 +1,19 @@
 ---
 name: project-thesis
-description: ADP Fixed-Time Optimal Control dual-loop for differential-drive WMR, extending Wang et al. 2025 with dynamic model
+description: ADP Fixed-Time Optimal Control cho WMR vi sai, hoàn thiện Wang et al. 2025 thành bộ backstepping hai bước điều khiển bằng mô-men
 metadata:
   type: project
 ---
 
-**Đề tài**: Mở rộng ADP-based Fixed-time Optimal Control (Wang et al., IEEE RA-L 2025) từ kinematic-only sang dual-loop kinematic + dynamic cho WMR vi sai.
+**Đề tài**: Hoàn thiện ADP-based Fixed-time Optimal Control (Wang et al., IEEE RA-L 2025) thành
+một bộ backstepping hai bước cho WMR vi sai nhận lệnh mô-men (mô hình 5 trạng thái).
 
-**Đóng góp chính**:
-1. Thêm dynamic model (Fierro & Lewis 1997): M·η̇ = B·τ − F(η)
-2. Dual-loop: Vòng ngoài ADP → (v_d,ω_d) → Vòng trong dynamic backstepping → (τR,τL) → Dynamic
-   (`controllers/dynamic_backstepping.m`. KHÔNG phải "PI robust" — mô tả cũ sai,
-   đã từng dẫn tới file rỗng `inner_loop_pi.m`, xóa ở commit 4e4c2e0)
-3. ADP giữ nguyên eq.(16)-(18) Wang, chỉ thêm vòng trong + plant dynamic
+**Đóng góp chính** (từ 2026-10-26 tối, xem [[feedback-backstepping-framing]]):
+1. Bước 1 = ADP-FT của Wang (giữ eq.(16)-(18)) + ghép nonholonomic + toán tử chiếu + gain mới
+2. Bước 2 = luật mô-men trên mô hình Fierro & Lewis (`controllers/dynamic_backstepping.m`),
+   thêm số hạng chéo K_c·[z_x; z_θ] và số hạng cố định thời gian → hàm Lyapunov chung (Định lý 4.1).
+   KHÔNG phải "PI robust" — mô tả cũ sai, đã từng dẫn tới file rỗng `inner_loop_pi.m`.
+3. Phân tích lại chứng minh Wang: khoảng hở kênh ngang ([[feedback-wang-gap]])
 
 **2 Seminar trước luận văn**:
 - SM1: Actor-Critic ADP truyền thống (cần PE, 2 mạng)
