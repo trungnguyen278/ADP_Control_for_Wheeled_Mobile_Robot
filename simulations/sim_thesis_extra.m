@@ -323,22 +323,25 @@ end
 %% ================================================================
 %  PHAN J: ABLATION CO CHE + DONG BANG CRITIC
 %  ================================================================
-% Truoc 2026-10-26 cac so lieu nay (Muc 5.7-5.8 luan van) duoc chay rieng le,
-% khong nam trong script nao. Gom lai day de tai tao duoc.
-%   Goc       -- ADP-FT nguyen ban: khong chieu, khong ghep nonholonomic
-%   + chieu   -- chi bat toan tu chieu
-%   + ghep    -- chi bat ghep nonholonomic
-%   Day du    -- ca hai (mac dinh trong ctrl_params)
-%   Dong bang -- day du nhung Gamma = 0: W giu nguyen W0, critic KHONG hoc.
-%                Tra loi cau hoi "critic hoc duoc gi?"
+% Truoc 2026-10-26 cac so lieu nay (Muc 4.7.3, 5.7-5.8 luan van) duoc chay rieng
+% le, khong nam trong script nao. Gom lai day de tai tao duoc.
+%   Wang goc    -- tham so + luat cap nhat goc cua Wang et al. (muc IV-A bai bao),
+%                  W(0) = 0, khong clamp uo, khong chieu, khong ghep
+%   Chua co che -- gain da chinh cua luan van, chua co chieu va ghep
+%   + chieu     -- chi bat toan tu chieu
+%   + ghep      -- chi bat ghep nonholonomic
+%   Day du      -- ca hai (mac dinh trong ctrl_params)
+%   Dong bang   -- day du nhung Gamma = 0: W giu nguyen W0, critic KHONG hoc.
+%                  Tra loi cau hoi "critic hoc duoc gi?"
 fprintf('\n--- PHAN J: ABLATION CO CHE + DONG BANG CRITIC ---\n');
 
 results_J = struct();
-j_cfgs = { struct('name','Goc',       'tag','goc',    'proj',false, 'czy',0,         'gam',1), ...
-           struct('name','+ chieu',   'tag','chieu',  'proj',true,  'czy',0,         'gam',1), ...
-           struct('name','+ ghep',    'tag','ghep',   'proj',false, 'czy',s.ft_c_zy, 'gam',1), ...
-           struct('name','Day du',    'tag','full',   'proj',true,  'czy',s.ft_c_zy, 'gam',1), ...
-           struct('name','Dong bang', 'tag','frozen', 'proj',true,  'czy',s.ft_c_zy, 'gam',0) };
+j_cfgs = { struct('name','Wang goc',    'tag','wang',   'proj',false, 'czy',0,         'gam',1, 'wang',true), ...
+           struct('name','Chua co che', 'tag','goc',    'proj',false, 'czy',0,         'gam',1, 'wang',false), ...
+           struct('name','+ chieu',     'tag','chieu',  'proj',true,  'czy',0,         'gam',1, 'wang',false), ...
+           struct('name','+ ghep',      'tag','ghep',   'proj',false, 'czy',s.ft_c_zy, 'gam',1, 'wang',false), ...
+           struct('name','Day du',      'tag','full',   'proj',true,  'czy',s.ft_c_zy, 'gam',1, 'wang',false), ...
+           struct('name','Dong bang',   'tag','frozen', 'proj',true,  'czy',s.ft_c_zy, 'gam',0, 'wang',false) };
 masses_J = [14, 16];
 
 J_traj = nan(numel(j_cfgs), numel(trajs));
@@ -351,6 +354,13 @@ for ci = 1:numel(j_cfgs)
     s_j.ft_proj  = c.proj;
     s_j.ft_c_zy  = c.czy;
     s_j.ft_Gamma = c.gam * s.ft_Gamma;
+    if c.wang
+        s_j.ft_lambda = [1; 1; 0.4];  s_j.ft_mu = [1; 1; 0.4];  s_j.ft_alpha = [1; 1; 0.4];
+        s_j.ft_beta   = 1e5 * [1; 1; 1];  s_j.ft_rho = 10;
+        s_j.ft_kappa1 = 0.1;  s_j.ft_kappa2 = 0.1;
+        s_j.ft_Gamma  = 2 * eye(s.l);  s_j.ft_W0 = zeros(s.l, 1);
+        s_j.ft_update_law = 'wang';  s_j.ft_uo_max = inf;
+    end
 
     for t_idx = 1:numel(trajs)
         s_jt = s_j;  s_jt.traj_type = trajs{t_idx};
@@ -375,20 +385,20 @@ for ci = 1:numel(j_cfgs)
 end
 
 fprintf('\n  J1. Jc (nhieu 20%%)\n');
-fprintf('  %-10s | %8s | %8s | %8s | %8s | %8s\n', ...
+fprintf('  %-12s | %8s | %8s | %8s | %8s | %8s\n', ...
     'Cau hinh', 'circle', 'line', 'figure8', '14kg', '16kg');
-fprintf('  %s\n', repmat('-', 1, 66));
+fprintf('  %s\n', repmat('-', 1, 68));
 for ci = 1:numel(j_cfgs)
-    fprintf('  %-10s | %8.3f | %8.3f | %8.3f | %8.3f | %8.3f\n', ...
+    fprintf('  %-12s | %8.3f | %8.3f | %8.3f | %8.3f | %8.3f\n', ...
         j_cfgs{ci}.name, J_traj(ci,:), J_mass(ci,:));
 end
 
 fprintf('\n  J2. z_rms 5s cuoi theo dieu kien dau (circle, nhieu 20%%)\n');
-fprintf('  %-10s |', 'Cau hinh');
+fprintf('  %-12s |', 'Cau hinh');
 for zi = 1:numel(z0_list), fprintf(' %9.3f |', z0_norm(zi)); end
-fprintf('  <- ||z0||\n  %s\n', repmat('-', 1, 13 + 12*numel(z0_list)));
+fprintf('  <- ||z0||\n  %s\n', repmat('-', 1, 15 + 12*numel(z0_list)));
 for ci = 1:numel(j_cfgs)
-    fprintf('  %-10s |', j_cfgs{ci}.name);
+    fprintf('  %-12s |', j_cfgs{ci}.name);
     fprintf(' %9.2e |', J_zrms(ci,:));
     fprintf('\n');
 end
