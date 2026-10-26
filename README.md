@@ -180,27 +180,23 @@ kênh: Phần F của `sim_thesis_extra.m`.
 
 ## Kết quả
 
-> ⚠ **Hai bảng dưới là số liệu của mô hình cũ (lỗi ma trận B, trước 2026-10-26) — không
-> còn dùng được.** Số liệu chạy lại trên mô hình đã sửa: [PROGRESS.md](PROGRESS.md) mục 2026-10-26.
+Mô hình đã sửa ma trận B, τ_max = 1 N·m (tạm), T = 60 s, nhiễu 20% (chạy lại bằng
+Octave 2026-10-26; chi tiết và ablation trong [PROGRESS.md](PROGRESS.md)):
 
-So sánh trên quỹ đạo tròn, T = 60 s (chi tiết trong [PROGRESS.md](PROGRESS.md)):
+| Phương pháp | Jc tròn | Jc thẳng | Jc hình 8 | z_rms tròn (5 s cuối) |
+|---|---|---|---|---|
+| SMC đã tune (λ = 0.7, η = 0.05) | **1.195** | **0.679** | **1.963** | 5.37e-4 |
+| BS | 1.393 | 0.704 | 2.765 | 5.57e-4 |
+| ADP-FT | 1.402 | 0.783 | 2.109 | 5.32e-4 |
+| SMC thông dụng (λ = 3, η = 1) | 1.631 | 0.957 | 2.396 | 4.35e-4 |
+| ADP-AC | 7.450 | 5.143 | 7.912 | 4.85e-2 |
+| CL | 7.712 | 5.110 | 8.272 | 6.14e-2 |
 
-| Phương pháp | Jc (không nhiễu) | Jc (20% nhiễu) | z_rms(5s) |
-|---|---|---|---|
-| **ADP-FT** | **70.7** | **85.2** | 0.060 |
-| BS | 70.7 | 90.1 | 0.000 |
-| CL | 87.5 | 101.1 | 0.086 |
-| ADP-AC | 107 | 121 | 0.136 |
-| SMC | 475 | 556 | 0.276 |
-
-Robustness theo mức nhiễu (Jc, quỹ đạo tròn):
-
-| Nhiễu | BS | CL | ADP-FT |
-|---|---|---|---|
-| 0% | 70.7 | 87.5 | **70.7** |
-| 20% | 90.1 | 101.1 | **85.2** |
-| 40% | 116 | 124 | **112** |
-| 60% | 157 | 162 | 158 |
+- Khối lượng 10–16 kg và nhiễu 0–60% (cả ba kiểu) làm Jc của BS, ADP-FT, SMC đã tune đổi
+  < 2%: vòng trong hấp thụ gần hết.
+- Ablation ADP-FT: chỉ ghép nonholonomic tạo khác biệt (Jc tròn 8.09 → 1.40, hết mất bám);
+  critic đóng băng, bỏ số hạng fixed-time, đổi luật cập nhật, bỏ toán tử chiếu đều không
+  làm xấu đi.
 
 ---
 
