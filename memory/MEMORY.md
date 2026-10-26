@@ -1,15 +1,19 @@
 - [User profile](user_profile.md) — Trung, cao học Điều khiển & Tự động hóa HUST, thích giải thích lý thuyết trước khi code
-- [Thesis project](project_thesis.md) — ADP Fixed-time dual-loop cho WMR, mở rộng Wang et al. 2025
-- [Advisor feedback](feedback_advisor_nam.md) — SM1 review: bắt buộc disturbance, SMC baseline, kiến trúc 2 vòng
-- [ADP-FT tuning](feedback_adp_ft_tuning.md) — Robust gain phải nhỏ cho dual-loop; clamp uo là bắt buộc
-- [Baseline fairness](feedback_baseline_fairness.md) — ⚠ SMC bị tune tệ 7x; tune công bằng thì SMC thắng ADP-FT, ADP-FT sụp ở 14kg
+- [Thesis project](project_thesis.md) — ADP-FT của Wang et al. 2025 hoàn thiện thành bộ backstepping hai bước cho WMR điều khiển bằng mô-men
+- [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03: nhiễu sin 20% ở mô-men vòng trong, SMC cơ bản/NTSMC, bắt buộc vòng kinetic, BC bậc 2
+- [ADP-FT tuning](feedback_adp_ft_tuning.md) — Gain hiện dùng, chọn bằng chỉnh gain đều nhau (k* = 1/2); tham số gốc Wang không phát tán, chỉ bám kém
+- [Baseline fairness](feedback_baseline_fairness.md) — SMC tune vs thông dụng; số liệu mô hình B sai (7x → nay chỉ 1,2–1,4x)
 - [Wang citation mismatch](feedback_wang_citation_mismatch.md) — ⚠ Sai tên tác giả, eq.(17) không phải của Wang, cột "Wang" ở Bảng 4.1 sai toàn bộ
-- [Fixed-time chưa kiểm chứng](feedback_fixedtime_unverified.md) — ⚠ ADP-FT mất bám ở 3/5 điều kiện đầu; W đổi dấu làm V̂ mất xác định dương
-- [Kết quả ablation](feedback_ablation_results.md) — Số hạng fixed-time cải thiện 25x trên figure-8; Bellman vs Wang là đánh đổi hai chiều
-- [Toán tử chiếu](feedback_projection_operator.md) — Đóng góp riêng: giữ V̂ xác định dương, cứu 14kg (6,9x) nhưng không cứu miền hút
-- [Ghép nonholonomic](feedback_nonholonomic_coupling.md) — ⭐ Đóng góp mạnh nhất: ADP-FT thiếu kênh tác động lên zy; thêm ghép → ổn định 5/5, z_rms thấp nhất trong 6 PP
-- [Nhiễu chỉ 1 kênh](feedback_disturbance_one_channel.md) — ⚠ d=[1;1] bị B triệt tiêu ở kênh ω; yêu cầu "cả 2 kênh" của thầy Nam chưa đạt
+- [Fixed-time chưa kiểm chứng](feedback_fixedtime_unverified.md) — W đổi dấu làm V̂ mất xác định dương; số liệu mô hình B sai, tiêu chí tỉ số sai
+- [Kết quả ablation](feedback_ablation_results.md) — ADP-UUB và luật Bellman vs Wang; số liệu mô hình B sai, chạy lại ở Phần D, G
+- [Toán tử chiếu](feedback_projection_operator.md) — Giữ V̂ xác định dương; số liệu mô hình B sai, chạy lại ở Phần J
+- [Lỗi ma trận B](feedback_b_matrix_error.md) — ⛔ B dùng Jacobian động học thay vì (1/r)[1 1; L −L]; actuator yếu 800x; phần lớn kết luận Ch.5–6 phải chạy lại
+- [Ghép nonholonomic](feedback_nonholonomic_coupling.md) — ⭐ Đóng góp mạnh nhất, vẫn đúng với B đã sửa: ADP-FT thiếu kênh tác động lên zy
+- [Nhiễu chỉ 1 kênh](feedback_disturbance_one_channel.md) — d=[1;1] chỉ tác động kênh v (B·[1;1] = [2/r; 0]); thầy chỉ yêu cầu nhiễu mô-men ở vòng trong — đã đạt
 - [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
 - [MATLAB CLI](reference_matlab_cli.md) — Chạy MATLAB batch từ terminal: R2023a, cờ -batch
-- [Progress](project_progress.md) — Đã nộp v2 cho GVHD 2026-05-26, chờ phản hồi 2,5 tháng chưa có; chưa có lịch bảo vệ
+- [Progress](project_progress.md) — 26/10: đã viết lại luận văn + tóm tắt; còn chạy MATLAB xuất hình, build MiKTeX, gửi thầy (thầy chỉ có v2)
+- [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10: ADP-FT thứ 2 sau SMC; ghép nonholonomic quyết định; học critic không giúp
+- [Backstepping hai bước](feedback_backstepping_framing.md) — ⭐ MỘT bộ BC hai bước (bước 2 có số hạng chéo, K_c = M), không chia "vòng ngoài/vòng trong"; chứng minh lại có trích dẫn
+- [Khoảng hở chứng minh Wang](feedback_wang_gap.md) — ⭐ g·g† ≠ I₃; luật gốc có điểm cân bằng (0, z_y, 0) trên quỹ đạo thẳng (đã kiểm chứng); cơ sở của số hạng ghép

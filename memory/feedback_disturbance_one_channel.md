@@ -5,6 +5,12 @@ metadata:
   type: project
 ---
 
+> ⚠ **Đính chính 2026-10-26** (đối chiếu tin nhắn gốc 28/03, xem [[feedback-advisor-nam]]): khi Trung
+> hỏi "1 kênh hay 2 kênh (v, ω)", thầy trả lời "vòng trong, mô-men" — thầy KHÔNG yêu cầu
+> "cả 2 kênh v, ω". Cách hiện tại (sin cộng vào mô-men hai bánh) đã đáp ứng yêu cầu. Nhận xét
+> kỹ thuật bên dưới vẫn đúng với B đã sửa (`B·[1;1] = [2/r; 0]`, kênh ω bằng 0) và nên nêu
+> trong luận văn; số liệu bên dưới là của mô hình cũ.
+
 Trong `sim_thesis.m:265` và `sim_sm1_full.m`, nhiễu được cộng vào mô-men hai bánh
 với **cùng biên độ, cùng pha**:
 

@@ -1,18 +1,33 @@
 ---
 name: feedback-advisor-nam
-description: PGS.TS. Nguyen Hoai Nam feedback on SM1 results (2026-03-28) - requires disturbance, SMC, 2-loop architecture
+description: Yêu cầu của PGS.TS. Nguyễn Hoài Nam sau báo cáo SM1 (28/03/2026, chat) — nhiễu mô-men ở vòng trong, so sánh SMC/NTSMC, bắt buộc vòng kinetic, BC bậc 2
 metadata:
   type: feedback
 ---
 
-Feedback tu thay Nguyen Hoai Nam sau bao cao SM1 (2026-03-28):
+Nguồn: ảnh chụp đoạn chat Trung gửi ngày 2026-10-26 (tin nhắn ngày 28/03/2026).
+Bản luận văn v2 và báo cáo tóm tắt (26/05/2026) được làm SAU đoạn chat này để đáp ứng
+các yêu cầu dưới đây. Thầy chưa đọc hai bản đó.
 
-1. Them disturbance dang sin, tan so cao, bien do 20% tin hieu dieu khien lon nhat.
-2. Disturbance cong vao mo-men (vong trong), ca 2 kenh.
-3. So sanh voi SMC co ban hoac NTSMC (Non-singular Terminal SMC) o vong ngoai kinematic.
-4. Mo phong phai co 2 vong: kinematic controller (ngoai) + dynamic controller (trong).
-5. Backstepping phai bac 2 (khong chi kinematic BC bac 1).
-6. Output vong trong la mo-men tau, khong phai van toc.
+Nguyên văn ý của thầy:
+1. "Cho thêm disturbance dạng sin với tần số cao và biên độ 20% tín hiệu điều khiển lớn
+   nhất". "Disturbance cộng vào tín hiệu đầu vào".
+2. Trung hỏi "nhiễu cộng vào cả 2 kênh (v và ω) hay chỉ 1 kênh" → thầy trả lời:
+   "Vòng trong. Mô men e nhé. Kinetic." Tức là nhiễu ở **mức mô-men của vòng trong**;
+   thầy **không** yêu cầu cụ thể "cả 2 kênh v, ω".
+3. "So sánh với trượt": "SMC cơ bản hoặc NTSMC".
+4. "Mô phỏng phải có vòng điều khiển kinetic nữa" / "Thêm vòng trong nữa".
+5. "Vòng ngoài bậc nhất e thiết kế BC như nào — BC phải hệ bậc 2" → backstepping phải
+   gồm cả bước động lực học (vòng trong), không chỉ BC động học bậc 1.
 
-**Why:** Thay muon thay robustness analysis va kien truc controller dung truoc khi chuyen sang phan chinh luan van.
-**How to apply:** Moi mo phong deu phai dung kien truc 2 vong (kinematic + dynamic). Luon co kich ban nhieu. SMC la baseline so sanh bat buoc.
+**Why:** Thầy muốn kiến trúc điều khiển đúng (hai vòng, đầu ra mô-men) và phân tích
+bền vững trước khi sang phần chính của luận văn.
+
+**How to apply:**
+- Mọi mô phỏng dùng kiến trúc hai vòng; nhiễu cộng vào mô-men τ (vòng trong).
+  Cách hiện tại — `d = A·τ_max·sin(30t)·[1;1]` cộng vào mô-men hai bánh — đáp ứng đúng
+  yêu cầu. Kịch bản nhiễu độc lập từng bánh (Phần F) là kiểm tra thêm, không bắt buộc.
+- "20% tín hiệu điều khiển lớn nhất" đang hiểu là 20% τ_max (cách hiểu bảo thủ).
+- SMC cơ bản và NTSMC đều đã có; BC bậc 2 = Kanayama (ngoài) + Fierro & Lewis (trong).
+
+Related: [[feedback-disturbance-one-channel]], [[project-progress]]

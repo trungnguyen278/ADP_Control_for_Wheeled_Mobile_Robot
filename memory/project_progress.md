@@ -1,9 +1,42 @@
 ---
 name: project-progress
-description: Luận văn đã nộp bản v2 cho GVHD 2026-05-26, đang chờ phản hồi (tính đến 2026-08-12 vẫn chưa có), chưa có lịch bảo vệ
+description: 26/10/2026 đã sửa lỗi B, chỉnh gain đều, viết lại luận văn (72 tr) + báo cáo tóm tắt; còn Trung chạy MATLAB xuất hình, build MiKTeX, đọc lại rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
+
+## Cập nhật 2026-10-26 (tối): đã viết lại xong
+
+- Luận văn viết lại theo mô hình B đúng + gain chỉnh đều (Ch.1.4, 4.3–4.8, Ch.5, Ch.6, tóm
+  tắt VI/EN): 72 trang, compile sạch bằng TeX Live. Báo cáo tóm tắt viết lại phần kết quả.
+  Số liệu chốt: [[ket-qua-cuoi]].
+- Khung: "hoàn thiện ADP-FT của Wang et al. cho robot điều khiển bằng mô-men"; ADP-FT vẫn là
+  phương pháp chính, các kết quả bất lợi (học critic không giúp, fixed-time không bảo toàn,
+  SMC đã chỉnh thấp nhất) báo cáo đầy đủ.
+- Còn lại (Trung): chạy MATLAB `sim_sm2; sim_sm1_full; sim_thesis; sim_thesis_extra` rồi
+  `export_all_figures` (hình trong repo VẪN là mô hình cũ), build MiKTeX, đọc lại, commit
+  PDF, gửi thầy kèm giải thích lỗi B. τ_max thật của motor vẫn chưa chốt (đang 1 N·m).
+
+## Cập nhật 2026-10-26 (chiều): quyết định của Trung
+
+- Thầy Nam đã nhận v2 + báo cáo tóm tắt (26/05, làm SAU chat 28/03 — xem
+  [[feedback-advisor-nam]]) nhưng **chưa đọc**. Trung muốn hoàn thiện rồi in ra nộp.
+- ADP-FT **vẫn là phương pháp chính**, kiến trúc hai vòng là bắt buộc (yêu cầu của thầy).
+- Giữ tham số robot (m=10, I=0,5, r=0,05, L=0,15), τ_max = 1 N·m, bỏ nhãn Pioneer 3-DX.
+- Chỉnh gain nhẹ, đều nhau cho mọi phương pháp (`simulations/sweep_gains.m`).
+- Trung tự chạy MATLAB (xuất hình) + MiKTeX (build PDF); Claude viết lại `.tex`.
+
+## Cập nhật 2026-10-26
+
+Sau 2,5 tháng không động tới, Trung hỏi lại tiến độ. Kiểm tra cho thấy:
+- Bản mới nhất: `thesis.pdf` 78 trang, build 2026-08-13, chưa ghi nhận đã gửi thầy.
+  Thầy Nam vẫn chỉ có v2 (43 trang, commit `7fedea9`); 5 tháng chưa phản hồi.
+- Bản 78 trang tự mâu thuẫn: đợt thêm ghép nonholonomic (tối 13/08) chưa lan hết sang
+  Ch.5–6 (vd. `thesis.tex:1564`, `:2354`, `:2366`, `:2226`, `:2439`, `:2474–2489`).
+  Báo cáo tóm tắt còn cũ hơn (vẫn ghi "ADP-FT tốt nhất").
+- **Quan trọng hơn:** mô hình có lỗi ma trận B → xem [[feedback-b-matrix-error]].
+  Trung chọn: sửa code + chạy lại trước (đã làm 2026-10-26), phần viết ghi thành
+  checklist trong PROGRESS.md (VIEC CAN LAM mục 2) để làm sau.
 
 ## Trạng thái tính đến 2026-08-12
 

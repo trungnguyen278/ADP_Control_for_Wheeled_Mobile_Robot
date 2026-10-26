@@ -10,14 +10,20 @@ Hoc vien: Nguyen Thanh Trung
 
 ---
 
-## TRANG THAI (cap nhat 2026-08-13)
+## TRANG THAI (cap nhat 2026-10-26, toi)
 
-**Dang cho phan hoi cua GVHD.** Da gui ban v2 qua Teams ngay 2026-05-26,
-den nay chua nhan duoc phan hoi — da 2,5 thang.
+**2026-10-26: da sua loi ma tran B, chinh gain deu nhau cho 5 PP, chay lai toan bo va
+VIET LAI luan van + bao cao tom tat** theo mo hinh dung. ADP-FT van la phuong phap chinh,
+khung luan van: "hoan thien ADP-FT cua Wang et al. cho robot dieu khien bang mo-men".
+Chi tiet o muc "2026-10-26 (toi)" ben duoi.
 
-**2026-08-13: da hoan thanh ban v3** sau dot tu ra soat toan bo luan van
-(doi chieu voi bai bao goc + chay them 4 thi nghiem kiem chung).
-Chi tiet o muc "2026-08-13" ben duoi. thesis.pdf: 43 -> 66 trang.
+**Con lai truoc khi in nop (Trung lam, xem VIEC CAN LAM muc 1):** chay MATLAB de xuat lai
+hinh (19 hinh trong docs/thesis/figures VAN LA MO HINH CU), build PDF bang MiKTeX, doc lai,
+commit PDF. thesis.pdf / summary_report.pdf trong repo van la ban cu.
+
+**GVHD:** thay Nam da nhan ban v2 (43 trang, commit 7fedea9) + bao cao tom tat
+(13 trang, commit 5e1a452) qua Teams 2026-05-26 nhung CHUA DOC. Hai ban nay mang loi B.
+Khi gui ban moi: noi ro loi B va thay doi ket luan (muc 2026-10-26).
 
 **Chua co lich bao ve.** Ke hoach goc 16 tuan (02/2026 - 06/2026) da qua han;
 khong con dung lam moc thoi gian nua, giu lai duoi day chi de tham chieu lich su.
@@ -423,20 +429,177 @@ thesis.pdf 75 -> 78 trang, 0 loi. Commit 47d384e, 57ddb91.
 > **CON LAI:** (1) do ben khoi luong van la diem yeu (527 vs BS 264 tai 14kg);
 > (2) Jc o nhieu 60% cao hon BS 25%; (3) chua kiem chung kha nang thich nghi khi
 > doi Q, R — huong so 1 o §6.3.
+>
+> **[2026-10-26] TOAN BO so lieu tu 2026-05-11 den day do tren mo hinh co loi
+> ma tran B — xem muc 2026-10-26 ben duoi.**
+
+### 2026-10-26 — PHAT HIEN VA SUA LOI MA TRAN B, CHAY LAI TOAN BO
+
+**Loi.** `wmr_params.m` dung `B = [r/2 r/2; r/(2L) -r/(2L)]` — Jacobian dong hoc
+(van toc banh -> v, w), KHONG phai ma tran mo-men. Dung theo Fierro & Lewis (cong ao,
+B = J^-T): `B = (1/r)[1 1; L -L]`, tuc F = (tauR+tauL)/r. Kenh v yeu 800 lan, kenh w
+yeu 18 lan. Loi co tu mo hinh goc (02/2026) nen ban v2 da gui thay cung mang loi nay.
+
+**Kiem chung truoc khi sua** (Octave 8.4; tai tao 12/12 so chinh cua luan van, sai
+khac < 0.1% => so lieu cu khong chep sai, sai o mo hinh):
+- 94-98% Jc nam trong 10 s dau; mo-men bao hoa ~68% thoi gian 10 s dau; moi PP
+  mat 3.5 s moi dat 95% vr. Bang Jc cu do "ai chiu bao hoa luc khoi dong tot hon".
+- Nang tau_max 5 -> 20 va ha fc 0.3 -> 0.05 truoc day la va trieu chung cua loi nay.
+
+**Da lam.** Sua B, tau_max = 1 N*m TAM (gia toc max 4 m/s^2), test_openloop 5/5 PASS
+[9b3fcf0]. Quet lai SMC 72 lan: mat chi phi phang, giu 0.7/0.05 [d9a9532]. Them
+Phan J: ablation co che + dong bang critic + tham so goc Wang [5babecd, 17d1f82].
+Chay lai sim_thesis + sim_thesis_extra bang Octave (231 lan chay). Gain giu nguyen.
+
+**Ket qua moi** (T = 60 s, nhieu 20% dong pha, z0 chuan):
+
+| Phuong phap | Jc circle | Jc line | Jc figure8 | z_rms circle |
+|---|---|---|---|---|
+| SMC da tune (Phan H) | **1.195** | **0.679** | **1.963** | 5.37e-4 |
+| NTSMC (cung gain) | 1.247 | 0.798 | 2.056 | 5.35e-4 |
+| BS | 1.393 | 0.704 | 2.765 | 5.57e-4 |
+| ADP-FT | 1.402 | 0.783 | 2.109 | 5.32e-4 |
+| SMC thong dung | 1.631 | 0.957 | 2.396 | 4.35e-4 |
+| ADP-AC | 7.450 | 5.143 | 7.912 | 4.85e-2 |
+| CL | 7.712 | 5.110 | 8.272 | 6.14e-2 |
+
+Do ben (Phan B, C, F, I): khoi luong 10-16 kg va nhieu 0-60% (dong pha, vi sai, doc
+lap) KHONG con phan biet duoc cac PP: Jc doi < 2% (BS 1.391-1.413, ADP-FT
+1.397-1.409, SMC tune 1.192-1.213). z_rms tang tuyen tinh theo bien do nhieu va nhu
+nhau o BS / ADP-FT (20%: dong pha 5.3-5.6e-4, vi sai 1.6e-3, doc lap 9.9e-4).
+=> Vong trong (dynamic BS, Kd = 20) hap thu gan het bat dinh khoi luong va nhieu mo-men.
+
+Phan E — t_settle (tol 0.05), ||z0|| = 0.245 / 0.612 / 1.225 / 2.375 / 3.5:
+- ADP-FT: 3.95 / 5.09 / 6.06 / 11.70 / 19.08 s
+- BS:     8.53 / 13.16 / 14.44 / 15.98 / 27.66 s
+- CL: khong dat o z0 nao (z_rms 6e-2 > tol)
+=> ADP-FT nhanh hon BS o ca 5 z0. Ca hai tang theo ||z0|| (bat buoc vi v bi chan).
+
+Phan D, G, J — ablation ADP-FT (Jc):
+
+| Cau hinh | circle | line | figure8 | quet 5 z0 (z_rms) |
+|---|---|---|---|---|
+| Tham so goc Wang | 4.856 | 12.976 | 93.977 | 0.02 / 0.43 / 0.37 / 0.35 / 0.71 |
+| Chua co che (gain luan van) | 8.092 | 5.657 | 10.041 | mat bam 2/5 (2.68; 2.12), con lai 0.06-0.14 |
+| + toan tu chieu | 8.092 | 5.657 | 10.041 | mat bam 1/5 (2.85), con lai 0.02-0.14 |
+| + ghep nonholonomic | 1.402 | 0.783 | 2.109 | 5.3e-4 ca 5 |
+| Day du (mac dinh) | 1.402 | 0.783 | 2.109 | 5.3e-4 ca 5 |
+| Dong bang critic (Gamma = 0) | **1.313** | **0.734** | **1.976** | 5.3e-4 ca 5 |
+| ADP-UUB (bo so hang fixed-time) | 1.327 | 0.743 | 1.990 | -- |
+| Luat cap nhat goc Wang | 1.401 | 0.783 | 2.111 | -- |
+
+=> **Chi co ghep nonholonomic tao khac biet** (5.8 lan tren circle, het mat bam).
+Toan tu chieu, luat cap nhat, so hang fixed-time va viec critic hoc deu KHONG dong
+gop, hoac lam xau di 5-6%. ||W(T)|| = 0.586 voi ca hai luat: khi z nho, so hang
+sigma-mod chiem uu the nen W chi suy giam ve 0.
+=> Tham so goc Wang KHONG phat tan nhung bam kem (sai so 0.35-0.71 m o 4/5 z0, hinh 8
+gap 45 lan) — van can chinh tham so, nhung ly do khong phai "phat tan".
+
+**Do nhay gain** (thong tin cho quyet dinh tune lai, Jc circle / figure8):
+- ADP-FT nhan gain robust x0.5 / x1 / x2 / x5 / x10: 1.49/2.27, 1.40/2.11,
+  **1.29/1.94**, 1.28/2.38, 1.72/4.31.
+- BS nhan ca 3 gain x0.5 / x1 / x2: **1.26/2.35**, 1.39/2.77, 1.51/3.15; k1 = 3 hoac 5
+  deu xau hon.
+=> Tune nhe moi PP doi Jc ~10%, khong doi buc tranh: SMC tune tot nhat tren circle,
+ADP-FT ~ SMC tren hinh 8, BS kem hon tren hinh 8.
+
+**Phan K — ADP-FT co thich nghi khi doi Q, R khong** [cabcfa7] (circle, nhieu 20%;
+Je = tich phan ||z||^2, Ju = tich phan ||uo||^2):
+
+| Q x / R x | 1 / 1 | 0.1 / 1 | 10 / 1 | 1 / 0.1 | 1 / 10 |
+|---|---|---|---|---|---|
+| Je | 0.1263 | 0.1267 | 0.1228 | 0.2475 | 0.2888 |
+| Ju | 0.0696 | 0.0698 | 0.0677 | 0.1629 | 0.2239 |
+
+=> AM TINH. Doi Q 100 lan: Je, Ju doi < 3%. Doi R (ca hai chieu) lam xau CA Je lan Ju
+— R chi tac dong qua R^-1 trong uo_adp nhu mot he so khuech dai, khong phai thich nghi.
+||W(T)|| = 0.586 o moi cau hinh. Day la "phep thu quyet dinh" ma Muc 6.3-6.4 dat ra.
+
+**So sanh voi ket luan ban 78 trang:**
+
+| Ket luan cu | Mo hinh da sua |
+|---|---|
+| ADP-FT sai so bam nho nhat | Ngang nhau 5.3-5.6e-4; SMC thong dung con thap nhat (4.35e-4) |
+| ADP-FT yeu voi khoi luong | Khong PP nao suy giam den 16 kg |
+| ADP-FT kem BS 25% o nhieu 60% | 1.407 vs 1.397 (0.7%) |
+| ADP-FT yeu tren hinh 8 | ADP-FT 2.109 < BS 2.765 |
+| Tham so goc Wang lam phat tan | Khong phat tan, chi bam kem |
+| So hang fixed-time cai thien 25 lan tren hinh 8 | Bo di con tot hon 6% |
+| Luat Bellman vs Wang: danh doi hai chieu | Nhu nhau |
+| Toan tu chieu cuu 14 kg (6.9 lan) | Khong tac dung |
+| **Ghep nonholonomic het mat bam** | **VAN DUNG — co che duy nhat tao khac biet** |
+| SMC thong dung vs tune: 7 lan / 289 lan | 1.37 / 1.41 / 1.22 lan |
+| Ti so t_settle 1.68 vs BS 2.87 | Tieu chi sai; ADP-FT nhanh hon BS o moi z0 |
+| Lap luan cuoi: ADP-FT thich nghi khi doi Q, R (chua co so) | Am tinh (Phan K) |
+
+### 2026-10-26 (toi) — CHINH GAIN DEU NHAU, CHAY LAI, VIET LAI LUAN VAN
+
+Ghi chu: so lieu muc "2026-10-26" ngay tren la TRUOC khi chinh gain; so lieu duoi day la ban cuoi.
+
+**Chinh gain deu nhau** (`sweep_gains.m`, 21 lan/PP; nhan toan bo gain danh nghia voi k,
+chon k* theo tong Jc 3 quy dao, nhieu 20%) [504e1ab, 2276366]:
+SMC k* = 1/8 (4.984 -> 3.836), ADP-FT 1/2 (4.295 -> 4.192), BS 1/4 (4.861 -> 4.310),
+CL 1/4 (21.095 -> 5.778), ADP-AC 1/2 (20.505 -> 14.334). NTSMC dung gain SMC.
+Luat cap nhat ADP-FT ve lai eq.(17) goc cua Wang (Bellman cho ket qua nhu nhau o z0 chuan).
+
+**Ket qua cuoi** (Octave 8.4, cung code MATLAB; T = 60 s, nhieu dong pha 20%):
+
+| PP | Jc tron | Jc thang | Jc so 8 | Tong | t(0.01) tron |
+|---|---|---|---|---|---|
+| SMC | **1.213** | **0.663** | **1.960** | **3.836** | 10.0 s |
+| ADP-FT | 1.334 | 0.803 | 2.056 | 4.192 | **8.4 s** |
+| NTSMC | 1.257 | 0.857 | 2.079 | 4.193 | 9.9 s |
+| BS | 1.307 | 0.898 | 2.104 | 4.310 | 10.7 s |
+| CL | 1.598 | 1.347 | 2.832 | 5.778 | 25.6 s |
+| ADP-AC | 4.708 | 4.219 | 5.407 | 14.334 | 60.0 s |
+
+- ADP-FT thu 2 (kem SMC 9.3%), ve lan can 0.01 m som nhat tren ca 3 quy dao.
+- z_rms ~5.3-5.5e-4 o BS/SMC/NTSMC/ADP-FT = san do nhieu. Cong thuc giai tich
+  z_rms = 2d0/(sqrt2 * r m w_n sqrt(w_n^2 + Kd^2)) khop < 4% (ca 3 kieu nhieu).
+- Khoi luong 16 kg / nhieu 60%: Jc doi < 4% moi PP (vong trong hap thu).
+- Mo-men: bao hoa chi trong giay dau (5-10%), < 0.2% tong thoi gian.
+- Ablation (Phan D, G, J, L): ghep nonholonomic quyet dinh (thieu -> Jc x3-5, ket o
+  diem can bang gia |zy| ~2.4 m); toan tu chieu khong kich hoat (lambda_min(P) > 0.12);
+  bo so hang fixed-time (UUB) giam Jc 1.5-2%; critic dong bang tot hon hoc 3%;
+  W(0) = 0 van hoi tu nhung Jc x2.4-3.6; tham so goc Wang: Jc x3.6/16.2/45.7.
+- Dieu kien dau (Phan E, L), t(0.05) tai ||z0|| = 3.5: ADP-FT 55.1 s, dong bang 19.0 s,
+  Bellman 32.0 s, gain k=1 44.0 s, BS 23.4 s => luat hoc cua Wang LAM CHAM hoi tu khi sai
+  lech lon. Fixed-time khong the bao toan khi |v| <= 0.5 (can duoi ~ z_x0/0.2 s).
+- Phan K: Q khong co mat trong luat (doi Q -> ket qua y het); doi R hai chieu deu xau.
+
+**Script moi/sua:** sim_thesis.m them Bang A2 (Ju, thoi gian qua do), A3 (mo-men);
+sim_thesis_extra.m them Phan L (vai tro hoc critic theo z0) va J3 (ti le lenh van toc cham
+gioi han); run_extra_sim.m tra them satv. Da chay kiem chung Phan A va L bang Octave.
+
+**Luan van** (72 trang, TeX Live: 0 loi, 0 ref treo, 0 Overfull): viet lai Ch.5, Ch.6, tom
+tat VI/EN, Muc 1.4-1.5, 4.3-4.8; them NTSMC (trich Feng 2002, Yu & Man 2002), Slotine 1991;
+sua \ref muc rong (macro \seclabel), ten "Hinh/Bang/MUC LUC/DANH MUC" tieng Viet, bo tieu
+de "References" trung. **Bao cao tom tat** viet lai phan ket qua (11 trang).
+export_all_figures.m: legend ra ngoai vung ve [3c7a077].
 
 ---
 
 ## VIEC CAN LAM
 
-### Dang bi chan (cho GVHD)
+### 1. Truoc khi in nop (Trung lam)
+- [ ] Chay MATLAB (R2023a) trong `simulations/`: `sim_sm2; sim_sm1_full; sim_thesis;
+      sim_thesis_extra` (~30-40 phut), roi `cd ../plotting; export_all_figures`.
+      Doi chieu so in ra voi Chuong 5 (Octave va MATLAB co the lech o chu so thu 3-4).
+- [ ] Build PDF bang MiKTeX (pdflatex x2): docs/thesis/thesis.tex,
+      docs/reports/summary/summary_report.tex. Kiem tra Overfull, ref treo.
+- [ ] Doc lai toan bo, dac biet Ch.5-6 va hinh moi (legend da dua ra ngoai).
+- [ ] Commit thesis.pdf, summary_report.pdf, hinh PDF moi.
+- [ ] **Trung quyet:** tau_max that cua motor (dang tam 1 N*m). Doi gia tri => chay lai het.
+- [ ] Gui thay Nam ban moi + noi ro loi B va cac ket luan da doi so voi v2.
+- [ ] (khong gap) Gom trung lap plot_sm1_results.m va plot_sm1_full.m.
+
+### 2. Huong mo rong neu con thoi gian (Muc 6.3 luan van)
+- [ ] Luat hoc critic hop voi dual-loop (phai tot hon critic dong bang, nhat la khi z0 lon).
+- [ ] Them ghep nonholonomic cho CL (CL con sai so ngang cung nguyen nhan).
+
+### 3. Dang bi chan (cho GVHD)
 - [ ] Hoan thien luan van theo phan hoi cua thay Nam -- CHUA CO PHAN HOI tu 2026-05-26
 - [ ] Chuan bi slide bao ve -- chua co lich bao ve
-
-### Lam duoc ngay, khong phu thuoc GVHD
-- [ ] Cai thien SMC (z_rms = 0.276 con cao so voi ADP-FT 0.060, xem xet NTSMC)
-- [ ] Gom trung lap giua plot_sm1_results.m va plot_sm1_full.m
-- [ ] Can nhac doi ten sm1_params.m -> ctrl_params.m (dang giu tham so cho CA 5 phuong phap,
-      ten khong con phan anh pham vi)
 
 ### Da xong
 - [x] sim_sm2.m + plot_sm2.m: mo phong rieng SM2 (kinematic-only, AC vs CL)
@@ -454,7 +617,7 @@ thesis.pdf 75 -> 78 trang, 0 loi. Commit 47d384e, 57ddb91.
 ## YEU CAU TU THAY NAM (2026-03-28)
 
 1. Disturbance dang sin, tan so cao, bien do 20% tau_max --> DA LAM
-2. Disturbance cong vao mo-men (vong trong), ca 2 kenh --> DA LAM
+2. Disturbance cong vao mo-men (vong trong) --> DA LAM (thay khong yeu cau cu the 2 kenh v, w)
 3. So sanh voi SMC co ban --> DA LAM
 4. Mo phong 2 vong: kinematic + dynamic --> DA LAM
 5. Backstepping bac 2 (dynamic BS) --> DA LAM

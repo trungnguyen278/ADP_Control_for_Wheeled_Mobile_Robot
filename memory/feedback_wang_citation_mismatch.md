@@ -44,7 +44,7 @@ Tham số thật của Wang (bài báo trang 180, mục IV-A):
 | | Luận văn ghi là "Wang" | Wang thực tế |
 |---|---|---|
 | λ = μ = α | [0.3, 0.3, 0.3] | **diag(1, 1, 0.4)** |
-| β | [1.0, 1.0, 1.0] | **diag(1e5, 1e5, 1e5)** |
+| β | [1.0, 1.0, 1.0] | **diag(1e5, 1e5, 1)** — kênh θ bằng 1, KHÔNG phải 1e5 |
 | ρ | 0.05 | **10** |
 | κ₁ | 0.02 | **0.1** (κ₂ cũng = 0.1) |
 | Γ | 2I₆ | 2I₆ (đúng) |
@@ -54,7 +54,7 @@ Cột "Wang" hiện tại thực chất là giá trị **trung gian của chính
 tune thứ nhất, không phải giá trị gốc. Kéo theo hai tuyên bố sai:
 - "giảm gains 3–5 lần": thực tế β giảm ~666.000 lần, ρ giảm 100 lần.
 - "cần warm start W₀≠0" ghi là hạn chế chung của ADP — nhưng Wang chạy được với
-  W(0)=0 nhờ β=1e5 giữ ổn định khi critic chưa học. Warm start là hệ quả của
+  W(0)=0 nhờ β=1e5 (kênh x, y) giữ ổn định khi critic chưa học. Warm start là hệ quả của
   việc luận văn giảm β, không phải hạn chế cố hữu.
 
 **Why:** Bảng 4.1 chính là chỗ luận văn tuyên bố "đóng góp chính". Cột đối chứng
@@ -65,3 +65,7 @@ số thật; tách eq.(17) đã sửa ra thành đóng góp riêng có tên (tha
 tên Wang) và nói rõ chứng minh gốc không còn phủ được luật mới.
 
 Related: [[project-thesis]], [[feedback-adp-ft-tuning]], [[feedback-fixedtime-unverified]]
+
+**Đính chính 2026-10-26 (tối):** ghi chú cũ (và luận văn, `sim_thesis_extra.m` Phần J) chép
+β = diag(1e5, 1e5, 1e5). Đọc lại ảnh trang 180 của bài báo: β = diag(1e5, 1e5, **1**),
+cùng R = 2I, Q = 10I, p/q = 17/19. Đã sửa cấu hình "Wang gốc" và phải chạy lại Phần J.

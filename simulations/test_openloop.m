@@ -58,7 +58,9 @@ grid on;
 %  ================================================================
 fprintf('--- Test 2: Constant torque (di thang) ---\n');
 
-tau_const = [5; 5];
+% Chon de v_ss = 0.3 m/s (bang van toc tham chieu): F = fv*0.3 + fc = 0.2 N
+% => tauR = tauL = F*r/2 = 0.005 N*m. Ma sat nho nen chi can mo-men rat nho.
+tau_const = [0.005; 0.005];
 T2 = 120;
 
 odefun2 = @(t, s) wmr_full_model(t, s, tau_const, p);
@@ -106,7 +108,9 @@ axis equal; grid on;
 %  ================================================================
 fprintf('--- Test 3: Differential torque (quay) ---\n');
 
-tau_turn = [5; 3];
+% F = (0.012+0)/r = 0.24 N, N = L*0.012/r = 0.036 N*m
+% => v_ss = 0.38 m/s, w_ss = 0.16 rad/s, R ~ 2.4 m (gan quy dao tron R = 2)
+tau_turn = [0.012; 0];
 T3 = 120;
 
 odefun3 = @(t, s) wmr_full_model(t, s, tau_turn, p);
@@ -125,7 +129,7 @@ v_end3 = s3(end, 4);
 w_end3 = s3(end, 5);
 R_sim = abs(v_end3 / w_end3);
 
-fprintf('  tau = [%.0f; %.0f] N*m\n', tau_turn(1), tau_turn(2));
+fprintf('  tau = [%.3f; %.3f] N*m\n', tau_turn(1), tau_turn(2));
 fprintf('  v_ss: ly thuyet=%.4f, sim=%.4f\n', v_ss_3, v_end3);
 fprintf('  w_ss: ly thuyet=%.4f, sim=%.4f\n', w_ss_3, w_end3);
 fprintf('  R:    ly thuyet=%.3f m, sim=%.3f m\n', R_theory, R_sim);
@@ -153,12 +157,15 @@ grid on;
 fprintf('--- Test 4: Saturation ---\n');
 
 tau_overload = [100; 100];
-T4 = 120;
+% Hang so thoi gian m/fv = 20 s; v_ss khi bao hoa ~80 m/s nen can >= 15 hang
+% so thoi gian moi vao nguong tol. (v_ss nay phi thuc te vi mo hinh khong co
+% suc phan dien dong cua motor -- test chi kiem tra viec clip mo-men.)
+T4 = 300;
 
 odefun4 = @(t, s) wmr_full_model(t, s, tau_overload, p);
 [t4, s4] = ode45(odefun4, [0 T4], state0_rest);
 
-% Phai giong Test 2 vi dynamics clip ve [5; 5]
+% Dynamics clip ve [tau_max; tau_max]
 v_ss_4 = s4(end, 4);
 v_ss_clipped = (p.B(1,:) * [p.tau_max; p.tau_max] - p.fc) / p.fv;
 

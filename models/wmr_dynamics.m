@@ -7,7 +7,7 @@ function deta = wmr_dynamics(~, eta, tau, p)
 %
 % voi:
 %   M = diag(m, I)
-%   B = [r/2, r/2; r/(2L), -r/(2L)]
+%   B = (1/r)*[1, 1; L, -L]
 %   F = [fv*v + fc*tanh(v/eps); fw*w + fcw*tanh(w/eps)]
 %
 % Tham khao: Fierro & Lewis (1997), eq. rut gon voi d=0

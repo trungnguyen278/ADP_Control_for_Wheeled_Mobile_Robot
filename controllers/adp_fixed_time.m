@@ -12,9 +12,10 @@ function [u, W, info] = adp_fixed_time(q, qr, vr, omegar, W, s)
 %   uo_adp = -0.5 * R_inv * g' * nabla_phi' * W                  (eq.16)
 %   robust = lambda.*tanh(z/rho) + mu.*z + alpha.*sig(z,p/q) + beta.*z^3
 %
-% Cap nhat trong so (eq.17, Bellman error gradient):
-%   sigma = nabla_phi*(f+g*uo_adp), epsilon = W'*sigma + Q(z) + R(uo_adp)
-%   W_dot = -0.5*Gamma*(sigma_bar*epsilon + kappa1*W + kappa2*(W'W)*W)
+% Cap nhat trong so -- hai luat, chon bang s.ft_update_law (xem ben duoi):
+%   'wang'    eq.(17) goc: W_dot = 0.5*Gamma*(nabla_phi*g*R_inv*g'*z - kappa1*W - kappa2*(W'W)*W)
+%   'bellman' gradient sai so Bellman:
+%             W_dot = -0.5*Gamma*(sigma_bar*epsilon + kappa1*W + kappa2*(W'W)*W)
 %
 % Hoi tu co dinh thoi gian nho:
 %   - kappa2*(W'W)*W: sigma-modification bac 3 => W hoi tu fixed-time
@@ -127,7 +128,8 @@ u(2) = max(-s.w_max, min(s.w_max, u(2)));
 f_z = [zy*omegar; -zx*omegar + vr*sin(zth); 0];  % 3x1
 
 %% Cap nhat trong so
-% Hai luat, chon bang s.ft_update_law (mac dinh 'bellman'):
+% Hai luat, chon bang s.ft_update_law (ctrl_params dat 'wang' tu 2026-10-26;
+% thieu truong thi dung 'bellman' de giu hanh vi cu):
 %
 %   'wang'    -- NGUYEN BAN Wang et al. eq.(17):
 %                W_dot = +0.5*Gamma*(nabla_phi*g*R_inv*g'*z - kappa1*W
@@ -172,7 +174,7 @@ end
 
 W = W + s.dt * W_dot;
 
-%% Toan tu chieu (projection operator) — TUY CHON, mac dinh TAT
+%% Toan tu chieu (projection operator) — TUY CHON (ctrl_params bat tu 2026-08-13)
 % Bat bang s.ft_proj = true.
 %
 % Van de: khong co rang buoc nao giu W trong vung ma V_hat = W'*phi xac dinh

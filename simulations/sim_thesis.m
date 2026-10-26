@@ -1,9 +1,10 @@
 %% SIM_THESIS  Mo phong tong hop cho luan van
 %
 % 3 phan:
-%   A. So sanh 5 phuong phap tren 3 quy dao (circle, line, figure8)
-%      Full model 5 state, co nhieu
-%   B. Robustness: thay doi khoi luong m = {10, 15, 20} kg
+%   A. So sanh 5 phuong phap (+ bien the NTSMC) tren 3 quy dao (circle, line,
+%      figure8), full model 5 state, co nhieu. Bang A2/A3: tach Jc = 10*Je + Ju,
+%      thoi gian qua do, mo-men (Muc 5.2, 5.5 luan van)
+%   B. Robustness: thay doi khoi luong m = {10, 12, 14} kg
 %      So sanh ADP-FT vs BS vs CL (3 pp x 3 mass = 9 runs)
 %   C. Robustness: thay doi bien do nhieu amp = {0, 0.2, 0.4, 0.6}
 %      So sanh ADP-FT vs BS vs CL (3 pp x 4 amp = 12 runs)
@@ -42,7 +43,7 @@ for t_idx = 1:length(trajs)
         data = run_full_sim(methods{m_idx}, true, s, p);
         results_A.(tag) = data;
 
-        fprintf(' Jc=%.1f, Je=%.3f\n', data.Jc, data.Je);
+        fprintf(' Jc=%.3f, Je=%.3f\n', data.Jc, data.Je);
     end
 end
 
@@ -58,9 +59,42 @@ for t_idx = 1:length(trajs)
         N_ss = round(5 / s.dt);
         z_ss = d.z(:, end-N_ss:end);
         z_rms = sqrt(mean(sum(z_ss.^2, 1)));
-        fprintf('  %-8s | %-8s | %8.1f | %8.3f | %10.6f\n', ...
+        fprintf('  %-8s | %-8s | %8.3f | %8.3f | %10.6f\n', ...
             trajs{t_idx}, method_names{m_idx}, d.Jc, d.Je, z_rms);
     end
+end
+
+% Bang A2: tach Jc = lambda_Q*Je + Ju (Q = 10*I nen z'Qz = 10*||z||^2) va thoi
+% gian qua do: thoi diem cuoi cung ||z|| con vuot nguong (NaN = chua ve).
+fprintf('\n  BANG A2: Tach chi phi va thoi gian qua do\n');
+fprintf('  %-8s | %-8s | %8s | %7s | %8s %8s %8s\n', ...
+    'Traj', 'Method', 'Ju', 'Ju/Jc', 't(0.05)', 't(0.02)', 't(0.01)');
+fprintf('  %s\n', repmat('-', 1, 70));
+for t_idx = 1:length(trajs)
+    for m_idx = 1:length(methods)
+        d = results_A.(sprintf('%s_%s', trajs{t_idx}, methods{m_idx}));
+        Ju = d.Jc - s.Q(1,1) * d.Je;
+        nz = sqrt(sum(d.z.^2, 1));
+        fprintf('  %-8s | %-8s | %8.4f | %6.2f%% | %8.2f %8.2f %8.2f\n', ...
+            trajs{t_idx}, method_names{m_idx}, Ju, 100*Ju/d.Jc, ...
+            settle_last(d.t, nz, 0.05), settle_last(d.t, nz, 0.02), settle_last(d.t, nz, 0.01));
+    end
+end
+
+% Bang A3: mo-men dau ra vong trong tren duong tron (Muc 5.5 luan van).
+% tau da bi kep o +-tau_max trong dynamic_backstepping => bao hoa = cham bien.
+fprintf('\n  BANG A3: Mo-men tren duong tron (tau_max = %.1f N.m)\n', p.tau_max);
+fprintf('  %-8s | %9s | %9s | %9s | %9s | %9s | %7s\n', 'Method', ...
+    'max 0-1s', 'max t>=1', 'tb t>=1', 'bh 0-1s', 'bh tong', 't95v');
+fprintf('  %s\n', repmat('-', 1, 78));
+for m_idx = 1:length(methods)
+    d = results_A.(sprintf('circle_%s', methods{m_idx}));
+    i1 = d.t >= 1;
+    sat = any(abs(d.tau) >= p.tau_max - 1e-9, 1);
+    k95 = find(d.eta(1,:) >= 0.95 * s.circle_vr, 1);
+    fprintf('  %-8s | %9.3f | %9.3f | %9.4f | %8.1f%% | %8.2f%% | %7.3f\n', ...
+        method_names{m_idx}, max(max(abs(d.tau(:, ~i1)))), max(max(abs(d.tau(:, i1)))), ...
+        mean(mean(abs(d.tau(:, i1)))), 100*mean(sat(~i1)), 100*mean(sat), d.t(k95));
 end
 
 %% ================================================================
@@ -88,7 +122,7 @@ for mi = 1:length(masses)
         data = run_full_sim_uncertain(rob_methods{m_idx}, true, s, p, p_plant);
         results_B.(tag) = data;
 
-        fprintf(' Jc=%.1f\n', data.Jc);
+        fprintf(' Jc=%.3f\n', data.Jc);
     end
 end
 
@@ -104,7 +138,7 @@ for mi = 1:length(masses)
         N_ss = round(5 / s.dt);
         z_ss = d.z(:, end-N_ss:end);
         z_rms = sqrt(mean(sum(z_ss.^2, 1)));
-        fprintf('  %4dkg | %-8s | %8.1f | %8.3f | %10.6f\n', ...
+        fprintf('  %4dkg | %-8s | %8.3f | %8.3f | %10.6f\n', ...
             masses(mi), rob_names{m_idx}, d.Jc, d.Je, z_rms);
     end
 end
@@ -131,7 +165,7 @@ for di = 1:length(dist_amps)
         data = run_full_sim(rob_methods{m_idx}, use_dist, s_var, p);
         results_C.(tag) = data;
 
-        fprintf(' Jc=%.1f\n', data.Jc);
+        fprintf(' Jc=%.3f\n', data.Jc);
     end
 end
 
@@ -147,7 +181,7 @@ for di = 1:length(dist_amps)
         N_ss = round(5 / s.dt);
         z_ss = d.z(:, end-N_ss:end);
         z_rms = sqrt(mean(sum(z_ss.^2, 1)));
-        fprintf('  %5.0f%% | %-8s | %8.1f | %8.3f | %10.6f\n', ...
+        fprintf('  %5.0f%% | %-8s | %8.3f | %8.3f | %10.6f\n', ...
             dist_amps(di)*100, rob_names{m_idx}, d.Jc, d.Je, z_rms);
     end
 end
@@ -165,6 +199,19 @@ fprintf('\n========== HOAN THANH ==========\n');
 %% ====================================================================
 %  HAM PHU TRO (giong sim_sm1_full.m)
 %  ====================================================================
+
+function ts = settle_last(t, nz, tol)
+% Thoi diem cuoi cung ||z|| con >= tol (sau do giu duoi tol). 0 neu chua bao
+% gio vuot, NaN neu den cuoi mo phong van chua ve duoi tol.
+    k = find(nz >= tol, 1, 'last');
+    if isempty(k)
+        ts = 0;
+    elseif k == numel(nz)
+        ts = NaN;
+    else
+        ts = t(k+1);
+    end
+end
 
 function out = tern(cond, a, b)
     if cond, out = a; else, out = b; end
@@ -258,7 +305,7 @@ function data = run_full_sim(method, use_dist, s, p)
             eta_d_prev_k = eta_d_prev;
         end
 
-        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p, s);
+        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p, s, z);
         eta_d_prev = eta_d;
 
         if use_dist
@@ -371,7 +418,7 @@ function data = run_full_sim_uncertain(method, use_dist, s, p_ctrl, p_plant)
         else,      eta_d_prev_k = eta_d_prev; end
 
         % Inner loop dung p_ctrl (nominal) — KHONG biet mass thuc
-        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p_ctrl, s);
+        [tau, ~] = dynamic_backstepping(eta, eta_d, eta_d_prev_k, dt, p_ctrl, s, z);
         eta_d_prev = eta_d;
 
         if use_dist

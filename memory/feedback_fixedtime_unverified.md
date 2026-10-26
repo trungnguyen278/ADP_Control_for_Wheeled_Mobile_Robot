@@ -5,6 +5,8 @@ metadata:
   type: project
 ---
 
+> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** Tiêu chí "tỉ số t_settle max/min ≈ 1" là sai khái niệm (Polyakov chỉ đòi cận đều). Kết luận mới: với |v| ≤ 0,5 m/s không PP nào fixed-time được trên toàn miền; ADP-FT hội tụ ở 5/5 z0 nhưng chậm nhất ở z0 lớn (55 s). Xem [[ket-qua-cuoi]].
+
 Kiểm chứng bằng MATLAB ngày 2026-08-13 (circle, T=60s, nhiễu 20%). Đã đưa vào
 luận văn thành Mục 5.7.
 

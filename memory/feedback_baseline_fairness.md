@@ -5,6 +5,8 @@ metadata:
   type: project
 ---
 
+> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** Bài học vẫn đúng và đã thành quy trình: mọi PP chỉnh gain đều nhau (`sweep_gains.m`). SMC thông dụng 4,984 > ADP-FT 4,192 > SMC đã chỉnh 3,836 (tổng Jc). Xem [[ket-qua-cuoi]].
+
 Phát hiện 2026-08-12 khi sweep gain (140+ lần chạy full model, circle T=60s).
 
 ## Vấn đề
