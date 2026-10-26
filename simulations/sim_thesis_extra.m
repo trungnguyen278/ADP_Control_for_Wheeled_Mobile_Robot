@@ -196,16 +196,14 @@ end
 %% ================================================================
 %  PHAN H: SMC voi tham so thong dung vs SMC da tune
 %  ================================================================
-% Luan van dung lambda=3, eta=1.0 (gia tri thong dung cho mo hinh kinematic),
-% trong khi ADP-FT duoc tune ky cho dual-loop. So sanh nhu vay khong cong bang.
-% Phan nay chay them SMC voi gain da quet tren full model (lambda=0.7, eta=0.05)
-% de co doi chieu dung muc. Quet lai 2026-10-26 tren mo hinh da sua B: van giu
-% 0.7/0.05 (xem ghi chu sweep trong ctrl_params.m).
+% Doi chieu SMC voi gia tri thong dung (lambda=3, eta=1.0) va SMC da chinh deu
+% (gia tri mac dinh trong ctrl_params.m, chon bang sweep_gains.m cung cong suc
+% voi cac phuong phap khac).
 fprintf('\n--- PHAN H: SMC THONG DUNG vs SMC DA TUNE ---\n');
 
 results_H = struct();
-smc_cfgs = { struct('name','SMC thong dung', 'tag','base',  'lam',3.0, 'eta',1.00), ...
-             struct('name','SMC da tune',    'tag','tuned', 'lam',0.7, 'eta',0.05) };
+smc_cfgs = { struct('name','SMC thong dung', 'tag','base',  'lam',3.0,           'eta',1.00), ...
+             struct('name','SMC da tune',    'tag','tuned', 'lam',s.smc_lambda1, 'eta',s.smc_eta1) };
 
 fprintf('\n  H1. Ba quy dao (nhieu 20%%)\n');
 fprintf('  %-16s | %10s | %10s | %10s\n', 'Cau hinh', 'circle', 'line', 'figure8');
@@ -251,14 +249,13 @@ end
 %  PHAN I: DO BEN CUA SMC DA TUNE
 %  ================================================================
 % Phan H chi so sanh Jc tai tham so danh nghia va mot dieu kien dau.
-% Gain SMC (lambda=0.7, eta=0.05) duoc quet TAI DUNG diem van hanh do, nen can
-% kiem tra xem uu the co ben khong hay chi ton tai quanh diem quet.
+% Gain SMC da chinh (ctrl_params.m) duoc chon TAI DUNG diem van hanh do, nen can
+% kiem tra xem uu the co ben khong hay chi ton tai quanh diem chon.
 % Chay SMC da tune qua dung bo thi nghiem da ap cho ADP-FT.
 fprintf('\n--- PHAN I: DO BEN CUA SMC DA TUNE ---\n');
 
 results_I = struct();
-smct = @(ss) setfield(setfield(setfield(setfield(ss, ...
-    'smc_lambda1', 0.7), 'smc_lambda2', 0.7), 'smc_eta1', 0.05), 'smc_eta2', 0.05);
+smct = @(ss) ss;   % SMC da chinh = gia tri mac dinh trong ctrl_params.m
 
 % --- I1. Bat dinh khoi luong ---
 fprintf('\n  I1. Bat dinh khoi luong (circle, nhieu 20%%), Jc\n');
