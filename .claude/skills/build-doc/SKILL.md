@@ -8,7 +8,7 @@ description: Compile luận văn hoặc báo cáo LaTeX sang PDF bằng MiKTeX, 
 ## Đường dẫn MiKTeX
 
 ```
-C:\Users\LEGION\AppData\Local\Programs\MiKTeX\miktex\bin\x64
+C:\Program Files\MiKTeX\miktex\bin\x64
 ```
 
 ## Bảng tài liệu
@@ -26,7 +26,7 @@ C:\Users\LEGION\AppData\Local\Programs\MiKTeX\miktex\bin\x64
 và **chạy `pdflatex` 2 lần** (lần 1 sinh `.aux`, lần 2 mới giải đúng `\ref` và mục lục).
 
 ```powershell
-$env:PATH = "C:\Users\LEGION\AppData\Local\Programs\MiKTeX\miktex\bin\x64;$env:PATH"
+$env:PATH = "C:\Program Files\MiKTeX\miktex\bin\x64;$env:PATH"
 Set-Location "c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot\docs\thesis"
 pdflatex -interaction=nonstopmode thesis.tex
 pdflatex -interaction=nonstopmode thesis.tex

@@ -8,7 +8,7 @@ description: Chạy mô phỏng MATLAB của luận văn (sim_thesis, sim_sm1, s
 ## Đường dẫn
 
 ```
-MATLAB: C:\Program Files\MATLAB\R2023a\bin\matlab.exe
+MATLAB: C:\MATLAB\R2023a\bin\matlab.exe
 REPO:   c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot
 ```
 
@@ -23,13 +23,13 @@ REPO:   c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot
 ## Lệnh
 
 ```powershell
-& "C:\Program Files\MATLAB\R2023a\bin\matlab.exe" -batch "cd('c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot\simulations'); <TEN_SCRIPT>"
+& "C:\MATLAB\R2023a\bin\matlab.exe" -batch "cd('c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot\simulations'); <TEN_SCRIPT>"
 ```
 
 Xuất figure — đổi `simulations` thành `plotting`:
 
 ```powershell
-& "C:\Program Files\MATLAB\R2023a\bin\matlab.exe" -batch "cd('c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot\plotting'); <TEN_SCRIPT>"
+& "C:\MATLAB\R2023a\bin\matlab.exe" -batch "cd('c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot\plotting'); <TEN_SCRIPT>"
 ```
 
 ## Bảng script
