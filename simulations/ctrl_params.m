@@ -196,6 +196,12 @@ s.ft_rho    = 0.1;                 % boundary layer cho tanh(z/rho)
 s.ft_uo_max = 1.5;                 % gioi han feedback uo (chong phat tan dual-loop)
 s.ft_W0     = [3; 3; 3; 0; 0; 0]; % warm start (tuong tu CL, can feedback ban dau)
 
+% Luat cap nhat trong so: 'wang' = eq.(17) goc cua Wang et al. (mac dinh tu
+% 2026-10-26), 'bellman' = gradient sai so Bellman (mac dinh cu). Tren mo hinh
+% da sua B hai luat cho ket qua nhu nhau (Phan G, sim_thesis_extra.m), nen giu
+% luat goc de dinh ly hoi tu cua bai bao van ap dung cho luat cap nhat.
+s.ft_update_law = 'wang';
+
 % Toan tu chieu: giu V_hat = W'*phi xac dinh duong (Ioannou & Sun 1996)
 % Khong co rang buoc nay, W co the troi sang vung W1 < 0 khi z0 lon
 % => V_hat het la ham Lyapunov => mat bam. Da quan sat W1 = -1.486.
