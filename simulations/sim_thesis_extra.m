@@ -29,6 +29,7 @@
 % Phan H. SMC tham so thong dung vs SMC da tune
 % Phan I. Do ben cua SMC da tune (khoi luong, z0, nhieu doc lap)
 % Phan J. Ablation co che (toan tu chieu, ghep nonholonomic) + dong bang critic
+% Phan K. ADP-FT co thich nghi khi doi Q, R khong
 %
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    08/2026
@@ -403,10 +404,32 @@ for ci = 1:numel(j_cfgs)
     fprintf('\n');
 end
 
+%% ================================================================
+%  PHAN K: ADP-FT CO THICH NGHI KHI DOI Q, R KHONG?
+%  ================================================================
+% Muc 6.3 luan van coi day la lap luan cuoi cung con lai cho ADP: SMC phai quet
+% lai tham so, con ADP-FT nhan Q, R lam dau vao. Neu dung, tang Q/R phai giam
+% Je (= tich phan ||z||^2) va tang Ju (= tich phan ||uo||^2), va nguoc lai.
+fprintf('\n--- PHAN K: DOI Q, R ---\n');
+
+results_K = struct();
+qr_cfgs = [1 1; 0.1 1; 10 1; 1 0.1; 1 10];   % [he so nhan Q, he so nhan R]
+fprintf('  %6s %6s | %8s | %8s | %9s\n', 'Q x', 'R x', 'Je', 'Ju', '||W(T)||');
+fprintf('  %s\n', repmat('-', 1, 48));
+for ki = 1:size(qr_cfgs, 1)
+    s_k = s;  s_k.traj_type = 'circle';
+    s_k.Q = qr_cfgs(ki,1) * s.Q;  s_k.R = qr_cfgs(ki,2) * s.R;  s_k.R_inv = inv(s_k.R);
+    d = run_extra_sim('adp_ft', s_k, p, 'common');
+    Ju = (d.Jc - s_k.Q(1,1) * d.Je) / s_k.R(1,1);   % Q, R deu la boi so cua I
+    results_K.(sprintf('cfg%d', ki)) = d;
+    fprintf('  %6g %6g | %8.4f | %8.4f | %9.4f\n', ...
+        qr_cfgs(ki,1), qr_cfgs(ki,2), d.Je, Ju, norm(d.W(:,end)));
+end
+
 %% Luu
 save('../results/thesis_extra.mat', ...
      'results_D', 'results_E', 'results_F', 'results_G', 'results_H', 'results_I', ...
-     'results_J', 'J_traj', 'J_zrms', 'J_mass', 'masses_J', ...
+     'results_J', 'J_traj', 'J_zrms', 'J_mass', 'masses_J', 'results_K', 'qr_cfgs', ...
      'T_settle', 'z0_norm', 'tol_list', 'masses_I', ...
      'z0_list', 'dist_amps', 'dist_modes', 's', 'p');
 fprintf('\nDa luu vao results/thesis_extra.mat\n');
