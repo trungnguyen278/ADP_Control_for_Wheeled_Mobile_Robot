@@ -124,7 +124,7 @@ CHO ROBOT DI ĐỘNG HAI BÁNH}\\[1.5cm]
 
 Tôi xin cam đoan luận văn ``Điều khiển tối ưu thích nghi dựa trên quy hoạch động hội tụ cố định thời gian cho robot di động hai bánh'' là công trình nghiên cứu của riêng tôi, được thực hiện dưới sự hướng dẫn của PGS.TS. Nguyễn Hoài Nam.
 
-Luận văn kế thừa và mở rộng phương pháp điều khiển tối ưu cố định thời gian do Wang và cộng sự đề xuất \cite{Wang2025}, cùng mô hình động lực học robot di động của Fierro và Lewis \cite{Fierro1997}. Các công thức, kết quả lý thuyết và số liệu thuộc về những công trình này đều được trích dẫn đầy đủ tại vị trí sử dụng. Phần đóng góp riêng của tôi -- bao gồm kiến trúc điều khiển hai vòng, việc điều chỉnh tham số và luật cập nhật trọng số cho kiến trúc này, cùng toàn bộ chương trình mô phỏng và phân tích so sánh -- được nêu rõ trong Mục 1.4 và Chương 6.
+Luận văn kế thừa và mở rộng phương pháp điều khiển tối ưu cố định thời gian do Wang và cộng sự đề xuất \cite{Wang2025}, cùng mô hình động lực học robot di động của Fierro và Lewis \cite{Fierro1997}. Các công thức, kết quả lý thuyết và số liệu thuộc về những công trình này đều được trích dẫn đầy đủ tại vị trí sử dụng. Phần đóng góp riêng của tôi -- bao gồm kiến trúc điều khiển hai vòng, việc điều chỉnh tham số, cơ chế ghép nonholonomic và toán tử chiếu bổ sung cho kiến trúc này, cùng toàn bộ chương trình mô phỏng và phân tích so sánh -- được nêu rõ trong Mục 1.4 và Chương 6.
 
 Các số liệu và kết quả mô phỏng trình bày trong luận văn là trung thực, do tôi tự thực hiện trên MATLAB và có thể tái tạo được bằng mã nguồn kèm theo. Những hạn chế phát hiện được trong quá trình nghiên cứu đều được báo cáo đầy đủ, không lược bỏ.
 
@@ -343,20 +343,22 @@ Bộ điều khiển tối ưu $u_o^*$ là nghiệm cực tiểu hóa $J$, thỏ
 \subsection*{1.4\quad Đề xuất hướng tiếp cận}
 \addcontentsline{toc}{subsection}{1.4\quad Đề xuất hướng tiếp cận}
 
-Gần đây, Wang et al. \cite{Wang2025} đề xuất phương pháp ADP Fixed-time Optimal Control, kết hợp Quy hoạch động xấp xỉ (ADP) với ổn định cố định thời gian (Fixed-time stability, Polyakov \cite{Polyakov2012}). Phương pháp này đảm bảo sai số bám hội tụ trong thời gian xác định $T_f$ \textbf{độc lập với điều kiện ban đầu}, đồng thời đạt điều khiển gần tối ưu.
+Gần đây, Wang et al. \cite{Wang2025} đề xuất phương pháp ADP Fixed-time Optimal Control, kết hợp Quy hoạch động xấp xỉ (ADP) với ổn định cố định thời gian (Fixed-time stability, Polyakov \cite{Polyakov2012}). Trên mô hình động học, phương pháp này bảo đảm sai số bám đi vào một lân cận nhỏ của gốc trong thời gian bị chặn bởi một hằng số $T_f$ \textbf{không phụ thuộc điều kiện ban đầu}, đồng thời đạt điều khiển gần tối ưu theo một hàm chi phí cho trước. Cấu trúc chỉ dùng một mạng Critic và không cần tín hiệu kích thích liên tục (PE).
 
-Tuy nhiên, Wang et al. chỉ xét \textbf{mô hình động học thuần túy} (kinematic model, 3 trạng thái $[x, y, \theta]$), bỏ qua hoàn toàn động lực học robot (quán tính, ma sát, giới hạn mô-men). Trong thực tế, sự hiện diện của động lực học là không thể tránh khỏi và ảnh hưởng đáng kể đến hiệu năng điều khiển.
+Tuy nhiên, Wang et al. chỉ xét \textbf{mô hình động học thuần túy} (kinematic model, 3 trạng thái $[x, y, \theta]$), trong đó tín hiệu điều khiển là vận tốc $(v, \omega)$. Robot thực nhận lệnh \textbf{mô-men} ở hai bánh và có quán tính, ma sát, giới hạn mô-men. Muốn dùng ADP-FT trên robot thực, cần một vòng điều khiển bên trong chuyển lệnh vận tốc của ADP thành mô-men -- tức một kiến trúc hai vòng -- và cần kiểm tra lại những gì còn giữ được khi ghép hai vòng. Đó là mục tiêu của luận văn: \textit{hoàn thiện phương pháp của Wang et al. cho bài toán robot được điều khiển bằng mô-men}.
 
 \textbf{Đóng góp chính của luận văn:}
 \begin{enumerate}
-    \item \textbf{Mở rộng ADP Fixed-time sang kiến trúc hai vòng (dual-loop):} Vòng ngoài sử dụng ADP Fixed-time (phần kinematic), vòng trong sử dụng Dynamic Backstepping (phần dynamic, Fierro \& Lewis \cite{Fierro1997}), hoạt động trên mô hình đầy đủ 5 trạng thái $[x, y, \theta, v, \omega]$ với ma sát và nhiễu.
+    \item \textbf{Kiến trúc hai vòng cho ADP-FT trên mô hình đầy đủ:} vòng ngoài là ADP-FT của Wang et al. (phần động học), vòng trong là Dynamic Backstepping của Fierro \& Lewis \cite{Fierro1997} (phần động lực học), trên mô hình 5 trạng thái $[x, y, \theta, v, \omega]$ có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men. Kèm theo là phân tích điều kiện ghép hai vòng.
 
-    \item \textbf{Điều chỉnh tham số robust và luật cập nhật trọng số cho kiến trúc hai vòng:} Phát hiện rằng các tham số robust trong Wang et al. (thiết kế cho kinematic-only) gây phát tán khi áp dụng trên dual-loop; đề xuất giảm mạnh các gains (riêng $\bm{\beta}$ giảm từ $10^5$ xuống $0{,}15$) kèm cơ chế giới hạn (clamp) tín hiệu phản hồi, đồng thời thay luật cập nhật trọng số bằng gradient sai số Bellman. Luận văn cũng phân tích cái giá của các điều chỉnh này đối với đảm bảo hội tụ cố định thời gian.
+    \item \textbf{Điều chỉnh ADP-FT cho kiến trúc hai vòng:} chỉnh lại các gain robust cho lệnh vận tốc bị chặn, giới hạn tín hiệu phản hồi và khởi tạo trọng số; bổ sung \textbf{cơ chế ghép nonholonomic} cho kênh sai số ngang -- thành phần mà mô phỏng cho thấy là quyết định -- và \textbf{toán tử chiếu} giữ hàm giá trị xấp xỉ xác định dương. Luật điều khiển và luật cập nhật trọng số (16)--(18) của Wang et al. được giữ nguyên.
 
-    \item \textbf{So sánh toàn diện 5 phương pháp} trên mô hình đầy đủ: Backstepping, Actor-Critic ADP, SMC, Critic-only Concurrent Learning, và ADP Fixed-time, trên 3 loại quỹ đạo và nhiều điều kiện vận hành.
+    \item \textbf{So sánh công bằng năm phương pháp} -- Backstepping, Actor-Critic ADP, SMC (kèm biến thể NTSMC), Critic-only Concurrent Learning và ADP-FT -- trên ba quỹ đạo, sau khi mọi phương pháp được chỉnh gain theo cùng một quy trình.
 
-    \item \textbf{Phân tích robustness:} Đánh giá khả năng kháng bất định khối lượng và nhiễu ngoài của các phương pháp.
+    \item \textbf{Phân tích robustness và phân tích thành phần:} bất định khối lượng, ba dạng nhiễu, điều kiện đầu; công thức giải tích dự đoán sai số xác lập do nhiễu; và thí nghiệm loại bỏ từng thành phần của ADP-FT để xác định thành phần nào thực sự đóng góp.
 \end{enumerate}
+
+Các công thức của Wang et al. và mô hình của Fierro \& Lewis được trích dẫn tại chỗ sử dụng; luận văn chỉ nhận phần ghép nối, điều chỉnh, so sánh và phân tích nêu trên là đóng góp riêng.
 
 \subsection*{1.5\quad Cấu trúc luận văn}
 \addcontentsline{toc}{subsection}{1.5\quad Cấu trúc luận văn}
@@ -370,9 +372,9 @@ Luận văn được tổ chức thành 6 chương:
 
     \item \textbf{Chương 3: Cơ sở lý thuyết điều khiển tối ưu và ADP} -- Trình bày bài toán điều khiển tối ưu, phương trình HJB, Quy hoạch động xấp xỉ, ổn định cố định thời gian, và Concurrent Learning.
 
-    \item \textbf{Chương 4: Thiết kế hệ thống điều khiển} -- Chi tiết kiến trúc hai vòng, 5 bộ điều khiển vòng ngoài, và phương pháp ADP Fixed-time với điều chỉnh cho dual-loop.
+    \item \textbf{Chương 4: Thiết kế hệ thống điều khiển} -- Chi tiết kiến trúc hai vòng, 5 bộ điều khiển vòng ngoài, phương pháp ADP Fixed-time cùng các điều chỉnh cho kiến trúc hai vòng, và phân tích ổn định hệ ghép.
 
-    \item \textbf{Chương 5: Kết quả mô phỏng và thảo luận} -- So sánh 5 phương pháp trên 3 quỹ đạo, phân tích robustness khối lượng và nhiễu, thảo luận tổng hợp.
+    \item \textbf{Chương 5: Kết quả mô phỏng và thảo luận} -- Quy trình chỉnh gain đều nhau, so sánh trên 3 quỹ đạo, robustness với khối lượng, nhiễu và điều kiện đầu, phân tích thành phần của ADP-FT, khảo sát trọng số chi phí $Q$, $R$, so sánh với SMC/NTSMC và thảo luận tổng hợp.
 
     \item \textbf{Chương 6: Kết luận và hướng phát triển} -- Tổng kết đóng góp, hạn chế, và đề xuất hướng nghiên cứu tiếp theo.
 \end{itemize}
@@ -1091,7 +1093,7 @@ Luật điều khiển Backstepping kinh điển (Kanayama et al. \cite{Kanayama
 \begin{equation}\label{eq:bs}
     v_d = v_r\cos z_\theta + k_1 z_x, \quad \omega_d = \omega_r + k_2 v_r z_y + k_3 \sin z_\theta
 \end{equation}
-với gains $(k_1, k_2, k_3) = (1.5, 3, 2)$.
+Bộ gain danh nghĩa thông dụng là $(k_1, k_2, k_3) = (1{,}5;\ 3;\ 2)$. Sau quy trình chỉnh gain đều nhau áp dụng cho mọi phương pháp (Mục 5.1), luận văn dùng $(k_1, k_2, k_3) = (0{,}375;\ 0{,}75;\ 0{,}5)$, tức một phần tư bộ danh nghĩa.
 
 \textbf{Phân tích:} Thành phần $v_r\cos z_\theta$ là feedforward vận tốc dài, $k_1 z_x$ là phản hồi tỉ lệ sai số dọc. Thành phần $\omega_r$ là feedforward vận tốc góc, $k_2 v_r z_y$ điều chỉnh hướng theo sai số ngang (kênh gián tiếp nonholonomic), và $k_3\sin z_\theta$ hiệu chỉnh sai số góc trực tiếp.
 
@@ -1130,7 +1132,7 @@ trong đó $e_a$ là sai số actor (chênh lệch giữa chính sách actor và
 \end{equation}
 cộng vào $u_o$ trong giai đoạn đầu ($t \leq 30$\,s), sau đó tắt. Trong giai đoạn PE, sai số bám bị ảnh hưởng do nhiễu nhân tạo.
 
-\textbf{Hạn chế:} (i) Yêu cầu warm start $W_0 \neq 0$ (khởi tạo bằng P-controller ban đầu); (ii) PE gây sai số transient; (iii) hai mạng riêng biệt tăng phức tạp (nhiều siêu tham số: $\alpha_c, \alpha_{a1}, \alpha_{a2}, \kappa_c$); (iv) đồng bộ hóa actor-critic không trivial.
+\textbf{Hạn chế:} (i) Yêu cầu warm start $W_0 \neq 0$ (khởi tạo bằng P-controller ban đầu; luận văn dùng $\hat W_c(0) = \hat W_a(0) = [1{,}5;\ 1{,}5;\ 1{,}5;\ 0;\ 0;\ 0]^\T$ theo quy trình chỉnh gain ở Mục 5.1); (ii) PE gây sai số transient; (iii) hai mạng riêng biệt tăng phức tạp (nhiều siêu tham số: $\alpha_c, \alpha_{a1}, \alpha_{a2}, \kappa_c$); (iv) đồng bộ hóa actor-critic không trivial.
 
 \subsection*{4.5\quad Vòng ngoài 3: Sliding Mode Control (SMC)}
 \addcontentsline{toc}{subsection}{4.5\quad Vòng ngoài 3: Sliding Mode Control}
@@ -1148,14 +1150,17 @@ Luật điều khiển reaching law:
     u_{o1} &= z_y(\omega_r + u_{o2}) + \lambda_1 z_x + \eta_1 \tanh(z_x/\delta_s) \label{eq:smc_u1}\\
     u_{o2} &= \lambda_2 \sigma_2 + \eta_2 \tanh(\sigma_2/\delta_s) \label{eq:smc_u2}
 \end{align}
-với $(\lambda_1, \lambda_2) = (3, 3)$, $(\eta_1, \eta_2) = (1, 1)$, $\delta_s = 0.05$ (boundary layer), $c_{zy} = 1$.
+với $\delta_s = 0{,}05$ (lớp biên, dùng $\tanh$ thay $\sign$ để giảm chattering \cite{Slotine1991}) và $c_{zy} = 1$. Bộ gain danh nghĩa thông dụng là $\lambda_{1,2} = 3$, $\eta_{1,2} = 1$; sau quy trình chỉnh gain đều nhau (Mục 5.1), luận văn dùng $\lambda_{1,2} = 0{,}375$, $\eta_{1,2} = 0{,}125$, tức một phần tám bộ danh nghĩa. Mục 5.9 so sánh hai bộ gain này.
 
-\textbf{Hạn chế nghiêm trọng trên dual-loop:}
-\begin{itemize}
-    \item Hàm chi phí $J_c$ cực cao (555.5 trên circle, 2457.6 trên figure-8) do reaching law liên tục duy trì $u_o$ mạnh để ép trạng thái về mặt trượt.
-    \item Mặc dù $\tanh$ thay $\sign$ giảm chattering, tín hiệu điều khiển vẫn biến thiên nhanh, gây dao động mô-men.
-    \item Trên mô hình đầy đủ, quán tính robot làm ``chậm'' phản hồi, khiến hiện tượng chattering trầm trọng hơn so với kinematic-only.
-\end{itemize}
+\textbf{Biến thể NTSMC.} Theo yêu cầu so sánh với ``SMC cơ bản hoặc NTSMC'', luận văn xây dựng thêm một biến thể dùng ý tưởng của điều khiển trượt đầu cuối không kỳ dị (Non-singular Terminal SMC) \cite{Feng2002} và mặt trượt đầu cuối nhanh \cite{YuMan2002}. Hai công trình gốc thiết kế cho hệ bậc hai (tín hiệu điều khiển xuất hiện ở đạo hàm bậc hai), trong khi động học sai số (\ref{eq:error_dynamics}) là bậc một theo $(v, \omega)$, nên không áp dụng nguyên bản được. Biến thể của luận văn giữ hai ý tưởng cốt lõi -- hội tụ hữu hạn thời gian nhờ lũy thừa phân số và tránh điểm kỳ dị -- cho hệ bậc một:
+\begin{align}
+    \sigma_2 &= z_\theta + c_{zy} z_y + \tfrac{1}{\beta_s}\,\mathrm{sig}(z_y)^{\alpha_s} \label{eq:ntsmc_s2}\\
+    u_{o2} &= \lambda_2 \sigma_2 + \eta_2\, \mathrm{sig}(\sigma_2)^{\alpha_r}, \qquad
+    u_{o1} = z_y(\omega_r + u_{o2}) + \lambda_1 z_x + \eta_1\, \mathrm{sig}(z_x)^{\alpha_r} \label{eq:ntsmc_u}
+\end{align}
+trong đó $\mathrm{sig}(x)^a = |x|^a \sign(x)$ khi $|x| \geq \epsilon$ và được nối tuyến tính $x/\epsilon^{1-a}$ khi $|x| < \epsilon$, để đạo hàm bị chặn tại gốc. Tham số: $\beta_s = 10$, $\alpha_s = 0{,}6$, $\alpha_r = 0{,}7$, $\epsilon = 0{,}02$; các gain $\lambda_{1,2}$, $\eta_{1,2}$, $c_{zy}$ lấy \textbf{đúng bằng} của SMC, để mọi khác biệt giữa hai bộ điều khiển chỉ đến từ cấu trúc lũy thừa phân số.
+
+\textbf{Đặc điểm:} SMC không có cơ chế cực tiểu hóa một hàm chi phí cho trước; năng lượng điều khiển chỉ được kiểm soát gián tiếp qua độ lớn gain. Trên kiến trúc hai vòng, các số hạng $\eta\tanh(\cdot)$ còn sinh lệnh vận tốc biến thiên nhanh khi trạng thái dao động quanh mặt trượt, mà vòng trong phải bám theo.
 
 \subsection*{4.6\quad Vòng ngoài 4: Critic-only + Concurrent Learning (CL)}
 \addcontentsline{toc}{subsection}{4.6\quad Vòng ngoài 4: Critic-only + Concurrent Learning}
@@ -1172,7 +1177,7 @@ Luật cập nhật trọng số với Concurrent Learning:
     \underbrace{- \kappa\, W}_\text{$\sigma$-modification}
 \end{equation}
 
-History stack $\mathcal{H} = \{(\sigma_j, c_j)\}_{j=1}^{N_H}$ với $N_H = 200$ bản ghi, ghi mỗi $50$\,ms.
+History stack $\mathcal{H} = \{(\sigma_j, c_j)\}_{j=1}^{N_H}$ với $N_H = 200$ bản ghi, ghi mỗi $50$\,ms. Trọng số khởi tạo $W(0) = [0{,}75;\ 0{,}75;\ 0{,}75;\ 0;\ 0;\ 0]^\T$, chọn theo quy trình chỉnh gain ở Mục 5.1.
 
 \textbf{Ưu điểm so với Actor-Critic:} (i) Chỉ 1 mạng (6 trọng số thay vì 12), ít siêu tham số; (ii) không cần PE -- điều kiện rank (\ref{eq:rank_condition}) dễ thỏa mãn từ dữ liệu transient; (iii) cập nhật đơn giản hơn (1 phương trình thay vì 2). \textbf{Nhược điểm:} Phụ thuộc vào chất lượng basis functions $\phi$ (sai số xấp xỉ không được bù bởi mạng actor riêng).
 
@@ -1269,7 +1274,7 @@ Kết hợp (iii) và (iv) tạo nên cơ chế hội tụ cố định thời g
 \subsubsection*{4.7.2\quad Cập nhật trọng số}
 \addcontentsline{toc}{subsubsection}{4.7.2\quad Cập nhật trọng số}
 
-\textbf{Luật nguyên bản của Wang et al.} \cite{Wang2025} (phương trình 17 của bài báo):
+Luận văn \textbf{giữ nguyên} luật cập nhật trọng số của Wang et al. \cite{Wang2025} (phương trình 17 của bài báo):
 \begin{equation}\label{eq:ft_weight_update_wang}
     \dot{W} = \frac{1}{2}\Gamma\Big[\nabla\phi\, g\, R^{-1} g^\T z - \kappa_1 W - \kappa_2 (W^\T W) W\Big]
 \end{equation}
@@ -1284,23 +1289,15 @@ Phân tích ba thành phần:
     \item $\kappa_2 (W^\T W) W$: \textbf{$\sigma$-modification bậc ba}. Đây là đóng góp quan trọng của Wang et al.: thành phần bậc ba $(W^\T W)W$ tạo ra hội tụ cố định thời gian cho \textit{sai số ước lượng trọng số}. Cụ thể, nếu bỏ qua thành phần học, $\dot{W} = -\kappa_1 W - \kappa_2\|W\|^2 W$ với hàm Lyapunov $V_W = W^\T W$ cho $\dot{V}_W \leq -\kappa_1 V_W - \kappa_2 V_W^2$, tương ứng $q = 2$ trong Lemma (\ref{eq:ft_lyapunov}).
 \end{itemize}
 
-\textbf{Luật cập nhật thay thế của luận văn.} Trong quá trình triển khai trên kiến trúc hai vòng, luận văn sử dụng một luật cập nhật khác, dựa trên gradient descent của sai số Bellman:
+\textbf{Phương án thay thế đã khảo sát.} Trong quá trình phát triển, luận văn có thử một luật cập nhật khác, dựa trên gradient descent của sai số Bellman:
 \begin{equation}\label{eq:ft_weight_update}
     \dot{W} = -\frac{1}{2}\Gamma\Big[\bar{\sigma}\, \varepsilon + \kappa_1 W + \kappa_2 (W^\T W) W\Big]
 \end{equation}
-với $\varepsilon = W^\T \sigma + z^\T Q z + u_{o,\text{adp}}^\T R\, u_{o,\text{adp}}$ là sai số Bellman, $\sigma = \nabla\phi\,(f + g\,u_{o,\text{adp}})$, và $\bar{\sigma} = \sigma/(1 + \sigma^\T\sigma)^2$ là dạng chuẩn hóa theo (\ref{eq:sigma_bar}). Hai số hạng $\sigma$-modification của Wang et al. được giữ nguyên.
+với $\varepsilon = W^\T \sigma + z^\T Q z + u_{o,\text{adp}}^\T R\, u_{o,\text{adp}}$ là sai số Bellman, $\sigma = \nabla\phi\,(f + g\,u_{o,\text{adp}})$, và $\bar{\sigma} = \sigma/(1 + \sigma^\T\sigma)^2$ là dạng chuẩn hóa theo (\ref{eq:sigma_bar}). Hai số hạng $\sigma$-modification của Wang et al. được giữ nguyên. Luật này bám trực tiếp phương trình HJB (\ref{eq:hjb_reduced}) và tận dụng thông tin chi phí tức thời $z^\T Qz + u_o^\T Ru_o$ tại mỗi bước.
 
-Lý do sử dụng (\ref{eq:ft_weight_update}): luật này bám sát trực tiếp phương trình HJB (\ref{eq:hjb_reduced}) -- thứ mà bộ điều khiển đang cố giải -- nên tận dụng được thông tin về hàm chi phí tức thời $z^\T Qz + u_o^\T Ru_o$ tại mỗi bước. Khâu chuẩn hóa $\bar{\sigma}$ đồng thời chặn biên độ cập nhật, phù hợp với yêu cầu ổn định của kiến trúc hai vòng. Rủi ro về điều kiện PE mà Wang et al. lo ngại được giảm nhẹ nhờ chính hai số hạng $\kappa_1, \kappa_2$ vẫn được giữ lại.
+Cần phân định rõ hai điểm. Thứ nhất, (\ref{eq:ft_weight_update}) là biến thể do luận văn thử nghiệm, \textbf{không phải} công thức của Wang et al. Thứ hai, chứng minh hội tụ cố định thời gian của bài báo (Theorem 1) được xây dựng trên (\ref{eq:ft_weight_update_wang}), nên không phủ được biến thể này.
 
-\textbf{Hai lưu ý quan trọng:}
-
-\begin{enumerate}
-    \item \textbf{(\ref{eq:ft_weight_update}) là thay đổi của luận văn, không phải công thức của Wang et al.} Việc phân định này cần thiết để tránh gán nhầm nguồn gốc.
-
-    \item \textbf{Chứng minh hội tụ cố định thời gian của Wang et al. (Theorem 1 của bài báo) được xây dựng trên (\ref{eq:ft_weight_update_wang}), nên không còn phủ được (\ref{eq:ft_weight_update}).} Khi sử dụng luật thay thế, luận văn không kế thừa được đảm bảo lý thuyết đó và phải dựa vào kiểm chứng mô phỏng. Đây là một trong các lý do luận văn không tuyên bố tính hội tụ cố định thời gian cho hệ đã triển khai (xem thêm Mục 4.8.3 và Mục \ref{sec:z0_sweep}).
-\end{enumerate}
-
-Mục 5.6.2 so sánh định lượng hai luật cập nhật trên cả ba quỹ đạo. Kết quả cho thấy đây là lựa chọn \textit{có đánh đổi}: (\ref{eq:ft_weight_update}) tốt hơn $5$--$8\%$ trên đường tròn và đường thẳng, nhưng kém hơn $33\%$ trên quỹ đạo hình số 8.
+Mục 5.6.2 so sánh hai luật trên mô hình đầy đủ và cho thấy chúng cho kết quả gần như trùng nhau. Vì vậy toàn bộ kết quả của luận văn dùng luật gốc (\ref{eq:ft_weight_update_wang}): không mất gì về hiệu năng, và kết quả lý thuyết của Wang et al. vẫn áp dụng được cho phần cập nhật trọng số.
 
 \subsubsection*{4.7.3\quad Điều chỉnh tham số cho kiến trúc hai vòng}
 \addcontentsline{toc}{subsubsection}{4.7.3\quad Điều chỉnh tham số cho kiến trúc hai vòng}
@@ -1469,7 +1466,7 @@ Với tham số đã chọn, $\lambda_{\min}(K_d) = 20$ và $\|\bm{\mu}\|_\infty
 \begin{enumerate}
     \item Lập luận trên là \textbf{phác thảo theo hướng ISS}, không phải chứng minh chặt. Việc xây dựng hàm Lyapunov chung cho toàn hệ năm trạng thái, có tính đến bão hòa mô-men và luật cập nhật trọng số phi tuyến, nằm ngoài phạm vi luận văn.
 
-    \item Kết quả chỉ có giá trị \textbf{cục bộ}: khi $e_\eta$ đủ lớn để mô-men bão hòa, hoặc khi $z$ ra khỏi tập compact đang xét, cận (\ref{eq:cascade_bound}) mất hiệu lực. Hiện tượng phát tán ở khối lượng $14$\,kg (Mục 5.3) chính là trường hợp $\bar{e}$ vượt ngưỡng khiến vòng lặp phản hồi dương hình thành.
+    \item Kết quả chỉ có giá trị \textbf{cục bộ}: khi $e_\eta$ đủ lớn để mô-men bão hòa, hoặc khi $z$ ra khỏi tập compact đang xét, cận (\ref{eq:cascade_bound}) mất hiệu lực. Với $\tau_\text{max} = 1$\,N$\cdot$m, mô-men bão hòa dưới $2\%$ thời gian ở các kịch bản khảo sát nên điều kiện này được thỏa phần lớn thời gian; khi $\tau_\text{max}$ nhỏ hơn nhiều, giả thiết tách thang thời gian sẽ bị vi phạm.
 
     \item Quan trọng nhất: (\ref{eq:cascade_bound}) chỉ bảo đảm sai số \textbf{bị chặn}, \textit{không} bảo đảm hội tụ trong thời gian cố định. Ngay cả khi vòng ngoài đơn lẻ có tính chất fixed-time, nhiễu $g(z)e_\eta$ liên tục ``bơm'' năng lượng vào hệ sai số làm cận $T_f$ trong (\ref{eq:ft_bound}) không còn áp dụng được. Kết hợp với ảnh hưởng của clamp đã nêu ở Mục 4.7.3, đây là lý do luận văn \textbf{không tuyên bố} hệ ghép hai vòng có tính hội tụ cố định thời gian theo nghĩa chặt. Mục \ref{sec:z0_sweep} kiểm chứng nhận định này bằng mô phỏng.
 \end{enumerate}
@@ -2574,6 +2571,21 @@ Springer, 2018.
 P.~A.~Ioannou and J.~Sun,
 \textit{Robust Adaptive Control},
 Prentice-Hall, 1996.
+
+\bibitem{Slotine1991}
+J.-J.~E.~Slotine and W.~Li,
+\textit{Applied Nonlinear Control},
+Prentice-Hall, 1991.
+
+\bibitem{Feng2002}
+Y.~Feng, X.~Yu, and Z.~Man,
+``Non-singular terminal sliding mode control of rigid manipulators,''
+\textit{Automatica}, vol.~38, no.~12, pp.~2159--2167, 2002.
+
+\bibitem{YuMan2002}
+X.~Yu and Z.~Man,
+``Fast terminal sliding-mode control design for nonlinear dynamical systems,''
+\textit{IEEE Transactions on Circuits and Systems I: Fundamental Theory and Applications}, vol.~49, no.~2, pp.~261--264, 2002.
 
 \end{thebibliography}
 

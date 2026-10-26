@@ -140,7 +140,7 @@ s.smc_c_zy    = 1.0;            % coupling zy vao mat truot sigma_2 = zth + c_zy
 %   2. Luat tien toi dung |sigma|^alpha_r => den mat truot HUU HAN thoi gian
 % (SMC thuong chi hoi tu MU vi toan bo la tuyen tinh + tanh)
 
-% Dung CUNG gain voi SMC da chinh (doi chung "cung gain" o Muc 5.10.3):
+% Dung CUNG gain voi SMC da chinh (doi chung "cung gain" o Muc 5.9 luan van):
 % khac biet giua SMC va NTSMC khi do chi con do cau truc terminal.
 
 s.nt_lambda1 = s.smc_lambda1;   % equivalent gain sigma_1
@@ -164,10 +164,10 @@ s.nt_eps     = 0.02;            % nguong noi tuyen tinh chong ky di
 %    cau truc terminal. Tren bai toan nay NTSMC khong hon SMC tune tot.
 %    KHONG duoc viet trong luan van rang NTSMC tot hon SMC nho hoi tu huu han.
 % 4. Cac sweep tren lam tren mo hinh con loi B (truoc 2026-10-26).
-%    Quet lai SMC (lambda x eta, 62 lan tren circle + 10 lan kiem tra tren
-%    line/figure8) tren mo hinh da sua: mat chi phi
-%    rat phang, circle Jc = 1.170 (lambda=0.2) .. 1.195 (lambda=0.7).
-%    0.7/0.05 cach toi uu circle 2% nhung tot nhat tren line va figure8 => giu.
+%    Tren mo hinh da sua, gain SMC lay theo quy trinh chinh deu nhau cho moi
+%    phuong phap (sweep_gains.m, k* = 1/8). Mat chi phi rat phang: tong Jc
+%    3 quy dao 3.836 (k = 1/8) .. 3.893 (k = 1/16 va 1/4).
+%    NTSMC dung cung gain: tong Jc 4.193, kem SMC 9% (Phan A sim_thesis.m).
 
 %% === NHIEU TAN SO CAO ===
 % d(t) = d_amp * tau_max * sin(w_d * t), cong vao tau truoc plant
