@@ -5,7 +5,7 @@ metadata:
   type: project
 ---
 
-> ✅ **Cơ chế vẫn đúng trên mô hình đã sửa B (2026-10-26)**: không có ghép thì vẫn mất bám ở một số z0. Nhưng số liệu bên dưới là của mô hình cũ — số mới ở Phần J của `sim_thesis_extra.m`.
+> ✅ **Cơ chế vẫn đúng trên mô hình đã sửa B (2026-10-26)** và là thành phần quyết định duy nhất: thiếu ghép Jc ×3–5, kẹt |z_y| ≈ 2,4 m. c_zy = 1,0 sau chỉnh gain đều. Số liệu bên dưới là của mô hình cũ — số mới ở [[ket-qua-cuoi]].
 
 Phát hiện 2026-08-13 bằng chẩn đoán theo bước thời gian (không phải quét mù).
 Đã thành §4.7.5 và §5.7–5.8 của luận văn.

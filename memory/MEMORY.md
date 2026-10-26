@@ -1,7 +1,7 @@
 - [User profile](user_profile.md) — Trung, cao học Điều khiển & Tự động hóa HUST, thích giải thích lý thuyết trước khi code
 - [Thesis project](project_thesis.md) — ADP Fixed-time dual-loop cho WMR, mở rộng Wang et al. 2025
 - [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03: nhiễu sin 20% ở mô-men vòng trong, SMC cơ bản/NTSMC, bắt buộc vòng kinetic, BC bậc 2
-- [ADP-FT tuning](feedback_adp_ft_tuning.md) — (lỗi thời: đo trên mô hình B sai) Robust gain phải nhỏ cho dual-loop; clamp uo
+- [ADP-FT tuning](feedback_adp_ft_tuning.md) — Gain hiện dùng, chọn bằng chỉnh gain đều nhau (k* = 1/2); tham số gốc Wang không phát tán, chỉ bám kém
 - [Baseline fairness](feedback_baseline_fairness.md) — SMC tune vs thông dụng; số liệu mô hình B sai (7x → nay chỉ 1,2–1,4x)
 - [Wang citation mismatch](feedback_wang_citation_mismatch.md) — ⚠ Sai tên tác giả, eq.(17) không phải của Wang, cột "Wang" ở Bảng 4.1 sai toàn bộ
 - [Fixed-time chưa kiểm chứng](feedback_fixedtime_unverified.md) — W đổi dấu làm V̂ mất xác định dương; số liệu mô hình B sai, tiêu chí tỉ số sai
@@ -13,4 +13,5 @@
 - [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
 - [MATLAB CLI](reference_matlab_cli.md) — Chạy MATLAB batch từ terminal: R2023a, cờ -batch
-- [Progress](project_progress.md) — Thầy Nam chỉ có v2 (26/05); đã sửa lỗi B 2026-10-26, luận văn chờ viết lại; chưa có lịch bảo vệ
+- [Progress](project_progress.md) — 26/10: đã viết lại luận văn + tóm tắt; còn chạy MATLAB xuất hình, build MiKTeX, gửi thầy (thầy chỉ có v2)
+- [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10: ADP-FT thứ 2 sau SMC; ghép nonholonomic quyết định; học critic không giúp

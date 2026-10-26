@@ -1,9 +1,21 @@
 ---
 name: project-progress
-description: Thầy Nam chỉ có bản v2 (26/05/2026, chưa phản hồi); bản 78 trang (13/08) chưa gửi; 26/10/2026 phát hiện lỗi ma trận B nên phải chạy lại toàn bộ kết quả trước khi đi tiếp
+description: 26/10/2026 đã sửa lỗi B, chỉnh gain đều, viết lại luận văn (72 tr) + báo cáo tóm tắt; còn Trung chạy MATLAB xuất hình, build MiKTeX, đọc lại rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
+
+## Cập nhật 2026-10-26 (tối): đã viết lại xong
+
+- Luận văn viết lại theo mô hình B đúng + gain chỉnh đều (Ch.1.4, 4.3–4.8, Ch.5, Ch.6, tóm
+  tắt VI/EN): 72 trang, compile sạch bằng TeX Live. Báo cáo tóm tắt viết lại phần kết quả.
+  Số liệu chốt: [[ket-qua-cuoi]].
+- Khung: "hoàn thiện ADP-FT của Wang et al. cho robot điều khiển bằng mô-men"; ADP-FT vẫn là
+  phương pháp chính, các kết quả bất lợi (học critic không giúp, fixed-time không bảo toàn,
+  SMC đã chỉnh thấp nhất) báo cáo đầy đủ.
+- Còn lại (Trung): chạy MATLAB `sim_sm2; sim_sm1_full; sim_thesis; sim_thesis_extra` rồi
+  `export_all_figures` (hình trong repo VẪN là mô hình cũ), build MiKTeX, đọc lại, commit
+  PDF, gửi thầy kèm giải thích lỗi B. τ_max thật của motor vẫn chưa chốt (đang 1 N·m).
 
 ## Cập nhật 2026-10-26 (chiều): quyết định của Trung
 

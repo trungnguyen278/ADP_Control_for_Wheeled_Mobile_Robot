@@ -5,7 +5,7 @@ metadata:
   type: project
 ---
 
-> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** "Cứu 14 kg" không còn ý nghĩa: với B đúng, bất định khối lượng không làm ADP-FT suy giảm. Số mới: Phần J của `sim_thesis_extra.m`.
+> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** Với B đúng, phép chiếu KHÔNG kích hoạt ở bất kỳ kịch bản nào (λmin(P(W)) > 0,12); luận văn giữ nó như lưới an toàn chi phí bằng không. Xem [[ket-qua-cuoi]].
 
 Đề xuất và kiểm chứng ngày 2026-08-13, đã thành §4.7.4 và §5.8 của luận văn.
 Bật bằng `s.ft_proj = true` (mặc định từ commit `8551f3c`).

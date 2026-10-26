@@ -5,7 +5,7 @@ metadata:
   type: project
 ---
 
-> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** Chạy lại: Phần D và G của `sim_thesis_extra.m`; số mới ở PROGRESS.md mục 2026-10-26.
+> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** Kết luận mới (Phần D, G, L): bỏ số hạng fixed-time giảm Jc 1,5–2%; hai luật cập nhật như nhau ở z0 chuẩn, nhưng ở z0 lớn luật Wang chậm hơn Bellman và chậm hơn critic đóng băng ~3 lần. Xem [[ket-qua-cuoi]].
 
 Hai thí nghiệm ablation chạy ngày 2026-08-13, đã đưa vào luận văn Mục 5.6.
 Script: `simulations/sim_thesis_extra.m`.
