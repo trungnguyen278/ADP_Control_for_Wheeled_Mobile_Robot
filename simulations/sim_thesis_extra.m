@@ -30,6 +30,8 @@
 % Phan I. Do ben cua SMC da tune (khoi luong, z0, nhieu doc lap)
 % Phan J. Ablation co che (toan tu chieu, ghep nonholonomic) + dong bang critic
 % Phan K. ADP-FT co thich nghi khi doi Q, R khong
+% Phan L. Vai tro cua hoc Critic theo dieu kien dau (Wang, Bellman, dong bang,
+%         W(0) = 0, gain k = 1)
 %
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    08/2026
@@ -66,10 +68,10 @@ for t_idx = 1:length(trajs)
     results_D.([trajs{t_idx} '_ft'])  = d_ft;
     results_D.([trajs{t_idx} '_uub']) = d_uub;
 
-    fprintf('  %-8s ADP-FT : Jc=%8.3f  Je=%7.3f  z_rms=%.3e\n', ...
-        trajs{t_idx}, d_ft.Jc,  d_ft.Je,  d_ft.zrms);
-    fprintf('  %-8s ADP-UUB: Jc=%8.3f  Je=%7.3f  z_rms=%.3e\n', ...
-        trajs{t_idx}, d_uub.Jc, d_uub.Je, d_uub.zrms);
+    fprintf('  %-8s ADP-FT : Jc=%8.3f  Je=%7.3f  z_rms=%.3e  t(||z||<0.01)=%5.2fs\n', ...
+        trajs{t_idx}, d_ft.Jc,  d_ft.Je,  d_ft.zrms,  settle_time(d_ft.t,  d_ft.z,  0.01));
+    fprintf('  %-8s ADP-UUB: Jc=%8.3f  Je=%7.3f  z_rms=%.3e  t(||z||<0.01)=%5.2fs\n', ...
+        trajs{t_idx}, d_uub.Jc, d_uub.Je, d_uub.zrms, settle_time(d_uub.t, d_uub.z, 0.01));
 end
 
 %% ================================================================
@@ -343,6 +345,7 @@ j_cfgs = { struct('name','Wang goc',    'tag','wang',   'proj',false, 'czy',0,  
 masses_J = [14, 16];
 
 J_traj = nan(numel(j_cfgs), numel(trajs));
+J_satv = nan(numel(j_cfgs), numel(trajs));   % ti le lenh van toc cham gioi han
 J_zrms = nan(numel(j_cfgs), numel(z0_list));
 J_mass = nan(numel(j_cfgs), numel(masses_J));
 
@@ -365,6 +368,7 @@ for ci = 1:numel(j_cfgs)
         d = run_extra_sim('adp_ft', s_jt, p, 'common');
         results_J.(sprintf('%s_%s', c.tag, trajs{t_idx})) = d;
         J_traj(ci, t_idx) = d.Jc;
+        J_satv(ci, t_idx) = d.satv;
     end
     for zi = 1:numel(z0_list)
         s_jz = s_j;  s_jz.traj_type = 'circle';  s_jz.q0_offset = z0_list{zi};
@@ -401,6 +405,39 @@ for ci = 1:numel(j_cfgs)
     fprintf('\n');
 end
 
+fprintf('\n  J3. Ti le thoi gian lenh van toc cham gioi han (|v_d| = v_max hoac |w_d| = w_max)\n');
+fprintf('  %-12s | %8s | %8s | %8s\n', 'Cau hinh', 'circle', 'line', 'figure8');
+fprintf('  %s\n', repmat('-', 1, 46));
+for ci = 1:numel(j_cfgs)
+    fprintf('  %-12s | %7.1f%% | %7.1f%% | %7.1f%%\n', j_cfgs{ci}.name, 100 * J_satv(ci,:));
+end
+
+% J4. Chan doan, tinh lai tu chinh cac lan chay tren (khong chay them):
+%  - min theo thoi gian cua lambda_min(P(W)): phep chieu chi kich hoat khi < ft_proj_eps
+%  - diem can bang gia: |zx|, |zy|, |zth| trung binh tu giay 30 o z0 xa nhat
+fprintf('\n  J4. min_t lambda_min(P(W)) (phep chieu kich hoat khi < %.2f)\n', s.ft_proj_eps);
+fprintf('  %-12s |', 'Cau hinh');
+for zi = 1:numel(z0_list), fprintf(' %7.3f |', z0_norm(zi)); end
+fprintf('  <- ||z0||\n');
+for ci = 1:numel(j_cfgs)
+    fprintf('  %-12s |', j_cfgs{ci}.name);
+    for zi = 1:numel(z0_list)
+        d = results_J.(sprintf('%s_z%d', j_cfgs{ci}.tag, zi));
+        fprintf(' %7.3f |', min_eig_P(d.W(:, 1:100:end)));
+    end
+    fprintf('\n');
+end
+nz5 = numel(z0_list);
+for ci = [2, 5]      % 'Chua co che' va 'Day du'
+    d = results_J.(sprintf('%s_z%d', j_cfgs{ci}.tag, nz5));
+    i30 = d.t >= 30;
+    fprintf('  %-12s, ||z0|| = %.2f, t >= 30 s: mean|zx| = %.3f, mean|zy| = %.3f, mean|zth| = %.3f | W(T) = %s\n', ...
+        j_cfgs{ci}.name, z0_norm(nz5), mean(abs(d.z(1, i30))), mean(abs(d.z(2, i30))), ...
+        mean(abs(d.z(3, i30))), mat2str(d.W(:, end)', 3));
+end
+d = results_J.(sprintf('%s_circle', j_cfgs{5}.tag));
+fprintf('  Day du, circle, z0 chuan: W(T) = %s\n', mat2str(d.W(:, end)', 3));
+
 %% ================================================================
 %  PHAN K: ADP-FT CO THICH NGHI KHI DOI Q, R KHONG?
 %  ================================================================
@@ -423,10 +460,73 @@ for ki = 1:size(qr_cfgs, 1)
         qr_cfgs(ki,1), qr_cfgs(ki,2), d.Je, Ju, norm(d.W(:,end)));
 end
 
+%% ================================================================
+%  PHAN L: VAI TRO CUA HOC CRITIC THEO DIEU KIEN DAU
+%  ================================================================
+% Phan G va J chi so sanh o dieu kien dau danh nghia, noi W(t) gan nhu chi suy
+% giam theo sigma-modification. Khi sai lech ban dau lon, so hang hoc
+% nabla_phi*g*R^-1*g'*z lon va thuc su doi W. Phan nay do xem viec hoc giup
+% hay hai, so voi:
+%   Bellman    -- bien the gradient sai so Bellman (Muc 4.7.2 luan van)
+%   Dong bang  -- Gamma = 0, W giu nguyen W0 (critic khong hoc)
+%   W(0) = 0   -- hoc tu dau, khong warm start
+%   Gain k = 1 -- bo gain danh nghia truoc khi chinh deu (Muc 5.1 luan van)
+fprintf('\n--- PHAN L: VAI TRO CUA HOC CRITIC THEO DIEU KIEN DAU ---\n');
+
+results_L = struct();
+l_cfgs = {'Wang (mac dinh)', 'Bellman', 'Dong bang', 'W(0) = 0', 'Gain k = 1'};
+L_Jc = nan(numel(l_cfgs), numel(z0_list));
+L_ts = nan(numel(l_cfgs), numel(z0_list));
+L_traj = nan(1, numel(trajs));      % W(0) = 0 tren 3 quy dao, z0 danh nghia
+for ci = 1:numel(l_cfgs)
+    s_l = s;  s_l.traj_type = 'circle';
+    switch ci
+        case 2
+            s_l.ft_update_law = 'bellman';
+        case 3
+            s_l.ft_Gamma = 0 * s.ft_Gamma;
+        case 4
+            s_l.ft_W0 = zeros(s.l, 1);
+        case 5
+            s_l.ft_lambda = 2 * s.ft_lambda;  s_l.ft_mu   = 2 * s.ft_mu;
+            s_l.ft_alpha  = 2 * s.ft_alpha;   s_l.ft_beta = 2 * s.ft_beta;
+            s_l.ft_c_zy   = 2 * s.ft_c_zy;    s_l.ft_W0   = 2 * s.ft_W0;
+    end
+    for zi = 1:numel(z0_list)
+        s_lz = s_l;  s_lz.q0_offset = z0_list{zi};
+        d = run_extra_sim('adp_ft', s_lz, p, 'common');
+        results_L.(sprintf('c%d_z%d', ci, zi)) = d;
+        L_Jc(ci, zi) = d.Jc;
+        L_ts(ci, zi) = settle_time(d.t, d.z, 0.05);
+    end
+    if ci == 4
+        for t_idx = 1:numel(trajs)
+            s_lt = s_l;  s_lt.traj_type = trajs{t_idx};
+            d = run_extra_sim('adp_ft', s_lt, p, 'common');
+            results_L.(sprintf('w0zero_%s', trajs{t_idx})) = d;
+            L_traj(t_idx) = d.Jc;
+        end
+    end
+end
+
+fprintf('\n  L1. Jc va t_settle (tol 0.05) theo dieu kien dau (circle, nhieu 20%%)\n');
+fprintf('  %-16s |', 'Cau hinh');
+for zi = 1:numel(z0_list), fprintf(' %16.3f |', z0_norm(zi)); end
+fprintf('  <- ||z0||\n  %s\n', repmat('-', 1, 19 + 19*numel(z0_list)));
+for ci = 1:numel(l_cfgs)
+    fprintf('  %-16s |', l_cfgs{ci});
+    for zi = 1:numel(z0_list)
+        fprintf(' %9.3f %5.1fs |', L_Jc(ci, zi), L_ts(ci, zi));
+    end
+    fprintf('\n');
+end
+fprintf('\n  L2. W(0) = 0, z0 danh nghia, Jc: circle %.3f | line %.3f | figure8 %.3f\n', L_traj);
+
 %% Luu
 save('../results/thesis_extra.mat', ...
      'results_D', 'results_E', 'results_F', 'results_G', 'results_H', 'results_I', ...
-     'results_J', 'J_traj', 'J_zrms', 'J_mass', 'masses_J', 'results_K', 'qr_cfgs', ...
+     'results_J', 'J_traj', 'J_zrms', 'J_mass', 'J_satv', 'masses_J', 'results_K', 'qr_cfgs', ...
+     'results_L', 'l_cfgs', 'L_Jc', 'L_ts', 'L_traj', ...
      'T_settle', 'z0_norm', 'tol_list', 'masses_I', ...
      'z0_list', 'dist_amps', 'dist_modes', 's', 'p');
 fprintf('\nDa luu vao results/thesis_extra.mat\n');
@@ -435,6 +535,16 @@ fprintf('\n========== HOAN THANH ==========\n');
 %% ====================================================================
 %  HAM PHU TRO
 %  ====================================================================
+
+function lm = min_eig_P(Ws)
+% Tri rieng nho nhat cua P(W) (V_hat = z'*P*z), lay min tren cac cot cua Ws
+    lm = inf;
+    for k = 1:size(Ws, 2)
+        W = Ws(:, k);
+        P = [W(1) W(4)/2 W(6)/2; W(4)/2 W(2) W(5)/2; W(6)/2 W(5)/2 W(3)];
+        lm = min(lm, min(eig(P)));
+    end
+end
 
 function ts = settle_time(t, z, tol)
     n = sqrt(sum(z.^2, 1));

@@ -15,7 +15,9 @@ function data = run_extra_sim(method, s, p, dist_mode, p_plant)
 %   p_plant   -- tham so plant thuc (tuy chon; mac dinh = p, khong bat dinh)
 %
 % Output:
-%   data -- struct: t, z, tau, W, Jc, Je, zrms (5 s cuoi), method, dist_mode
+%   data -- struct: t, z, tau, W, Jc, Je, zrms (5 s cuoi), satv, method, dist_mode
+%           satv = ti le thoi gian lenh van toc cham gioi han (|v_d| = v_max
+%           hoac |w_d| = w_max) -- dung o Phan J de kiem tra lenh bi cat
 %
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    08/2026 (tach file 10/2026)
@@ -28,6 +30,7 @@ data.z   = zeros(3, N+1);
 data.tau = zeros(2, N+1);
 data.W   = zeros(s.l, N+1);
 cost     = zeros(1, N+1);
+satv     = false(1, N+1);
 
 [qr0, ~, ~] = ref_trajectory(0, s);
 q = qr0 + s.q0_offset;
@@ -86,6 +89,7 @@ for k = 1:(N+1)
 
     data.t(k) = t;  data.z(:,k) = z;  data.tau(:,k) = tau;
     cost(k) = z'*s.Q*z + uo'*s.R*uo;
+    satv(k) = abs(eta_d(1)) >= s.v_max - 1e-9 || abs(eta_d(2)) >= s.w_max - 1e-9;
 
     if k <= N
         st = [q; eta];
@@ -100,6 +104,7 @@ data.Je = trapz(data.t, sum(data.z.^2, 1));
 Nss = round(5 / s.dt);
 zss = data.z(:, end-Nss:end);
 data.zrms = sqrt(mean(sum(zss.^2, 1)));
+data.satv = mean(satv);
 data.method = method;
 data.dist_mode = dist_mode;
 end
