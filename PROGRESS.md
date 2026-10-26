@@ -429,6 +429,95 @@ thesis.pdf 75 -> 78 trang, 0 loi. Commit 47d384e, 57ddb91.
 > **CON LAI:** (1) do ben khoi luong van la diem yeu (527 vs BS 264 tai 14kg);
 > (2) Jc o nhieu 60% cao hon BS 25%; (3) chua kiem chung kha nang thich nghi khi
 > doi Q, R — huong so 1 o §6.3.
+>
+> **[2026-10-26] TOAN BO so lieu tu 2026-05-11 den day do tren mo hinh co loi
+> ma tran B — xem muc 2026-10-26 ben duoi.**
+
+### 2026-10-26 — PHAT HIEN VA SUA LOI MA TRAN B, CHAY LAI TOAN BO
+
+**Loi.** `wmr_params.m` dung `B = [r/2 r/2; r/(2L) -r/(2L)]` — Jacobian dong hoc
+(van toc banh -> v, w), KHONG phai ma tran mo-men. Dung theo Fierro & Lewis (cong ao,
+B = J^-T): `B = (1/r)[1 1; L -L]`, tuc F = (tauR+tauL)/r. Kenh v yeu 800 lan, kenh w
+yeu 18 lan. Loi co tu mo hinh goc (02/2026) nen ban v2 da gui thay cung mang loi nay.
+
+**Kiem chung truoc khi sua** (Octave 8.4; tai tao 12/12 so chinh cua luan van, sai
+khac < 0.1% => so lieu cu khong chep sai, sai o mo hinh):
+- 94-98% Jc nam trong 10 s dau; mo-men bao hoa ~68% thoi gian 10 s dau; moi PP
+  mat 3.5 s moi dat 95% vr. Bang Jc cu do "ai chiu bao hoa luc khoi dong tot hon".
+- Nang tau_max 5 -> 20 va ha fc 0.3 -> 0.05 truoc day la va trieu chung cua loi nay.
+
+**Da lam.** Sua B, tau_max = 1 N*m TAM (gia toc max 4 m/s^2), test_openloop 5/5 PASS
+[9b3fcf0]. Quet lai SMC 72 lan: mat chi phi phang, giu 0.7/0.05 [d9a9532]. Them
+Phan J: ablation co che + dong bang critic + tham so goc Wang [5babecd, 17d1f82].
+Chay lai sim_thesis + sim_thesis_extra bang Octave (231 lan chay). Gain giu nguyen.
+
+**Ket qua moi** (T = 60 s, nhieu 20% dong pha, z0 chuan):
+
+| Phuong phap | Jc circle | Jc line | Jc figure8 | z_rms circle |
+|---|---|---|---|---|
+| SMC da tune (Phan H) | **1.195** | **0.679** | **1.963** | 5.37e-4 |
+| NTSMC (cung gain) | 1.247 | 0.798 | 2.056 | 5.35e-4 |
+| BS | 1.393 | 0.704 | 2.765 | 5.57e-4 |
+| ADP-FT | 1.402 | 0.783 | 2.109 | 5.32e-4 |
+| SMC thong dung | 1.631 | 0.957 | 2.396 | 4.35e-4 |
+| ADP-AC | 7.450 | 5.143 | 7.912 | 4.85e-2 |
+| CL | 7.712 | 5.110 | 8.272 | 6.14e-2 |
+
+Do ben (Phan B, C, F, I): khoi luong 10-16 kg va nhieu 0-60% (dong pha, vi sai, doc
+lap) KHONG con phan biet duoc cac PP: Jc doi < 2% (BS 1.391-1.413, ADP-FT
+1.397-1.409, SMC tune 1.192-1.213). z_rms tang tuyen tinh theo bien do nhieu va nhu
+nhau o BS / ADP-FT (20%: dong pha 5.3-5.6e-4, vi sai 1.6e-3, doc lap 9.9e-4).
+=> Vong trong (dynamic BS, Kd = 20) hap thu gan het bat dinh khoi luong va nhieu mo-men.
+
+Phan E — t_settle (tol 0.05), ||z0|| = 0.245 / 0.612 / 1.225 / 2.375 / 3.5:
+- ADP-FT: 3.95 / 5.09 / 6.06 / 11.70 / 19.08 s
+- BS:     8.53 / 13.16 / 14.44 / 15.98 / 27.66 s
+- CL: khong dat o z0 nao (z_rms 6e-2 > tol)
+=> ADP-FT nhanh hon BS o ca 5 z0. Ca hai tang theo ||z0|| (bat buoc vi v bi chan).
+
+Phan D, G, J — ablation ADP-FT (Jc):
+
+| Cau hinh | circle | line | figure8 | quet 5 z0 (z_rms) |
+|---|---|---|---|---|
+| Tham so goc Wang | 4.856 | 12.976 | 93.977 | 0.02 / 0.43 / 0.37 / 0.35 / 0.71 |
+| Chua co che (gain luan van) | 8.092 | 5.657 | 10.041 | mat bam 2/5 (2.68; 2.12), con lai 0.06-0.14 |
+| + toan tu chieu | 8.092 | 5.657 | 10.041 | mat bam 1/5 (2.85), con lai 0.02-0.14 |
+| + ghep nonholonomic | 1.402 | 0.783 | 2.109 | 5.3e-4 ca 5 |
+| Day du (mac dinh) | 1.402 | 0.783 | 2.109 | 5.3e-4 ca 5 |
+| Dong bang critic (Gamma = 0) | **1.313** | **0.734** | **1.976** | 5.3e-4 ca 5 |
+| ADP-UUB (bo so hang fixed-time) | 1.327 | 0.743 | 1.990 | -- |
+| Luat cap nhat goc Wang | 1.401 | 0.783 | 2.111 | -- |
+
+=> **Chi co ghep nonholonomic tao khac biet** (5.8 lan tren circle, het mat bam).
+Toan tu chieu, luat cap nhat, so hang fixed-time va viec critic hoc deu KHONG dong
+gop, hoac lam xau di 5-6%. ||W(T)|| = 0.586 voi ca hai luat: khi z nho, so hang
+sigma-mod chiem uu the nen W chi suy giam ve 0.
+=> Tham so goc Wang KHONG phat tan nhung bam kem (sai so 0.35-0.71 m o 4/5 z0, hinh 8
+gap 45 lan) — van can chinh tham so, nhung ly do khong phai "phat tan".
+
+**Do nhay gain** (thong tin cho quyet dinh tune lai, Jc circle / figure8):
+- ADP-FT nhan gain robust x0.5 / x1 / x2 / x5 / x10: 1.49/2.27, 1.40/2.11,
+  **1.29/1.94**, 1.28/2.38, 1.72/4.31.
+- BS nhan ca 3 gain x0.5 / x1 / x2: **1.26/2.35**, 1.39/2.77, 1.51/3.15; k1 = 3 hoac 5
+  deu xau hon.
+=> Tune nhe moi PP doi Jc ~10%, khong doi buc tranh: SMC tune tot nhat tren circle,
+ADP-FT ~ SMC tren hinh 8, BS kem hon tren hinh 8.
+
+**So sanh voi ket luan ban 78 trang:**
+
+| Ket luan cu | Mo hinh da sua |
+|---|---|
+| ADP-FT sai so bam nho nhat | Ngang nhau 5.3-5.6e-4; SMC thong dung con thap nhat (4.35e-4) |
+| ADP-FT yeu voi khoi luong | Khong PP nao suy giam den 16 kg |
+| ADP-FT kem BS 25% o nhieu 60% | 1.407 vs 1.397 (0.7%) |
+| ADP-FT yeu tren hinh 8 | ADP-FT 2.109 < BS 2.765 |
+| Tham so goc Wang lam phat tan | Khong phat tan, chi bam kem |
+| So hang fixed-time cai thien 25 lan tren hinh 8 | Bo di con tot hon 6% |
+| Luat Bellman vs Wang: danh doi hai chieu | Nhu nhau |
+| Toan tu chieu cuu 14 kg (6.9 lan) | Khong tac dung |
+| **Ghep nonholonomic het mat bam** | **VAN DUNG — co che duy nhat tao khac biet** |
+| SMC thong dung vs tune: 7 lan / 289 lan | 1.37 / 1.41 / 1.22 lan |
+| Ti so t_settle 1.68 vs BS 2.87 | Tieu chi sai; ADP-FT nhanh hon BS o moi z0 |
 
 ---
 
@@ -437,12 +526,16 @@ thesis.pdf 75 -> 78 trang, 0 loi. Commit 47d384e, 57ddb91.
 ### 1. Sua mo hinh va chay lai (2026-10-26)
 - [x] Sua ma tran B theo Fierro & Lewis, tau_max tam 1 N*m [9b3fcf0]
 - [x] Quet lai SMC tren mo hinh moi: giu 0.7/0.05 [d9a9532]
-- [x] Them Phan J: ablation co che + dong bang critic [5babecd]
+- [x] Them Phan J: ablation co che + dong bang critic + tham so goc Wang [5babecd, 17d1f82]
 - [x] Chay lai sim_thesis + sim_thesis_extra bang Octave 8.4 (so lieu: muc 2026-10-26)
 - [ ] **Trung quyet:** tau_max that cua motor (dang tam 1 N*m). Doi gia tri => chay lai het,
       vi nhieu tinh theo % tau_max.
 - [ ] **Trung quyet:** co tune lai gain ADP-FT / BS tren mo hinh moi khong. Gain hien tai chon
-      tren mo hinh sai (k1 = 1.5 cua BS, toan bo gain robust ADP-FT).
+      tren mo hinh sai (k1 = 1.5 cua BS, toan bo gain robust ADP-FT). Do nhay da do (muc
+      2026-10-26): tune nhe doi Jc ~10%, khong doi buc tranh. Neu tune thi tune DEU moi PP.
+- [ ] **Trung quyet (quan trong nhat):** dong gop chinh cua luan van. Ket qua moi: chi ghep
+      nonholonomic tao khac biet; critic hoc, so hang fixed-time, luat cap nhat, toan tu
+      chieu deu khong dong gop. Ten de tai va Ch.1/Ch.6 phu thuoc quyet dinh nay.
 - [ ] Chay lai tren MATLAB: test_openloop -> sim_thesis -> sim_thesis_extra -> export_all_figures.
       19 hinh trong docs/thesis/figures VAN LA MO HINH CU (Octave khong dung de xuat hinh).
 - [ ] (khong gap) sim_sm1_full.m chua chay lai -- khong dung trong luan van.
@@ -464,11 +557,13 @@ Ch.5 (toan bo bang, hinh, nhan xet)
 - [ ] 5.2-5.4 (Phan A/B/C): bo 4 ket luan da sai: "ADP-FT sai so bam nho nhat", "ADP-FT yeu
       voi bat dinh khoi luong", "ADP-FT kem BS 25% o nhieu 60%", "ADP-FT yeu tren hinh 8".
 - [ ] 5.5 phan tich mo-men: viet lai -- het hien tuong bao hoa 68% thoi gian luc khoi dong.
-- [ ] 5.6: so moi tu Phan D, G. THEM muc "dong bang critic" (Phan J): critic khong hoc
-      cho ket qua bang/tot hon => phai noi ro hieu nang den tu dau.
+- [ ] 5.6: so moi tu Phan D, G -- bo so hang fixed-time con tot hon 5-6%, hai luat cap nhat
+      nhu nhau. THEM muc "dong bang critic" (Phan J): critic khong hoc cho ket qua tot hon
+      6% => phai noi ro hieu nang den tu so hang robust + ghep, khong tu ADP.
 - [ ] 5.7: BO tieu chi "ti so t_settle max/min ~ 1" (sai khai niem: fixed-time chi doi
       t_settle <= T_max). Trinh bay t_settle theo ||z0||. Sua luon thesis.tex:1945, 2034.
-- [ ] 5.8: bang co che (goc / + chieu / + ghep / day du) lay tu Phan J.
+- [ ] 5.8: bang co che lay tu Phan J. Toan tu chieu khong con tac dung (bang het voi/khong
+      co); ghep nonholonomic la co che quyet dinh. Muc 4.7.4 can xem lai co giu khong.
 - [ ] 5.9: nhieu hai kenh lay tu Phan F.
 - [ ] 5.10: SMC thong dung vs da tune chi con chenh ~1.4 lan (truoc 7 lan va 289 lan) --
       bai hoc "chat luong tune lan at phuong phap" yeu di nhieu, can viet lai cho dung muc.
