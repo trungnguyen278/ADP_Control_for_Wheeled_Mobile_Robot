@@ -38,11 +38,13 @@ $REPO   = "c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot
 
 | Script | Nội dung | Thời gian | Sinh ra |
 |---|---|---|---|
-| `test_openloop` | 4 test mô hình vòng hở | ~10 s | `test_openloop_results.mat` |
+| `test_openloop` | 5 test mô hình vòng hở | ~10 s | `test_openloop_results.mat` |
 | `sim_sm1` | SM1 kinematic, AC vs BS | ~1 phút | `sm1_results.mat` |
 | `sim_sm2` | SM2 kinematic, 4 phương pháp × 2 quỹ đạo | ~2 phút | `sm2_results.mat` |
-| `sim_sm1_full` | 5 phương pháp × 2 điều kiện, full model | ~3 phút | `sm1_full_results.mat` |
-| `sim_thesis` | 3 quỹ đạo + robustness khối lượng + nhiễu | **~5 phút** | `thesis_results.mat` (300 MB) |
+| `sim_sm1_full` | 5 phương pháp × 2 điều kiện, full model (hình `torque_dist`) | ~3 phút | `sm1_full_results.mat` |
+| `sim_thesis` | Phần A–C: 3 quỹ đạo + robustness khối lượng + nhiễu | **~5 phút** | `thesis_results.mat` (300 MB) |
+| `sim_thesis_extra` | Phần D–K: ablation, quét z0, nhiễu 2 kênh, SMC, cơ chế, đổi Q/R | ~20 phút | `thesis_extra.mat` |
+| `sweep_gains` | Chỉnh gain đều nhau cho 5 phương pháp (chỉ chạy khi đổi mô hình) | ~15 phút | `sweep_gains.mat` |
 
 > `-batch` chạy rồi thoát, không mở GUI, in output ra terminal.
 > Đặt timeout ≥ 300000 ms cho `sim_thesis`.
@@ -104,11 +106,12 @@ Select-String -Path thesis.log -Pattern "Overfull|Undefined|LaTeX Warning: Refer
 
 ## 4. Chu trình đầy đủ khi đổi tham số
 
-Ví dụ đổi gain của ADP-FT trong `simulations/sm1_params.m`:
+Ví dụ đổi gain của ADP-FT trong `simulations/ctrl_params.m`:
 
 ```powershell
-# 1. Chạy lại mô phỏng bị ảnh hưởng
-& $MATLAB -batch "cd('$REPO\simulations'); sim_thesis"
+# 1. Chạy lại mô phỏng bị ảnh hưởng (export_all_figures cần cả ba file .mat)
+& $MATLAB -batch "cd('$REPO\simulations'); sim_sm2; sim_sm1_full; sim_thesis"
+& $MATLAB -batch "cd('$REPO\simulations'); sim_thesis_extra"   # số liệu Phần D-K
 
 # 2. Xuất lại hình
 & $MATLAB -batch "cd('$REPO\plotting'); export_all_figures"
