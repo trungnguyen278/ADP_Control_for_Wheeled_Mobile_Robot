@@ -113,9 +113,13 @@ memory/        Bộ nhớ dài hạn của Claude Code
 M·η̇ = B·τ − F(η)
 
 M = diag(m, I)
-B = [r/2, r/2; r/(2L), −r/(2L)]
+B = (1/r)·[1, 1; L, −L]          lực F = (τR+τL)/r, mô-men N = L(τR−τL)/r
 F(η) = [fv·v + fc·tanh(v/ε); fω·ω + fcω·tanh(ω/ε)]
 ```
+
+> Trước 2026-10-26 code dùng nhầm `B = [r/2, r/2; r/(2L), −r/(2L)]` — đó là Jacobian
+> động học (vận tốc bánh → v, ω), không phải ma trận mô-men. Xem
+> `memory/feedback_b_matrix_error.md`.
 
 **Controller ADP fixed-time** (eq.16–18 bài gốc):
 
@@ -150,9 +154,9 @@ Plant:              τ + d(t) → wmr_full_model → [x, y, θ, v, ω]
 | Nửa khoảng cách trục | L | 0.15 | m |
 | Ma sát nhớt | f_v / f_ω | 0.5 / 0.1 | N·s/m, N·m·s/rad |
 | Ma sát Coulomb | f_c / f_cω | 0.05 / 0.02 | N, N·m |
-| Mô-men max/bánh | τ_max | 20 | N·m |
+| Mô-men max/bánh | τ_max | 1 (tạm, chờ thông số motor thật) | N·m |
 
-**Controller ADP-FT** (`simulations/sm1_params.m` — **đã tune cho dual-loop**,
+**Controller ADP-FT** (`simulations/ctrl_params.m` — **đã tune cho dual-loop**,
 khác giá trị gốc của Wang dành cho kinematic-only):
 
 ```
@@ -164,14 +168,20 @@ p = 17, q = 19                      Q = diag(10,10,10),  R = diag(2,2)
 Ŵ(0) = [3, 3, 3, 0, 0, 0]ᵀ          (warm start)
 ```
 
-> Gain robust nhỏ hơn bài gốc 3–5×: vòng trong đã khử nhiễu, giữ gain gốc sẽ gây phản hồi
-> dương và phát tán ở mức nhiễu ≥ 40%. Xem `memory/feedback_adp_ft_tuning.md`.
+> Các gain này được chọn khi mô hình còn lỗi ma trận B. Hiện tượng "giữ gain gốc của Wang
+> thì phát tán" là do bão hòa mô-men của mô hình sai; với mô hình đã sửa, gain gốc không
+> phát tán nhưng cho kết quả kém hơn. Chưa tune lại.
 
-**Nhiễu:** `dist_amp = 0.2` (20% τ_max), `dist_freq = 30 rad/s` (~4.8 Hz), cộng vào cả 2 kênh mô-men.
+**Nhiễu:** `dist_amp = 0.2` (20% τ_max), `dist_freq = 30 rad/s` (~4.8 Hz), cộng cùng pha
+vào hai bánh — chỉ tác động kênh v (`B·[1;1] = [2/r; 0]`). Kịch bản nhiễu độc lập hai
+kênh: Phần F của `sim_thesis_extra.m`.
 
 ---
 
 ## Kết quả
+
+> ⚠ **Hai bảng dưới là số liệu của mô hình cũ (lỗi ma trận B, trước 2026-10-26) — không
+> còn dùng được.** Số liệu chạy lại trên mô hình đã sửa: [PROGRESS.md](PROGRESS.md) mục 2026-10-26.
 
 So sánh trên quỹ đạo tròn, T = 60 s (chi tiết trong [PROGRESS.md](PROGRESS.md)):
 
