@@ -69,7 +69,7 @@ s.pe_off_time = 30;             % tat PE sau 30s (weights da hoi tu)
 % v   = vr*cos(zth) + k1*zx
 % w   = wr + k2*vr*zy + k3*sin(zth)
 
-s.k1 = 1.5;                     % giam cho phu hop dynamic (v accel cham)
+s.k1 = 1.5;                     % chon khi mo hinh con loi B (v tang toc cham), chua chinh lai
 s.k2 = 3;
 s.k3 = 2;
 
@@ -159,6 +159,11 @@ s.nt_eps     = 0.02;            % nguong noi tuyen tinh chong ky di
 % => Cai thien tu Jc=1458 xuong Jc=80 den TU VIEC GIAM GAIN, khong phai tu
 %    cau truc terminal. Tren bai toan nay NTSMC khong hon SMC tune tot.
 %    KHONG duoc viet trong luan van rang NTSMC tot hon SMC nho hoi tu huu han.
+% 4. Cac sweep tren lam tren mo hinh con loi B (truoc 2026-10-26).
+%    Quet lai SMC (lambda x eta, 62 lan tren circle + 10 lan kiem tra tren
+%    line/figure8) tren mo hinh da sua: mat chi phi
+%    rat phang, circle Jc = 1.170 (lambda=0.2) .. 1.195 (lambda=0.7).
+%    0.7/0.05 cach toi uu circle 2% nhung tot nhat tren line va figure8 => giu.
 
 %% === NHIEU TAN SO CAO ===
 % d(t) = d_amp * tau_max * sin(w_d * t), cong vao tau truoc plant
@@ -169,6 +174,11 @@ s.dist_freq  = 30;              % [rad/s] ~ 4.8 Hz
 
 %% === ADP FIXED-TIME (WANG ET AL. 2025, eq.16-18) ===
 % Controller chinh cua luan van
+%
+% LUU Y 2026-10-26: cac gain duoi day chon tren mo hinh con loi B. Ly do ghi
+% kem ("giam cho dual-loop", "chong phat tan") la do bao hoa mo-men cua mo hinh
+% sai, khong phai tinh chat cua kien truc hai vong. Gia tri giu nguyen cho den
+% khi quyet dinh co tune lai hay khong (xem memory/feedback_b_matrix_error.md).
 % u = uf + uo_adp - g_pinv * robust
 % robust = lambda.*tanh(z/rho) + mu.*z + alpha.*sig(z,p/q) + beta.*z^3
 % W_dot = 0.5*Gamma*(nabla_phi*g*R_inv*g'*z - kappa1*W - kappa2*(W'W)*W)
