@@ -44,6 +44,17 @@ chỉ có lực tối đa 1 N → gia tốc ≤ 0,1 m/s². Việc đổi τ_max 
 
 Với τ_max = 0,5 và 20 bức tranh định tính không đổi (BS: 1,45 và 1,46).
 
+## Chạy lại đầy đủ bằng script (2026-10-26, sau khi sửa)
+
+Số đầy đủ ở PROGRESS.md mục 2026-10-26. Ba phát hiện cần nhớ:
+- **Ablation (Phần D, G, J):** chỉ ghép nonholonomic tạo khác biệt (Jc tròn 8,09 → 1,40).
+  Critic đóng băng tốt hơn 6%, bỏ số hạng fixed-time tốt hơn 5–6%, hai luật cập nhật như
+  nhau (‖W(T)‖ = 0,586 cả hai — σ-mod chiếm ưu thế, W chỉ suy giảm), toán tử chiếu không
+  tác dụng. ⇒ Hiệu năng "ADP-FT" đến từ số hạng robust + ghép, không đến từ ADP.
+- **Độ bền (Phần B, C, F, I):** khối lượng 10–16 kg và nhiễu 0–60% không còn phân biệt
+  các phương pháp (Jc đổi < 2%) — vòng trong hấp thụ gần hết.
+- **Tham số gốc Wang:** không phát tán nhưng bám kém (sai số 0,35–0,71 m ở 4/5 z0).
+
 ## Cái vẫn đứng vững khi B đúng
 
 - **Thiếu kênh zy của luật Wang** ([[feedback-nonholonomic-coupling]]): cấu hình gốc (không
