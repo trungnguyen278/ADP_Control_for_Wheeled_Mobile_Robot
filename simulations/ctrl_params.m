@@ -54,8 +54,9 @@ s.uo_max = 1.0;                 % [m/s] va [rad/s]
 % Day la HAN CHE cua Actor-Critic: can chinh sach ban dau on dinh.
 % V ~ 1*(zx^2 + zy^2 + zth^2) → uo ~ [0.5*zx; 0.5*zth] gan z=0
 % Yeu, chi du on dinh — buoc ADP phai hoc de cai thien
-s.Wc0 = [3; 3; 3; 0; 0; 0];
-s.Wa0 = [3; 3; 3; 0; 0; 0];
+% Gia tri da chinh (sweep_gains.m, 2026-10-26): k* = 0.5 tren [3 3 3 0 0 0].
+s.Wc0 = [1.5; 1.5; 1.5; 0; 0; 0];
+s.Wa0 = [1.5; 1.5; 1.5; 0; 0; 0];
 
 %% === PE SIGNAL (Persistence of Excitation) ===
 % n(t) = sum( A_i * sin(w_i * t) )
@@ -69,9 +70,11 @@ s.pe_off_time = 30;             % tat PE sau 30s (weights da hoi tu)
 % v   = vr*cos(zth) + k1*zx
 % w   = wr + k2*vr*zy + k3*sin(zth)
 
-s.k1 = 1.5;                     % chon khi mo hinh con loi B (v tang toc cham), chua chinh lai
-s.k2 = 3;
-s.k3 = 2;
+% Da chinh (sweep_gains.m, 2026-10-26): k* = 0.25 tren gain danh nghia
+% (1.5, 3, 2) -- tong Jc 3 quy dao 4.861 -> 4.310.
+s.k1 = 0.375;
+s.k2 = 0.75;
+s.k3 = 0.5;
 
 %% === QUY DAO THAM CHIEU ===
 
@@ -116,12 +119,15 @@ s.Kd_w = 20;                    % gain van toc goc
 
 %% === SMC KINEMATIC (VONG NGOAI) ===
 % uo1 = zy*(wr+uo2) + lambda1*zx + eta1*tanh(zx/delta)
-% uo2 = lambda2*zth + eta2*tanh(zth/delta)
-
-s.smc_lambda1 = 3;              % equivalent gain zx
-s.smc_lambda2 = 3;              % equivalent gain zth
-s.smc_eta1    = 1.0;            % reaching gain zx
-s.smc_eta2    = 1.0;            % reaching gain zth
+% uo2 = lambda2*sigma2 + eta2*tanh(sigma2/delta),  sigma2 = zth + c_zy*zy
+%
+% Da chinh (sweep_gains.m, 2026-10-26): k* = 1/8 tren gia tri thong dung
+% (lambda = 3, eta = 1) -- tong Jc 3 quy dao 4.984 -> 3.836. Gia tri thong dung
+% van dung de doi chieu o Phan H (sim_thesis_extra.m).
+s.smc_lambda1 = 0.375;          % equivalent gain zx
+s.smc_lambda2 = 0.375;          % equivalent gain sigma2
+s.smc_eta1    = 0.125;          % reaching gain zx
+s.smc_eta2    = 0.125;          % reaching gain sigma2
 s.smc_delta   = 0.05;           % boundary layer (tanh thay sign)
 s.smc_c_zy    = 1.0;            % coupling zy vao mat truot sigma_2 = zth + c_zy*zy
 
@@ -134,15 +140,13 @@ s.smc_c_zy    = 1.0;            % coupling zy vao mat truot sigma_2 = zth + c_zy
 %   2. Luat tien toi dung |sigma|^alpha_r => den mat truot HUU HAN thoi gian
 % (SMC thuong chi hoi tu MU vi toan bo la tuyen tinh + tanh)
 
-% Gain duoi day CHON BANG SWEEP tren full model (circle, T=60s, co nhieu),
-% khong phai copy tu bai bao. Chi tiet sweep: xem PROGRESS.md muc 2026-08-12.
-% Gain ban dau (lambda=3, eta=1.0 copy tu SMC) cho Jc=1458 -- qua manh cho
-% dual-loop, dung bai hoc trong memory/feedback_adp_ft_tuning.md.
+% Dung CUNG gain voi SMC da chinh (doi chung "cung gain" o Muc 5.10.3):
+% khac biet giua SMC va NTSMC khi do chi con do cau truc terminal.
 
-s.nt_lambda1 = 0.7;             % equivalent gain sigma_1 (sweep: 0.7 toi uu)
-s.nt_lambda2 = 0.7;             % equivalent gain sigma_2
-s.nt_eta1    = 0.05;            % reaching gain sigma_1 (sweep: 0.05)
-s.nt_eta2    = 0.05;            % reaching gain sigma_2
+s.nt_lambda1 = s.smc_lambda1;   % equivalent gain sigma_1
+s.nt_lambda2 = s.smc_lambda2;   % equivalent gain sigma_2
+s.nt_eta1    = s.smc_eta1;      % reaching gain sigma_1
+s.nt_eta2    = s.smc_eta2;      % reaching gain sigma_2
 s.nt_c_zy    = 1.0;             % coupling zy vao mat truot (giong smc_c_zy)
 s.nt_beta    = 10.0;            % he so so hang lu thua phan so tren zy
                                 % beta lon => so hang terminal yeu di
@@ -175,10 +179,10 @@ s.dist_freq  = 30;              % [rad/s] ~ 4.8 Hz
 %% === ADP FIXED-TIME (WANG ET AL. 2025, eq.16-18) ===
 % Controller chinh cua luan van
 %
-% LUU Y 2026-10-26: cac gain duoi day chon tren mo hinh con loi B. Ly do ghi
-% kem ("giam cho dual-loop", "chong phat tan") la do bao hoa mo-men cua mo hinh
-% sai, khong phai tinh chat cua kien truc hai vong. Gia tri giu nguyen cho den
-% khi quyet dinh co tune lai hay khong (xem memory/feedback_b_matrix_error.md).
+% Gain robust, c_zy va W0 da chinh (sweep_gains.m, 2026-10-26): k* = 0.5 tren
+% bo gia tri cu (tong Jc 3 quy dao 4.295 -> 4.192). Bo gia tri cu duoc chon khi
+% mo hinh con loi B; ly do "giam cho dual-loop / chong phat tan" ghi truoc day
+% la do bao hoa mo-men cua mo hinh sai (memory/feedback_b_matrix_error.md).
 % u = uf + uo_adp - g_pinv * robust
 % robust = lambda.*tanh(z/rho) + mu.*z + alpha.*sig(z,p/q) + beta.*z^3
 % W_dot = 0.5*Gamma*(nabla_phi*g*R_inv*g'*z - kappa1*W - kappa2*(W'W)*W)
@@ -188,13 +192,13 @@ s.ft_q = 19;                    % fixed-time exponent (mau so), p/q < 1
 s.ft_Gamma = 1 * eye(s.l);     % 6x6 learning rate (giam tu 2 cho on dinh dual-loop)
 s.ft_kappa1 = 0.04;            % sigma-modification (tang tu 0.02 chong weight drift)
 s.ft_kappa2 = 0.01;            % sigma-modification bac 3 (fixed-time)
-s.ft_lambda = [0.08; 0.08; 0.05]; % robust gain: tanh term (giam cho dual-loop)
-s.ft_mu     = [0.08; 0.08; 0.05]; % robust gain: linear term
-s.ft_alpha  = [0.08; 0.08; 0.05]; % robust gain: fractional power |z|^{p/q}*sign(z)
-s.ft_beta   = [0.15; 0.15; 0.08]; % robust gain: cubic (giam manh, inner loop da reject dist)
+s.ft_lambda = [0.04; 0.04; 0.025]; % robust gain: tanh term
+s.ft_mu     = [0.04; 0.04; 0.025]; % robust gain: linear term
+s.ft_alpha  = [0.04; 0.04; 0.025]; % robust gain: fractional power |z|^{p/q}*sign(z)
+s.ft_beta   = [0.075; 0.075; 0.04]; % robust gain: cubic
 s.ft_rho    = 0.1;                 % boundary layer cho tanh(z/rho)
 s.ft_uo_max = 1.5;                 % gioi han feedback uo (chong phat tan dual-loop)
-s.ft_W0     = [3; 3; 3; 0; 0; 0]; % warm start (tuong tu CL, can feedback ban dau)
+s.ft_W0     = [1.5; 1.5; 1.5; 0; 0; 0]; % warm start (tuong tu CL, can feedback ban dau)
 
 % Luat cap nhat trong so: 'wang' = eq.(17) goc cua Wang et al. (mac dinh tu
 % 2026-10-26), 'bellman' = gradient sai so Bellman (mac dinh cu). Tren mo hinh
@@ -219,8 +223,9 @@ s.ft_proj_wmax = 20;               % chan ||W||
 % zth ~= 0. BS xu ly bang k2*vr*zy, SMC bang mat truot zth + c*zy. ADP-FT goc
 % khong co co che tuong duong.
 % Dang bao hoa (tanh) tranh xung lon khi zy lon lam vong trong khong bam kip.
-% Quet 12 cau hinh (c x sat): (2.0, 0.2) tot nhat — xem PROGRESS 2026-08-13.
-s.ft_c_zy     = 2.0;               % he so ghep
+% Quet 12 cau hinh (c x sat) tren mo hinh cu: (2.0, 0.2) tot nhat (PROGRESS 2026-08-13).
+% Sau khi sua B, c_zy duoc nhan cung he so k* voi cac gain robust (sweep_gains.m).
+s.ft_c_zy     = 1.0;               % he so ghep (2.0 truoc khi chinh deu)
 s.ft_czy_sat  = 0.2;               % bao hoa: c*vr*tanh(zy/sat); 0 = tuyen tinh
 
 %% === CRITIC-ONLY + CONCURRENT LEARNING (SM2) ===
@@ -233,7 +238,7 @@ s.cl_alpha_hist = 0.5;         % concurrent learning rate (tu history stack)
 s.cl_kappa      = 0.01;        % sigma-modification (weight decay)
 s.cl_stack_max  = 200;         % so diem lich su toi da
 s.cl_record_dt  = 0.05;        % ghi moi 50ms = 20 Hz
-s.cl_W0 = [3; 3; 3; 0; 0; 0]; % warm start (can feedback ban dau de on dinh)
+s.cl_W0 = [0.75; 0.75; 0.75; 0; 0; 0]; % warm start; k* = 0.25 (sweep_gains.m)
 s.cl_uo_max     = 1.5;         % gioi han feedback [m/s] va [rad/s]
 
 end
