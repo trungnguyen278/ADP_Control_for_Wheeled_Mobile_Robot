@@ -12,8 +12,8 @@
 - [Nhiễu chỉ 1 kênh](feedback_disturbance_one_channel.md) — d=[1;1] chỉ tác động kênh v (B·[1;1] = [2/r; 0]); thầy chỉ yêu cầu nhiễu mô-men ở vòng trong — đã đạt
 - [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
-- [MATLAB CLI](reference_matlab_cli.md) — Chạy MATLAB batch từ terminal: R2023a, cờ -batch
-- [Progress](project_progress.md) — 26/10: đã viết lại luận văn + tóm tắt; còn chạy MATLAB xuất hình, build MiKTeX, gửi thầy (thầy chỉ có v2)
-- [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10: ADP-FT thứ 2 sau SMC; ghép nonholonomic quyết định; học critic không giúp
+- [MATLAB CLI](reference_matlab_cli.md) — MATLAB ở C:\MATLAB\R2023a, MiKTeX ở Program Files; script `clear` phá lệnh bọc tic/toc
+- [Progress](project_progress.md) — 26/10 khuya: chạy lại bằng MATLAB với bước 2 đầy đủ, build xong (84 tr); còn Trung đọc lại, chốt τ_max, gửi thầy
+- [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10 khuya: ADP-FT ngang NTSMC, sau SMC 7,9%; z_rms theo hàm mô tả; số hạng chéo vượt v_max
 - [Backstepping hai bước](feedback_backstepping_framing.md) — ⭐ MỘT bộ BC hai bước (bước 2 có số hạng chéo, K_c = M), không chia "vòng ngoài/vòng trong"; chứng minh lại có trích dẫn
 - [Khoảng hở chứng minh Wang](feedback_wang_gap.md) — ⭐ g·g† ≠ I₃; luật gốc có điểm cân bằng (0, z_y, 0) trên quỹ đạo thẳng (đã kiểm chứng); cơ sở của số hạng ghép

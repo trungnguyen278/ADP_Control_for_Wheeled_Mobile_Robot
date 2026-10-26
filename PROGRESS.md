@@ -10,16 +10,18 @@ Hoc vien: Nguyen Thanh Trung
 
 ---
 
-## TRANG THAI (cap nhat 2026-10-26, toi)
+## TRANG THAI (cap nhat 2026-10-26, khuya)
 
-**2026-10-26: da sua loi ma tran B, chinh gain deu nhau cho 5 PP, chay lai toan bo va
-VIET LAI luan van + bao cao tom tat** theo mo hinh dung. ADP-FT van la phuong phap chinh,
-khung luan van: "hoan thien ADP-FT cua Wang et al. cho robot dieu khien bang mo-men".
-Chi tiet o muc "2026-10-26 (toi)" ben duoi.
+**2026-10-26: da sua loi ma tran B, chinh gain deu nhau cho 5 PP, hoan thien buoc 2 backstepping
+(so hang cheo + co dinh thoi gian, Dinh ly 4.1), chay lai toan bo bang MATLAB va VIET LAI luan
+van + bao cao tom tat.** ADP-FT van la phuong phap chinh, khung luan van: "hoan thien ADP-FT cua
+Wang et al. thanh mot bo backstepping hai buoc cho robot dieu khien bang mo-men".
+Chi tiet o muc "2026-10-26 (khuya)" ben duoi.
 
-**Con lai truoc khi in nop (Trung lam, xem VIEC CAN LAM muc 1):** chay MATLAB de xuat lai
-hinh (19 hinh trong docs/thesis/figures VAN LA MO HINH CU), build PDF bang MiKTeX, doc lai,
-commit PDF. thesis.pdf / summary_report.pdf trong repo van la ban cu.
+**Da build:** thesis.pdf 84 trang, summary_report.pdf 12 trang (MiKTeX, 0 loi, 0 ref treo,
+0 Overfull); 13 hinh luan van xuat lai tu MATLAB. Hinh SM2 giu nguyen ban da nop.
+
+**Con lai (Trung lam, xem VIEC CAN LAM muc 1):** doc lai Ch.4-6, chot tau_max that, gui thay.
 
 **GVHD:** thay Nam da nhan ban v2 (43 trang, commit 7fedea9) + bao cao tom tat
 (13 trang, commit 5e1a452) qua Teams 2026-05-26 nhung CHUA DOC. Hai ban nay mang loi B.
@@ -577,24 +579,69 @@ sua \ref muc rong (macro \seclabel), ten "Hinh/Bang/MUC LUC/DANH MUC" tieng Viet
 de "References" trung. **Bao cao tom tat** viet lai phan ket qua (11 trang).
 export_all_figures.m: legend ra ngoai vung ve [3c7a077].
 
+### 2026-10-26 (khuya) — BUOC 2 DAY DU, CHAY LAI BANG MATLAB, BUILD XONG
+
+Ghi chu: so lieu muc "2026-10-26 (toi)" ngay tren la voi buoc 2 CU (Fierro & Lewis); so lieu
+duoi day la ban cuoi. MATLAB tai tao dung so Octave cua buoc 2 cu (Phan M: 4.310 / 3.836 / 4.192).
+
+**Buoc 2 day du** (PR #1, merge vao master [7cbfb71]):
+`B*tau = M(eta_d' + Kd*e + Ka*sig(e)^(p/q) + Kb*e^3) + F + Kc*[zx; zth]`, Kc = M, Ka = Kb = 10I. Chuong 4 viet lai thanh MOT bo backstepping
+hai buoc (Bo de 4.1 khoang ho kenh ngang cua Wang, Dinh ly 4.1 ham Lyapunov chung).
+
+**Chay lai bang MATLAB R2023a** (3 tien trinh song song, ~25 phut): sim_thesis + sim_sm1_full,
+sim_thesis_extra (Phan D-M), sweep_gains (k* kiem lai: SMC 1/8, ADP-FT 1/2, BS 1/4, CL 1/4,
+ADP-AC 1/4). KHONG chay lai sim_sm2 (giu hinh bao cao SM2 da nop).
+
+| PP | Jc tron | Jc thang | Jc so 8 | Tong | t(0.01) tron |
+|---|---|---|---|---|---|
+| SMC | **1.214** | **0.661** | **1.962** | **3.837** | 10.1 s |
+| NTSMC | 1.237 | 0.838 | 2.055 | 4.130 | 9.1 s |
+| ADP-FT | 1.318 | 0.790 | 2.033 | 4.140 | **6.0 s** |
+| BS | 1.277 | 0.877 | 2.136 | 4.290 | 9.9 s |
+| CL | 1.675 | 1.504 | 2.920 | 6.099 | 31.1 s |
+| ADP-AC | 3.760 | 5.139 | 5.051 | 13.951 | 37.5 s |
+
+- **Thu hang thay doi:** ADP-FT ngang NTSMC (chenh 0.2%, duoi do phan giai luoi gain), kem SMC
+  7.9%. Luan van ghi "nhom thu hai", hang 3 co chu thich — khong con "ADP-FT thu hai".
+- **San nhieu doi cong thuc:** z_rms ~4.1-4.3e-4 (cu 5.3e-4). Cong thuc cu (chi Kd) du doan sai
+  ~28% => thay bang ham mo ta: Keq = Kd + 1.021*Ka*E^(p/q-1) + 0.75*Kb*E^2, Keq = 35.7 o 20%,
+  khop < 3% ca 3 dang nhieu. Tuong quan tauR/-d = Keq/sqrt(wn^2+Keq^2) = 0.76 (cu 0.55).
+- **Phan M:** so hang FT buoc 2 ha z_rms 21-23%; t_e(||e_eta|| < 0.05) <= 0.17 s; Kc = M doi Jc nho
+  (ADP-FT -1.2%). Kc = 10M: ADP-FT 3.833 < SMC 3.844 nhung BS +12.8% => giu Kc = M (Kc lon = chinh
+  gain buoc 1 khong deu). z0 lon: Jc giam 12-35%, ADP-FT t(0.05) 55.1 -> 42.3 s.
+- **Phat hien moi:** so hang cheo di vong qua bo kep eta_d => v thuc toi 0.57-0.62 m/s khi z0 lon
+  (buoc 2 cu <= 0.52). Hang "can duoi vat ly" o Bang 5.16 doi thanh "tham chieu khi |v| <= v_max".
+  Neu v_max la gioi han an toan cung, can bao hoa so hang cheo.
+- **Tham so goc Wang** (beta = diag(1e5,1e5,1) da sua): Jc x23.4/13.3/7.0, Ju chiem 58-78%, z_y du
+  1.7-3.2 cm khi z_x, z_th ~ 0 => xac nhan Bo de 4.1(b) tren mo hinh day du.
+- Ablation: thieu ghep Jc x3.2-5.6 (|zy| ~1.4 m o z0 = 3.5); chieu khong kich hoat (lambda_min >=
+  0.121); UUB giam Jc 1.4-1.8%; dong bang tot hon hoc 2.6-2.8%, o z0 = 3.5: 15.8 s vs Wang 42.3 s,
+  SMC 17.0 s, BS 22.0 s; Bellman khong nhat quan (19.3 s o 3.5 nhung 39.1 s o 2.375).
+- Khoi luong 16 kg / nhieu 60%: Jc doi < 3% moi PP.
+
+**Tai lieu:** luan van 84 trang (them Muc 5.6, Muc 5.4 dung ham mo ta + trich Slotine & Li ch.5,
+dien o "[dang cap nhat]" Muc 4.2.5, sua 2 ref treo, sua ten bai Polyakov 2012, cap nhat loi cam
+doan theo ranh gioi dong gop), bao cao tom tat 12 trang (them muc buoc 2, sua chu thich bang de
+len duong ke). README, workflow.md, CLAUDE.md, skill run-sim/build-doc: duong dan MATLAB
+`C:\MATLAB\R2023a`, MiKTeX `C:\Program Files\MiKTeX`. Commit bb47603 (luan van + hinh),
+e86f0d7 (tom tat), 6188a6f (README, duong dan).
+
 ---
 
 ## VIEC CAN LAM
 
 ### 1. Truoc khi in nop (Trung lam)
-- [ ] Chay MATLAB (R2023a) trong `simulations/`: `sim_sm2; sim_sm1_full; sim_thesis;
-      sim_thesis_extra` (~30-40 phut), roi `cd ../plotting; export_all_figures`.
-      Doi chieu so in ra voi Chuong 5 (Octave va MATLAB co the lech o chu so thu 3-4).
-- [ ] Build PDF bang MiKTeX (pdflatex x2): docs/thesis/thesis.tex,
-      docs/reports/summary/summary_report.tex. Kiem tra Overfull, ref treo.
-- [ ] Doc lai toan bo, dac biet Ch.5-6 va hinh moi (legend da dua ra ngoai).
-- [ ] Commit thesis.pdf, summary_report.pdf, hinh PDF moi.
+- [x] Chay MATLAB, xuat hinh, build PDF bang MiKTeX, commit PDF (2026-10-26 khuya).
+- [ ] Doc lai toan bo, dac biet Ch.4-6 (Muc 5.6 moi, Muc 5.4 viet lai theo ham mo ta).
 - [ ] **Trung quyet:** tau_max that cua motor (dang tam 1 N*m). Doi gia tri => chay lai het.
-- [ ] Gui thay Nam ban moi + noi ro loi B va cac ket luan da doi so voi v2.
+- [ ] **Trung quyet:** co bao hoa so hang cheo de van toc thuc khong vuot v_max khong (hien vuot
+      toi 0.62 m/s khi z0 lon; neu sua => chay lai Phan E, L, M).
+- [ ] Gui thay Nam ban moi + noi ro loi B, buoc 2 va cac ket luan da doi so voi v2.
 - [ ] (khong gap) Gom trung lap plot_sm1_results.m va plot_sm1_full.m.
 
 ### 2. Huong mo rong neu con thoi gian (Muc 6.3 luan van)
-- [ ] Luat hoc critic hop voi dual-loop (phai tot hon critic dong bang, nhat la khi z0 lon).
+- [ ] Luat hoc critic hop voi bo dieu khien hai buoc (phai tot hon critic dong bang, nhat la khi z0 lon).
+- [ ] Ham Lyapunov kieu Kanayama cho buoc 1 co so hang ghep (chung minh hoi tu z_y).
 - [ ] Them ghep nonholonomic cho CL (CL con sai so ngang cung nguyen nhan).
 
 ### 3. Dang bi chan (cho GVHD)
@@ -649,7 +696,7 @@ export_all_figures.m: legend ra ngoai vung ve [3c7a077].
 ## CACH CHAY MATLAB TU TERMINAL
 
 ```powershell
-& "C:\Program Files\MATLAB\R2023a\bin\matlab.exe" -batch "cd('c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot\simulations'); sim_sm1_full"
+& "C:\MATLAB\R2023a\bin\matlab.exe" -batch "cd('c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot\simulations'); sim_sm1_full"
 ```
 - `-batch`: chay roi thoat, khong GUI, in output ra terminal
 - Timeout nen de ~5 phut cho simulation dai

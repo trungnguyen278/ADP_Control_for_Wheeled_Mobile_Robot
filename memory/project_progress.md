@@ -1,9 +1,21 @@
 ---
 name: project-progress
-description: 26/10/2026 đã sửa lỗi B, chỉnh gain đều, viết lại luận văn (72 tr) + báo cáo tóm tắt; còn Trung chạy MATLAB xuất hình, build MiKTeX, đọc lại rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
+description: 26/10/2026 khuya đã chạy lại toàn bộ bằng MATLAB với bước 2 đầy đủ, xuất hình, build MiKTeX (luận văn 84 tr, tóm tắt 12 tr); còn Trung đọc lại, chốt τ_max, gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
+
+## Cập nhật 2026-10-26 (khuya): bước 2 đầy đủ, chạy lại bằng MATLAB, build xong
+
+- PR #1 (bước 2 đầy đủ, Chương 4 mới) đã merge vào master. Phiên local kéo về, chạy lại
+  `sim_thesis`, `sim_sm1_full`, `sim_thesis_extra`, `sweep_gains` bằng MATLAB R2023a; xuất 13 hình
+  luận văn; KHÔNG chạy lại `sim_sm2` (giữ hình SM2 đã nộp).
+- Viết lại Ch.5 (thêm Mục 5.6 bước 2, Mục 5.4 dùng hàm mô tả), Ch.6, tóm tắt VI/EN, lời cam đoan,
+  phần kết quả báo cáo tóm tắt; README, workflow, CLAUDE.md (đường dẫn MATLAB/MiKTeX mới).
+  Số liệu: [[ket-qua-cuoi]]. Build MiKTeX: 0 lỗi, 0 ref treo, 0 Overfull.
+- Kết quả đổi so với bản 72 trang: ADP-FT không còn "thứ hai" mà ngang NTSMC (4,140 vs 4,130).
+- Còn lại (Trung): đọc lại Ch.4–6, quyết τ_max thật của motor (đổi → chạy lại hết), gửi thầy
+  Nam bản mới kèm giải thích lỗi B và bước 2.
 
 ## Cập nhật 2026-10-26 (tối): đã viết lại xong
 
