@@ -5,6 +5,8 @@ metadata:
   type: project
 ---
 
+> ⚠ Kết luận cấu trúc vẫn đúng với B đã sửa (`B·[1;1] = [2/r; 0]`, kênh ω vẫn bằng 0), nhưng số liệu bên dưới là của mô hình cũ (trước 2026-10-26).
+
 Trong `sim_thesis.m:265` và `sim_sm1_full.m`, nhiễu được cộng vào mô-men hai bánh
 với **cùng biên độ, cùng pha**:
 

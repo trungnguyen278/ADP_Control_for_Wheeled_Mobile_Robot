@@ -5,6 +5,8 @@ metadata:
   type: project
 ---
 
+> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** Ngoài ra tiêu chí "tỉ số t_settle max/min ≈ 1" là sai khái niệm — xem [[feedback-b-matrix-error]].
+
 Kiểm chứng bằng MATLAB ngày 2026-08-13 (circle, T=60s, nhiễu 20%). Đã đưa vào
 luận văn thành Mục 5.7.
 

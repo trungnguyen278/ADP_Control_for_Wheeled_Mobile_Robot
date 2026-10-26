@@ -1,16 +1,16 @@
 - [User profile](user_profile.md) — Trung, cao học Điều khiển & Tự động hóa HUST, thích giải thích lý thuyết trước khi code
 - [Thesis project](project_thesis.md) — ADP Fixed-time dual-loop cho WMR, mở rộng Wang et al. 2025
 - [Advisor feedback](feedback_advisor_nam.md) — SM1 review: bắt buộc disturbance, SMC baseline, kiến trúc 2 vòng
-- [ADP-FT tuning](feedback_adp_ft_tuning.md) — Robust gain phải nhỏ cho dual-loop; clamp uo là bắt buộc
-- [Baseline fairness](feedback_baseline_fairness.md) — ⚠ SMC bị tune tệ 7x; tune công bằng thì SMC thắng ADP-FT, ADP-FT sụp ở 14kg
+- [ADP-FT tuning](feedback_adp_ft_tuning.md) — (lỗi thời: đo trên mô hình B sai) Robust gain phải nhỏ cho dual-loop; clamp uo
+- [Baseline fairness](feedback_baseline_fairness.md) — SMC tune vs thông dụng; số liệu mô hình B sai (7x → nay chỉ 1,2–1,4x)
 - [Wang citation mismatch](feedback_wang_citation_mismatch.md) — ⚠ Sai tên tác giả, eq.(17) không phải của Wang, cột "Wang" ở Bảng 4.1 sai toàn bộ
-- [Fixed-time chưa kiểm chứng](feedback_fixedtime_unverified.md) — ⚠ ADP-FT mất bám ở 3/5 điều kiện đầu; W đổi dấu làm V̂ mất xác định dương
-- [Kết quả ablation](feedback_ablation_results.md) — Số hạng fixed-time cải thiện 25x trên figure-8; Bellman vs Wang là đánh đổi hai chiều
-- [Toán tử chiếu](feedback_projection_operator.md) — Đóng góp riêng: giữ V̂ xác định dương, cứu 14kg (6,9x) nhưng không cứu miền hút
+- [Fixed-time chưa kiểm chứng](feedback_fixedtime_unverified.md) — W đổi dấu làm V̂ mất xác định dương; số liệu mô hình B sai, tiêu chí tỉ số sai
+- [Kết quả ablation](feedback_ablation_results.md) — ADP-UUB và luật Bellman vs Wang; số liệu mô hình B sai, chạy lại ở Phần D, G
+- [Toán tử chiếu](feedback_projection_operator.md) — Giữ V̂ xác định dương; số liệu mô hình B sai, chạy lại ở Phần J
 - [Lỗi ma trận B](feedback_b_matrix_error.md) — ⛔ B dùng Jacobian động học thay vì (1/r)[1 1; L −L]; actuator yếu 800x; phần lớn kết luận Ch.5–6 phải chạy lại
-- [Ghép nonholonomic](feedback_nonholonomic_coupling.md) — ⭐ Đóng góp mạnh nhất: ADP-FT thiếu kênh tác động lên zy; thêm ghép → ổn định 5/5, z_rms thấp nhất trong 6 PP
+- [Ghép nonholonomic](feedback_nonholonomic_coupling.md) — ⭐ Đóng góp mạnh nhất, vẫn đúng với B đã sửa: ADP-FT thiếu kênh tác động lên zy
 - [Nhiễu chỉ 1 kênh](feedback_disturbance_one_channel.md) — ⚠ d=[1;1] bị B triệt tiêu ở kênh ω; yêu cầu "cả 2 kênh" của thầy Nam chưa đạt
 - [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
 - [MATLAB CLI](reference_matlab_cli.md) — Chạy MATLAB batch từ terminal: R2023a, cờ -batch
-- [Progress](project_progress.md) — Đã nộp v2 cho GVHD 2026-05-26, chờ phản hồi 2,5 tháng chưa có; chưa có lịch bảo vệ
+- [Progress](project_progress.md) — Thầy Nam chỉ có v2 (26/05); đã sửa lỗi B 2026-10-26, luận văn chờ viết lại; chưa có lịch bảo vệ

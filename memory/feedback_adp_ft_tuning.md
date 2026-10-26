@@ -5,6 +5,8 @@ metadata:
   type: feedback
 ---
 
+> ⚠ **Lỗi thời (2026-10-26):** bài học "gain phải nhỏ cho dual-loop" đo trên mô hình còn lỗi ma trận B — hiện tượng phát tán là do bão hòa mô-men của mô hình sai, không phải do kiến trúc hai vòng. Xem [[feedback-b-matrix-error]].
+
 ADP-FT robust gains from Wang et al. are for kinematic-only. In dual-loop (kinematic + dynamic), gains must be 3-5x smaller because inner loop already rejects disturbance.
 
 **Why:** With original gains (lambda=0.3, beta=1), ADP-FT diverges at dist_amp >= 0.4 and mass uncertainty >= 40%. The robust terms create aggressive commands that the inner loop can't follow, creating a positive feedback loop.

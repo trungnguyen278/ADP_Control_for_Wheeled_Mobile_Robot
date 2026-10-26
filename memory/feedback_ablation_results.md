@@ -5,6 +5,8 @@ metadata:
   type: project
 ---
 
+> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** Chạy lại: Phần D và G của `sim_thesis_extra.m`; số mới ở PROGRESS.md mục 2026-10-26.
+
 Hai thí nghiệm ablation chạy ngày 2026-08-13, đã đưa vào luận văn Mục 5.6.
 Script: `simulations/sim_thesis_extra.m`.
 

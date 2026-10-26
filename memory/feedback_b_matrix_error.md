@@ -68,12 +68,14 @@ Với τ_max = 0,5 và 20 bức tranh định tính không đổi (BS: 1,45 và 
 từ mô hình gốc (02/2026), nên cả bản v2 đã gửi thầy Nam cũng mang lỗi này.
 
 **How to apply:**
-- KHÔNG sửa chữ Ch.5–6 trước khi sửa B và chạy lại toàn bộ — mọi con số sẽ đổi.
-- Sửa: `p.B = (1/p.r) * [1, 1; p.L, -p.L];` trong `wmr_params.m`; chọn τ_max theo thông
-  số motor thật (Trung quyết); cân nhắc trả fc về 0,3. Nhiễu tính theo % τ_max nên cũng đổi.
-- Thêm ablation "đóng băng critic" vào luận văn; thay tiêu chí tỉ số bằng đồ thị
-  t_settle theo ‖z0‖ và so với T_max lý thuyết.
-- Sửa Ch.2 (`thesis.tex:465–467`) và chú thích hình fixed-time (`thesis.tex:901`:
-  "hội tụ tại cùng T_f bất kể x0" — sai).
+- **Đã sửa trong code 2026-10-26** (Trung: "sửa trước, phần viết note lại làm sau"):
+  B đúng + τ_max tạm 1 N·m (`9b3fcf0`), quét lại SMC giữ 0,7/0,05 (`d9a9532`),
+  Phần J ablation cơ chế + đóng băng critic + "Wang gốc" (`5babecd`, commit sau đó).
+  Số mới: PROGRESS.md mục 2026-10-26.
+- **Luận văn CHƯA viết lại.** Checklist đầy đủ: PROGRESS.md → VIEC CAN LAM mục 2.
+  Không sửa chữ trước khi Trung chốt τ_max và chạy lại trên MATLAB (số sẽ đổi).
+- Còn chờ Trung quyết: τ_max thật của motor; có tune lại gain ADP-FT/BS trên mô hình
+  mới không (gain hiện tại chọn trên mô hình sai).
+- Hình trong `docs/thesis/figures/` vẫn của mô hình cũ — phải xuất lại bằng MATLAB.
 
 Related: [[feedback-nonholonomic-coupling]], [[feedback-baseline-fairness]], [[feedback-fixedtime-unverified]], [[feedback-adp-ft-tuning]], [[project-progress]]

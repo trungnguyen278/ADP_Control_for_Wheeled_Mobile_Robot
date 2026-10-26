@@ -14,7 +14,8 @@ Sau 2,5 tháng không động tới, Trung hỏi lại tiến độ. Kiểm tra 
   Ch.5–6 (vd. `thesis.tex:1564`, `:2354`, `:2366`, `:2226`, `:2439`, `:2474–2489`).
   Báo cáo tóm tắt còn cũ hơn (vẫn ghi "ADP-FT tốt nhất").
 - **Quan trọng hơn:** mô hình có lỗi ma trận B → xem [[feedback-b-matrix-error]].
-  Phải sửa mô hình và chạy lại trước, sửa chữ sau.
+  Trung chọn: sửa code + chạy lại trước (đã làm 2026-10-26), phần viết ghi thành
+  checklist trong PROGRESS.md (VIEC CAN LAM mục 2) để làm sau.
 
 ## Trạng thái tính đến 2026-08-12
 

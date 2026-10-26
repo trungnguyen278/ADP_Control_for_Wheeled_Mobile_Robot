@@ -5,6 +5,8 @@ metadata:
   type: project
 ---
 
+> ⚠ **Số liệu mô hình cũ (trước 2026-10-26, lỗi ma trận B).** Trên mô hình đã sửa, SMC thông dụng chỉ kém SMC đã tune khoảng 1,2–1,4 lần (không phải 7 lần / 289 lần) và ADP-FT không còn sụp ở 14 kg. Số mới: PROGRESS.md mục 2026-10-26.
+
 Phát hiện 2026-08-12 khi sweep gain (140+ lần chạy full model, circle T=60s).
 
 ## Vấn đề
