@@ -10,14 +10,20 @@ Hoc vien: Nguyen Thanh Trung
 
 ---
 
-## TRANG THAI (cap nhat 2026-08-13)
+## TRANG THAI (cap nhat 2026-10-26)
 
-**Dang cho phan hoi cua GVHD.** Da gui ban v2 qua Teams ngay 2026-05-26,
-den nay chua nhan duoc phan hoi — da 2,5 thang.
+**2026-10-26: phat hien va sua loi ma tran B trong mo hinh dong luc hoc**, chay
+lai toan bo mo phong. Phan lon so lieu va nhieu ket luan Ch.5-6 cua ban
+78 trang (2026-08-13) KHONG con dung. Chi tiet o muc "2026-10-26" ben duoi.
+**Luan van CHUA viet lai** — danh sach viec o muc VIEC CAN LAM, muc 2.
+
+**GVHD:** thay Nam chi co ban v2 (43 trang, gui qua Teams 2026-05-26, commit
+7fedea9), den nay 5 thang chua phan hoi. Ban 78 trang chua gui. Ca hai ban
+deu mang loi B.
 
 **2026-08-13: da hoan thanh ban v3** sau dot tu ra soat toan bo luan van
 (doi chieu voi bai bao goc + chay them 4 thi nghiem kiem chung).
-Chi tiet o muc "2026-08-13" ben duoi. thesis.pdf: 43 -> 66 trang.
+Chi tiet o muc "2026-08-13" ben duoi. thesis.pdf: 43 -> 66 -> 78 trang.
 
 **Chua co lich bao ve.** Ke hoach goc 16 tuan (02/2026 - 06/2026) da qua han;
 khong con dung lam moc thoi gian nua, giu lai duoi day chi de tham chieu lich su.
@@ -428,15 +434,60 @@ thesis.pdf 75 -> 78 trang, 0 loi. Commit 47d384e, 57ddb91.
 
 ## VIEC CAN LAM
 
-### Dang bi chan (cho GVHD)
+### 1. Sua mo hinh va chay lai (2026-10-26)
+- [x] Sua ma tran B theo Fierro & Lewis, tau_max tam 1 N*m [9b3fcf0]
+- [x] Quet lai SMC tren mo hinh moi: giu 0.7/0.05 [d9a9532]
+- [x] Them Phan J: ablation co che + dong bang critic [5babecd]
+- [x] Chay lai sim_thesis + sim_thesis_extra bang Octave 8.4 (so lieu: muc 2026-10-26)
+- [ ] **Trung quyet:** tau_max that cua motor (dang tam 1 N*m). Doi gia tri => chay lai het,
+      vi nhieu tinh theo % tau_max.
+- [ ] **Trung quyet:** co tune lai gain ADP-FT / BS tren mo hinh moi khong. Gain hien tai chon
+      tren mo hinh sai (k1 = 1.5 cua BS, toan bo gain robust ADP-FT).
+- [ ] Chay lai tren MATLAB: test_openloop -> sim_thesis -> sim_thesis_extra -> export_all_figures.
+      19 hinh trong docs/thesis/figures VAN LA MO HINH CU (Octave khong dung de xuat hinh).
+- [ ] (khong gap) sim_sm1_full.m chua chay lai -- khong dung trong luan van.
+
+### 2. Viet lai luan van (LAM SAU, khi muc 1 xong)
+Nguyen tac: KHONG sua chu truoc khi chot tau_max va chay lai tren MATLAB -- so se doi.
+Moi con so trong ban 78 trang deu tu mo hinh sai, ke ca cac doan dang nhat quan voi nhau.
+
+Ch.2-4
+- [ ] 2.2 (thesis.tex:465-467): B = (1/r)[1 1; L -L], F = (tauR+tauL)/r, N = L(tauR-tauL)/r.
+      Cong thuc cu F = (r/2)(tauR+tauL) sai ca thu nguyen (N*m^2).
+- [ ] Bang tham so robot (thesis.tex:475, 489): tau_max = 20 -> gia tri moi.
+- [ ] 4.7.3: bo lap luan "tham so goc cua Wang gay phat tan tren dual-loop". Voi B dung, gain
+      goc KHONG phat tan, chi kem hon (hinh 8: Jc 94.0 so voi 2.11). Neu giu, doi ly do.
+- [ ] 4.8: phan tich cascade van dung (Kd = 20, mu = 0.08); sua cau ve bao hoa mo-men.
+
+Ch.5 (toan bo bang, hinh, nhan xet)
+- [ ] 5.1: thiet lap mo phong theo tau_max moi.
+- [ ] 5.2-5.4 (Phan A/B/C): bo 4 ket luan da sai: "ADP-FT sai so bam nho nhat", "ADP-FT yeu
+      voi bat dinh khoi luong", "ADP-FT kem BS 25% o nhieu 60%", "ADP-FT yeu tren hinh 8".
+- [ ] 5.5 phan tich mo-men: viet lai -- het hien tuong bao hoa 68% thoi gian luc khoi dong.
+- [ ] 5.6: so moi tu Phan D, G. THEM muc "dong bang critic" (Phan J): critic khong hoc
+      cho ket qua bang/tot hon => phai noi ro hieu nang den tu dau.
+- [ ] 5.7: BO tieu chi "ti so t_settle max/min ~ 1" (sai khai niem: fixed-time chi doi
+      t_settle <= T_max). Trinh bay t_settle theo ||z0||. Sua luon thesis.tex:1945, 2034.
+- [ ] 5.8: bang co che (goc / + chieu / + ghep / day du) lay tu Phan J.
+- [ ] 5.9: nhieu hai kenh lay tu Phan F.
+- [ ] 5.10: SMC thong dung vs da tune chi con chenh ~1.4 lan (truoc 7 lan va 289 lan) --
+      bai hoc "chat luong tune lan at phuong phap" yeu di nhieu, can viet lai cho dung muc.
+- [ ] 5.11 + bang tong hop 5 phuong phap: viet lai.
+
+Ch.6 va phan dau
+- [ ] 6.1-6.4 viet lai theo ket qua moi. 6.3 y 1(iii) de xuat toan tu chieu -- da lam o 4.7.4.
+- [ ] Tom tat VI + Abstract EN, Muc 1.4 (dong gop), Loi cam doan neu dong gop thay doi.
+- [ ] Hinh so sanh 3 loai on dinh (thesis.tex:901): "hoi tu tai cung T_f bat ke x0" -- sai.
+- [ ] Bia: "Ha Noi, 06/2026" -> thang nop that.
+
+Khac
+- [ ] Bao cao tom tat (summary_report.tex) con ghi "ADP-FT tot nhat trong 5 PP" -- dong bo.
+- [ ] Gui thay Nam ban moi + danh sach thay doi so voi v2, NOI RO loi B (v2 cung mang loi nay).
+- [ ] Gom trung lap plot_sm1_results.m va plot_sm1_full.m (khong gap).
+
+### 3. Dang bi chan (cho GVHD)
 - [ ] Hoan thien luan van theo phan hoi cua thay Nam -- CHUA CO PHAN HOI tu 2026-05-26
 - [ ] Chuan bi slide bao ve -- chua co lich bao ve
-
-### Lam duoc ngay, khong phu thuoc GVHD
-- [ ] Cai thien SMC (z_rms = 0.276 con cao so voi ADP-FT 0.060, xem xet NTSMC)
-- [ ] Gom trung lap giua plot_sm1_results.m va plot_sm1_full.m
-- [ ] Can nhac doi ten sm1_params.m -> ctrl_params.m (dang giu tham so cho CA 5 phuong phap,
-      ten khong con phan anh pham vi)
 
 ### Da xong
 - [x] sim_sm2.m + plot_sm2.m: mo phong rieng SM2 (kinematic-only, AC vs CL)
