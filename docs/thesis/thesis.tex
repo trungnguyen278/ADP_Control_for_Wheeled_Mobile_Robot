@@ -334,7 +334,7 @@ Bộ điều khiển tối ưu $u_o^*$ là nghiệm cực tiểu hóa $J$, thỏ
 
 \textbf{Backstepping (Kanayama et al. \cite{Kanayama1990}):} Phương pháp kinh điển cho WMR, thiết kế luật điều khiển đệ quy dựa trên hàm Lyapunov. Ưu điểm: đơn giản, hiệu quả cao khi mô hình chính xác. Hạn chế: (i) hội tụ tiệm cận (asymptotic), sai số giảm dần nhưng không triệt tiêu trong thời gian hữu hạn; (ii) không tối ưu năng lượng -- không tồn tại cơ chế cực tiểu hóa hàm chi phí; (iii) phụ thuộc mô hình, hiệu năng giảm khi có bất định.
 
-\textbf{Sliding Mode Control (SMC):} Điều khiển trượt có khả năng kháng nhiễu (robustness) xuất sắc nhờ cơ chế chuyển mạch trên mặt trượt. Tuy nhiên: (i) hiện tượng chattering (dao động tần số cao quanh mặt trượt) gây hao mòn cơ cấu chấp hành; (ii) tiêu tốn năng lượng lớn do reaching law liên tục duy trì tín hiệu điều khiển mạnh; (iii) hàm chi phí $J$ rất cao, đặc biệt trên mô hình đầy đủ.
+\textbf{Sliding Mode Control (SMC):} Điều khiển trượt có khả năng kháng nhiễu (robustness) tốt nhờ cơ chế chuyển mạch trên mặt trượt. Tuy nhiên: (i) hiện tượng chattering (dao động tần số cao quanh mặt trượt) gây hao mòn cơ cấu chấp hành; (ii) luật tiếp cận (reaching law) có thể duy trì tín hiệu điều khiển lớn, tốn năng lượng; (iii) hiệu năng phụ thuộc đáng kể vào việc chọn tham số mặt trượt và luật tiếp cận, và không có cơ chế cực tiểu hóa một hàm chi phí cho trước.
 
 \textbf{ADP Actor-Critic (Vamvoudakis \& Lewis \cite{Vamvoudakis2010}):} Sử dụng hai mạng nơ-ron (Actor và Critic) để xấp xỉ nghiệm phương trình HJB. Ưu điểm: đạt được điều khiển gần tối ưu, thích nghi trực tuyến. Hạn chế: (i) yêu cầu tín hiệu kích thích liên tục (Persistence of Excitation -- PE) để đảm bảo hội tụ, mâu thuẫn với mục tiêu bám quỹ đạo; (ii) hai mạng riêng biệt làm tăng số lượng siêu tham số và phức tạp thiết kế; (iii) nhạy cảm với điều kiện khởi tạo (warm start).
 
@@ -460,11 +460,13 @@ Các ma trận và vector trong (\ref{eq:dynamics}) có ý nghĩa vật lý rõ 
 
 \textbf{Ma trận quán tính} $M = \diag(m, I)$: mô tả sức ỳ của robot. Thành phần $m$ (kg) là khối lượng tổng, quyết định lực cần thiết để thay đổi vận tốc dài. Thành phần $I$ (kg$\cdot$m$^2$) là mô-men quán tính quay quanh trục thẳng đứng, quyết định mô-men cần thiết để thay đổi vận tốc góc. $M$ là ma trận chéo vì giả thiết robot đối xứng qua trục dọc.
 
-\textbf{Ma trận chuyển đổi mô-men} $B$:
+\textbf{Ma trận chuyển đổi mô-men} $B$ (Fierro \& Lewis \cite{Fierro1997}):
 \begin{equation}\label{eq:B_matrix}
-    B = \begin{bmatrix} r/2 & r/2 \\ r/(2L) & -r/(2L) \end{bmatrix}
+    B = \frac{1}{r}\begin{bmatrix} 1 & 1 \\ L & -L \end{bmatrix}
 \end{equation}
-chuyển đổi từ mô-men hai bánh $\tau = [\tau_R, \tau_L]^\T$ (N$\cdot$m) sang lực/mô-men tác dụng tại tâm robot. Hàng thứ nhất: lực đẩy dọc $F = (r/2)(\tau_R + \tau_L)$ (hai bánh cùng chiều tạo lực tiến). Hàng thứ hai: mô-men quay $N = (r/2L)(\tau_R - \tau_L)$ (hai bánh ngược chiều tạo quay).
+chuyển đổi từ mô-men hai bánh $\tau = [\tau_R, \tau_L]^\T$ (N$\cdot$m) sang lực/mô-men tác dụng tại tâm robot. Hàng thứ nhất: lực đẩy dọc $F = (\tau_R + \tau_L)/r$ (hai bánh cùng chiều tạo lực tiến). Hàng thứ hai: mô-men quay $N = L(\tau_R - \tau_L)/r$ (hai bánh ngược chiều tạo quay).
+
+Cần phân biệt (\ref{eq:B_matrix}) với ma trận trong (\ref{eq:wheel_vel}). Ma trận $J = \begin{bmatrix} r/2 & r/2 \\ r/(2L) & -r/(2L) \end{bmatrix}$ biến vận tốc bánh thành vận tốc thân xe, còn $B$ biến mô-men bánh thành lực/mô-men thân xe. Theo nguyên lý công ảo, công suất ở hai phía phải bằng nhau: $\tau^\T [\omega_R, \omega_L]^\T = [F, N]\,\eta$, suy ra $B = J^{-\T}$. Kiểm tra thứ nguyên cũng cho thấy điều này: $(\tau_R + \tau_L)/r$ có đơn vị N, đúng là lực.
 
 \textbf{Vector ma sát} $F(\eta)$ mô hình hóa tổn thất ma sát:
 \begin{equation}\label{eq:friction}
@@ -472,11 +474,11 @@ chuyển đổi từ mô-men hai bánh $\tau = [\tau_R, \tau_L]^\T$ (N$\cdot$m) 
 \end{equation}
 bao gồm hai thành phần: (i) ma sát nhớt (viscous friction) $f_v \cdot v$ tỉ lệ thuận với vận tốc, mô hình hóa lực cản của dầu bôi trơn, ổ bi, và không khí; (ii) ma sát Coulomb $f_c \cdot \tanh(v/\varepsilon)$ xấp xỉ ma sát khô (gần hằng số khi có chuyển động), dùng $\tanh$ thay $\sign$ để tránh gián đoạn tại $v=0$ ($\varepsilon$ nhỏ, thường $\varepsilon = 0.01$).
 
-\textbf{Tham số Pioneer 3-DX} (robot nghiên cứu phổ biến): $m = 10$\,kg, $I = 0.5$\,kg$\cdot$m$^2$, $r = 0.05$\,m, $L = 0.15$\,m, $\tau_\text{max} = 20$\,N$\cdot$m, $f_v = 0.5$, $f_c = 0.2$, $f_\omega = 0.3$, $f_{c\omega} = 0.1$.
+\textbf{Tham số mô phỏng.} Bảng \ref{tab:robot_params} liệt kê tham số dùng trong toàn bộ luận văn. Các giá trị được chọn ở cỡ một robot vi sai nghiên cứu cỡ nhỏ, không gắn với một mẫu robot thương mại cụ thể.
 
 \begin{table}[H]
 \centering
-\caption{Tham số robot Pioneer 3-DX sử dụng trong mô phỏng}
+\caption{Tham số robot sử dụng trong mô phỏng}
 \label{tab:robot_params}
 \begin{tabular}{llll}
 \toprule
@@ -486,16 +488,16 @@ Khối lượng & $m$ & 10 & kg \\
 Mô-men quán tính & $I$ & 0.5 & kg$\cdot$m$^2$ \\
 Bán kính bánh xe & $r$ & 0.05 & m \\
 Nửa khoảng cách trục & $L$ & 0.15 & m \\
-Mô-men tối đa & $\tau_\text{max}$ & 20 & N$\cdot$m \\
+Mô-men tối đa mỗi bánh & $\tau_\text{max}$ & 1 & N$\cdot$m \\
 Ma sát nhớt (dài) & $f_v$ & 0.5 & N$\cdot$s/m \\
-Ma sát Coulomb (dài) & $f_c$ & 0.2 & N \\
-Ma sát nhớt (góc) & $f_\omega$ & 0.3 & N$\cdot$m$\cdot$s/rad \\
-Ma sát Coulomb (góc) & $f_{c\omega}$ & 0.1 & N$\cdot$m \\
+Ma sát Coulomb (dài) & $f_c$ & 0.05 & N \\
+Ma sát nhớt (góc) & $f_\omega$ & 0.1 & N$\cdot$m$\cdot$s/rad \\
+Ma sát Coulomb (góc) & $f_{c\omega}$ & 0.02 & N$\cdot$m \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Các tham số trên được lấy từ Pioneer 3-DX, một nền tảng robot di động phổ biến trong nghiên cứu, được sản xuất bởi Adept MobileRobots. Robot này có kích thước nhỏ gọn ($L \times W \times H = 455 \times 381 \times 237$\,mm), phù hợp cho thí nghiệm trong phòng lab. Tuy nhiên, trong thực tế, các tham số $m$ và $I$ thay đổi đáng kể khi robot mang tải -- đây chính là nguồn bất định khảo sát trong Phần B (Chương 5).
+Với $\tau_\text{max} = 1$\,N$\cdot$m, gia tốc tịnh tiến lớn nhất robot đạt được là $2\tau_\text{max}/(r\,m) = 4$\,m/s$^2$, đủ để vòng trong bám lệnh vận tốc mà hầu như không bị bão hòa ở các quỹ đạo khảo sát. Trong thực tế, các tham số $m$ và $I$ thay đổi đáng kể khi robot mang tải -- đây chính là nguồn bất định khảo sát trong Phần B (Chương 5).
 
 \subsection*{2.3\quad Mô hình ghép 5 trạng thái}
 \addcontentsline{toc}{subsection}{2.3\quad Mô hình ghép 5 trạng thái}
@@ -525,7 +527,7 @@ Ma trận $R(\theta)$ là phép quay chuyển từ world frame sang body frame. 
 
     \item $z_y$ -- \textbf{sai số ngang (cross-track error):} khoảng cách lệch ngang so với quỹ đạo tham chiếu. $z_y > 0$ nghĩa là quỹ đạo ở bên trái, robot cần lệch trái.
 
-    \item $z_\theta$ -- \textbf{sai số góc (heading error):} chênh lệch góc hướng. $z_\theta > 0$ nghĩa là robot cần quay phải (ngược chiều kim đồng hồ) để hướng đúng.
+    \item $z_\theta$ -- \textbf{sai số góc (heading error):} chênh lệch góc hướng. $z_\theta > 0$ nghĩa là robot cần quay trái (ngược chiều kim đồng hồ) để hướng đúng.
 \end{itemize}
 
 \textbf{Tại sao dùng body frame thay vì world frame?} Biểu diễn sai số trong body frame có hai ưu điểm quan trọng: (i) các thành phần sai số có ý nghĩa vật lý trực quan gắn với hành vi robot (trước/sau, trái/phải); (ii) quan trọng hơn, phương trình động lực học sai số trong body frame có dạng affine $\dot{z} = f(z, u_r) + g(z) u_o$ thuận lợi cho thiết kế ADP, trong khi dạng trong world frame phức tạp hơn do phụ thuộc tường minh vào $\theta$.
@@ -842,7 +844,9 @@ Ký hiệu chuẩn hóa thường dùng:
 \subsection*{3.4\quad Ổn định cố định thời gian (Fixed-time stability)}
 \addcontentsline{toc}{subsection}{3.4\quad Ổn định cố định thời gian}
 
-\textbf{Định nghĩa (Polyakov \cite{Polyakov2012}):} Gốc $x = 0$ của hệ $\dot{x} = h(x)$ được gọi là ổn định cố định thời gian (fixed-time stable) nếu tồn tại hằng số $T_f > 0$ \textbf{không phụ thuộc vào điều kiện ban đầu} $x(0)$ sao cho $\|x(t)\| = 0$ với mọi $t \geq T_f$.
+\textbf{Định nghĩa (Polyakov \cite{Polyakov2012}):} Gốc $x = 0$ của hệ $\dot{x} = h(x)$ được gọi là ổn định cố định thời gian (fixed-time stable) nếu nó ổn định thời gian hữu hạn và tồn tại hằng số $T_f > 0$ \textbf{không phụ thuộc vào điều kiện ban đầu} $x(0)$ sao cho $\|x(t)\| = 0$ với mọi $t \geq T_f$. Nói cách khác, hàm thời gian hội tụ $T(x_0)$ bị chặn trên đều: $T(x_0) \leq T_f$ với mọi $x_0$.
+
+Cần lưu ý: $T_f$ là \textit{cận trên chung}, không phải thời gian hội tụ thực tế. Với hệ fixed-time, $T(x_0)$ vẫn phụ thuộc $x_0$ -- điều kiện đầu gần gốc hội tụ sớm hơn -- nhưng không bao giờ vượt $T_f$ dù $x_0$ lớn đến đâu.
 
 So sánh ba loại ổn định:
 
@@ -851,7 +855,7 @@ So sánh ba loại ổn định:
 
     \item \textbf{Ổn định thời gian hữu hạn (finite-time stability):} $\|x(t)\| = 0$ với mọi $t \geq T_f(x_0)$, nhưng $T_f$ \textit{phụ thuộc vào điều kiện đầu} -- sai số ban đầu càng lớn, thời gian hội tụ càng lâu, và $T_f$ có thể tùy ý lớn. Ví dụ: $\dot{x} = -\alpha|x|^p \sign(x)$, $0 < p < 1$, cho $T_f = |x_0|^{1-p}/[\alpha(1-p)]$.
 
-    \item \textbf{Ổn định cố định thời gian (fixed-time stability):} $\|x(t)\| = 0$ với mọi $t \geq T_f$, và $T_f$ là hằng số \textit{độc lập với $x(0)$}. Đây là tính chất mạnh nhất, đảm bảo hiệu năng trong mọi tình huống.
+    \item \textbf{Ổn định cố định thời gian (fixed-time stability):} $T(x_0) \leq T_f$ với cận $T_f$ \textit{độc lập với $x(0)$}. Ví dụ: $\dot{x} = -|x|^{1/2}\sign(x) - |x|^{3/2}\sign(x)$ cho $T(x_0) = 2\arctan\sqrt{|x_0|} < \pi$ với mọi $x_0$. Đây là tính chất mạnh nhất trong ba loại.
 \end{itemize}
 
 \textbf{Ổn định cố định thời gian theo nghĩa thực dụng (practical fixed-time stability).} Cần phân biệt rõ định nghĩa lý tưởng ở trên với kết quả thực tế đạt được trong các hệ có xấp xỉ hàm. Khi hàm giá trị được xấp xỉ bằng mạng nơ-ron, luôn tồn tại sai số xấp xỉ $\varepsilon_\phi \neq 0$, nên trạng thái không hội tụ về đúng gốc mà về một \textbf{lân cận bị chặn} của gốc:
@@ -886,19 +890,19 @@ thì hệ ổn định cố định thời gian với cận trên:
     thick
 ]
 \addplot[blue, very thick, domain=0:6, samples=100] {exp(-0.5*x)};
-\addlegendentry{Tiệm cận (Asymptotic)}
-\addplot[red, very thick, dashed, domain=0:6, samples=100] {max(0, (1 - 0.35*x)^(2.5))};
-\addlegendentry{Thời gian hữu hạn (Finite-time)}
-\addplot[green!60!black, very thick, dashdotted, domain=0:6, samples=100] {max(0, (1 - 0.55*x)^(1.8))};
-\addlegendentry{Cố định thời gian (Fixed-time)}
-\draw[black, dashed, thin] (axis cs:1.82,-0.05) -- (axis cs:1.82,0.5);
-\node[font=\small] at (axis cs:1.82,-0.12) {$T_f$};
+\addlegendentry{Tiệm cận: $\dot x = -0{,}5x$}
+\addplot[red, very thick, dashed, domain=0:6, samples=200] {(max(0, 1 - 0.5*x))^2};
+\addlegendentry{Hữu hạn: $\dot x = -x^{1/2}$}
+\addplot[green!60!black, very thick, dashdotted, domain=0:6, samples=200] {(tan(max(0, 45 - deg(x/2))))^2};
+\addlegendentry{Cố định: $\dot x = -x^{1/2} - x^{3/2}$}
+\draw[black, dashed, thin] (axis cs:3.1416,-0.05) -- (axis cs:3.1416,0.5);
+\node[font=\small] at (axis cs:3.1416,-0.12) {$T_f = \pi$};
 \addplot[blue, thick, domain=0:6, samples=100, opacity=0.4] {0.5*exp(-0.5*x)};
-\addplot[red, thick, dashed, domain=0:6, samples=100, opacity=0.4] {max(0, 0.5*(1 - 0.25*x)^(2.5))};
-\addplot[green!60!black, thick, dashdotted, domain=0:6, samples=100, opacity=0.4] {max(0, 0.5*(1 - 0.8*x)^(1.8))};
+\addplot[red, thick, dashed, domain=0:6, samples=200, opacity=0.4] {(max(0, 0.7071 - 0.5*x))^2};
+\addplot[green!60!black, thick, dashdotted, domain=0:6, samples=200, opacity=0.4] {(tan(max(0, 35.264 - deg(x/2))))^2};
 \end{axis}
 \end{tikzpicture}
-\caption{So sánh ba loại ổn định. Đường đậm: $x_0 = 1$; đường mờ: $x_0 = 0.5$. Fixed-time hội tụ tại cùng $T_f$ bất kể $x_0$, trong khi finite-time phụ thuộc $x_0$, và asymptotic không bao giờ đạt 0.}
+\caption{So sánh ba loại ổn định. Đường đậm: $x_0 = 1$; đường mờ: $x_0 = 0{,}5$. Thời gian hội tụ của hệ hữu hạn ($2\sqrt{x_0}$) và hệ cố định ($2\arctan\sqrt{x_0}$) đều phụ thuộc $x_0$; khác biệt là hệ cố định luôn hội tụ trước cận chung $T_f = \pi$ dù $x_0$ lớn đến đâu, còn thời gian của hệ hữu hạn tăng không giới hạn theo $x_0$. Hệ tiệm cận không đạt 0 trong thời gian hữu hạn.}
 \label{fig:convergence_compare}
 \end{figure}
 
@@ -1142,7 +1146,7 @@ Thiết kế mặt trượt kết hợp $z_y$ và $z_\theta$ (vì $z_y$ không c
 Luật điều khiển reaching law:
 \begin{align}
     u_{o1} &= z_y(\omega_r + u_{o2}) + \lambda_1 z_x + \eta_1 \tanh(z_x/\delta_s) \label{eq:smc_u1}\\
-    u_{o2} &= \lambda_2 z_\theta + \eta_2 \tanh(\sigma_2/\delta_s) \label{eq:smc_u2}
+    u_{o2} &= \lambda_2 \sigma_2 + \eta_2 \tanh(\sigma_2/\delta_s) \label{eq:smc_u2}
 \end{align}
 với $(\lambda_1, \lambda_2) = (3, 3)$, $(\eta_1, \eta_2) = (1, 1)$, $\delta_s = 0.05$ (boundary layer), $c_{zy} = 1$.
 
