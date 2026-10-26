@@ -1,9 +1,20 @@
 ---
 name: project-progress
-description: Luận văn đã nộp bản v2 cho GVHD 2026-05-26, đang chờ phản hồi (tính đến 2026-08-12 vẫn chưa có), chưa có lịch bảo vệ
+description: Thầy Nam chỉ có bản v2 (26/05/2026, chưa phản hồi); bản 78 trang (13/08) chưa gửi; 26/10/2026 phát hiện lỗi ma trận B nên phải chạy lại toàn bộ kết quả trước khi đi tiếp
 metadata:
   type: project
 ---
+
+## Cập nhật 2026-10-26
+
+Sau 2,5 tháng không động tới, Trung hỏi lại tiến độ. Kiểm tra cho thấy:
+- Bản mới nhất: `thesis.pdf` 78 trang, build 2026-08-13, chưa ghi nhận đã gửi thầy.
+  Thầy Nam vẫn chỉ có v2 (43 trang, commit `7fedea9`); 5 tháng chưa phản hồi.
+- Bản 78 trang tự mâu thuẫn: đợt thêm ghép nonholonomic (tối 13/08) chưa lan hết sang
+  Ch.5–6 (vd. `thesis.tex:1564`, `:2354`, `:2366`, `:2226`, `:2439`, `:2474–2489`).
+  Báo cáo tóm tắt còn cũ hơn (vẫn ghi "ADP-FT tốt nhất").
+- **Quan trọng hơn:** mô hình có lỗi ma trận B → xem [[feedback-b-matrix-error]].
+  Phải sửa mô hình và chạy lại trước, sửa chữ sau.
 
 ## Trạng thái tính đến 2026-08-12
 
