@@ -54,6 +54,10 @@ Số đầy đủ ở PROGRESS.md mục 2026-10-26. Ba phát hiện cần nhớ:
 - **Độ bền (Phần B, C, F, I):** khối lượng 10–16 kg và nhiễu 0–60% không còn phân biệt
   các phương pháp (Jc đổi < 2%) — vòng trong hấp thụ gần hết.
 - **Tham số gốc Wang:** không phát tán nhưng bám kém (sai số 0,35–0,71 m ở 4/5 z0).
+- **Đổi Q, R (Phần K) — âm tính:** Q ×0,1–×10 làm Je, Ju đổi < 3%; R ×0,1 hoặc ×10 làm
+  xấu cả Je lẫn Ju. Lập luận cuối cùng cho ADP ("tự thích nghi khi đổi hàm chi phí",
+  Mục 6.3–6.4 luận văn) không đứng được.
+- SM1, SM2 chỉ dùng mô hình động học → không bị lỗi B.
 
 ## Cái vẫn đứng vững khi B đúng
 

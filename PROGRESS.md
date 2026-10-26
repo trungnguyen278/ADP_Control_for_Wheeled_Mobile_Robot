@@ -503,6 +503,18 @@ gap 45 lan) — van can chinh tham so, nhung ly do khong phai "phat tan".
 => Tune nhe moi PP doi Jc ~10%, khong doi buc tranh: SMC tune tot nhat tren circle,
 ADP-FT ~ SMC tren hinh 8, BS kem hon tren hinh 8.
 
+**Phan K — ADP-FT co thich nghi khi doi Q, R khong** [cabcfa7] (circle, nhieu 20%;
+Je = tich phan ||z||^2, Ju = tich phan ||uo||^2):
+
+| Q x / R x | 1 / 1 | 0.1 / 1 | 10 / 1 | 1 / 0.1 | 1 / 10 |
+|---|---|---|---|---|---|
+| Je | 0.1263 | 0.1267 | 0.1228 | 0.2475 | 0.2888 |
+| Ju | 0.0696 | 0.0698 | 0.0677 | 0.1629 | 0.2239 |
+
+=> AM TINH. Doi Q 100 lan: Je, Ju doi < 3%. Doi R (ca hai chieu) lam xau CA Je lan Ju
+— R chi tac dong qua R^-1 trong uo_adp nhu mot he so khuech dai, khong phai thich nghi.
+||W(T)|| = 0.586 o moi cau hinh. Day la "phep thu quyet dinh" ma Muc 6.3-6.4 dat ra.
+
 **So sanh voi ket luan ban 78 trang:**
 
 | Ket luan cu | Mo hinh da sua |
@@ -518,6 +530,7 @@ ADP-FT ~ SMC tren hinh 8, BS kem hon tren hinh 8.
 | **Ghep nonholonomic het mat bam** | **VAN DUNG — co che duy nhat tao khac biet** |
 | SMC thong dung vs tune: 7 lan / 289 lan | 1.37 / 1.41 / 1.22 lan |
 | Ti so t_settle 1.68 vs BS 2.87 | Tieu chi sai; ADP-FT nhanh hon BS o moi z0 |
+| Lap luan cuoi: ADP-FT thich nghi khi doi Q, R (chua co so) | Am tinh (Phan K) |
 
 ---
 
@@ -535,7 +548,8 @@ ADP-FT ~ SMC tren hinh 8, BS kem hon tren hinh 8.
       2026-10-26): tune nhe doi Jc ~10%, khong doi buc tranh. Neu tune thi tune DEU moi PP.
 - [ ] **Trung quyet (quan trong nhat):** dong gop chinh cua luan van. Ket qua moi: chi ghep
       nonholonomic tao khac biet; critic hoc, so hang fixed-time, luat cap nhat, toan tu
-      chieu deu khong dong gop. Ten de tai va Ch.1/Ch.6 phu thuoc quyet dinh nay.
+      chieu deu khong dong gop; doi Q, R cung khong thich nghi (Phan K). Ten de tai va
+      Ch.1/Ch.6 phu thuoc quyet dinh nay -- nen hoi y thay Nam.
 - [ ] Chay lai tren MATLAB: test_openloop -> sim_thesis -> sim_thesis_extra -> export_all_figures.
       19 hinh trong docs/thesis/figures VAN LA MO HINH CU (Octave khong dung de xuat hinh).
 - [ ] (khong gap) sim_sm1_full.m chua chay lai -- khong dung trong luan van.
@@ -547,10 +561,15 @@ Moi con so trong ban 78 trang deu tu mo hinh sai, ke ca cac doan dang nhat quan 
 Ch.2-4
 - [ ] 2.2 (thesis.tex:465-467): B = (1/r)[1 1; L -L], F = (tauR+tauL)/r, N = L(tauR-tauL)/r.
       Cong thuc cu F = (r/2)(tauR+tauL) sai ca thu nguyen (N*m^2).
-- [ ] Bang tham so robot (thesis.tex:475, 489): tau_max = 20 -> gia tri moi.
+- [ ] Bang tham so robot (thesis.tex:475, 489): tau_max = 20 -> gia tri moi. Luu y bo tham
+      so hien tai khong khop Pioneer 3-DX that (r = 0.05 m; banh P3-DX theo datasheet ~19.5 cm
+      duong kinh): hoac dung so that cua P3-DX (ca tau_max), hoac bo ten "Pioneer 3-DX".
 - [ ] 4.7.3: bo lap luan "tham so goc cua Wang gay phat tan tren dual-loop". Voi B dung, gain
       goc KHONG phat tan, chi kem hon (hinh 8: Jc 94.0 so voi 2.11). Neu giu, doi ly do.
 - [ ] 4.8: phan tich cascade van dung (Kd = 20, mu = 0.08); sua cau ve bao hoa mo-men.
+- [ ] 4.7.2: hai luat cap nhat cho ket qua nhu nhau (Phan G) => co the quay ve eq.(17) goc
+      cua Wang (s.ft_update_law = 'wang'). Het luon van de trich dan "eq.(17) khong phai cua
+      Wang" va "chung minh goc khong con phu" (memory/feedback_wang_citation_mismatch.md).
 
 Ch.5 (toan bo bang, hinh, nhan xet)
 - [ ] 5.1: thiet lap mo phong theo tau_max moi.
@@ -564,18 +583,28 @@ Ch.5 (toan bo bang, hinh, nhan xet)
       t_settle <= T_max). Trinh bay t_settle theo ||z0||. Sua luon thesis.tex:1945, 2034.
 - [ ] 5.8: bang co che lay tu Phan J. Toan tu chieu khong con tac dung (bang het voi/khong
       co); ghep nonholonomic la co che quyet dinh. Muc 4.7.4 can xem lai co giu khong.
-- [ ] 5.9: nhieu hai kenh lay tu Phan F.
+- [ ] 5.9: nhieu hai kenh lay tu Phan F. Nen lay kich ban doc lap hai kenh lam kich ban CHINH
+      (dung yeu cau #2 cua thay Nam); dong pha chi tac dong kenh v.
 - [ ] 5.10: SMC thong dung vs da tune chi con chenh ~1.4 lan (truoc 7 lan va 289 lan) --
       bai hoc "chat luong tune lan at phuong phap" yeu di nhieu, can viet lai cho dung muc.
 - [ ] 5.11 + bang tong hop 5 phuong phap: viet lai.
 
 Ch.6 va phan dau
 - [ ] 6.1-6.4 viet lai theo ket qua moi. 6.3 y 1(iii) de xuat toan tu chieu -- da lam o 4.7.4.
+      6.3 y 2 va 6.4 goi "doi Q, R" la phep thu quyet dinh -- da chay (Phan K): am tinh.
 - [ ] Tom tat VI + Abstract EN, Muc 1.4 (dong gop), Loi cam doan neu dong gop thay doi.
 - [ ] Hinh so sanh 3 loai on dinh (thesis.tex:901): "hoi tu tai cung T_f bat ke x0" -- sai.
 - [ ] Bia: "Ha Noi, 06/2026" -> thang nop that.
 
 Khac
+- [ ] Chi dung so tu script (sim_thesis Phan A-C, sim_thesis_extra Phan D-K). Vai so cu chay
+      le, chua co script (quet be rong bao hoa varsigma, warm start W0 = [6,6,6]): bo, hoac
+      them script truoc khi dung.
+- [ ] (tuy chon) Them ghep nonholonomic cho CL: CL con sai so ~6 cm cung nguyen nhan thieu
+      kenh z_y. Neu chon ghep lam dong gop chinh, dieu nay cho thay co che dung chung.
+- SM1, SM2 chi dung mo hinh dong hoc (sim_sm1.m, sim_sm2.m) nen KHONG bi loi B -- giu nguyen.
+- [ ] CLAUDE.md muc 2 va README dong 32 ghi "luat ADP eq.(16)-(18) giu nguyen cua Wang" --
+      sai tu thang 8 (eq.17 da doi sang Bellman). Sua theo quyet dinh o muc 4.7.2 ben tren.
 - [ ] Bao cao tom tat (summary_report.tex) con ghi "ADP-FT tot nhat trong 5 PP" -- dong bo.
 - [ ] Gui thay Nam ban moi + danh sach thay doi so voi v2, NOI RO loi B (v2 cung mang loi nay).
 - [ ] Gom trung lap plot_sm1_results.m va plot_sm1_full.m (khong gap).
