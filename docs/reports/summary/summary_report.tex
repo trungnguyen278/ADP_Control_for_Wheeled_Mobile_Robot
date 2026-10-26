@@ -56,47 +56,43 @@ Gần đây, Wang và cộng sự (IEEE RA-L, 2025)~\cite{Wang2025} đã đề x
 
 \subsection{Mục tiêu nghiên cứu}
 
-Hoàn thiện phương pháp ADP-FT của Wang et al. cho robot di động hai bánh được điều khiển bằng mô-men, trên mô hình đầy đủ 5 trạng thái có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men, thông qua \textbf{kiến trúc điều khiển hai vòng}; đồng thời so sánh công bằng với các phương pháp kinh điển và đánh giá trung thực những gì còn được bảo toàn.
+Hoàn thiện phương pháp ADP-FT của Wang et al. thành \textbf{một bộ điều khiển backstepping hai bước} cho robot di động hai bánh được điều khiển bằng mô-men, trên mô hình đầy đủ 5 trạng thái có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men; đồng thời so sánh công bằng với các phương pháp kinh điển và đánh giá trung thực những gì còn được bảo toàn.
 
 \subsection{Bốn đóng góp chính}
 
 \begin{enumerate}
-    \item \textbf{Kiến trúc hai vòng:} vòng ngoài ADP-FT (giữ nguyên luật cập nhật và cấu trúc luật điều khiển (16)--(18) của Wang et al.), vòng trong Dynamic Backstepping (Fierro \& Lewis, 1997)~\cite{Fierro1997} chuyển lệnh vận tốc thành mô-men; phân tích điều kiện ghép hai vòng.
+    \item \textbf{Bộ điều khiển backstepping hai bước:} bước 1 là ADP-FT (giữ nguyên luật cập nhật và cấu trúc luật điều khiển (16)--(18) của Wang et al.); bước 2 là luật mô-men trên mô hình của Fierro \& Lewis~\cite{Fierro1997}, có \textbf{số hạng chéo} và số hạng cố định thời gian; chứng minh \textbf{hàm Lyapunov chung} cho toàn hệ 5 trạng thái.
 
-    \item \textbf{Điều chỉnh ADP-FT cho kiến trúc hai vòng:} chỉnh lại gain cho lệnh vận tốc bị chặn, giới hạn tín hiệu phản hồi, khởi tạo trọng số; bổ sung \textbf{cơ chế ghép nonholonomic} cho kênh sai số ngang (thành phần quyết định) và \textbf{toán tử chiếu} giữ hàm giá trị xác định dương.
+    \item \textbf{Phân tích lại và hoàn thiện bước 1:} chỉ ra một khoảng hở ở kênh sai số ngang trong chứng minh của bài báo; bổ sung \textbf{cơ chế ghép nonholonomic} để lấp khoảng hở (thành phần quyết định), \textbf{toán tử chiếu} giữ hàm giá trị xác định dương, và bộ gain cho lệnh vận tốc bị chặn.
 
-    \item \textbf{So sánh công bằng 5 phương pháp} (BS, ADP-AC, SMC kèm biến thể NTSMC, CL, ADP-FT) trên 3 quỹ đạo, sau khi mọi phương pháp được chỉnh gain theo cùng một quy trình.
+    \item \textbf{So sánh công bằng 5 phương pháp} (BS, ADP-AC, SMC kèm biến thể NTSMC, CL, ADP-FT làm bước 1, cùng một bước 2) trên 3 quỹ đạo, sau khi mọi phương pháp được chỉnh gain theo cùng một quy trình.
 
     \item \textbf{Phân tích robustness và phân tích thành phần:} bất định khối lượng tới $+60\%$, ba dạng nhiễu tới $60\%\,\tau_\text{max}$, năm điều kiện đầu; công thức giải tích dự đoán sai số xác lập do nhiễu; thí nghiệm loại bỏ từng thành phần của ADP-FT.
 \end{enumerate}
 
 % ================================================================
-\section{Kiến trúc hệ thống}
+\section{Bộ điều khiển backstepping hai bước}
 % ================================================================
 
-\subsection{Sơ đồ điều khiển 2 vòng}
+\subsection{Một bộ điều khiển, hai bước}
 
-Kiến trúc điều khiển gồm hai vòng lồng nhau:
+Mô hình đầy đủ là một chuỗi hai khâu: mô-men $\tau$ quyết định gia tốc $\dot\eta$, vận tốc $\eta = [v, \omega]^\T$ quyết định chuyển động $(x, y, \theta)$. Bộ điều khiển là \textbf{một} bộ backstepping (Krstić et al., 1995)~\cite{Krstic1995} gồm hai bước:
 
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-\textbf{Vòng ngoài (Kinematic)} & \textbf{Vòng trong (Dynamic)} & \textbf{Đối tượng (Plant)} \\
-\hline
-1. Backstepping (BS) & & \\
-2. ADP Actor-Critic (AC) & Dynamic Backstepping & WMR mô hình đầy đủ \\
-3. Sliding Mode (SMC) & (Fierro \& Lewis 1997) & 5 trạng thái \\
-4. Critic-only CL & $\boldsymbol{\tau} = B^{-1}[M(\cdot)+F]$ & + nhiễu $d(t)$ \\
-5. ADP Fixed-time (FT) & & \\
-(+ biến thể NTSMC của 3) & & \\
-\hline
-\end{tabular}
-\end{center}
+\begin{itemize}
+    \item \textbf{Bước 1 (động học):} coi $\eta$ là điều khiển ảo, chọn vận tốc ảo $\eta_d = u_f + u_o(z, W)$ bằng luật ADP-FT của Wang et al., với hàm Lyapunov $V_1 = \frac12 z^\T z + \frac12\tilde W^\T\Gamma^{-1}\tilde W$.
+    \item \textbf{Bước 2 (động lực học):} chọn mô-men để vận tốc thực bám $\eta_d$ \textit{và} triệt số hạng tương tác $\zeta^\T e_\eta$ mà sai lệch $e_\eta = \eta_d - \eta$ sinh ra trong $\dot V_1$, với $\zeta = -g(z)^\T z = [z_x;\ z_\theta]$:
+    \begin{equation*}
+        \tau = B^{-1}\Big[M\big(\dot\eta_d + K_d e_\eta + K_\alpha\operatorname{sig}(e_\eta)^{p/q} + K_\beta e_\eta^3\big) + F(\eta) + K_c\,\zeta\Big].
+    \end{equation*}
+\end{itemize}
 
-\noindent
-\textbf{Vòng ngoài} nhận sai lệch quỹ đạo $(e_x, e_y, e_\theta)$ và sinh ra tín hiệu vận tốc tham chiếu $(v_c, \omega_c)$. \textbf{Vòng trong} nhận sai lệch vận tốc $(v - v_c, \omega - \omega_c)$ và tính mô-men bánh trái/phải $(\tau_L, \tau_R)$ để bám theo vận tốc yêu cầu, đồng thời bù các thành phần phi tuyến và ma sát.
+Hàm $V = V_1 + \frac12 e_\eta^\T K_c^{-1}Me_\eta$ có $\dot V = \dot V_1\big|_{\eta=\eta_d} - e_\eta^\T K_c^{-1}M(K_de_\eta + K_\alpha\operatorname{sig}(e_\eta)^{p/q} + K_\beta e_\eta^3) - e_\eta^\T K_c^{-1}Bd$: số hạng tương tác bị triệt chính xác, nên bước 2 \textbf{không làm mất tính chất nào} của bước 1 trên mô hình đầy đủ (Định lý 4.1 của luận văn, khi mô-men chưa bão hòa). Luận văn chọn $K_c = M$, khi đó $V = V_1 + \frac12 e_\eta^\T e_\eta$; $K_d = 20I$, $K_\alpha = K_\beta = 10I$ ($e_\eta$ về không trước $1$\,s khi chưa bão hòa). Đặt $K_c = K_\alpha = K_\beta = 0$ thì trở về luật Fierro \& Lewis dùng trong các bản trước. Cách gọi ``vòng ngoài'' (khép qua $x, y, \theta$) và ``vòng trong'' (khép qua $v, \omega$) chỉ mô tả vị trí tín hiệu trên sơ đồ.
 
-Nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)\,[1,\ 1]^\T$, mặc định $A = 20\%$, được cộng vào mô-men hai bánh ở vòng trong, mô phỏng nhiễu loạn tần số cao (theo yêu cầu của thầy hướng dẫn sau Seminar 1). Ngoài dạng đồng pha này, luận văn khảo sát thêm nhiễu vi sai $[1,\ -1]^\T$ và nhiễu độc lập trên hai bánh.
+\textbf{Khoảng hở trong chứng minh gốc.} Với mọi $u_o$, $\frac{d}{dt}(\frac12 z^\T z) = v_r z_y\sin z_\theta - \zeta^\T u_o$: tín hiệu điều khiển chỉ tác động qua $z_x$, $z_\theta$. Bài báo coi $g g^\dagger = I_3$ ở bước (19)--(20), trong khi $gg^\dagger$ chỉ là phép chiếu lên mặt phẳng hai chiều; hệ quả là với luật và tham số gốc trên quỹ đạo thẳng, mọi điểm $z = (0, z_y, 0)$ là điểm cân bằng -- robot chạy song song với quỹ đạo mãi mãi (mô phỏng: $z_y = 0{,}5$\,m giữ nguyên suốt 60\,s). Số hạng ghép nonholonomic của luận văn lấp khoảng hở này.
+
+\textbf{Các phương pháp so sánh} chỉ khác nhau ở bước 1: luật Kanayama (BS), SMC và biến thể NTSMC, Critic-only Concurrent Learning (CL), Actor-Critic ADP (ADP-AC) và ADP-FT; bước 2 dùng chung để mọi khác biệt đến từ bước 1.
+
+Nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)\,[1,\ 1]^\T$, mặc định $A = 20\%$, được cộng vào mô-men hai bánh, mô phỏng nhiễu loạn tần số cao (theo yêu cầu của thầy hướng dẫn sau Seminar 1). Ngoài dạng đồng pha này, luận văn khảo sát thêm nhiễu vi sai $[1,\ -1]^\T$ và nhiễu độc lập trên hai bánh.
 
 \subsection{Mô hình robot di động}
 
@@ -386,6 +382,9 @@ K.~G.~Vamvoudakis, F.~L.~Lewis, ``Online actor-critic algorithm to solve the con
 \bibitem{Chowdhary2010}
 G.~Chowdhary, E.~Johnson, ``Concurrent learning for convergence in adaptive control without persistency of excitation,''
 \textit{Proc. IEEE CDC}, pp.~3674--3679, 2010.
+
+\bibitem{Krstic1995}
+M.~Krstić, I.~Kanellakopoulos, P.~Kokotović, \textit{Nonlinear and Adaptive Control Design}, Wiley, 1995.
 
 \bibitem{Fierro1997}
 R.~Fierro, F.~L.~Lewis, ``Control of a nonholonomic mobile robot: Backstepping kinematics into dynamics,''
