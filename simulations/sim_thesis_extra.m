@@ -13,14 +13,21 @@
 %
 % Phan E. Quet dieu kien dau z0
 %    Do t_settle (thoi diem ||z|| < tol va o lai) voi nhieu z0 khac nhau.
-%    Fixed-time => t_settle phai gan nhu KHONG doi theo z0.
+%    Fixed-time (Polyakov) chi doi t_settle(z0) <= T_max voi MOI z0 -- KHONG
+%    doi t_settle bang nhau. He fixed-time ly tuong van co t_settle tang theo
+%    ||z0|| roi bao hoa, nen ti so max/min KHONG phai phep thu fixed-time.
+%    Co bao hoa v_max thi t_settle buoc phai tang khi z0 du lon.
 %
 % Phan F. Nhieu hai kenh doc lap
 %    Kich ban cu d = a*[1;1] bi ma tran B triet tieu hoan toan o kenh omega
-%    (B*[1;1] = [r;0]). Phan nay chay 3 kich ban de tach bach:
+%    (B*[1;1] = [2/r;0]). Phan nay chay 3 kich ban de tach bach:
 %      common = a*[sin;  sin]          (cu, chi kenh v)
 %      diff   = a*[sin; -sin]          (chi kenh omega)
 %      indep  = a*[sin(w t); sin(1.3 w t + pi/3)]  (ca hai kenh)
+%
+% Phan G. Ablation luat cap nhat trong so (Wang eq.17 vs gradient Bellman)
+% Phan H. SMC tham so thong dung vs SMC da tune
+% Phan I. Do ben cua SMC da tune (khoi luong, z0, nhieu doc lap)
 %
 % Tac gia: Nguyen Thanh Trung
 % Ngay:    08/2026
@@ -74,8 +81,8 @@ e_methods = {'adp_ft', 'bs', 'cl'};
 e_names   = {'ADP-FT', 'BS', 'CL'};
 
 % Nhieu nguong tol: tach bach "hoi tu cham" voi "sai so du lon".
-% ADP-FT co z_rms xac lap ~0.046 nen tol=0.05 la sat nguong -- neu chi dung
-% mot tol thi khong phan biet duoc hai nguyen nhan.
+% (Voi mo hinh B sai truoc 2026-10-26, ADP-FT co z_rms xac lap ~0.046 nen
+% tol=0.05 sat nguong -- mot tol khong phan biet duoc hai nguyen nhan.)
 tol_list = [0.05, 0.10, 0.15, 0.25];
 
 results_E = struct();
@@ -110,8 +117,9 @@ for ti = 1:numel(tol_list)
         end
         fprintf('\n');
     end
-    % Chi so fixed-time: t_settle cang it phu thuoc z0 thi ti so cang gan 1
-    fprintf('    Do tan xa (max/min tren cac z0 dat duoc):\n');
+    % Chi mo ta do tan xa -- KHONG phai phep thu fixed-time (xem dau file):
+    % he fixed-time ly tuong tren cung dai ||z0|| cho ti so 2.35-3.59.
+    fprintf('    Do tan xa (max/min tren cac z0 dat duoc, chi de mo ta):\n');
     for mi = 1:numel(e_methods)
         v = T_settle(mi, :, ti);  v = v(~isnan(v));
         if numel(v) >= 2
@@ -189,7 +197,8 @@ end
 % Luan van dung lambda=3, eta=1.0 (gia tri thong dung cho mo hinh kinematic),
 % trong khi ADP-FT duoc tune ky cho dual-loop. So sanh nhu vay khong cong bang.
 % Phan nay chay them SMC voi gain da quet tren full model (lambda=0.7, eta=0.05)
-% de co doi chieu dung muc.
+% de co doi chieu dung muc. Quet lai 2026-10-26 tren mo hinh da sua B: van giu
+% 0.7/0.05 (xem ghi chu sweep trong ctrl_params.m).
 fprintf('\n--- PHAN H: SMC THONG DUNG vs SMC DA TUNE ---\n');
 
 results_H = struct();
@@ -257,7 +266,7 @@ for mi = 1:numel(masses_I), fprintf(' %8dkg |', masses_I(mi)); end
 fprintf('\n  %s\n', repmat('-', 1, 19 + 12*numel(masses_I)));
 
 pm_methods = {'smc_tuned', 'adp_ft', 'bs'};
-pm_names   = {'SMC da tune', 'ADP-FT+chieu', 'BS'};
+pm_names   = {'SMC da tune', 'ADP-FT', 'BS'};
 for mi = 1:numel(pm_methods)
     fprintf('  %-16s |', pm_names{mi});
     for k = 1:numel(masses_I)
