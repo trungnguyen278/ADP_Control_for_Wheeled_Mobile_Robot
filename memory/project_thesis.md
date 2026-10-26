@@ -1,16 +1,16 @@
 ---
 name: project-thesis
-description: ADP Fixed-Time Optimal Control cho WMR vi sai, hoàn thiện Wang et al. 2025 thành bộ backstepping hai bước điều khiển bằng mô-men
+description: ADP Fixed-Time Optimal Control cho WMR vi sai, hoàn thiện Wang et al. 2025 thành bộ điều khiển hai vòng thiết kế theo backstepping điều khiển bằng mô-men
 metadata:
   type: project
 ---
 
 **Đề tài**: Hoàn thiện ADP-based Fixed-time Optimal Control (Wang et al., IEEE RA-L 2025) thành
-một bộ backstepping hai bước cho WMR vi sai nhận lệnh mô-men (mô hình 5 trạng thái).
+một bộ điều khiển hai vòng thiết kế theo backstepping cho WMR vi sai nhận lệnh mô-men (mô hình 5 trạng thái).
 
 **Đóng góp chính** (từ 2026-10-26 tối, xem [[feedback-backstepping-framing]]):
-1. Bước 1 = ADP-FT của Wang (giữ eq.(16)-(18)) + ghép nonholonomic + toán tử chiếu + gain mới
-2. Bước 2 = luật mô-men trên mô hình Fierro & Lewis (`controllers/dynamic_backstepping.m`),
+1. Vòng 1 = ADP-FT của Wang (giữ eq.(16)-(18)) + ghép nonholonomic + toán tử chiếu + gain mới
+2. Vòng 2 = luật mô-men trên mô hình Fierro & Lewis (`controllers/dynamic_backstepping.m`),
    thêm số hạng chéo K_c·[z_x; z_θ] và số hạng cố định thời gian → hàm Lyapunov chung (Định lý 4.1).
    KHÔNG phải "PI robust" — mô tả cũ sai, đã từng dẫn tới file rỗng `inner_loop_pi.m`.
 3. Phân tích lại chứng minh Wang: khoảng hở kênh ngang ([[feedback-wang-gap]])

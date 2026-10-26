@@ -1,13 +1,13 @@
 ---
 name: ket-qua-cuoi
-description: Số liệu và kết luận CUỐI (2026-10-26 khuya, bước 2 đầy đủ, MATLAB) — ADP-FT ngang NTSMC, sau SMC 7,9%; ghép nonholonomic quyết định; học critic không giúp; số hạng chéo vượt v_max
+description: Số liệu và kết luận CUỐI (2026-10-26 khuya, vòng 2 đầy đủ, MATLAB) — ADP-FT ngang NTSMC, sau SMC 7,9%; ghép nonholonomic quyết định; học critic không giúp; số hạng chéo vượt v_max
 metadata:
   type: project
 ---
 
 Chạy bằng MATLAB R2023a (trùng Octave tới 4 chữ số), T = 60 s, nhiễu đồng pha 20%, τ_max = 1 N·m
-(tạm), bước 2 đầy đủ K_d = 20I, K_c = M, K_α = K_β = 10I. Gain (`sweep_gains.m`, kiểm lại bằng
-MATLAB): SMC 1/8, ADP-FT 1/2, BS 1/4, CL 1/4, ADP-AC 1/4 (bước 2 cũ: ADP-AC 1/2).
+(tạm), vòng 2 đầy đủ K_d = 20I, K_c = M, K_α = K_β = 10I. Gain (`sweep_gains.m`, kiểm lại bằng
+MATLAB): SMC 1/8, ADP-FT 1/2, BS 1/4, CL 1/4, ADP-AC 1/4 (vòng 2 cũ: ADP-AC 1/2).
 
 | PP | Jc tròn / thẳng / số 8 | Tổng | t(‖z‖<0.01) tròn |
 |---|---|---|---|
@@ -25,10 +25,10 @@ Kết luận chính (đều có trong luận văn 84 trang):
 - Sàn nhiễu z_rms ≈ 4,1–4,3e-4. Công thức cũ (chỉ K_d) KHÔNG còn đúng: phải dùng hàm mô tả
   K_eq = K_d + 1,021·K_α·E^(p/q−1) + ¾K_β·E², E = 2d₀/(rm√(ω_n²+K_eq²)) → K_eq = 35,7, z_rms
   4,05e-4, khớp < 3% cả 3 dạng nhiễu. Tương quan τ_R/−d = K_eq/√(ω_n²+K_eq²) = 0,76 (cũ 0,55).
-- Phần M (bước 2): số hạng FT hạ z_rms 21–23%; t_e ≤ 0,17 s; K_c = M đổi Jc nhỏ (ADP-FT −1,2%).
-  K_c = 10M: ADP-FT 3,833 < SMC nhưng BS +12,8% → tương đương chỉnh gain bước 1 không đều, giữ K_c = M.
+- Phần M (vòng 2): số hạng FT hạ z_rms 21–23%; t_e ≤ 0,17 s; K_c = M đổi Jc nhỏ (ADP-FT −1,2%).
+  K_c = 10M: ADP-FT 3,833 < SMC nhưng BS +12,8% → tương đương chỉnh gain vòng 1 không đều, giữ K_c = M.
 - **Số hạng chéo đi vòng qua bộ kẹp η_d**: khi z_x lớn, v thực tới 0,57–0,62 m/s (> v_max 0,5);
-  bước 2 cũ ≤ 0,52. Hàng "cận dưới vật lý" ở Bảng 5.16 vì thế chỉ còn là tham chiếu.
+  vòng 2 cũ ≤ 0,52. Hàng "cận dưới vật lý" ở Bảng 5.16 vì thế chỉ còn là tham chiếu.
 - Tham số gốc Wang (β = diag(1e5,1e5,1)): Jc ×23,4/13,3/7,0, Ju chiếm 58–78%, z_y dư 1,7–3,2 cm
   khi z_x, z_θ ≈ 0 — xác nhận Bổ đề 4.1(b) trên mô hình đầy đủ.
 - Thiếu ghép nonholonomic: Jc ×3,2–5,6, kẹt |z_y| ≈ 1,4 m ở ‖z0‖ = 3,5. Chiếu không kích hoạt (λmin ≥ 0,121).
@@ -36,7 +36,7 @@ Kết luận chính (đều có trong luận văn 84 trang):
   BS 22,0 s, Bellman 19,3 s (nhưng 39,1 s ở 2,375 — không nhất quán). ADP-UUB giảm Jc 1,4–1,8%.
 - Khối lượng 16 kg / nhiễu 60%: Jc đổi < 3% mọi PP.
 
-**Why:** đây là bộ số chốt sau khi có bước 2 đầy đủ; mọi số cũ hơn trong memory đều lỗi thời.
+**Why:** đây là bộ số chốt sau khi có vòng 2 đầy đủ; mọi số cũ hơn trong memory đều lỗi thời.
 
 **How to apply:** khi viết slide/bài báo hay trả lời thầy, lấy số ở đây hoặc chạy lại
 `sim_thesis.m` + `sim_thesis_extra.m`; script trích số dùng lần này (`extract_numbers.m`) nằm

@@ -1,21 +1,30 @@
 ---
 name: project-progress
-description: 26/10/2026 khuya đã chạy lại toàn bộ bằng MATLAB với bước 2 đầy đủ, xuất hình, build MiKTeX (luận văn 84 tr, tóm tắt 12 tr); còn Trung đọc lại, chốt τ_max, gửi thầy Nam (thầy chỉ có v2, chưa đọc)
+description: 27/10/2026 đã chạy lại bằng MATLAB, đổi cách gọi sang vòng 1/vòng 2, sửa bookmark PDF (luận văn 86 tr, tóm tắt 13 tr, PR #3); còn Trung đọc lại, chốt τ_max, gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
 
-## Cập nhật 2026-10-26 (khuya): bước 2 đầy đủ, chạy lại bằng MATLAB, build xong
+## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 
-- PR #1 (bước 2 đầy đủ, Chương 4 mới) đã merge vào master. Phiên local kéo về, chạy lại
+- Đổi "bước 1/2" → "vòng 1/2" toàn bộ luận văn + tóm tắt ([[feedback-backstepping-framing]]); Mục 4.4
+  sắp chứng minh theo vòng 1 → vòng 2 + toàn hệ; báo cáo tóm tắt Mục 2 viết lại đúng thứ tự thiết kế,
+  có chứng minh rút gọn.
+- Sửa bookmark PDF (chương sau bị gộp vào Chương 1 do anchor trùng) và anchor công thức trùng giữa các
+  chương. Mọi thay đổi nằm trên nhánh `docs/ket-qua-buoc-2-matlab` (PR #3), chưa merge.
+- Còn lại như dưới; thêm: quyết có bão hòa số hạng chéo không (v thực vượt v_max tới 0,62 m/s).
+
+## Cập nhật 2026-10-26 (khuya): vòng 2 đầy đủ, chạy lại bằng MATLAB, build xong
+
+- PR #1 (vòng 2 đầy đủ, Chương 4 mới) đã merge vào master. Phiên local kéo về, chạy lại
   `sim_thesis`, `sim_sm1_full`, `sim_thesis_extra`, `sweep_gains` bằng MATLAB R2023a; xuất 13 hình
   luận văn; KHÔNG chạy lại `sim_sm2` (giữ hình SM2 đã nộp).
-- Viết lại Ch.5 (thêm Mục 5.6 bước 2, Mục 5.4 dùng hàm mô tả), Ch.6, tóm tắt VI/EN, lời cam đoan,
+- Viết lại Ch.5 (thêm Mục 5.6 vòng 2, Mục 5.4 dùng hàm mô tả), Ch.6, tóm tắt VI/EN, lời cam đoan,
   phần kết quả báo cáo tóm tắt; README, workflow, CLAUDE.md (đường dẫn MATLAB/MiKTeX mới).
   Số liệu: [[ket-qua-cuoi]]. Build MiKTeX: 0 lỗi, 0 ref treo, 0 Overfull.
 - Kết quả đổi so với bản 72 trang: ADP-FT không còn "thứ hai" mà ngang NTSMC (4,140 vs 4,130).
 - Còn lại (Trung): đọc lại Ch.4–6, quyết τ_max thật của motor (đổi → chạy lại hết), gửi thầy
-  Nam bản mới kèm giải thích lỗi B và bước 2.
+  Nam bản mới kèm giải thích lỗi B và vòng 2.
 
 ## Cập nhật 2026-10-26 (tối): đã viết lại xong
 

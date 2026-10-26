@@ -626,22 +626,49 @@ len duong ke). README, workflow.md, CLAUDE.md, skill run-sim/build-doc: duong da
 `C:\MATLAB\R2023a`, MiKTeX `C:\Program Files\MiKTeX`. Commit bb47603 (luan van + hinh),
 e86f0d7 (tom tat), 6188a6f (README, duong dan).
 
+### 2026-10-27 — CACH GOI "VONG 1 / VONG 2", CHUNG MINH THEO TUNG VONG, SUA BOOKMARK PDF
+
+Trung chon goi **vong 1 (vong ngoai, dong hoc) / vong 2 (vong trong, dong luc hoc)** thay cho
+"buoc 1 / buoc 2" (dung yeu cau "2 vong" + "BC bac 2" cua thay Nam). Toan khong doi.
+
+- Luan van: doi ~230 cho (co loai tru "phep chieu qua hai buoc", buoc tich phan, buoc (19)->(20)).
+  Ten Chuong 4 "Thiet ke bo dieu khien hai vong theo phuong phap backstepping"; Muc 4.1 viet lai:
+  hai he phuong trinh noi tiep -> hai vong, moi buoc cua backstepping thiet ke mot vong; bo cau
+  "vong ngoai/trong chi mo ta vi tri tin hieu". Muc 4.4 them lo trinh chung minh: vong 1 (Bo de
+  4.1), vong 2 + toan he (Dinh ly 4.1, V = V1 + V2), thoi gian hoi tu vong 2 (He qua 4.1).
+- Sua theo ra soat buoc thiet ke: (A2) ghi ro eta_d phai kha vi -- thuc te chi kha vi tung khuc
+  (bo kep, sig(z)^(p/q) co dao ham |z|^(-2/19)); trich command filtered backstepping (Farrell 2009),
+  DSC (Swaroop 2000). Dinh nghia u_o := eta_d - u_f (sau bo kep). Cau ve Fierro & Lewis o 4.3 sua
+  thanh "cac phien ban truoc cua luan van" (repo khong co PDF bai goc de doi chieu).
+- Bao cao tom tat Muc 2 viet lai dung thu tu: mo hinh (hai he PT) -> sai so z -> vong 1 (cong thuc
+  ADP-FT, luat (17)) -> vong 2 -> chung minh rut gon (V1 + V2, triet so hang tuong tac, T2 <= 1 s).
+- **Bookmark PDF bi gop vao Chuong 1:** \section* khong tao anchor nen \addcontentsline muon anchor
+  gan nhat; CHUONG 2 trung anchor Item.4 voi muc 1.5 => hyperref coi cac muc 2.x la con cua 1.5,
+  cac chuong sau truot vao Chuong 1. Sua: \phantomsection truoc moi \addcontentsline (62 cho).
+  Them: \theHequation/\theHfigure/\theHtable kem so chuong (truoc do equation.N trung giua cac
+  chuong => link cong thuc nhay nham chuong), bia \pagenumbering{Alph} (page.1 trung), them
+  5.7.1-5.7.3 vao muc luc. Kiem tra bang pypdf: 6 chuong o cap cao nhat, moi muc nhay dung trang.
+- Build: thesis 86 trang, summary 13 trang; 0 loi, 0 ref treo, 0 Overfull, 0 anchor trung.
+
 ---
 
 ## VIEC CAN LAM
 
 ### 1. Truoc khi in nop (Trung lam)
 - [x] Chay MATLAB, xuat hinh, build PDF bang MiKTeX, commit PDF (2026-10-26 khuya).
-- [ ] Doc lai toan bo, dac biet Ch.4-6 (Muc 5.6 moi, Muc 5.4 viet lai theo ham mo ta).
+- [ ] Doc lai toan bo, dac biet Ch.4-6 (Muc 4.1, 4.4 viet lai theo hai vong; Muc 5.6 moi; Muc 5.4
+      viet lai theo ham mo ta) va Muc 2 bao cao tom tat.
 - [ ] **Trung quyet:** tau_max that cua motor (dang tam 1 N*m). Doi gia tri => chay lai het.
 - [ ] **Trung quyet:** co bao hoa so hang cheo de van toc thuc khong vuot v_max khong (hien vuot
       toi 0.62 m/s khi z0 lon; neu sua => chay lai Phan E, L, M).
-- [ ] Gui thay Nam ban moi + noi ro loi B, buoc 2 va cac ket luan da doi so voi v2.
+- [ ] Gui thay Nam ban moi + noi ro loi B, vong 2 (backstepping) va cac ket luan da doi so voi v2.
+- [ ] Doi chieu cau ve luat Fierro & Lewis (Muc 4.3) voi bai goc neu co PDF.
 - [ ] (khong gap) Gom trung lap plot_sm1_results.m va plot_sm1_full.m.
 
 ### 2. Huong mo rong neu con thoi gian (Muc 6.3 luan van)
-- [ ] Luat hoc critic hop voi bo dieu khien hai buoc (phai tot hon critic dong bang, nhat la khi z0 lon).
-- [ ] Ham Lyapunov kieu Kanayama cho buoc 1 co so hang ghep (chung minh hoi tu z_y).
+- [ ] Luat hoc critic hop voi bo dieu khien hai vong (phai tot hon critic dong bang, nhat la khi z0 lon).
+- [ ] Ham Lyapunov kieu Kanayama cho vong 1 co so hang ghep (chung minh hoi tu z_y).
+- [ ] Bo loc lenh (command filtered backstepping) cho vong 2 de khong can eta_d kha vi.
 - [ ] Them ghep nonholonomic cho CL (CL con sai so ngang cung nguyen nhan).
 
 ### 3. Dang bi chan (cho GVHD)

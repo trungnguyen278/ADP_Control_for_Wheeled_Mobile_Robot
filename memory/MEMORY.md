@@ -13,7 +13,7 @@
 - [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
 - [MATLAB CLI](reference_matlab_cli.md) — MATLAB ở C:\MATLAB\R2023a, MiKTeX ở Program Files; script `clear` phá lệnh bọc tic/toc
-- [Progress](project_progress.md) — 26/10 khuya: chạy lại bằng MATLAB với bước 2 đầy đủ, build xong (84 tr); còn Trung đọc lại, chốt τ_max, gửi thầy
+- [Progress](project_progress.md) — 27/10: chạy lại bằng MATLAB, gọi vòng 1/vòng 2, sửa bookmark PDF (86 tr, PR #3); còn Trung đọc lại, chốt τ_max, gửi thầy
 - [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10 khuya: ADP-FT ngang NTSMC, sau SMC 7,9%; z_rms theo hàm mô tả; số hạng chéo vượt v_max
-- [Backstepping hai bước](feedback_backstepping_framing.md) — ⭐ MỘT bộ BC hai bước (bước 2 có số hạng chéo, K_c = M), không chia "vòng ngoài/vòng trong"; chứng minh lại có trích dẫn
+- [Hai vòng theo backstepping](feedback_backstepping_framing.md) — ⭐ Gọi "vòng 1/vòng 2" (không gọi "bước", từ 27/10); vòng 2 suy từ V₁ (số hạng chéo, K_c = M); chứng minh từng vòng rồi toàn hệ
 - [Khoảng hở chứng minh Wang](feedback_wang_gap.md) — ⭐ g·g† ≠ I₃; luật gốc có điểm cân bằng (0, z_y, 0) trên quỹ đạo thẳng (đã kiểm chứng); cơ sở của số hạng ghép

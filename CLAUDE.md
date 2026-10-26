@@ -29,7 +29,7 @@ Mục tiêu chính là lưu trữ có hệ thống + tái tạo được kết q
 |---|---|---|
 | Mô hình | Chỉ **kinematic** 3 trạng thái `[x,y,θ]` | **Full model 5 trạng thái** `[x,y,θ,v,ω]` |
 | Đầu ra điều khiển | Gán trực tiếp `u = [v, ω]` | **Mô-men** `τ = [τ_R, τ_L]` |
-| Bộ điều khiển | Chỉ bước 1 (luật vận tốc) | **Một bộ backstepping hai bước**: bước 1 ADP-FT, bước 2 luật mô-men có **số hạng chéo** + số hạng cố định thời gian; hàm Lyapunov chung (Định lý 4.1) |
+| Bộ điều khiển | Chỉ vòng 1 (luật vận tốc) | **Một bộ điều khiển hai vòng thiết kế theo backstepping**: vòng 1 ADP-FT, vòng 2 luật mô-men có **số hạng chéo** + số hạng cố định thời gian; hàm Lyapunov chung (Định lý 4.1) |
 | Nhiễu | Không xét | **Nhiễu sin tần số cao** cộng vào mô-men (đồng pha chỉ tác động kênh v; có thêm kịch bản vi sai/độc lập) |
 | So sánh | — | **5 phương pháp** × 3 quỹ đạo × robustness (khối lượng, nhiễu) |
 | Luật ADP eq.(16)-(18) | Đề xuất gốc | **Giữ nguyên** luật cập nhật (17)-(18) và cấu trúc (16); tune lại gain, **thêm số hạng ghép nonholonomic** vào phần robust + toán tử chiếu |
@@ -39,11 +39,11 @@ Mục tiêu chính là lưu trữ có hệ thống + tái tạo được kết q
 - Công thức `(16)-(18)`, phần chứng minh hội tụ fixed-time, cấu trúc critic-only
   → **của Wang et al.**, phải trích dẫn, KHÔNG được trình bày như đóng góp.
 - Mô hình dynamic `M·η̇ = B·τ − F(η)` → **của Fierro & Lewis (1997)**, phải trích dẫn.
-- Thủ tục backstepping (số hạng chéo `−∂V₁/∂z·g` ở bước 2) → **của Krstić et al. (1995)**, phải
-  trích dẫn. Áp dụng cho `V₁` của ADP-FT, số hạng cố định thời gian ở bước 2 và Định lý 4.1 → của Trung.
+- Thủ tục backstepping (số hạng chéo `−∂V₁/∂z·g` ở vòng 2) → **của Krstić et al. (1995)**, phải
+  trích dẫn. Áp dụng cho `V₁` của ADP-FT, số hạng cố định thời gian ở vòng 2 và Định lý 4.1 → của Trung.
 - Khoảng hở trong chứng minh của Wang (bước (19)→(20) dùng `g·g† = I₃`, Bổ đề 4.1) → phát hiện của
   luận văn; trình bày tôn trọng, đúng sự thật, không phóng đại.
-- Đóng góp thực sự của luận văn = **bộ backstepping hai bước** (bước 2 + Định lý 4.1),
+- Đóng góp thực sự của luận văn = **bộ điều khiển hai vòng thiết kế theo backstepping** (vòng 2 + Định lý 4.1),
   **phân tích lại chứng minh của Wang** (Bổ đề 4.1), **tune lại gain** (chỉnh đều nhau),
   **cơ chế ghép nonholonomic + toán tử chiếu**, **phân tích robustness / phân tích thành phần**,
   **so sánh 5 phương pháp**. Chỉ nhận phần này là mới.
@@ -72,7 +72,7 @@ Không bao giờ mặc định viết tiếng Anh cho tài liệu nộp thầy.
 
 ```
 models/         Mô hình WMR (kinematic, dynamic, full 5-state, tham số)
-controllers/    5 luật bước 1 (kinematic) + bước 2 dynamic_backstepping.m (mô-men)
+controllers/    5 luật vòng 1 (kinematic) + vòng 2 dynamic_backstepping.m (mô-men)
 simulations/    Script chạy mô phỏng + tham số + quỹ đạo tham chiếu
 plotting/       Script vẽ + xuất figure PDF
 results/        File .mat — KHÔNG commit (xem §6)
