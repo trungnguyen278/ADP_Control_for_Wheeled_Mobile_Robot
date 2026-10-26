@@ -5,6 +5,15 @@ metadata:
   type: project
 ---
 
+## Cập nhật 2026-10-26 (chiều): quyết định của Trung
+
+- Thầy Nam đã nhận v2 + báo cáo tóm tắt (26/05, làm SAU chat 28/03 — xem
+  [[feedback-advisor-nam]]) nhưng **chưa đọc**. Trung muốn hoàn thiện rồi in ra nộp.
+- ADP-FT **vẫn là phương pháp chính**, kiến trúc hai vòng là bắt buộc (yêu cầu của thầy).
+- Giữ tham số robot (m=10, I=0,5, r=0,05, L=0,15), τ_max = 1 N·m, bỏ nhãn Pioneer 3-DX.
+- Chỉnh gain nhẹ, đều nhau cho mọi phương pháp (`simulations/sweep_gains.m`).
+- Trung tự chạy MATLAB (xuất hình) + MiKTeX (build PDF); Claude viết lại `.tex`.
+
 ## Cập nhật 2026-10-26
 
 Sau 2,5 tháng không động tới, Trung hỏi lại tiến độ. Kiểm tra cho thấy:

@@ -17,9 +17,10 @@ lai toan bo mo phong. Phan lon so lieu va nhieu ket luan Ch.5-6 cua ban
 78 trang (2026-08-13) KHONG con dung. Chi tiet o muc "2026-10-26" ben duoi.
 **Luan van CHUA viet lai** — danh sach viec o muc VIEC CAN LAM, muc 2.
 
-**GVHD:** thay Nam chi co ban v2 (43 trang, gui qua Teams 2026-05-26, commit
-7fedea9), den nay 5 thang chua phan hoi. Ban 78 trang chua gui. Ca hai ban
-deu mang loi B.
+**GVHD:** thay Nam da nhan ban v2 (43 trang, commit 7fedea9) + bao cao tom tat
+(13 trang, commit 5e1a452) qua Teams 2026-05-26 nhung CHUA DOC. Hai ban nay lam
+sau chat 28/03 (yeu cau cua thay: memory/feedback_advisor_nam.md). Ban 78 trang
+chua gui. Ca ba ban deu mang loi B. Trung muon hoan thien roi in ra nop.
 
 **2026-08-13: da hoan thanh ban v3** sau dot tu ra soat toan bo luan van
 (doi chieu voi bai bao goc + chay them 4 thi nghiem kiem chung).
@@ -583,8 +584,9 @@ Ch.5 (toan bo bang, hinh, nhan xet)
       t_settle <= T_max). Trinh bay t_settle theo ||z0||. Sua luon thesis.tex:1945, 2034.
 - [ ] 5.8: bang co che lay tu Phan J. Toan tu chieu khong con tac dung (bang het voi/khong
       co); ghep nonholonomic la co che quyet dinh. Muc 4.7.4 can xem lai co giu khong.
-- [ ] 5.9: nhieu hai kenh lay tu Phan F. Nen lay kich ban doc lap hai kenh lam kich ban CHINH
-      (dung yeu cau #2 cua thay Nam); dong pha chi tac dong kenh v.
+- [ ] 5.9: nhieu hai kenh lay tu Phan F. Thay chi yeu cau nhieu o MO-MEN vong trong (chat 28/03,
+      memory/feedback_advisor_nam.md) -- kich ban dong pha hien tai da dung yeu cau; neu ro dong pha
+      chi tac dong kenh v, kich ban doc lap tung banh la kiem tra them.
 - [ ] 5.10: SMC thong dung vs da tune chi con chenh ~1.4 lan (truoc 7 lan va 289 lan) --
       bai hoc "chat luong tune lan at phuong phap" yeu di nhieu, can viet lai cho dung muc.
 - [ ] 5.11 + bang tong hop 5 phuong phap: viet lai.
@@ -629,7 +631,7 @@ Khac
 ## YEU CAU TU THAY NAM (2026-03-28)
 
 1. Disturbance dang sin, tan so cao, bien do 20% tau_max --> DA LAM
-2. Disturbance cong vao mo-men (vong trong), ca 2 kenh --> DA LAM
+2. Disturbance cong vao mo-men (vong trong) --> DA LAM (thay khong yeu cau cu the 2 kenh v, w)
 3. So sanh voi SMC co ban --> DA LAM
 4. Mo phong 2 vong: kinematic + dynamic --> DA LAM
 5. Backstepping bac 2 (dynamic BS) --> DA LAM
