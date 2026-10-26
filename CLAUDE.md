@@ -30,17 +30,18 @@ Mục tiêu chính là lưu trữ có hệ thống + tái tạo được kết q
 | Mô hình | Chỉ **kinematic** 3 trạng thái `[x,y,θ]` | **Full model 5 trạng thái** `[x,y,θ,v,ω]` |
 | Đầu ra điều khiển | Gán trực tiếp `u = [v, ω]` | **Mô-men** `τ = [τ_R, τ_L]` |
 | Kiến trúc | 1 vòng | **Dual-loop**: ADP ngoài + dynamic BS/PI trong |
-| Nhiễu | Không xét | **Nhiễu sin tần số cao** cộng vào mô-men, 2 kênh |
+| Nhiễu | Không xét | **Nhiễu sin tần số cao** cộng vào mô-men ở vòng trong (đồng pha chỉ tác động kênh v; có thêm kịch bản vi sai/độc lập) |
 | So sánh | — | **5 phương pháp** × 3 quỹ đạo × robustness (khối lượng, nhiễu) |
-| Luật ADP eq.(16)-(18) | Đề xuất gốc | **Giữ nguyên**, chỉ tune lại gain cho dual-loop |
+| Luật ADP eq.(16)-(18) | Đề xuất gốc | **Giữ nguyên** luật cập nhật (17)-(18) và cấu trúc (16); tune lại gain, **thêm số hạng ghép nonholonomic** vào phần robust + toán tử chiếu |
 
 **Quy tắc khi viết luận văn / báo cáo:**
 
 - Công thức `(16)-(18)`, phần chứng minh hội tụ fixed-time, cấu trúc critic-only
   → **của Wang et al.**, phải trích dẫn, KHÔNG được trình bày như đóng góp.
 - Mô hình dynamic `M·η̇ = B·τ − F(η)` → **của Fierro & Lewis (1997)**, phải trích dẫn.
-- Đóng góp thực sự của luận văn = **ghép nối** (dual-loop), **tune lại gain**,
-  **phân tích robustness**, **so sánh 5 phương pháp**. Chỉ nhận phần này là mới.
+- Đóng góp thực sự của luận văn = **ghép nối** (dual-loop), **tune lại gain** (chỉnh đều nhau),
+  **cơ chế ghép nonholonomic + toán tử chiếu**, **phân tích robustness / phân tích thành phần**,
+  **so sánh 5 phương pháp**. Chỉ nhận phần này là mới.
 - Khi Claude thêm nội dung mới vào `docs/thesis/thesis.tex`, phải tự hỏi:
   *"cái này của Wang, của Fierro, hay của Trung?"* — rồi đặt trích dẫn cho đúng.
 

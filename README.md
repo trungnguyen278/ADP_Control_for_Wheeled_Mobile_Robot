@@ -26,19 +26,23 @@ thực tế cho WMR kiểu vi sai.
 | Mô hình | Kinematic 3 trạng thái | **Full model 5 trạng thái** |
 | Đầu ra | `u = [v, ω]` gán trực tiếp | **Mô-men `τ = [τ_R, τ_L]`** |
 | Kiến trúc | 1 vòng | **Dual-loop** (ADP ngoài + dynamic BS trong) |
-| Nhiễu | Không xét | **Sin tần số cao, 20% τ_max, 2 kênh** |
+| Nhiễu | Không xét | **Sin tần số cao, 20% τ_max, cộng vào mô-men (vòng trong)** |
 | So sánh | — | **5 phương pháp × 3 quỹ đạo + robustness** |
 
-Luật ADP eq.(16)–(18) **giữ nguyên của Wang**, luận văn chỉ tune lại gain cho dual-loop.
+Luật cập nhật eq.(17)–(18) và cấu trúc luật điều khiển eq.(16) **giữ nguyên của Wang**; luận văn
+chỉnh lại gain cho dual-loop và bổ sung số hạng ghép nonholonomic + toán tử chiếu.
 Chi tiết ranh giới trích dẫn: [CLAUDE.md §2](CLAUDE.md).
 
 ### Đóng góp chính
 
-| # | Vấn đề (từ SM1) | Giải pháp | Tài liệu |
-|---|---|---|---|
-| 1 | Actor-Critic cần PE → rung hệ thống | Critic-only + Concurrent Learning (bỏ PE) | SM2 |
-| 2 | UUB → hội tụ chậm, không đảm bảo thời gian | Fixed-time convergence | Luận văn |
-| 3 | Kinematic bỏ qua quán tính, ma sát | Dual-loop trên full model + nhiễu | Luận văn |
+| # | Đóng góp | Ghi chú |
+|---|---|---|
+| 1 | Kiến trúc hai vòng cho ADP-FT trên full model, đầu ra mô-men | Vòng trong Fierro & Lewis |
+| 2 | Chỉnh ADP-FT cho dual-loop + **ghép nonholonomic** (quyết định) + toán tử chiếu | Mục 4.7 luận văn |
+| 3 | So sánh công bằng 5 phương pháp (chỉnh gain đều nhau) | `sweep_gains.m` |
+| 4 | Robustness + công thức dự đoán sai số do nhiễu + phân tích thành phần | Mục 5.3–5.8 |
+
+SM1/SM2 (kinematic): Actor-Critic cần PE → Critic-only + Concurrent Learning bỏ PE.
 
 ---
 
@@ -144,7 +148,7 @@ Plant:              τ + d(t) → wmr_full_model → [x, y, θ, v, ω]
 
 ## Tham số
 
-**Robot** (`models/wmr_params.m`, Pioneer 3-DX):
+**Robot** (`models/wmr_params.m`):
 
 | Tham số | Ký hiệu | Giá trị | Đơn vị |
 |---|---|---|---|
@@ -163,14 +167,15 @@ khác giá trị gốc của Wang dành cho kinematic-only):
 p = 17, q = 19                      Q = diag(10,10,10),  R = diag(2,2)
 φ(z) = [zx², zy², zθ², zx·zy, zy·zθ, zx·zθ]ᵀ    (l = 6)
 Γ = 1·I₆                            κ₁ = 0.04,  κ₂ = 0.01
-λ = μ = α = [0.08, 0.08, 0.05]      β = [0.15, 0.15, 0.08]
-ρ = 0.1                             uo_max = 1.5   (clamp — bắt buộc)
-Ŵ(0) = [3, 3, 3, 0, 0, 0]ᵀ          (warm start)
+λ = μ = α = [0.04, 0.04, 0.025]     β = [0.075, 0.075, 0.04]
+ρ = 0.1                             uo_max = 1.5   (clamp)
+Ŵ(0) = [1.5, 1.5, 1.5, 0, 0, 0]ᵀ    (warm start)
+c_zy = 1.0, ς = 0.2                 (ghép nonholonomic)   luật cập nhật: 'wang' (eq.17)
 ```
 
-> Các gain này được chọn khi mô hình còn lỗi ma trận B. Hiện tượng "giữ gain gốc của Wang
-> thì phát tán" là do bão hòa mô-men của mô hình sai; với mô hình đã sửa, gain gốc không
-> phát tán nhưng cho kết quả kém hơn. Chưa tune lại.
+> Gain của mọi phương pháp chọn bằng `sweep_gains.m`: nhân toàn bộ gain danh nghĩa với
+> cùng hệ số k ∈ {1/16 … 4}, lấy k* cho tổng Jc 3 quỹ đạo nhỏ nhất (ADP-FT k* = 1/2,
+> SMC 1/8, BS 1/4, CL 1/4, ADP-AC 1/2).
 
 **Nhiễu:** `dist_amp = 0.2` (20% τ_max), `dist_freq = 30 rad/s` (~4.8 Hz), cộng cùng pha
 vào hai bánh — chỉ tác động kênh v (`B·[1;1] = [2/r; 0]`). Kịch bản nhiễu độc lập hai
@@ -180,23 +185,26 @@ kênh: Phần F của `sim_thesis_extra.m`.
 
 ## Kết quả
 
-Mô hình đã sửa ma trận B, τ_max = 1 N·m (tạm), T = 60 s, nhiễu 20% (chạy lại bằng
-Octave 2026-10-26; chi tiết và ablation trong [PROGRESS.md](PROGRESS.md)):
+Mô hình đã sửa ma trận B, τ_max = 1 N·m (tạm), T = 60 s, nhiễu đồng pha 20%, gain chỉnh
+đều nhau (chạy bằng Octave 2026-10-26; chi tiết trong [PROGRESS.md](PROGRESS.md) và Chương 5
+luận văn):
 
-| Phương pháp | Jc tròn | Jc thẳng | Jc hình 8 | z_rms tròn (5 s cuối) |
-|---|---|---|---|---|
-| SMC đã tune (λ = 0.7, η = 0.05) | **1.195** | **0.679** | **1.963** | 5.37e-4 |
-| BS | 1.393 | 0.704 | 2.765 | 5.57e-4 |
-| ADP-FT | 1.402 | 0.783 | 2.109 | 5.32e-4 |
-| SMC thông dụng (λ = 3, η = 1) | 1.631 | 0.957 | 2.396 | 4.35e-4 |
-| ADP-AC | 7.450 | 5.143 | 7.912 | 4.85e-2 |
-| CL | 7.712 | 5.110 | 8.272 | 6.14e-2 |
+| Phương pháp | Jc tròn | Jc thẳng | Jc hình 8 | Tổng | t(‖z‖ < 0.01) tròn |
+|---|---|---|---|---|---|
+| SMC (k* = 1/8) | **1.213** | **0.663** | **1.960** | **3.836** | 10.0 s |
+| ADP-FT | 1.334 | 0.803 | 2.056 | 4.192 | **8.4 s** |
+| NTSMC (cùng gain SMC) | 1.257 | 0.857 | 2.079 | 4.193 | 9.9 s |
+| BS | 1.307 | 0.898 | 2.104 | 4.310 | 10.7 s |
+| CL | 1.598 | 1.347 | 2.832 | 5.778 | 25.6 s |
+| ADP-AC | 4.708 | 4.219 | 5.407 | 14.334 | 60.0 s |
 
-- Khối lượng 10–16 kg và nhiễu 0–60% (cả ba kiểu) làm Jc của BS, ADP-FT, SMC đã tune đổi
-  < 2%: vòng trong hấp thụ gần hết.
-- Ablation ADP-FT: chỉ ghép nonholonomic tạo khác biệt (Jc tròn 8.09 → 1.40, hết mất bám);
-  critic đóng băng, bỏ số hạng fixed-time, đổi luật cập nhật, bỏ toán tử chiếu đều không
-  làm xấu đi.
+- Sai số xác lập ≈ 5.3–5.5e-4 m ở BS/SMC/NTSMC/ADP-FT = sàn do nhiễu lọt qua vòng trong;
+  công thức giải tích z_rms ≈ 2d₀/(√2·r·m·ω_n·√(ω_n²+K_d²)) khớp mô phỏng < 4%.
+- Khối lượng tới 16 kg và nhiễu tới 60% (ba kiểu): Jc đổi < 4% ở mọi phương pháp.
+- Ablation ADP-FT: ghép nonholonomic là quyết định (thiếu nó Jc ×3–5, kẹt ở điểm cân bằng
+  giả); toán tử chiếu không kích hoạt; bỏ số hạng fixed-time giảm Jc 1.5–2%; critic đóng
+  băng tốt hơn critic học 3% (danh nghĩa) và hội tụ nhanh ~3 lần khi ‖z0‖ = 3.5.
+- Fixed-time không được bảo toàn: với |v| ≤ 0.5 m/s, thời gian quá độ buộc tăng theo ‖z0‖.
 
 ---
 

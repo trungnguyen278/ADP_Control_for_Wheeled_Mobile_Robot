@@ -42,8 +42,8 @@ $REPO   = "c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot
 | `sim_sm1` | SM1 kinematic, AC vs BS | ~1 phút | `sm1_results.mat` |
 | `sim_sm2` | SM2 kinematic, 4 phương pháp × 2 quỹ đạo | ~2 phút | `sm2_results.mat` |
 | `sim_sm1_full` | 5 phương pháp × 2 điều kiện, full model (hình `torque_dist`) | ~3 phút | `sm1_full_results.mat` |
-| `sim_thesis` | Phần A–C: 3 quỹ đạo + robustness khối lượng + nhiễu | **~5 phút** | `thesis_results.mat` (300 MB) |
-| `sim_thesis_extra` | Phần D–K: ablation, quét z0, nhiễu 2 kênh, SMC, cơ chế, đổi Q/R | ~20 phút | `thesis_extra.mat` |
+| `sim_thesis` | Phần A–C: 3 quỹ đạo (kèm bảng A2 quá độ, A3 mô-men) + robustness khối lượng + nhiễu | **~5 phút** | `thesis_results.mat` (300 MB) |
+| `sim_thesis_extra` | Phần D–L: ablation, quét z0, nhiễu 2 kênh, SMC, cơ chế, đổi Q/R, vai trò học critic | ~25–30 phút | `thesis_extra.mat` |
 | `sweep_gains` | Chỉnh gain đều nhau cho 5 phương pháp (chỉ chạy khi đổi mô hình) | ~15 phút | `sweep_gains.mat` |
 
 > `-batch` chạy rồi thoát, không mở GUI, in output ra terminal.
@@ -111,7 +111,7 @@ Ví dụ đổi gain của ADP-FT trong `simulations/ctrl_params.m`:
 ```powershell
 # 1. Chạy lại mô phỏng bị ảnh hưởng (export_all_figures cần cả ba file .mat)
 & $MATLAB -batch "cd('$REPO\simulations'); sim_sm2; sim_sm1_full; sim_thesis"
-& $MATLAB -batch "cd('$REPO\simulations'); sim_thesis_extra"   # số liệu Phần D-K
+& $MATLAB -batch "cd('$REPO\simulations'); sim_thesis_extra"   # số liệu Phần D-L
 
 # 2. Xuất lại hình
 & $MATLAB -batch "cd('$REPO\plotting'); export_all_figures"
