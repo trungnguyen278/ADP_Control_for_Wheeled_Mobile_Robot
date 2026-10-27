@@ -57,6 +57,10 @@
   \renewcommand{\theHfigure}{\chapternum.\arabic{figure}}%
   \renewcommand{\theHtable}{\chapternum.\arabic{table}}%
   \renewcommand{\theHequation}{\chapternum.\arabic{equation}}%
+  \setcounter{dinhly}{0}\setcounter{bode}{0}\setcounter{hequa}{0}%
+  \def\theHdinhly{\chapternum.\arabic{dinhly}}%
+  \def\theHbode{\chapternum.\arabic{bode}}%
+  \def\theHhequa{\chapternum.\arabic{hequa}}%
 }
 \makeatother
 
@@ -156,7 +160,7 @@ CHO XE TỰ HÀNH}\\[1.5cm]
 
 Tôi xin cam đoan luận văn ``Ứng dụng điều khiển ADP cho xe tự hành'' là công trình nghiên cứu của riêng tôi, được thực hiện dưới sự hướng dẫn của PGS.TS. Nguyễn Hoài Nam.
 
-Luận văn kế thừa và mở rộng phương pháp điều khiển tối ưu cố định thời gian do Wang và cộng sự đề xuất \cite{Wang2025}, cùng mô hình động lực học robot di động của Fierro và Lewis \cite{Fierro1997} và thủ tục backstepping của Krstić và cộng sự \cite{Krstic1995}. Các công thức, kết quả lý thuyết và số liệu thuộc về những công trình này đều được trích dẫn đầy đủ tại vị trí sử dụng. Phần đóng góp riêng của tôi -- bao gồm vòng 2 của bộ điều khiển hai vòng thiết kế theo backstepping (số hạng chéo, các số hạng cố định thời gian và hàm Lyapunov chung), việc phân tích lại chứng minh của bài báo gốc, việc điều chỉnh tham số, cơ chế ghép nonholonomic và toán tử chiếu, cùng toàn bộ chương trình mô phỏng và phân tích so sánh -- được nêu rõ trong Mục 1.4 và Mục 4.6.
+Luận văn sử dụng các kết quả đã công bố về luật điều khiển ADP hội tụ cố định thời gian \cite{Wang2025}, mô hình động lực học robot di động \cite{Fierro1997} và thủ tục backstepping \cite{Krstic1995}; các công thức và kết quả thuộc về những công trình này đều được trích dẫn tại vị trí sử dụng. Phần đóng góp riêng của tôi -- bao gồm vòng 2 của bộ điều khiển hai vòng thiết kế theo backstepping (số hạng chéo, các số hạng cố định thời gian và hàm Lyapunov chung), phân tích Lyapunov của vòng 1, việc điều chỉnh tham số, cơ chế ghép nonholonomic và toán tử chiếu, cùng toàn bộ chương trình mô phỏng và phân tích so sánh -- được nêu rõ trong Mục 1.4 và Mục 4.6.
 
 Các số liệu và kết quả mô phỏng trình bày trong luận văn là trung thực, do tôi tự thực hiện trên MATLAB và có thể tái tạo được bằng mã nguồn kèm theo. Những hạn chế phát hiện được trong quá trình nghiên cứu đều được báo cáo đầy đủ, không lược bỏ.
 
@@ -185,11 +189,11 @@ Cuối cùng, tôi xin cảm ơn gia đình và bạn bè đã luôn động vi�
 \section*{TÓM TẮT LUẬN VĂN}
 \phantomsection\addcontentsline{toc}{section}{TÓM TẮT LUẬN VĂN}
 
-Luận văn nghiên cứu bài toán điều khiển bám quỹ đạo tối ưu cho xe tự hành dạng robot di động bánh xe vi sai, trên cơ sở phương pháp Quy hoạch động thích nghi (ADP) hội tụ cố định thời gian của Wang và cộng sự \cite{Wang2025}.
+Luận văn nghiên cứu bài toán điều khiển bám quỹ đạo cho xe tự hành dạng robot di động bánh xe vi sai bằng quy hoạch động thích nghi (ADP) kết hợp các số hạng hội tụ cố định thời gian.
 
-Công trình gốc chỉ xét mô hình động học ba trạng thái $[x, y, \theta]$, trong đó tín hiệu điều khiển là vận tốc $(v, \omega)$. Robot thực nhận lệnh mô-men, nên luận văn hoàn thiện phương pháp cho \textbf{mô hình đầy đủ năm trạng thái} $[x, y, \theta, v, \omega]$ có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men, với đầu ra là \textbf{mô-men hai bánh} $(\tau_R, \tau_L)$. Bộ điều khiển có \textbf{hai vòng, thiết kế theo phương pháp backstepping}: vòng 1 (vòng ngoài) dùng luật ADP cố định thời gian của bài báo để tính vận tốc ảo, giữ nguyên luật cập nhật trọng số và cấu trúc luật điều khiển; vòng 2 (vòng trong) là luật mô-men trên mô hình động lực học của Fierro \& Lewis \cite{Fierro1997}, bổ sung một số hạng chéo và các số hạng cố định thời gian theo sai lệch vận tốc. Luận văn chứng minh ổn định cho từng vòng và cho toàn hệ bằng một hàm Lyapunov chung: số hạng chéo triệt chính xác tương tác giữa hai vòng, nên vòng 2 không làm mất tính chất nào của vòng 1.
+Các luật ADP cho robot di động thường chỉ được thiết kế trên mô hình động học ba trạng thái $[x, y, \theta]$, trong đó tín hiệu điều khiển là vận tốc $(v, \omega)$. Robot thực nhận lệnh mô-men, nên luận văn thiết kế bộ điều khiển cho \textbf{mô hình đầy đủ năm trạng thái} $[x, y, \theta, v, \omega]$ có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men, với đầu ra là \textbf{mô-men hai bánh} $(\tau_R, \tau_L)$. Bộ điều khiển có \textbf{hai vòng, thiết kế theo phương pháp backstepping}: vòng 1 (vòng ngoài) dùng luật ADP cố định thời gian \cite{Wang2025} để tính vận tốc ảo; vòng 2 (vòng trong) là luật mô-men trên mô hình động lực học của Fierro \& Lewis \cite{Fierro1997}, bổ sung một số hạng chéo và các số hạng cố định thời gian theo sai lệch vận tốc. Luận văn chứng minh ổn định cho từng vòng và cho toàn hệ bằng một hàm Lyapunov chung: số hạng chéo triệt chính xác tương tác giữa hai vòng, nên vòng 2 không làm mất tính chất nào của vòng 1.
 
-Dựng lại chứng minh của bài báo, luận văn chỉ ra một khoảng hở ở kênh sai số ngang: với luật gốc, robot có thể chạy song song với quỹ đạo thẳng mãi mãi. Luận văn bổ sung \textbf{số hạng ghép nonholonomic} để lấp khoảng hở này, \textbf{toán tử chiếu} giữ hàm giá trị xác định dương, và bộ tham số cho lệnh vận tốc bị chặn. Với tham số gốc, hệ không phát tán nhưng bám kém (chi phí gấp $7$--$23$ lần); phân tích thành phần cho thấy số hạng ghép là quyết định: thiếu nó, robot bị kẹt gần điểm cân bằng giả, chạy song song với quỹ đạo.
+Phân tích Lyapunov của vòng 1 chỉ ra rằng kênh sai số ngang không có tác động điều khiển trực tiếp: nếu không bổ sung, robot có thể chạy song song với quỹ đạo thẳng mãi mãi. Luận văn bổ sung \textbf{số hạng ghép nonholonomic} cho kênh này, \textbf{toán tử chiếu} giữ hàm giá trị xác định dương, và bộ tham số cho lệnh vận tốc bị chặn. Với bộ tham số tham khảo, hệ không phát tán nhưng bám kém (chi phí gấp $7$--$23$ lần); phân tích thành phần cho thấy số hạng ghép là quyết định: thiếu nó, robot bị kẹt gần điểm cân bằng giả, chạy song song với quỹ đạo.
 
 Luận văn so sánh năm luật vòng 1 với cùng một vòng 2, trên ba quỹ đạo, sau khi chỉnh hệ số theo cùng một quy trình: luật Kanayama, Actor-Critic ADP, SMC (kèm biến thể NTSMC), Critic-only Concurrent Learning và ADP cố định thời gian. Phương pháp chính có tổng chi phí ngang NTSMC (chênh $0{,}2\%$), cao hơn SMC $7{,}9\%$, thấp hơn luật Kanayama, Concurrent Learning và Actor-Critic, và về lân cận nhỏ của quỹ đạo nhanh nhất. Nhiễu mô-men tới $60\%$ chỉ làm chi phí thay đổi không quá $2\%$ ở mọi phương pháp vì vòng 2 hấp thụ phần lớn tác động. Sai số xác lập do nhiễu như nhau ở mọi luật vòng 1 vì do vòng 2 quyết định; các số hạng cố định thời gian của vòng 2 hạ sai số này $21$--$23\%$ so với luật của Fierro \& Lewis.
 
@@ -394,22 +398,22 @@ Bộ điều khiển tối ưu $u_o^*$ là nghiệm cực tiểu hóa $J$, thỏ
 \subsection*{1.4\quad Đề xuất hướng tiếp cận}
 \phantomsection\addcontentsline{toc}{subsection}{1.4\quad Đề xuất hướng tiếp cận}
 
-Gần đây, Wang et al. \cite{Wang2025} đề xuất phương pháp điều khiển tối ưu cố định thời gian dựa trên ADP, kết hợp Quy hoạch động xấp xỉ (ADP) với ổn định cố định thời gian (Polyakov \cite{Polyakov2012}). Trên mô hình động học, phương pháp này bảo đảm sai số bám đi vào một lân cận nhỏ của gốc trong thời gian bị chặn bởi một hằng số $T_f$ \textbf{không phụ thuộc điều kiện ban đầu}, đồng thời đạt điều khiển gần tối ưu theo một hàm chi phí cho trước. Cấu trúc chỉ dùng một mạng Critic và không cần tín hiệu kích thích liên tục (PE).
+Một hướng gần đây kết hợp quy hoạch động xấp xỉ (ADP) với ổn định cố định thời gian (Polyakov \cite{Polyakov2012}), ví dụ \cite{Wang2025}. Trên mô hình động học, hướng này bảo đảm sai số bám đi vào một lân cận nhỏ của gốc trong thời gian bị chặn bởi một hằng số $T_f$ \textbf{không phụ thuộc điều kiện ban đầu}, đồng thời đạt điều khiển gần tối ưu theo một hàm chi phí cho trước. Cấu trúc chỉ dùng một mạng Critic và không cần tín hiệu kích thích liên tục (PE).
 
-Tuy nhiên, Wang et al. chỉ xét \textbf{mô hình động học thuần túy} (3 trạng thái $[x, y, \theta]$), trong đó tín hiệu điều khiển là vận tốc $(v, \omega)$. Robot thực nhận lệnh \textbf{mô-men} ở hai bánh và có quán tính, ma sát, giới hạn mô-men. Mô hình đầy đủ vì vậy gồm hai hệ phương trình nối tiếp -- động học (đầu vào là vận tốc) và động lực học (đầu vào là mô-men) -- nên bộ điều khiển cần hai vòng. Luật của bài báo mới là \textit{vòng 1} (vòng ngoài) -- chọn vận tốc ảo; muốn dùng trên robot thực còn cần \textit{vòng 2} (vòng trong) -- chọn mô-men để vận tốc thực bám vận tốc ảo mà không làm mất tính chất của vòng 1. Phương pháp backstepping \cite{Krstic1995} cho cách thiết kế vòng 2 từ hàm Lyapunov của vòng 1 để chứng minh được ổn định của toàn hệ. Đó là mục tiêu của luận văn: \textit{hoàn thiện phương pháp của Wang et al. thành một bộ điều khiển hai vòng thiết kế theo backstepping cho robot được điều khiển bằng mô-men}.
+Tuy nhiên, các luật này thường chỉ xét \textbf{mô hình động học thuần túy} (3 trạng thái $[x, y, \theta]$), trong đó tín hiệu điều khiển là vận tốc $(v, \omega)$. Robot thực nhận lệnh \textbf{mô-men} ở hai bánh và có quán tính, ma sát, giới hạn mô-men. Mô hình đầy đủ vì vậy gồm hai hệ phương trình nối tiếp -- động học (đầu vào là vận tốc) và động lực học (đầu vào là mô-men) -- nên bộ điều khiển cần hai vòng. Một luật như vậy mới là \textit{vòng 1} (vòng ngoài) -- chọn vận tốc ảo; muốn dùng trên robot thực còn cần \textit{vòng 2} (vòng trong) -- chọn mô-men để vận tốc thực bám vận tốc ảo mà không làm mất tính chất của vòng 1. Phương pháp backstepping \cite{Krstic1995} cho cách thiết kế vòng 2 từ hàm Lyapunov của vòng 1 để chứng minh được ổn định của toàn hệ. Đó là mục tiêu của luận văn: \textit{thiết kế một bộ điều khiển hai vòng theo backstepping cho robot được điều khiển bằng mô-men, với vòng 1 là luật ADP hội tụ cố định thời gian}.
 
 \textbf{Đóng góp chính của luận văn:}
 \begin{enumerate}
-    \item \textbf{Bộ điều khiển hai vòng thiết kế theo backstepping cho robot điều khiển bằng mô-men:} vòng 1 là ADP-FT của Wang et al.; vòng 2 là luật mô-men có \textbf{số hạng chéo} và \textbf{số hạng cố định thời gian}, xây dựng theo thủ tục backstepping trên mô hình động lực học của Fierro \& Lewis \cite{Fierro1997}. Định lý 4.1 chứng minh một hàm Lyapunov chung: vòng 2 không làm mất tính chất nào của vòng 1 trên mô hình đầy đủ năm trạng thái $[x, y, \theta, v, \omega]$ có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men.
+    \item \textbf{Bộ điều khiển hai vòng thiết kế theo backstepping cho robot điều khiển bằng mô-men:} vòng 1 là luật ADP hội tụ cố định thời gian (ADP-FT) \cite{Wang2025}; vòng 2 là luật mô-men có \textbf{số hạng chéo} và \textbf{số hạng cố định thời gian}, xây dựng theo thủ tục backstepping trên mô hình động lực học của Fierro \& Lewis \cite{Fierro1997}. Định lý 4.1 chứng minh một hàm Lyapunov chung: vòng 2 không làm mất tính chất nào của vòng 1 trên mô hình đầy đủ năm trạng thái $[x, y, \theta, v, \omega]$ có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men.
 
-    \item \textbf{Phân tích lại và hoàn thiện vòng 1:} dựng lại chứng minh của Wang et al. và chỉ ra một khoảng hở ở kênh sai số ngang (Bổ đề 4.1) -- với luật gốc, robot có thể chạy song song với quỹ đạo thẳng mãi mãi; bổ sung \textbf{cơ chế ghép nonholonomic} để lấp khoảng hở này (mô phỏng cho thấy đây là thành phần quyết định), \textbf{toán tử chiếu} giữ hàm giá trị xấp xỉ xác định dương, và bộ tham số cho lệnh vận tốc bị chặn. Luật cập nhật trọng số và cấu trúc luật điều khiển (16)--(18) của Wang et al. được giữ nguyên; thay đổi duy nhất trong luật điều khiển là số hạng ghép bổ sung vào thành phần bền vững.
+    \item \textbf{Phân tích và hoàn thiện vòng 1:} phân tích Lyapunov chỉ ra kênh sai số ngang không có tác động điều khiển trực tiếp (Bổ đề \ref{lem:gap}) -- nếu không bổ sung, robot có thể chạy song song với quỹ đạo thẳng mãi mãi; bổ sung \textbf{cơ chế ghép nonholonomic} để lấp khoảng hở này (mô phỏng cho thấy đây là thành phần quyết định), \textbf{toán tử chiếu} giữ hàm giá trị xấp xỉ xác định dương, và bộ tham số cho lệnh vận tốc bị chặn. Cấu trúc luật điều khiển và luật cập nhật trọng số được giữ nguyên; thay đổi duy nhất là số hạng ghép bổ sung vào thành phần bền vững.
 
     \item \textbf{So sánh công bằng năm phương pháp} -- luật Kanayama, Actor-Critic ADP, SMC (kèm biến thể NTSMC), Critic-only Concurrent Learning và ADP-FT làm vòng 1, với cùng một vòng 2 -- trên ba quỹ đạo, sau khi mọi phương pháp được chỉnh hệ số theo cùng một quy trình.
 
     \item \textbf{Phân tích độ bền và phân tích thành phần:} ba dạng nhiễu, điều kiện đầu, và thí nghiệm loại bỏ từng thành phần của ADP-FT để xác định thành phần nào thực sự đóng góp.
 \end{enumerate}
 
-Các công thức của Wang et al., mô hình của Fierro \& Lewis và thủ tục backstepping được trích dẫn tại chỗ sử dụng; Bảng \ref{tab:attribution} (Mục 4.6) phân định chi tiết phần kế thừa và phần của luận văn.
+Các công thức kế thừa từ tài liệu tham khảo được trích dẫn tại chỗ sử dụng; Bảng \ref{tab:attribution} (Mục 4.6) phân định chi tiết phần kế thừa và phần của luận văn.
 
 \subsection*{1.5\quad Cấu trúc luận văn}
 \phantomsection\addcontentsline{toc}{subsection}{1.5\quad Cấu trúc luận văn}
@@ -423,7 +427,7 @@ Luận văn được tổ chức thành 6 chương:
 
     \item \textbf{Chương 3: Cơ sở lý thuyết điều khiển tối ưu và ADP} -- Trình bày bài toán điều khiển tối ưu, phương trình HJB, Quy hoạch động xấp xỉ, ổn định cố định thời gian, và Concurrent Learning.
 
-    \item \textbf{Chương 4: Thiết kế bộ điều khiển hai vòng theo phương pháp backstepping} -- Vòng 1 ADP-FT (luật của Wang et al., phân tích lại chứng minh, cơ chế ghép nonholonomic, toán tử chiếu, tham số), vòng 2 luật mô-men, chứng minh ổn định cho từng vòng và cho toàn hệ, và bốn luật vòng 1 dùng để so sánh.
+    \item \textbf{Chương 4: Thiết kế bộ điều khiển hai vòng theo phương pháp backstepping} -- Vòng 1 ADP-FT (luật điều khiển, phân tích Lyapunov, cơ chế ghép nonholonomic, toán tử chiếu, tham số), vòng 2 luật mô-men, chứng minh ổn định cho từng vòng và cho toàn hệ, và bốn luật vòng 1 dùng để so sánh.
 
     \item \textbf{Chương 5: Kết quả mô phỏng và thảo luận} -- Thiết lập và quy trình chỉnh hệ số đều nhau, so sánh sáu phương pháp trên ba quỹ đạo (gồm cả so sánh với SMC/NTSMC), độ bền với nhiễu, đóng góp của vòng 2, vai trò các thành phần của ADP-FT, đánh giá điểm mạnh và điểm yếu.
 
@@ -915,7 +919,7 @@ So sánh ba loại ổn định:
 \begin{equation}\label{eq:practical_ft}
     \|x(t)\| \leq \Omega, \quad \forall t \geq T_f
 \end{equation}
-với $\Omega > 0$ là bán kính lân cận và $T_f$ vẫn độc lập điều kiện đầu. Đây chính là dạng kết quả mà Wang et al. \cite{Wang2025} chứng minh (Định lý 1 của bài báo): sai số bám và sai số ước lượng trọng số hội tụ \textit{về lân cận của không} trong thời gian cố định, chứ không phải triệt tiêu hoàn toàn. Bán kính $\Omega$ phụ thuộc sai số xấp xỉ và các tham số $\kappa_1, \kappa_2$ của số hạng hiệu chỉnh.
+với $\Omega > 0$ là bán kính lân cận và $T_f$ vẫn độc lập điều kiện đầu. Đây là dạng kết quả mà các luật ADP cố định thời gian đạt được \cite{Wang2025}: sai số bám và sai số ước lượng trọng số hội tụ \textit{về lân cận của không} trong thời gian cố định, chứ không triệt tiêu hoàn toàn; Bổ đề \ref{lem:practical_ft} dưới đây cho một điều kiện đủ. Bán kính $\Omega$ phụ thuộc sai số xấp xỉ và các tham số $\kappa_1, \kappa_2$ của số hạng hiệu chỉnh.
 
 Phân biệt này cần nhớ khi diễn giải kết quả mô phỏng ở Chương 5: một sai số xác lập khác không \textbf{không} mâu thuẫn với lý thuyết. Tuy nhiên, Mục 5.3 sẽ cho thấy trên robot điều khiển bằng mô-men, sai số xác lập đo được chủ yếu là dao động do nhiễu mô-men lọt qua vòng 2 -- như nhau ở mọi luật vòng 1 -- nên không thể đọc nó như ước lượng của $\Omega$.
 
@@ -929,6 +933,18 @@ thì hệ ổn định cố định thời gian với cận trên:
 \end{equation}
 
 Ý nghĩa vật lý: thành phần $-\alpha V^p$ (lũy thừa phân số, $p < 1$) chi phối khi $V$ nhỏ (gần gốc), đảm bảo hội tụ nhanh trong ``vùng lân cận cuối cùng'' -- nơi mà ổn định tiệm cận trở nên chậm. Thành phần $-\beta V^q$ (lũy thừa bậc cao, $q > 1$) chi phối khi $V$ lớn (xa gốc), đảm bảo hội tụ nhanh từ điều kiện đầu lớn. Sự kết hợp hai thành phần tạo nên cận trên $T_f$ không phụ thuộc $V(0)$.
+
+\begin{bode}[dạng thực dụng]\label{lem:practical_ft}
+Nếu $\dot V \leq -\alpha V^p - \beta V^q + c$ với $0 < p < 1 < q$ và $\alpha, \beta, c > 0$, thì với mọi $\epsilon \in (0, 1)$, $V$ đi vào tập
+\begin{equation}\label{eq:practical_set}
+    \Big\{V \leq \min\Big[\Big(\frac{c}{(1-\epsilon)\alpha}\Big)^{1/p},\ \Big(\frac{c}{(1-\epsilon)\beta}\Big)^{1/q}\Big]\Big\}
+\end{equation}
+trong thời gian không quá $T_f = \dfrac{1}{\epsilon\alpha(1-p)} + \dfrac{1}{\epsilon\beta(q-1)}$, không phụ thuộc điều kiện đầu, và ở lại trong tập đó.
+\end{bode}
+
+\begin{chungminh}
+Viết $\dot V \leq -\epsilon\alpha V^p - \epsilon\beta V^q - \big[(1-\epsilon)\alpha V^p + (1-\epsilon)\beta V^q - c\big]$. Khi $V$ ở ngoài tập (\ref{eq:practical_set}), ít nhất một trong hai số hạng $(1-\epsilon)\alpha V^p$, $(1-\epsilon)\beta V^q$ lớn hơn $c$, nên ngoặc vuông dương và $\dot V \leq -\epsilon\alpha V^p - \epsilon\beta V^q$; áp dụng (\ref{eq:ft_lyapunov})--(\ref{eq:ft_bound}) với $\epsilon\alpha$, $\epsilon\beta$ được cận thời gian. Trên biên của tập, ngoặc vuông vẫn dương nên $\dot V < 0$, do đó $V$ không ra khỏi tập.
+\end{chungminh}
 
 \begin{figure}[H]
 \centering
@@ -1053,13 +1069,13 @@ Bộ điều khiển của luận văn vì vậy có \textbf{hai vòng}:
     \begin{equation}\label{eq:virtual_control}
         \eta_d = u_f + u_o(z, W),
     \end{equation}
-    sao cho \textit{nếu} $\eta = \eta_d$ thì sai số $z$ hội tụ, kèm một hàm Lyapunov $V_1$. Vòng 1 khép qua tư thế $(x, y, \theta)$. Luận văn dùng luật ADP cố định thời gian của Wang et al. \cite{Wang2025} cho vòng này (Mục \ref{sec:step1}).
+    sao cho \textit{nếu} $\eta = \eta_d$ thì sai số $z$ hội tụ, kèm một hàm Lyapunov $V_1$. Vòng 1 khép qua tư thế $(x, y, \theta)$. Vòng này dùng luật ADP hội tụ cố định thời gian (Mục \ref{sec:step1}).
     \item \textbf{Vòng 2 -- vòng trong (động lực học):} chọn mô-men $\tau$ để vận tốc thực $\eta$ bám $\eta_d$, đồng thời triệt số hạng tương tác mà sai lệch $\eta \neq \eta_d$ sinh ra trong đạo hàm của $V_1$. Vòng 2 khép qua vận tốc $(v, \omega)$. Kết quả là một hàm Lyapunov chung cho toàn hệ năm trạng thái (Mục \ref{sec:step2} và \ref{sec:stability}).
 \end{itemize}
 
 Hai vòng \textbf{không} phải hai bộ điều khiển thiết kế độc lập rồi ghép nối tiếp. Vòng 2 dùng đạo hàm $\dot\eta_d$ của đầu ra vòng 1 và dùng cả sai số vị trí $z$ (qua số hạng chéo) -- tức được suy ra từ hàm Lyapunov của vòng 1. Nhờ đó ổn định được chứng minh cho từng vòng và cho toàn hệ (Mục \ref{sec:stability}) mà không cần giả thiết vòng trong nhanh hơn vòng ngoài. Hình \ref{fig:architecture} minh họa hai vòng.
 
-\textbf{Liên hệ với các công trình gốc.} Fierro \& Lewis \cite{Fierro1997} đã dùng cấu trúc này cho WMR, với vòng 1 là luật động học của Kanayama et al. \cite{Kanayama1990}; Jiang \& Nijmeijer \cite{Jiang1997} cũng giải bài toán bám của WMR theo thủ tục backstepping. Vì vậy luật Kanayama thường được gọi là ``backstepping'' dù bản thân nó chỉ là vòng 1. Wang et al. \cite{Wang2025} thay vòng 1 bằng ADP cố định thời gian nhưng chỉ xét mô hình động học, tức coi $\eta$ là đầu vào thật và dừng ở vòng 1; bộ ``BC'' mà bài báo dùng để so sánh (phương trình (31) của bài báo) cũng chính là luật Kanayama. Luận văn giữ ADP cố định thời gian làm vòng 1 và \textbf{hoàn thiện vòng 2}, để bộ điều khiển là một bộ backstepping đúng nghĩa cho robot nhận lệnh mô-men.
+\textbf{Liên hệ với các công trình trước.} Fierro \& Lewis \cite{Fierro1997} đã dùng cấu trúc này cho WMR, với vòng 1 là luật động học của Kanayama et al. \cite{Kanayama1990}; Jiang \& Nijmeijer \cite{Jiang1997} cũng giải bài toán bám của WMR theo thủ tục backstepping. Vì vậy luật Kanayama thường được gọi là ``backstepping'' dù bản thân nó chỉ là vòng 1. Các luật ADP cho WMR, ví dụ \cite{Wang2025}, thường chỉ được thiết kế trên mô hình động học, tức coi $\eta$ là đầu vào thật và dừng ở vòng 1. Luận văn dùng luật ADP làm vòng 1 và \textbf{thiết kế vòng 2}, để bộ điều khiển là một bộ backstepping đúng nghĩa cho robot nhận lệnh mô-men.
 
 Năm phương pháp so sánh ở Chương 5 chỉ khác nhau ở vòng 1 (luật vận tốc ảo, Mục \ref{sec:baselines}); vòng 2 dùng chung, để mọi khác biệt về hiệu năng đến từ vòng 1.
 
@@ -1100,12 +1116,12 @@ Năm phương pháp so sánh ở Chương 5 chỉ khác nhau ở vòng 1 (luật
 \phantomsection\addcontentsline{toc}{subsection}{4.2\quad Vòng 1: luật vận tốc ảo ADP cố định thời gian}
 \seclabel{sec:step1}{4.2}
 
-Vòng 1 dùng luật ADP cố định thời gian (ADP-FT) của Wang et al. \cite{Wang2025}. Mục 4.2.1--4.2.2 trình bày lại luật điều khiển và luật cập nhật của bài báo; Mục 4.2.3 dựng lại chứng minh để xác định chính xác vòng 1 bảo đảm được gì; Mục 4.2.4--4.2.6 là ba bổ sung của luận văn: số hạng ghép cho kênh ngang, toán tử chiếu và bộ tham số cho robot điều khiển bằng mô-men.
+Vòng 1 dùng luật ADP hội tụ cố định thời gian (ADP-FT), với cấu trúc luật điều khiển và luật cập nhật trọng số theo \cite{Wang2025}. Mục 4.2.1--4.2.2 trình bày hai luật này; Mục 4.2.3 phân tích Lyapunov để xác định vòng 1 bảo đảm được gì; Mục 4.2.4--4.2.6 là ba bổ sung của luận văn: số hạng ghép cho kênh ngang, toán tử chiếu và bộ tham số cho robot điều khiển bằng mô-men.
 
 \subsubsection*{4.2.1\quad Luật điều khiển}
 \phantomsection\addcontentsline{toc}{subsubsection}{4.2.1\quad Luật điều khiển}
 
-Luật phản hồi của vòng 1 (Wang et al. \cite{Wang2025}, phương trình (16) và (18) của bài báo):
+Luật phản hồi của vòng 1 gồm một thành phần ADP và một thành phần bền vững:
 \begin{equation}\label{eq:ft_control}
     \boxed{u_o = u_{o,\text{adp}} - g^\dagger\, r(z)}
 \end{equation}
@@ -1147,7 +1163,7 @@ Tính trực tiếp từ (\ref{eq:f_and_g}), giả nghịch đảo có dạng t�
 \end{equation}
 trong đó $r = [r_x, r_y, r_\theta]^\T$. Một hệ quả cần ghi nhớ cho Mục \ref{sec:wang_gap}: thành phần $r_y$ chỉ đi vào $u_o$ qua tích $z_x r_y$.
 
-Theo lập luận của bài báo, (iii) và (iv) tạo nên cơ chế hội tụ cố định thời gian theo bổ đề (\ref{eq:ft_lyapunov}): thành phần $|z|^{p/q}$ tương ứng số hạng lũy thừa nhỏ hơn một (chi phối gần gốc), $z^3$ tương ứng số hạng lũy thừa lớn hơn một (chi phối xa gốc). Mục \ref{sec:wang_gap} phân tích lại lập luận này. Cuối cùng, trước khi cộng thành phần truyền thẳng, $u_o$ được giới hạn ở $\pm u_{o,\max}$ (Mục \ref{sec:ft_tuning}), và thành phần thứ ba của $r$ được bổ sung một số hạng ghép (Mục \ref{sec:czy}); hai thay đổi này là của luận văn.
+Theo bổ đề (\ref{eq:ft_lyapunov}), (iii) và (iv) là hai số hạng tạo hội tụ cố định thời gian: thành phần $|z|^{p/q}$ tương ứng số hạng lũy thừa nhỏ hơn một (chi phối gần gốc), $z^3$ tương ứng số hạng lũy thừa lớn hơn một (chi phối xa gốc). Mục \ref{sec:wang_gap} xét điều này cho hệ sai số (\ref{eq:error_dynamics}). Cuối cùng, trước khi cộng thành phần truyền thẳng, $u_o$ được giới hạn ở $\pm u_{o,\max}$ (Mục \ref{sec:ft_tuning}), và thành phần thứ ba của $r$ được bổ sung một số hạng ghép (Mục \ref{sec:czy}); hai thay đổi này là của luận văn.
 
 \begin{figure}[H]
 \centering
@@ -1202,7 +1218,7 @@ Theo lập luận của bài báo, (iii) và (iv) tạo nên cơ chế hội t�
 \phantomsection\addcontentsline{toc}{subsubsection}{4.2.2\quad Cập nhật trọng số}
 \seclabel{sec:ft_update}{4.2.2}
 
-Luận văn \textbf{giữ nguyên} luật cập nhật trọng số của Wang et al. \cite{Wang2025} (phương trình 17 của bài báo):
+Trọng số của mạng Critic được cập nhật theo luật \cite{Wang2025}:
 \begin{equation}\label{eq:ft_weight_update_wang}
     \dot{W} = \frac{1}{2}\Gamma\Big[\nabla\phi\, g\, R^{-1} g^\T z - \kappa_1 W - \kappa_2 (W^\T W) W\Big]
 \end{equation}
@@ -1210,28 +1226,28 @@ Luận văn \textbf{giữ nguyên} luật cập nhật trọng số của Wang e
 Phân tích ba thành phần:
 
 \begin{itemize}
-    \item $\nabla\phi\, g R^{-1} g^\T z$: thành phần ``học''. Điểm đáng chú ý là luật này \textbf{không} sử dụng sai số Bellman. Wang et al. lựa chọn như vậy có chủ đích (Nhận xét 2 của bài báo): các phương pháp dựa trên gradient sai số Bellman thường kéo theo yêu cầu về điều kiện kích thích liên tục (PE), điều mà bài báo muốn loại bỏ. $\Gamma \in \R^{l \times l}$ là ma trận tốc độ học.
+    \item $\nabla\phi\, g R^{-1} g^\T z$: thành phần ``học''. Luật này \textbf{không} dùng sai số Bellman, nhờ đó tránh được yêu cầu kích thích liên tục (PE) mà các luật dựa trên gradient sai số Bellman thường cần (Mục 3.5). $\Gamma \in \R^{l \times l}$ là ma trận tốc độ học.
 
     \item $\kappa_1 W$: \textbf{$\sigma$-modification} (Lewis \cite{Lewis2012}), ngăn $\|W\|$ phân kỳ khi tín hiệu học nhỏ. Hiệu ứng: kéo $W$ về gốc với tốc độ $\kappa_1$, đánh đổi một chút sai lệch để lấy tính bền vững.
 
-    \item $\kappa_2 (W^\T W) W$: \textbf{$\sigma$-modification bậc ba}. Đây là đóng góp quan trọng của Wang et al.: thành phần bậc ba $(W^\T W)W$ tạo ra hội tụ cố định thời gian cho \textit{sai số ước lượng trọng số}. Cụ thể, nếu bỏ qua thành phần học, $\dot{W} = -\kappa_1 W - \kappa_2\|W\|^2 W$ với hàm Lyapunov $V_W = W^\T W$ cho $\dot{V}_W \leq -\kappa_1 V_W - \kappa_2 V_W^2$, tương ứng $q = 2$ trong Bổ đề (\ref{eq:ft_lyapunov}).
+    \item $\kappa_2 (W^\T W) W$: \textbf{$\sigma$-modification bậc ba}. Thành phần bậc ba $(W^\T W)W$ tạo ra hội tụ cố định thời gian cho \textit{sai số ước lượng trọng số} (Bổ đề \ref{lem:weight}). Cụ thể, nếu bỏ qua thành phần học, $\dot{W} = -\kappa_1 W - \kappa_2\|W\|^2 W$ với hàm Lyapunov $V_W = W^\T W$ cho $\dot{V}_W \leq -\kappa_1 V_W - \kappa_2 V_W^2$, tương ứng $q = 2$ trong Bổ đề (\ref{eq:ft_lyapunov}).
 \end{itemize}
 
 \textbf{Phương án thay thế đã khảo sát.} Trong quá trình phát triển, luận văn có thử một luật cập nhật khác, dựa trên phương pháp giảm gradient của sai số Bellman:
 \begin{equation}\label{eq:ft_weight_update}
     \dot{W} = -\frac{1}{2}\Gamma\Big[\bar{\sigma}\, \varepsilon + \kappa_1 W + \kappa_2 (W^\T W) W\Big]
 \end{equation}
-với $\varepsilon = W^\T \sigma + z^\T Q z + u_{o,\text{adp}}^\T R\, u_{o,\text{adp}}$ là sai số Bellman, $\sigma = \nabla\phi\,(f + g\,u_{o,\text{adp}})$, và $\bar{\sigma} = \sigma/(1 + \sigma^\T\sigma)^2$ là dạng chuẩn hóa theo (\ref{eq:sigma_bar}). Hai số hạng $\sigma$-modification của Wang et al. được giữ nguyên. Luật này bám trực tiếp phương trình HJB (\ref{eq:hjb_reduced}) và tận dụng thông tin chi phí tức thời $z^\T Qz + u_o^\T Ru_o$ tại mỗi bước.
+với $\varepsilon = W^\T \sigma + z^\T Q z + u_{o,\text{adp}}^\T R\, u_{o,\text{adp}}$ là sai số Bellman, $\sigma = \nabla\phi\,(f + g\,u_{o,\text{adp}})$, và $\bar{\sigma} = \sigma/(1 + \sigma^\T\sigma)^2$ là dạng chuẩn hóa theo (\ref{eq:sigma_bar}). Hai số hạng $\sigma$-modification được giữ nguyên. Luật này bám trực tiếp phương trình HJB (\ref{eq:hjb_reduced}) và tận dụng thông tin chi phí tức thời $z^\T Qz + u_o^\T Ru_o$ tại mỗi bước.
 
-Cần phân định rõ hai điểm. Thứ nhất, (\ref{eq:ft_weight_update}) là biến thể do luận văn thử nghiệm, \textbf{không phải} công thức của Wang et al. Thứ hai, chứng minh hội tụ cố định thời gian của bài báo (Định lý 1) được xây dựng trên (\ref{eq:ft_weight_update_wang}), nên không phủ được biến thể này.
+Biến thể (\ref{eq:ft_weight_update}) do luận văn thử nghiệm; tính chất hội tụ của trọng số ở Bổ đề \ref{lem:weight} được chứng minh cho luật (\ref{eq:ft_weight_update_wang}), nên không áp dụng cho biến thể này.
 
-Mục 5.5.3 so sánh hai luật trên mô hình đầy đủ: ở điều kiện đầu danh nghĩa chúng cho kết quả gần như trùng nhau, còn ở sai lệch ban đầu lớn biến thể Bellman hội tụ nhanh hơn. Luận văn vẫn dùng luật gốc (\ref{eq:ft_weight_update_wang}) làm cấu hình chính để giữ liên hệ với kết quả lý thuyết của Wang et al.; khác biệt ở sai lệch lớn được báo cáo đầy đủ ở Mục 5.5.3 và 5.5.4.
+Mục 5.5.3 so sánh hai luật trên mô hình đầy đủ: ở điều kiện đầu danh nghĩa chúng cho kết quả gần như trùng nhau, còn ở sai lệch ban đầu lớn biến thể Bellman hội tụ nhanh hơn. Luận văn dùng luật (\ref{eq:ft_weight_update_wang}) làm cấu hình chính vì nó có chứng minh (Bổ đề \ref{lem:weight}); khác biệt ở sai lệch lớn được báo cáo đầy đủ ở Mục 5.5.3 và 5.5.4.
 
 \subsubsection*{4.2.3\quad Phân tích Lyapunov của vòng 1 và khoảng hở ở kênh ngang}
 \phantomsection\addcontentsline{toc}{subsubsection}{4.2.3\quad Phân tích Lyapunov của vòng 1 và khoảng hở ở kênh ngang}
 \seclabel{sec:wang_gap}{4.2.3}
 
-Định lý 1 của Wang et al. \cite{Wang2025} khẳng định sai số bám và sai số ước lượng trọng số hội tụ về một lân cận của gốc trong thời gian cố định. Vì vòng 2 (Mục \ref{sec:step2}--\ref{sec:stability}) được xây dựng trên hàm Lyapunov của vòng 1, luận văn dựng lại chứng minh này để xác định chính xác vòng 1 bảo đảm được gì. Hàm Lyapunov của bài báo (phương trình (19)) là
+Vì vòng 2 (Mục \ref{sec:step2}--\ref{sec:stability}) được xây dựng trên hàm Lyapunov của vòng 1, cần xác định chính xác vòng 1 bảo đảm được gì. Xét hàm Lyapunov
 \begin{equation}\label{eq:V1}
     V_1(z, \tilde W) = \tfrac12\, z^\T z + \tfrac12\, \tilde W^\T \Gamma^{-1} \tilde W, \qquad \tilde W = W^* - \hat W,
 \end{equation}
@@ -1247,9 +1263,9 @@ vì từ (\ref{eq:f_and_g}), $g^\T z = [-z_x,\ z_y z_x - z_x z_y - z_\theta]^\T$
 \end{equation}
 Tín hiệu điều khiển chỉ tác động lên $\frac12 z^\T z$ qua hai thành phần $z_x$ và $z_\theta$; sai số ngang $z_y$ chỉ xuất hiện trong số hạng trôi $v_r z_y\sin z_\theta$, vốn không có dấu xác định. Đây là dạng định lượng của tính nonholonomic đã nêu ở Mục 2.5.
 
-\textbf{Phần trọng số của chứng minh.} Thay $\hat W = W^* - \tilde W$ vào $u_{o,\text{adp}}$ sinh ra trong $\dot V_1$ số hạng $\frac12 z^\T g R^{-1} g^\T \nabla\phi^\T \tilde W$. Số hạng học $\nabla\phi\, g R^{-1} g^\T z$ của luật cập nhật (\ref{eq:ft_weight_update_wang}) được chọn để triệt đúng số hạng này (phương trình (20)--(21) của bài báo); phần còn lại chỉ gồm hai số hạng $\sigma$-modification, được bài báo chặn bởi $-a_W(\frac12\tilde W^\T\Gamma^{-1}\tilde W)^{\gamma} - b_W(\frac12\tilde W^\T\Gamma^{-1}\tilde W)^2 + c_W$ với $\gamma = (p+q)/(2q)$ và các hằng số dương $a_W, b_W, c_W$ (phụ lục của bài báo). Phần này đúng và được giữ nguyên.
+\textbf{Phần trọng số.} Thay $\hat W = W^* - \tilde W$ vào $u_{o,\text{adp}}$ sinh ra trong $\dot V_1$ số hạng $\frac12 z^\T g R^{-1} g^\T \nabla\phi^\T \tilde W$. Số hạng học $\nabla\phi\, g R^{-1} g^\T z$ của luật cập nhật (\ref{eq:ft_weight_update_wang}) triệt đúng số hạng này; phần còn lại chỉ gồm hai số hạng $\sigma$-modification và được chặn ở Bổ đề \ref{lem:weight} (cuối mục).
 
-\textbf{Phần sai số bám và khoảng hở.} Thành phần bền vững đi vào $u_o$ qua giả nghịch đảo, nên $\dot V_1$ chứa số hạng $z^\T g\,(-g^\dagger r) = -z^\T g g^\dagger r$. Ở bước chuyển từ (19) sang (20), bài báo viết số hạng này thành $-z^\T r(z)$, tức đã dùng $g g^\dagger = I_3$. Nhờ đó chứng minh có các số hạng $-z^\T(\bm\mu\odot z)$, $-z^\T(\bm\alpha\odot z^{p/q})$, $-z^\T(\bm\beta\odot z^3)$ trên \textit{cả ba} thành phần của $z$, dùng để lấn át số hạng trôi (điều kiện $\vartheta_{\min}(\bm\mu) \geq \psi_A$ của bài báo) và để có bất đẳng thức cố định thời gian (25). Tuy nhiên $g \in \R^{3\times 2}$, nên $g g^\dagger$ là phép chiếu trực giao lên mặt phẳng hai chiều sinh bởi các cột của $g$, không phải $I_3$:
+\textbf{Phần sai số bám và kênh ngang.} Thành phần bền vững đi vào $u_o$ qua giả nghịch đảo, nên $\dot V_1$ chứa số hạng $z^\T g\,(-g^\dagger r) = -z^\T g g^\dagger r$. Nếu $g g^\dagger = I_3$, số hạng này bằng $-z^\T r(z)$ và cho các số hạng tiêu tán $-z^\T(\bm\mu\odot z)$, $-z^\T(\bm\alpha\odot z^{p/q})$, $-z^\T(\bm\beta\odot z^3)$ trên \textit{cả ba} thành phần của $z$; lập luận hội tụ trong \cite{Wang2025} dựa trên điều này. Tuy nhiên $g \in \R^{3\times 2}$, nên $g g^\dagger$ là phép chiếu trực giao lên mặt phẳng hai chiều sinh bởi các cột của $g$, không phải $I_3$:
 \begin{equation}\label{eq:projector_gap}
     g g^\dagger = I_3 - n n^\T, \qquad n = \frac{1}{\sqrt{1+z_x^2}}\begin{bmatrix} 0 \\ 1 \\ -z_x \end{bmatrix}, \qquad g^\T n = 0 .
 \end{equation}
@@ -1259,7 +1275,7 @@ Thành phần của $r(z)$ theo phương $n$ bị triệt tiêu. Dạng tường
 Xét hệ sai số (\ref{eq:error_dynamics}) và hàm (\ref{eq:V1}).
 \begin{enumerate}[label=(\alph*), nosep]
     \item Với mọi luật phản hồi $u_o$ và mọi luật cập nhật trọng số, tại các trạng thái $z = (0, z_y, 0)$, $\tilde W = 0$ ta có $\dot V_1 = 0$ trong khi $V_1 = \frac12 z_y^2$. Do đó không bất đẳng thức nào dạng $\dot V_1 \leq -aV_1^{\gamma} - bV_1^2 + c$ với $a, b > 0$ có thể đúng tại các trạng thái có $a(\frac12 z_y^2)^\gamma + b(\frac12 z_y^2)^2 > c$.
-    \item Với luật (\ref{eq:ft_control})--(\ref{eq:robust}), luật cập nhật (\ref{eq:ft_weight_update_wang}) và $\hat W(0) = 0$ như trong bài báo, nếu quỹ đạo tham chiếu là đường thẳng ($\omega_r = 0$) thì mọi điểm $z = (0, z_y^0, 0)$ là điểm cân bằng của hệ kín: robot chạy song song với quỹ đạo, cách một khoảng $z_y^0$ không đổi.
+    \item Với luật (\ref{eq:ft_control})--(\ref{eq:robust}), luật cập nhật (\ref{eq:ft_weight_update_wang}) và $\hat W(0) = 0$, nếu quỹ đạo tham chiếu là đường thẳng ($\omega_r = 0$) thì mọi điểm $z = (0, z_y^0, 0)$ là điểm cân bằng của hệ kín: robot chạy song song với quỹ đạo, cách một khoảng $z_y^0$ không đổi.
 \end{enumerate}
 \end{bode}
 
@@ -1268,14 +1284,33 @@ Xét hệ sai số (\ref{eq:error_dynamics}) và hàm (\ref{eq:V1}).
 (b) Tại $z = (0, z_y, 0)$ ta có $\zeta = 0$, nên số hạng học của (\ref{eq:ft_weight_update_wang}), bằng $-\nabla\phi\, g R^{-1}\zeta$, triệt tiêu; với $\hat W = 0$ hai số hạng $\sigma$-modification cũng bằng không, nên $\hat W$ giữ nguyên bằng $0$ và $u_{o,\text{adp}} = 0$. Mỗi thành phần $r_i$ của (\ref{eq:robust}) là hàm lẻ của $z_i$, nên $r_x = r_\theta = 0$, và theo (\ref{eq:gpinv}) $-g^\dagger r = 0$. Vậy $u_o = 0$ và $\dot z = f(z, u_r) = [\omega_r z_y,\ 0,\ 0]^\T = 0$ khi $\omega_r = 0$.
 \end{chungminh}
 
-Mô phỏng động học thuần với đúng luật, tham số và $\hat W(0) = 0$ của bài báo xác nhận khẳng định (b): xuất phát từ $z(0) = (0;\ 0{,}5;\ 0)$ trên đường thẳng, sai số ngang giữ nguyên $0{,}5$\,m suốt 60\,s, còn $|z_x|$ và $|z_\theta|$ chỉ ở mức sai số làm tròn ($< 10^{-11}$).
+Mô phỏng động học thuần với luật trên, bộ tham số tham khảo (Mục \ref{sec:ft_tuning}) và $\hat W(0) = 0$ xác nhận khẳng định (b): xuất phát từ $z(0) = (0;\ 0{,}5;\ 0)$ trên đường thẳng, sai số ngang giữ nguyên $0{,}5$\,m suốt 60\,s, còn $|z_x|$ và $|z_\theta|$ chỉ ở mức sai số làm tròn ($< 10^{-11}$).
 
-\textbf{Ý nghĩa.} Bổ đề \ref{lem:gap} không phủ nhận kết quả mô phỏng của bài báo -- ở đó điều kiện đầu có $z_x, z_\theta \neq 0$, và $\beta_y = 10^5$ tạo ghép rất mạnh giữa $z_y$ và kênh góc qua tích $z_x r_y$ -- nhưng chỉ ra ba điều được dùng ở các mục sau:
+\textbf{Ý nghĩa.} Bổ đề \ref{lem:gap} không có nghĩa luật này luôn bám kém: khi $z_x \neq 0$ và $\beta_y$ lớn ($10^5$ trong bộ tham số tham khảo), tích $z_x r_y$ tạo ghép mạnh giữa $z_y$ và kênh góc. Bổ đề chỉ ra ba điều được dùng ở các mục sau:
 \begin{enumerate}
     \item Hàm $V_1$ dạng (\ref{eq:V1}) không thể là hàm Lyapunov chặt cho hệ sai số nonholonomic. Muốn giảm sai số ngang, bộ điều khiển phải chủ động tạo sai số góc tỉ lệ với $z_y$ để số hạng trôi $v_r\sin z_\theta$ kéo $z_y$ về. Luật Kanayama làm đúng điều này qua số hạng $k_2 v_r z_y$, với hàm Lyapunov dùng $(1-\cos z_\theta)/k_2$ thay cho $\frac12 z_\theta^2$ \cite{Kanayama1990}.
     \item Điều vòng 1 bảo đảm được một cách chặt chẽ là phần \textit{tác động trực tiếp}: đạo hàm của $V_1$ được điều khiển qua $\zeta = [z_x; z_\theta]$, và phần trọng số có các số hạng tiêu tán cố định thời gian. Hội tụ của $z_y$ cần một cơ chế riêng -- đó là cơ sở lý thuyết cho số hạng ghép ở Mục \ref{sec:czy}, vốn trước đó luận văn chỉ phát hiện qua mô phỏng.
     \item Vectơ $\zeta$ cũng chính là đại lượng xuất hiện trong số hạng tương tác giữa hai vòng (Mục \ref{sec:step2}), nên số hạng chéo của vòng 2 có dạng rất gọn $K_c\zeta$.
 \end{enumerate}
+
+\textbf{Chặn sai số trọng số.} Bổ đề sau hoàn tất phần trọng số của phân tích: số hạng $\sigma$-modification bậc ba bảo đảm sai số ước lượng trọng số hội tụ về một lân cận của gốc trong thời gian cố định.
+
+\begin{bode}\label{lem:weight}
+Xét luật cập nhật (\ref{eq:ft_weight_update_wang}) với $\Gamma = \Gamma^\T \succ 0$, trọng số lý tưởng $W^*$ là hằng, và $V_W = \frac12\tilde W^\T\Gamma^{-1}\tilde W$. Phần của $\dot V_W$ do hai số hạng $\sigma$-modification thỏa
+\begin{equation}\label{eq:weight_bound}
+    \dot V_W\big|_\sigma \leq -a_W V_W^{\gamma} - b_W V_W^2 + c_W
+\end{equation}
+với mọi $\gamma \in (0, 1)$, trong đó $a_W = \frac12\kappa_1\lambda_{\min}(\Gamma)$, $b_W = \frac14\kappa_2\lambda_{\min}^2(\Gamma)$ và $c_W = a_W + \frac14\kappa_1\|W^*\|^2 + 28\kappa_2\|W^*\|^4$. Theo Bổ đề \ref{lem:practical_ft}, $\tilde W$ đi vào một lân cận của gốc trong thời gian bị chặn, không phụ thuộc $\tilde W(0)$.
+\end{bode}
+
+\begin{chungminh}
+Vì $W^*$ là hằng, $\dot V_W = -\tilde W^\T\Gamma^{-1}\dot{\hat W}$. Thay (\ref{eq:ft_weight_update_wang}), phần do hai số hạng $\sigma$-modification bằng $\frac12\kappa_1\tilde W^\T\hat W + \frac12\kappa_2\|\hat W\|^2\tilde W^\T\hat W$. Đặt $a = \|\tilde W\|$, $w = \|W^*\|$; vì $\hat W = W^* - \tilde W$ nên $\tilde W^\T\hat W \leq aw - a^2$.
+\begin{itemize}[nosep]
+    \item Theo bất đẳng thức Young, $aw \leq \frac12 a^2 + \frac12 w^2$, nên $\frac12\kappa_1\tilde W^\T\hat W \leq -\frac14\kappa_1 a^2 + \frac14\kappa_1 w^2$.
+    \item Nếu $a \geq 2w$ thì $\tilde W^\T\hat W \leq -\frac12 a^2$ và $\|\hat W\| \geq a - w \geq \frac12 a$, nên $\|\hat W\|^2\tilde W^\T\hat W \leq -\frac18 a^4$. Nếu $a < 2w$ thì $\big|\|\hat W\|^2\tilde W^\T\hat W\big| \leq (a + w)^2(aw + a^2) < 54w^4$. Cả hai trường hợp cho $\|\hat W\|^2\tilde W^\T\hat W \leq -\frac18 a^4 + 56w^4$.
+\end{itemize}
+Vì $a^2 \geq 2\lambda_{\min}(\Gamma)V_W$, cộng hai ý trên được $\dot V_W|_\sigma \leq -\frac12\kappa_1\lambda_{\min}(\Gamma)V_W - \frac14\kappa_2\lambda_{\min}^2(\Gamma)V_W^2 + \frac14\kappa_1 w^2 + 28\kappa_2 w^4$. Cuối cùng, với $0 < \gamma < 1$ thì $V^\gamma \leq 1 + V$, nên $-a_WV_W \leq -a_WV_W^\gamma + a_W$, cho (\ref{eq:weight_bound}).
+\end{chungminh}
 
 \subsubsection*{4.2.4\quad Bổ sung cơ chế ghép nonholonomic cho kênh ngang}
 \phantomsection\addcontentsline{toc}{subsubsection}{4.2.4\quad Bổ sung cơ chế ghép nonholonomic cho kênh ngang}
@@ -1283,7 +1318,7 @@ Mô phỏng động học thuần với đúng luật, tham số và $\hat W(0) 
 
 \textbf{Vấn đề: điểm cân bằng giả khi sai số dồn vào kênh ngang.} Bổ đề \ref{lem:gap} cho thấy luật (\ref{eq:robust}) nguyên bản không có kênh nào tác động lên sai số ngang khi $z_x$ và $z_\theta$ đã về gần không: mỗi số hạng bền vững là hàm của riêng một thành phần $z$, còn $r_y$ chỉ có tác dụng qua tích $z_x r_y$. Nếu bộ điều khiển đưa $z_x$, $z_\theta$ về gần không trong khi $z_y$ còn lớn, sai số ngang giảm rất chậm hoặc dừng hẳn ở một \textbf{điểm cân bằng giả} -- robot chạy song song với quỹ đạo, lệch một khoảng gần như không đổi. Khi các hệ số phải giảm cho robot điều khiển bằng mô-men (Mục \ref{sec:ft_tuning}), hiện tượng này xuất hiện cả trên đường tròn và hình số 8, không chỉ trên đường thẳng; Mục \ref{sec:czy_results} cho số liệu.
 
-\textbf{Đây là chỗ hai phương pháp kinh điển làm đúng còn ADP-FT bỏ sót.} Luật Kanayama chủ động lái $z_\theta$ theo $z_y$ bằng số hạng $k_2 v_r z_y$ trong (\ref{eq:bs}); SMC ghép hai kênh qua mặt trượt $\sigma_2 = z_\theta + c_{zy} z_y$ trong (\ref{eq:smc_s2}). Luật (\ref{eq:robust}) nguyên bản của Wang et al. không có cơ chế tương đương. Trong bài báo, thiếu sót này bị che đi một phần: với $\beta_x = \beta_y = 10^5$, tích $z_x r_y$ trong (\ref{eq:gpinv}) tạo ghép rất mạnh giữa $z_y$ và kênh góc mỗi khi $z_x \neq 0$, nên ở các điều kiện đầu mà bài báo mô phỏng sai số ngang vẫn được kéo về; Bổ đề \ref{lem:gap}(b) cho thấy cơ chế này mất tác dụng khi $z_x = 0$. Vấn đề lộ rõ khi các hệ số phải giảm cho robot điều khiển bằng mô-men.
+\textbf{Đây là chỗ hai phương pháp kinh điển làm đúng còn ADP-FT bỏ sót.} Luật Kanayama chủ động lái $z_\theta$ theo $z_y$ bằng số hạng $k_2 v_r z_y$ trong (\ref{eq:bs}); SMC ghép hai kênh qua mặt trượt $\sigma_2 = z_\theta + c_{zy} z_y$ trong (\ref{eq:smc_s2}). Luật (\ref{eq:robust}) không có cơ chế tương đương. Thiếu sót này bị che đi một phần khi hệ số lớn: với $\beta_x = \beta_y = 10^5$ như bộ tham số tham khảo, tích $z_x r_y$ trong (\ref{eq:gpinv}) tạo ghép rất mạnh giữa $z_y$ và kênh góc mỗi khi $z_x \neq 0$, nên sai số ngang vẫn được kéo về khi $z_x$ còn khác không; Bổ đề \ref{lem:gap}(b) cho thấy cơ chế này mất tác dụng khi $z_x = 0$. Vấn đề lộ rõ khi các hệ số phải giảm cho robot điều khiển bằng mô-men.
 
 \textbf{Giải pháp đề xuất.} Bổ sung một số hạng ghép vào thành phần thứ ba của véc-tơ bền vững:
 \begin{equation}\label{eq:czy}
@@ -1338,7 +1373,7 @@ Kết quả định lượng ở Mục \ref{sec:proj_results}: với cấu hình
 \phantomsection\addcontentsline{toc}{subsubsection}{4.2.6\quad Tham số cho robot điều khiển bằng mô-men}
 \seclabel{sec:ft_tuning}{4.2.6}
 
-\textbf{Vấn đề.} Bộ tham số trong Wang et al. \cite{Wang2025} được chọn cho mô hình động học thuần túy, trong đó $u_o$ tác động trực tiếp lên vận tốc robot. Trong bộ điều khiển hai vòng, $u_o$ chỉ là một phần của vận tốc \textit{ảo} $\eta_d$ mà vòng 2 phải bám, và lệnh này bị giới hạn trong dải hoạt động của robot ($|v_d| \leq 0{,}5$\,m/s, $|\omega_d| \leq 2$\,rad/s). Giữ nguyên tham số gốc gây ra hai hiện tượng:
+\textbf{Vấn đề.} Bộ tham số tham khảo \cite{Wang2025} được chọn cho mô hình động học thuần túy, trong đó $u_o$ tác động trực tiếp lên vận tốc robot. Trong bộ điều khiển hai vòng, $u_o$ chỉ là một phần của vận tốc \textit{ảo} $\eta_d$ mà vòng 2 phải bám, và lệnh này bị giới hạn trong dải hoạt động của robot ($|v_d| \leq 0{,}5$\,m/s, $|\omega_d| \leq 2$\,rad/s). Giữ nguyên tham số gốc gây ra hai hiện tượng:
 
 \begin{enumerate}
     \item Số hạng $\bm{\beta} \odot z^3$ với $\beta_x = \beta_y = 10^5$ cho giá trị rất lớn khi sai số vượt vài centimét (với $|z| = 0{,}1$: $10^5 \times 10^{-3} = 100$), nên lệnh vận tốc bị cắt ở giới hạn mỗi khi sai số dọc hoặc ngang lớn -- chủ yếu trong giai đoạn quá độ -- và năng lượng điều khiển chiếm phần lớn chi phí.
@@ -1351,12 +1386,12 @@ Mô phỏng với đúng tham số gốc (Mục \ref{sec:proj_results}) cho th�
 
 \begin{table}[H]
 \centering
-\caption{Tham số vòng 1 (ADP-FT). Cột ``Wang et al.'' là giá trị nguyên bản trong \cite{Wang2025} (mục IV-A của bài báo), dùng cho mô hình động học thuần túy; cả hai cột dùng $Q = 10I_3$, $R = 2I_2$, $p/q = 17/19$.}
+\caption{Tham số vòng 1 (ADP-FT). Cột ``Tham khảo'' là bộ tham số của \cite{Wang2025}, chọn cho mô hình động học thuần túy; cả hai cột dùng $Q = 10I_3$, $R = 2I_2$, $p/q = 17/19$.}
 \label{tab:ft_tuning}
 \small
 \begin{tabular}{lcc>{\raggedright\arraybackslash}p{4.2cm}}
 \toprule
-\textbf{Tham số} & \textbf{Wang et al. \cite{Wang2025}} & \textbf{Đề xuất} & \textbf{Ghi chú} \\
+\textbf{Tham số} & \textbf{Tham khảo} & \textbf{Đề xuất} & \textbf{Ghi chú} \\
 \midrule
 $\bm{\lambda}, \bm{\mu}, \bm{\alpha}$ & $\diag(1,\, 1,\, 0.4)$ & $[0.04, 0.04, 0.025]$ & Giảm 16--25 lần \\
 $\bm{\beta}$ & $\diag(10^5,\, 10^5,\, 1)$ & $[0.075, 0.075, 0.04]$ & Kênh $x, y$ giảm $1{,}3\times 10^6$ lần; kênh $\theta$ giảm 25 lần \\
@@ -1376,7 +1411,7 @@ Luật cập nhật $W$ & (\ref{eq:ft_weight_update_wang}) & (\ref{eq:ft_weight_
 \begin{itemize}
     \item \textbf{Tại sao giảm hệ số bền vững?} Phần lớn công việc bám quỹ đạo do thành phần truyền thẳng $u_f$ đảm nhận; $u_o$ chỉ cần hiệu chỉnh sai số còn lại. Hệ số bền vững lớn làm $u_o$ lớn hơn mức cần thiết và tăng chi phí năng lượng $u_o^\T R u_o$. Quy trình chỉnh hệ số (Bảng \ref{tab:gain_tuning}) chọn mức hệ số cho chi phí tổng nhỏ nhất.
 
-    \item \textbf{Tại sao $\bm{\beta}$ giảm nhiều nhất?} Thành phần $\bm{\beta} \odot z^3$ được thiết kế để kéo sai số lớn về nhanh. Trên mô hình của Wang et al., $u_o$ chính là vận tốc nên giá trị lớn chỉ bị giới hạn vật lý cắt bớt. Ở đây lệnh lớn bị cắt ở $(v_{\max}, \omega_{\max})$ rồi mới đến vòng 2, và với $\beta_x = \beta_y = 10^5$ việc cắt xảy ra mỗi khi sai số dọc hoặc ngang vượt vài centimét.
+    \item \textbf{Tại sao $\bm{\beta}$ giảm nhiều nhất?} Thành phần $\bm{\beta} \odot z^3$ được thiết kế để kéo sai số lớn về nhanh. Trên mô hình động học thuần túy, $u_o$ chính là vận tốc nên giá trị lớn chỉ bị giới hạn vật lý cắt bớt. Ở đây lệnh lớn bị cắt ở $(v_{\max}, \omega_{\max})$ rồi mới đến vòng 2, và với $\beta_x = \beta_y = 10^5$ việc cắt xảy ra mỗi khi sai số dọc hoặc ngang vượt vài centimét.
 
     \item \textbf{Giới hạn $u_{o,\max} = 1{,}5$:} trước khi cộng truyền thẳng, $u_o$ được giới hạn:
     \begin{equation}\label{eq:clamp}
@@ -1384,7 +1419,7 @@ Luật cập nhật $W$ & (\ref{eq:ft_weight_update_wang}) & (\ref{eq:ft_weight_
     \end{equation}
     Giá trị $1{,}5$ giữ $(v_d, \omega_d)$ trong dải hoạt động danh nghĩa khi trọng số $W$ chưa hội tụ hoặc khi gặp sai số lớn.
 
-    \item \textbf{Khởi tạo trọng số khác không.} Wang et al. khởi tạo $W(0) = \bm{0}$. Với hệ số đã giảm, hệ vẫn hội tụ khi $W(0) = \bm{0}$ nhờ các số hạng bền vững và số hạng ghép, nhưng chi phí cao hơn nhiều lần (Mục 5.5.3). Luận văn khởi tạo $W(0) = [1{,}5;\ 1{,}5;\ 1{,}5;\ 0;\ 0;\ 0]^\T$ -- tương đương một phản hồi tỉ lệ ban đầu -- với giá trị chọn theo cùng quy trình chỉnh hệ số ở Mục 5.1.
+    \item \textbf{Khởi tạo trọng số khác không.} Bộ tham số tham khảo khởi tạo $W(0) = \bm{0}$. Với hệ số đã giảm, hệ vẫn hội tụ khi $W(0) = \bm{0}$ nhờ các số hạng bền vững và số hạng ghép, nhưng chi phí cao hơn nhiều lần (Mục 5.5.3). Luận văn khởi tạo $W(0) = [1{,}5;\ 1{,}5;\ 1{,}5;\ 0;\ 0;\ 0]^\T$ -- tương đương một phản hồi tỉ lệ ban đầu -- với giá trị chọn theo cùng quy trình chỉnh hệ số ở Mục 5.1.
 \end{itemize}
 
 \textbf{Hệ quả đối với đảm bảo lý thuyết.} Khi lệnh vận tốc bị chặn, thời gian để robot đi hết một khoảng cách ban đầu bất kỳ tăng ít nhất tỉ lệ với khoảng cách đó, nên \textbf{không bộ điều khiển nào} với đầu vào bị chặn có thể hội tụ cố định thời gian trên toàn miền -- dù tham số được chọn thế nào. Giới hạn $u_{o,\max}$ và việc giảm $\bm\beta$ chỉ làm điều này lộ rõ hơn: nhánh $\bm\beta\odot z^3$, vốn chịu trách nhiệm kéo sai số lớn về nhanh, bị cắt hoặc yếu đi. Điều có thể kỳ vọng là tính chất cục bộ hoặc theo nghĩa thực dụng (Mục \ref{sec:stability}); Mục \ref{sec:z0_sweep} khảo sát bằng mô phỏng.
@@ -1497,7 +1532,7 @@ Với phần cuối: đặt $V_{2,i} = \frac{M_i}{2k_{c,i}}e_i^2$ và $V_2 = \su
     \qquad
     \frac{M_i}{k_{c,i}}K_{\beta,i}e_i^4 = \frac{4K_{\beta,i}k_{c,i}}{M_i}V_{2,i}^2 .
 \]
-Áp dụng Bổ đề 2 của \cite{Wang2025} ($\sum_i x_i^\gamma \geq (\sum_i x_i)^\gamma$ khi $0 < \gamma < 1$; $\sum_{i=1}^{2} x_i^2 \geq \frac12(\sum_i x_i)^2$) cho các số hạng của $e_\eta$ được $a_2V_2^\gamma + b_2V_2^2$, rồi áp dụng lần nữa cho $V = V_1 + V_2$, được $\dot V \leq -aV^\gamma - bV^2 + c$ với các hằng số (\ref{eq:ft_constants}). Kết luận về tập hội tụ và thời gian hội tụ suy ra từ bổ đề ổn định cố định thời gian thực dụng mà Wang et al. dùng ở phương trình (26)--(27) của bài báo.
+Áp dụng hai bất đẳng thức cơ bản -- $\sum_i x_i^\gamma \geq (\sum_i x_i)^\gamma$ với $x_i \geq 0$, $0 < \gamma < 1$ (hàm lõm $x^\gamma$ có tính dưới cộng tính) và $\sum_{i=1}^{2} x_i^2 \geq \frac12(\sum_i x_i)^2$ (bất đẳng thức Cauchy--Schwarz) -- cho các số hạng của $e_\eta$ được $a_2V_2^\gamma + b_2V_2^2$, rồi áp dụng lần nữa cho $V = V_1 + V_2$, được $\dot V \leq -aV^\gamma - bV^2 + c$ với các hằng số (\ref{eq:ft_constants}). Kết luận về tập hội tụ và thời gian hội tụ suy ra từ Bổ đề \ref{lem:practical_ft} với $p = \gamma$, $q = 2$.
 \end{chungminh}
 
 \begin{hequa}\label{cor:step2_ft}
@@ -1514,7 +1549,7 @@ Từ (\ref{eq:e_dynamics}) với $\zeta = 0$, $d = 0$ và $M$ đường chéo, c
 
 \textbf{Ý nghĩa.} Đẳng thức (\ref{eq:Vdot_total}) là kết quả chính của mục: số hạng tương tác $\zeta^\T e_\eta$ bị triệt chính xác, nên mọi tính chất Lyapunov mà vòng 1 có trên mô hình động học được giữ nguyên trên mô hình đầy đủ năm trạng thái, cộng thêm các số hạng tiêu tán của $e_\eta$. Kết quả này thay cho lập luận ``vòng trong nhanh hơn vòng ngoài'' (điều kiện $K_d \gg \bm\mu$) của phiên bản trước: Định lý \ref{thm:composite} đúng với mọi $K_d > 0$.
 
-\textbf{Áp dụng cho ADP-FT: điều đã và chưa được chứng minh.} Theo Bổ đề \ref{lem:gap}, giả thiết $\mathcal{W}_1 \geq a_1V_1^\gamma + b_1V_1^2$ không thể đúng trên toàn miền với $V_1$ dạng (\ref{eq:V1}), nên phần cuối của Định lý \ref{thm:composite} không áp dụng nguyên vẹn cho toàn bộ $z$. Điều được chứng minh chặt: (i) vòng 2 không làm xấu vòng 1; (ii) sai lệch vận tốc $e_\eta$ có các số hạng tiêu tán cố định thời gian (Hệ quả \ref{cor:step2_ft}); (iii) phần trọng số giữ tính chất của bài báo; (iv) đạo hàm của phần sai số bám được điều khiển qua $\zeta = [z_x; z_\theta]$. Điều chưa được chứng minh: hội tụ của sai số ngang $z_y$ -- vấn đề đã có từ bài báo gốc; luận văn xử lý bằng số hạng ghép (Mục \ref{sec:czy}) và kiểm chứng bằng mô phỏng (Mục \ref{sec:czy_results} và \ref{sec:z0_sweep}).
+\textbf{Áp dụng cho ADP-FT: điều đã và chưa được chứng minh.} Theo Bổ đề \ref{lem:gap}, giả thiết $\mathcal{W}_1 \geq a_1V_1^\gamma + b_1V_1^2$ không thể đúng trên toàn miền với $V_1$ dạng (\ref{eq:V1}), nên phần cuối của Định lý \ref{thm:composite} không áp dụng nguyên vẹn cho toàn bộ $z$. Điều được chứng minh chặt: (i) vòng 2 không làm xấu vòng 1; (ii) sai lệch vận tốc $e_\eta$ có các số hạng tiêu tán cố định thời gian (Hệ quả \ref{cor:step2_ft}); (iii) sai số trọng số hội tụ về lân cận của gốc trong thời gian cố định (Bổ đề \ref{lem:weight}); (iv) đạo hàm của phần sai số bám được điều khiển qua $\zeta = [z_x; z_\theta]$. Điều chưa được chứng minh: hội tụ của sai số ngang $z_y$ -- hệ quả của cấu trúc luật (\ref{eq:robust}) (Bổ đề \ref{lem:gap}); luận văn xử lý bằng số hạng ghép (Mục \ref{sec:czy}) và kiểm chứng bằng mô phỏng (Mục \ref{sec:czy_results} và \ref{sec:z0_sweep}).
 
 \textbf{Các giới hạn khác.}
 \begin{enumerate}
@@ -1603,7 +1638,7 @@ với $\delta$ là sai số Bellman (\ref{eq:bellman_error}), $e_a$ là sai lệ
 \phantomsection\addcontentsline{toc}{subsection}{4.6\quad Tóm tắt: phần kế thừa và phần của luận văn}
 \seclabel{sec:ch4_summary}{4.6}
 
-Bảng \ref{tab:attribution} phân định nguồn gốc từng thành phần của bộ điều khiển. Mọi công thức không thuộc luận văn được trích dẫn tại chỗ sử dụng; các chứng minh của bài báo được dựng lại (Mục \ref{sec:wang_gap}) để kiểm tra, không phải để nhận là đóng góp.
+Bảng \ref{tab:attribution} phân định nguồn gốc từng thành phần của bộ điều khiển. Mọi công thức không thuộc luận văn được trích dẫn tại chỗ sử dụng.
 
 \begin{table}[H]
 \centering
@@ -1617,8 +1652,8 @@ Bảng \ref{tab:attribution} phân định nguồn gốc từng thành phần c�
 Mô hình động học, sai số trong hệ tọa độ thân robot & Kanayama et al. \cite{Kanayama1990} \\
 Mô hình động lực học $M\dot\eta = B\tau - F(\eta)$ & Fierro \& Lewis \cite{Fierro1997} \\
 Thủ tục backstepping & Krstić et al. \cite{Krstic1995}; cho WMR: \cite{Fierro1997, Jiang1997} \\
-Vòng 1: luật (\ref{eq:ft_control})--(\ref{eq:robust}), luật cập nhật (\ref{eq:ft_weight_update_wang}), chứng minh phần trọng số & Wang et al. \cite{Wang2025} \\
-Phân tích lại chứng minh vòng 1, Bổ đề \ref{lem:gap} & Luận văn \\
+Vòng 1: luật (\ref{eq:ft_control})--(\ref{eq:robust}), luật cập nhật (\ref{eq:ft_weight_update_wang}) và tính chất hội tụ của trọng số (Bổ đề \ref{lem:weight}) & \cite{Wang2025} \\
+Phân tích Lyapunov của vòng 1, Bổ đề \ref{lem:gap} & Luận văn \\
 Số hạng ghép (\ref{eq:czy}), bộ tham số, giới hạn $u_{o,\max}$ & Luận văn \\
 Toán tử chiếu (\ref{eq:projection}) & Luận văn, theo kỹ thuật của \cite{Ioannou1996} \\
 Vòng 2: số hạng chéo theo $V_1$ của ADP-FT, số hạng cố định thời gian, Định lý \ref{thm:composite}, Hệ quả \ref{cor:step2_ft} & Luận văn, theo thủ tục chuẩn của \cite{Krstic1995} \\
@@ -1933,7 +1968,7 @@ ADP-FT & 700.9 (30.1\,s) & 618.8 (29.5\,s) & 2900.4 (55.1\,s) & 1892.7 (42.3\,s)
 \phantomsection\addcontentsline{toc}{subsection}{5.5\quad Vai trò các thành phần của ADP-FT}
 \seclabel{sec:ablation}{5.5}
 
-Cấu hình ADP-FT ở các mục trước gồm luật của Wang et al. (16)--(18), bộ hệ số đã chỉnh, giới hạn $u_{o,\max}$, khởi tạo $W(0) \neq 0$, toán tử chiếu (Mục \ref{sec:projection}) và cơ chế ghép nonholonomic (Mục \ref{sec:czy}). Mục này bỏ hoặc thay từng thành phần để xem thành phần nào thực sự đóng góp. Mọi thí nghiệm dùng nhiễu đồng pha $20\%$.
+Cấu hình ADP-FT ở các mục trước gồm luật (\ref{eq:ft_control})--(\ref{eq:ft_weight_update_wang}), bộ hệ số đã chỉnh, giới hạn $u_{o,\max}$, khởi tạo $W(0) \neq 0$, toán tử chiếu (Mục \ref{sec:projection}) và cơ chế ghép nonholonomic (Mục \ref{sec:czy}). Mục này bỏ hoặc thay từng thành phần để xem thành phần nào thực sự đóng góp. Mọi thí nghiệm dùng nhiễu đồng pha $20\%$.
 
 \subsubsection*{5.5.1\quad Tham số gốc và hai cơ chế bổ sung}
 \phantomsection\addcontentsline{toc}{subsubsection}{5.5.1\quad Tham số gốc và hai cơ chế bổ sung}
@@ -1948,7 +1983,7 @@ Cấu hình ADP-FT ở các mục trước gồm luật của Wang et al. (16)--
 \toprule
 \textbf{Cấu hình} & \textbf{Tròn} & \textbf{Thẳng} & \textbf{Số 8} \\
 \midrule
-Wang et al. (gốc)$^{(a)}$ & 30.802 & 10.515 & 14.325 \\
+Tham số tham khảo$^{(a)}$ & 30.802 & 10.515 & 14.325 \\
 Đã chỉnh, chưa có cơ chế & 4.940 & 4.387 & 6.420 \\
 \quad + chiếu & 4.940 & 4.387 & 6.420 \\
 \quad + ghép & 1.318 & 0.790 & 2.033 \\
@@ -1957,7 +1992,7 @@ Wang et al. (gốc)$^{(a)}$ & 30.802 & 10.515 & 14.325 \\
 \end{tabular}
 
 \vspace{0.15cm}
-{\footnotesize $^{(a)}$ $\bm\lambda = \bm\mu = \bm\alpha = [1, 1, 0{,}4]$, $\bm\beta = [10^5, 10^5, 1]$, $\rho = 10$, $\kappa_1 = \kappa_2 = 0{,}1$, $\Gamma = 2I$, $W(0) = 0$, không giới hạn $u_o$, không chiếu, không ghép (mục IV-A của \cite{Wang2025}); vòng 2 vẫn là luật (\ref{eq:inner_loop}).}
+{\footnotesize $^{(a)}$ $\bm\lambda = \bm\mu = \bm\alpha = [1, 1, 0{,}4]$, $\bm\beta = [10^5, 10^5, 1]$, $\rho = 10$, $\kappa_1 = \kappa_2 = 0{,}1$, $\Gamma = 2I$, $W(0) = 0$, không giới hạn $u_o$, không chiếu, không ghép (bộ tham số của \cite{Wang2025}); vòng 2 vẫn là luật (\ref{eq:inner_loop}).}
 \end{table}
 
 \begin{table}[H]
@@ -1969,7 +2004,7 @@ Wang et al. (gốc)$^{(a)}$ & 30.802 & 10.515 & 14.325 \\
 \toprule
 $\|z_0\|$ & \textbf{0,245} & \textbf{0,612} & \textbf{1,225} & \textbf{2,375} & \textbf{3,500} \\
 \midrule
-Wang et al. (gốc)$^{(a)}$ & $1.5\times10^{-2}$ & $1.7\times10^{-2}$ & $5.3\times10^{-3}$ & $1.2\times10^{-2}$ & $1.4\times10^{-2}$ \\
+Tham số tham khảo$^{(a)}$ & $1.5\times10^{-2}$ & $1.7\times10^{-2}$ & $5.3\times10^{-3}$ & $1.2\times10^{-2}$ & $1.4\times10^{-2}$ \\
 Đã chỉnh, chưa có cơ chế & $3.0\times10^{-2}$ & $7.8\times10^{-2}$ & $4.3\times10^{-1}$ & $2.5\times10^{-2}$ & $1.1$ \\
 \quad + chiếu & $3.0\times10^{-2}$ & $7.8\times10^{-2}$ & $4.3\times10^{-1}$ & $2.5\times10^{-2}$ & $1.1$ \\
 \quad + ghép & $4.2\times10^{-4}$ & $4.2\times10^{-4}$ & $4.2\times10^{-4}$ & $4.3\times10^{-4}$ & $4.8\times10^{-4}$ \\
@@ -1979,7 +2014,7 @@ Wang et al. (gốc)$^{(a)}$ & $1.5\times10^{-2}$ & $1.7\times10^{-2}$ & $5.3\tim
 \end{table}
 
 \begin{enumerate}
-    \item \textbf{Tham số gốc của Wang et al. không làm hệ phát tán nhưng bám kém trên robot điều khiển bằng mô-men:} chi phí gấp $23{,}4$; $13{,}3$ và $7{,}0$ lần cấu hình đầy đủ trên ba quỹ đạo. Một phần do năng lượng điều khiển ($\beta_x = \beta_y = 10^5$ tạo lệnh rất lớn khi quá độ), phần còn lại do sai số ngang dư: từ giây thứ 30, $|z_x|$ và $|z_\theta|$ đã gần không nhưng $|z_y|$ vẫn còn $1{,}7$--$3{,}2$\,cm -- robot chạy song song với quỹ đạo, đúng tình huống của Bổ đề \ref{lem:gap}.
+    \item \textbf{Bộ tham số tham khảo không làm hệ phát tán nhưng bám kém trên robot điều khiển bằng mô-men:} chi phí gấp $23{,}4$; $13{,}3$ và $7{,}0$ lần cấu hình đầy đủ trên ba quỹ đạo. Một phần do năng lượng điều khiển ($\beta_x = \beta_y = 10^5$ tạo lệnh rất lớn khi quá độ), phần còn lại do sai số ngang dư: từ giây thứ 30, $|z_x|$ và $|z_\theta|$ đã gần không nhưng $|z_y|$ vẫn còn $1{,}7$--$3{,}2$\,cm -- robot chạy song song với quỹ đạo, đúng tình huống của Bổ đề \ref{lem:gap}.
     \item \textbf{Cơ chế ghép nonholonomic là thành phần quyết định.} Chỉ chỉnh hệ số mà không có ghép, chi phí vẫn gấp $3{,}2$--$5{,}6$ lần và sai số ngang không về ở mọi điều kiện đầu; tại $\|z_0\| = 3{,}5$, $|z_y|$ kẹt quanh $1{,}4$\,m trong khi $|z_x|$ và $|z_\theta|$ đã nhỏ -- điểm cân bằng giả của Mục \ref{sec:czy}. Thêm số hạng ghép (\ref{eq:czy}) đưa sai số về mức do nhiễu ở cả năm điều kiện đầu.
     \item \textbf{Toán tử chiếu không kích hoạt lần nào:} với khởi tạo $W(0) \neq 0$, trị riêng nhỏ nhất của $P(W)$ luôn lớn hơn $0{,}12$, xa ngưỡng $\epsilon_p = 0{,}05$. Nó là lưới an toàn bảo đảm $\hat V$ xác định dương, nhưng không đóng góp vào kết quả.
 \end{enumerate}
@@ -1988,7 +2023,7 @@ Wang et al. (gốc)$^{(a)}$ & $1.5\times10^{-2}$ & $1.7\times10^{-2}$ & $5.3\tim
 \phantomsection\addcontentsline{toc}{subsubsection}{5.5.2\quad Các số hạng cố định thời gian ở vòng 1}
 \seclabel{sec:ft_terms}{5.5.2}
 
-Đối chứng là biến thể ADP-UUB do chính Wang et al. đưa ra (phương trình 32--33 của bài báo): bỏ số hạng $\bm\beta \odot z^3$, thay $\bm\alpha \odot |z|^{p/q}\sign(z)$ bằng $\bm\alpha \odot z$ và đặt $\kappa_2 = 0$, nên chỉ bảo đảm sai số bị chặn.
+Đối chứng là biến thể ADP-UUB \cite{Wang2025}: bỏ số hạng $\bm\beta \odot z^3$, thay $\bm\alpha \odot |z|^{p/q}\sign(z)$ bằng $\bm\alpha \odot z$ và đặt $\kappa_2 = 0$, nên chỉ bảo đảm sai số bị chặn.
 
 \begin{table}[H]
 \centering
@@ -2014,7 +2049,7 @@ Bỏ các số hạng cố định thời gian làm $J_c$ \textit{giảm} nhẹ 
 \phantomsection\addcontentsline{toc}{subsubsection}{5.5.3\quad Việc học của mạng Critic}
 \seclabel{sec:critic_results}{5.5.3}
 
-Bảng \ref{tab:critic_role} so sánh bốn cấu hình: học theo luật của Wang et al. (mặc định), học theo biến thể gradient sai số Bellman (Mục \ref{sec:ft_update}), \textit{đóng băng} Critic ($\Gamma = 0$, $W \equiv W(0)$) và học từ $W(0) = 0$.
+Bảng \ref{tab:critic_role} so sánh bốn cấu hình: học theo luật (\ref{eq:ft_weight_update_wang}) (mặc định), học theo biến thể gradient sai số Bellman (Mục \ref{sec:ft_update}), \textit{đóng băng} Critic ($\Gamma = 0$, $W \equiv W(0)$) và học từ $W(0) = 0$.
 
 \begin{table}[H]
 \centering
@@ -2027,20 +2062,20 @@ Bảng \ref{tab:critic_role} so sánh bốn cấu hình: học theo luật của
 \cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
  & Tròn & Thẳng & Số 8 & $J_c$ & $t_{0,05}$ & $J_c$ & $t_{0,05}$ \\
 \midrule
-Học, luật Wang (\ref{eq:ft_weight_update_wang}) -- mặc định & 1.318 & 0.790 & 2.033 & 618.8 & 29.5 & 1892.7 & 42.3 \\
+Học theo (\ref{eq:ft_weight_update_wang}) -- mặc định & 1.318 & 0.790 & 2.033 & 618.8 & 29.5 & 1892.7 & 42.3 \\
 Học, biến thể Bellman (\ref{eq:ft_weight_update}) & 1.321 & 0.791 & 2.037 & 1159.0 & 39.1 & 445.7 & 19.3 \\
 Đóng băng: $\Gamma = 0$, $W \equiv W(0)$ & 1.281 & 0.768 & 1.980 & 142.3 & 11.2 & 432.1 & 15.8 \\
-Học từ $W(0) = 0$ (luật Wang) & 3.020 & 2.567 & 5.153 & 632.2 & 30.1 & 1886.3 & 42.2 \\
+Học từ $W(0) = 0$ & 3.020 & 2.567 & 5.153 & 632.2 & 30.1 & 1886.3 & 42.2 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{enumerate}
     \item \textbf{Ở điều kiện danh nghĩa, việc học không đóng góp.} Sau vài giây quá độ, $z$ nhỏ nên số hạng học gần như bằng không và $W$ chỉ còn bị $\sigma$-modification kéo về gốc ($\|W(T)\| \approx 0{,}49$ trên cả ba quỹ đạo). Đóng băng Critic còn cho $J_c$ thấp hơn học $2{,}6$--$2{,}8\%$, vì giữ nguyên $W(0)$ thì phần phản hồi ADP không yếu dần.
-    \item \textbf{Ở sai lệch ban đầu lớn, luật học của Wang et al. làm hội tụ chậm đi rõ rệt:} tại $\|z_0\| = 3{,}5$, thời gian về dưới $0{,}05$\,m là $42{,}3$\,s so với $15{,}8$\,s khi đóng băng. Biến thể Bellman không nhất quán: nhanh hơn ở $\|z_0\| = 3{,}5$ nhưng chậm hơn ở $\|z_0\| = 2{,}375$.
+    \item \textbf{Ở sai lệch ban đầu lớn, luật học (\ref{eq:ft_weight_update_wang}) làm hội tụ chậm đi rõ rệt:} tại $\|z_0\| = 3{,}5$, thời gian về dưới $0{,}05$\,m là $42{,}3$\,s so với $15{,}8$\,s khi đóng băng. Biến thể Bellman không nhất quán: nhanh hơn ở $\|z_0\| = 3{,}5$ nhưng chậm hơn ở $\|z_0\| = 2{,}375$.
     \item \textbf{Khởi tạo $W(0)$ quyết định hiệu năng, không quyết định ổn định:} học từ $W(0) = 0$, hệ vẫn hội tụ nhờ các số hạng bền vững và số hạng ghép, nhưng chi phí gấp $2{,}3$--$3{,}3$ lần.
 \end{enumerate}
-Một quan sát về cấu trúc củng cố kết luận này: ma trận $Q$ không có mặt trong luật điều khiển lẫn luật cập nhật của Wang et al., nên thay $Q$ không làm thay đổi kết quả; còn $R$ chỉ tác động như một hệ số khuếch đại của phần ADP -- giảm hay tăng $R$ mười lần đều làm sai số và năng lượng cùng xấu đi. Gộp lại, trong bộ điều khiển hai vòng này, phần ADP hoạt động như một phản hồi có hệ số do $W(0)$ quyết định, và việc học không cải thiện chính sách. Đây là kết quả bất lợi quan trọng nhất đối với phương pháp chính; nó chỉ áp dụng cho robot điều khiển bằng mô-men với lệnh vận tốc bị chặn, và không mâu thuẫn với kết quả lý thuyết của Wang et al. trên mô hình động học.
+Một quan sát về cấu trúc củng cố kết luận này: ma trận $Q$ không có mặt trong luật điều khiển lẫn luật cập nhật (\ref{eq:ft_weight_update_wang}), nên thay $Q$ không làm thay đổi kết quả; còn $R$ chỉ tác động như một hệ số khuếch đại của phần ADP -- giảm hay tăng $R$ mười lần đều làm sai số và năng lượng cùng xấu đi. Gộp lại, trong bộ điều khiển hai vòng này, phần ADP hoạt động như một phản hồi có hệ số do $W(0)$ quyết định, và việc học không cải thiện chính sách. Đây là kết quả bất lợi quan trọng nhất đối với phương pháp chính; nó chỉ áp dụng cho robot điều khiển bằng mô-men với lệnh vận tốc bị chặn, và không mâu thuẫn với các kết quả trên mô hình động học \cite{Wang2025}.
 
 \subsubsection*{5.5.4\quad Sai lệch ban đầu lớn}
 \phantomsection\addcontentsline{toc}{subsubsection}{5.5.4\quad Sai lệch ban đầu lớn}
@@ -2103,7 +2138,7 @@ Nhạy với nhiễu & Rất ít & -- & Rất ít & -- & Rất ít & Rất ít \
 \end{tabular}
 
 \vspace{0.15cm}
-{\footnotesize\raggedright $^{(a)}$ Theo thiết kế của Wang et al.; Mục \ref{sec:critic_results} cho thấy trong cấu hình của luận văn, việc học và hàm chi phí hầu như không ảnh hưởng tới chính sách. $^{(b)}$ Chênh NTSMC $0{,}2\%$, nhỏ hơn độ phân giải của quy trình chỉnh hệ số. ``--'': không khảo sát.}
+{\footnotesize\raggedright $^{(a)}$ Theo thiết kế của luật ADP; Mục \ref{sec:critic_results} cho thấy trong cấu hình của luận văn, việc học và hàm chi phí hầu như không ảnh hưởng tới chính sách. $^{(b)}$ Chênh NTSMC $0{,}2\%$, nhỏ hơn độ phân giải của quy trình chỉnh hệ số. ``--'': không khảo sát.}
 \end{table}
 
 \textbf{Điểm mạnh của bộ điều khiển đề xuất} (ADP-FT ở vòng 1, vòng 2 đầy đủ):
@@ -2135,12 +2170,12 @@ Nhạy với nhiễu & Rất ít & -- & Rất ít & -- & Rất ít & Rất ít \
 \subsection*{6.1\quad Kết luận}
 \phantomsection\addcontentsline{toc}{subsection}{6.1\quad Kết luận}
 
-Luận văn đã hoàn thiện phương pháp ADP hội tụ cố định thời gian (ADP-FT) của Wang et al. \cite{Wang2025} cho bài toán robot di động hai bánh được điều khiển bằng mô-men, trên mô hình đầy đủ năm trạng thái có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men. Các kết quả chính:
+Luận văn đã thiết kế bộ điều khiển hai vòng theo backstepping cho xe tự hành dạng robot di động hai bánh được điều khiển bằng mô-men, với vòng 1 là luật ADP hội tụ cố định thời gian (ADP-FT), trên mô hình đầy đủ năm trạng thái có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men. Các kết quả chính:
 
 \begin{enumerate}
-    \item \textbf{Bộ điều khiển hai vòng thiết kế theo backstepping hoạt động được và có hàm Lyapunov chung.} Vòng 1 là ADP-FT (giữ nguyên luật cập nhật và cấu trúc luật điều khiển (16)--(18) của Wang et al.); vòng 2 là luật mô-men xây dựng trên mô hình của Fierro \& Lewis \cite{Fierro1997}, bổ sung số hạng chéo và các số hạng cố định thời gian. Định lý \ref{thm:composite} chứng minh số hạng tương tác giữa hai vòng bị triệt chính xác, nên vòng 2 không làm mất tính chất nào của vòng 1 khi mô-men chưa bão hòa -- thay cho lập luận tách thang thời gian của các phiên bản trước. Trong mô phỏng, bộ điều khiển bám được cả ba quỹ đạo và hội tụ về sàn nhiễu ở mọi điều kiện đầu khảo sát ($\|z_0\|$ tới $3{,}5$); mô-men chỉ bão hòa khi khởi động, không quá $0{,}21\%$ tổng thời gian.
+    \item \textbf{Bộ điều khiển hai vòng thiết kế theo backstepping hoạt động được và có hàm Lyapunov chung.} Vòng 1 là ADP-FT; vòng 2 là luật mô-men xây dựng trên mô hình của Fierro \& Lewis \cite{Fierro1997}, bổ sung số hạng chéo và các số hạng cố định thời gian. Định lý \ref{thm:composite} chứng minh số hạng tương tác giữa hai vòng bị triệt chính xác, nên vòng 2 không làm mất tính chất nào của vòng 1 khi mô-men chưa bão hòa -- thay cho lập luận tách thang thời gian của các phiên bản trước. Trong mô phỏng, bộ điều khiển bám được cả ba quỹ đạo và hội tụ về sàn nhiễu ở mọi điều kiện đầu khảo sát ($\|z_0\|$ tới $3{,}5$); mô-men chỉ bão hòa khi khởi động, không quá $0{,}21\%$ tổng thời gian.
 
-    \item \textbf{Khoảng hở trong chứng minh gốc và các điều chỉnh cần thiết.} Dựng lại chứng minh của Wang et al. cho thấy tín hiệu điều khiển chỉ tác động lên đạo hàm của $V_1$ qua $z_x$, $z_\theta$; với luật gốc, robot có thể chạy song song với quỹ đạo thẳng mãi mãi (Bổ đề \ref{lem:gap}). Dùng nguyên tham số của bài báo, hệ không phát tán nhưng bám kém: chi phí gấp $7{,}0$--$23{,}4$ lần cấu hình đề xuất, sai số xác lập $0{,}5$--$1{,}7$\,cm. Luận văn chỉnh lại hệ số cho lệnh vận tốc bị chặn, giới hạn tín hiệu phản hồi, khởi tạo trọng số, và bổ sung hai cơ chế: \textit{ghép nonholonomic} cho kênh sai số ngang và \textit{toán tử chiếu} giữ hàm giá trị xác định dương. Phân tích thành phần cho thấy cơ chế ghép là thành phần quyết định: thiếu nó, chi phí tăng $3{,}2$--$5{,}6$ lần và robot bị kẹt gần điểm cân bằng giả, chạy song song với quỹ đạo.
+    \item \textbf{Kênh sai số ngang và các điều chỉnh cần thiết.} Phân tích Lyapunov cho thấy tín hiệu điều khiển chỉ tác động lên đạo hàm của $V_1$ qua $z_x$, $z_\theta$; nếu không bổ sung, robot có thể chạy song song với quỹ đạo thẳng mãi mãi (Bổ đề \ref{lem:gap}). Với bộ tham số tham khảo, hệ không phát tán nhưng bám kém: chi phí gấp $7{,}0$--$23{,}4$ lần cấu hình đề xuất, sai số xác lập $0{,}5$--$1{,}7$\,cm. Luận văn chỉnh lại hệ số cho lệnh vận tốc bị chặn, giới hạn tín hiệu phản hồi, khởi tạo trọng số, và bổ sung hai cơ chế: \textit{ghép nonholonomic} cho kênh sai số ngang và \textit{toán tử chiếu} giữ hàm giá trị xác định dương. Phân tích thành phần cho thấy cơ chế ghép là thành phần quyết định: thiếu nó, chi phí tăng $3{,}2$--$5{,}6$ lần và robot bị kẹt gần điểm cân bằng giả, chạy song song với quỹ đạo.
 
     \item \textbf{So sánh công bằng năm phương pháp.} Sau khi mọi phương pháp được chỉnh hệ số theo cùng một quy trình, ADP-FT có tổng chi phí trên ba quỹ đạo $4{,}140$ -- ngang NTSMC ($4{,}130$), sau SMC ($3{,}837$; ADP-FT cao hơn $7{,}9\%$), tốt hơn luật Kanayama, Concurrent Learning và Actor-Critic; ADP-FT về lân cận $0{,}01$\,m của quỹ đạo sớm nhất trên cả ba quỹ đạo. Thí nghiệm cũng cho thấy kết luận so sánh có thể đảo ngược nếu chỉnh hệ số không đều: SMC ở hệ số thông dụng kém hơn ADP-FT, ở hệ số đã chỉnh thì tốt hơn.
 
@@ -2155,13 +2190,13 @@ Luận văn đã hoàn thiện phương pháp ADP hội tụ cố định thời
 \begin{enumerate}
     \item \textbf{Hội tụ cố định thời gian không được bảo toàn.} Thời gian quá độ tăng theo sai lệch ban đầu ở mọi phương pháp (Mục 5.5.4); đây là giới hạn vật lý của lệnh vận tốc bị chặn, không riêng ADP-FT. Ở sai lệch lớn nhất ($\|z_0\| = 3{,}5$), ADP-FT mặc định còn chậm hơn luật Kanayama và SMC ($42{,}3$\,s so với $22{,}0$\,s và $17{,}0$\,s).
 
-    \item \textbf{Việc học của Critic không mang lại lợi ích trong cấu hình đang xét.} Đóng băng Critic ở giá trị khởi tạo cho chi phí thấp hơn khoảng $3\%$ ở điều kiện danh nghĩa và hội tụ nhanh gần ba lần ở sai lệch lớn (Mục 5.5.3). Kết luận này giới hạn trong bộ điều khiển hai vòng với lệnh vận tốc bị chặn và hệ số đã giảm; nó không phủ định kết quả lý thuyết của Wang et al. trên mô hình động học.
+    \item \textbf{Việc học của Critic không mang lại lợi ích trong cấu hình đang xét.} Đóng băng Critic ở giá trị khởi tạo cho chi phí thấp hơn khoảng $3\%$ ở điều kiện danh nghĩa và hội tụ nhanh gần ba lần ở sai lệch lớn (Mục 5.5.3). Kết luận này giới hạn trong bộ điều khiển hai vòng với lệnh vận tốc bị chặn và hệ số đã giảm; nó không phủ định các kết quả trên mô hình động học \cite{Wang2025}.
 
     \item \textbf{Không vượt được SMC đã chỉnh hệ số về chi phí} (kém $7{,}9\%$ tổng chi phí) và chỉ ngang NTSMC, dù hai luật này có cấu trúc đơn giản hơn nhiều.
 
     \item \textbf{Hội tụ của sai số ngang chưa được chứng minh.} Định lý \ref{thm:composite} bảo đảm vòng 2 không làm xấu vòng 1, nhưng với hàm $V_1$ dạng (\ref{eq:V1}), vòng 1 không thể thỏa bất đẳng thức cố định thời gian trên toàn miền (Bổ đề \ref{lem:gap}); hội tụ của $z_y$ khi có số hạng ghép mới được kiểm chứng bằng mô phỏng. Định lý cũng giả thiết mô-men chưa bão hòa, mô hình động lực học đúng và vận tốc ảo $\eta_d$ khả vi -- trong khi các bộ giới hạn và số hạng lũy thừa phân số làm $\eta_d$ chỉ khả vi từng khúc (Mục \ref{sec:stability}).
 
-    \item \textbf{Chưa có thực nghiệm.} Toàn bộ kết quả dựa trên mô phỏng với tham số robot giả định ($m = 10$\,kg, $I = 0{,}5$\,kg$\cdot$m$^2$, $\tau_\text{max} = 1$\,N$\cdot$m); mô hình bỏ qua trễ cơ cấu chấp hành, sai số cảm biến và trượt bánh. Bài báo gốc \cite{Wang2025} có thực nghiệm trên robot thật.
+    \item \textbf{Chưa có thực nghiệm.} Toàn bộ kết quả dựa trên mô phỏng với tham số robot giả định ($m = 10$\,kg, $I = 0{,}5$\,kg$\cdot$m$^2$, $\tau_\text{max} = 1$\,N$\cdot$m); mô hình bỏ qua trễ cơ cấu chấp hành, sai số cảm biến và trượt bánh.
 
     \item \textbf{Quy trình chỉnh hệ số còn thô:} một hệ số nhân chung cho mọi hệ số của một phương pháp, lưới bước nhân 2. Chênh lệch vài phần trăm giữa ADP-FT, NTSMC và luật Kanayama vì vậy không nên diễn giải quá mức.
 \end{enumerate}

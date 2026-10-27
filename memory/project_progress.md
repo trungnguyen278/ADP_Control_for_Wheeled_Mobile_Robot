@@ -24,7 +24,8 @@ MATLAB dùng ký hiệu/(a)(b)(c). Luận văn 74 trang.
 Trạng thái PR: Trung đã merge PR #3 lúc 23:23 ngày 26/10, khi nhánh mới có 4 commit đầu; 12 commit sau
 đó nằm ở PR #4 (mở 27/10, cùng nhánh docs/ket-qua-buoc-2-matlab). PR #2 (claude/sweet-edison-vur249)
 vẫn mở nhưng đã lỗi thời. Đẩy commit lên nhánh của một PR đã merge thì phải mở PR mới.
-Đã bỏ trang ABSTRACT tiếng Anh và bảng đối chiếu Việt–Anh (luận văn 71 trang). Còn lại (Trung): đọc lại, merge PR #4, gửi thầy Nam.
+Đã bỏ trang ABSTRACT tiếng Anh và bảng đối chiếu Việt–Anh. Tên đề tài theo đăng ký; luận văn tự đứng
+được, thêm Bổ đề 3.1 và 4.2 có chứng minh ([[feedback-self-contained]]); luận văn 72 trang. Còn lại (Trung): đọc lại, merge PR #4, gửi thầy Nam.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 

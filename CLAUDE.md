@@ -48,6 +48,9 @@ Mục tiêu chính là lưu trữ có hệ thống + tái tạo được kết q
   **phân tích lại chứng minh của Wang** (Bổ đề 4.1), **tune lại gain** (chỉnh đều nhau),
   **cơ chế ghép nonholonomic + toán tử chiếu**, **phân tích robustness / phân tích thành phần**,
   **so sánh 5 phương pháp**. Chỉ nhận phần này là mới.
+- **Cách trình bày:** luận văn tự đứng được — Wang chỉ là mẫu tham khảo cho luật vòng 1. Không kể lại
+  bài báo ("phương trình (xx) của bài báo", "luật của Wang"); chứng minh viết đầy đủ trong luận văn
+  từ lý thuyết cơ bản; chỉ đặt trích dẫn [n] ở chỗ kế thừa.
 - Khi Claude thêm nội dung mới vào `docs/thesis/thesis.tex`, phải tự hỏi:
   *"cái này của Wang, của Fierro, hay của Trung?"* — rồi đặt trích dẫn cho đúng.
 

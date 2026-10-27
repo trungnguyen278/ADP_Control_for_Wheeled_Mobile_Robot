@@ -700,6 +700,11 @@ o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay l
 - Bo trang ABSTRACT tieng Anh (Trung: luan van chi dung tieng Viet) -> thesis 72 trang. Neu mau
   cua truong yeu cau Abstract thi khoi phuc tu commit 53e6415.
 - DANH MUC THUAT NGU chi giai thich tu tieng Anh bang tieng Viet; bo bang doi chieu Viet-Anh -> 71 trang.
+- Ten de tai theo dang ky: "Ung dung dieu khien ADP cho xe tu hanh" (bia, cam doan, tom tat, README).
+- Luan van tu dung duoc: 65 lan "Wang" + 32 lan "bai bao" -> chi con 17 trich dan [n] o cho ke thua;
+  them Bo de 3.1 (co dinh thoi gian dang thuc dung) va Bo de 4.2 (chan sai so trong so), ca hai co chung
+  minh; bat dang thuc "Bo de 2 cua Wang" thay bang bat dang thuc co ban. Bo dem bo de reset theo chuong.
+  Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull, 0 anchor trung.
 
 ---
 
