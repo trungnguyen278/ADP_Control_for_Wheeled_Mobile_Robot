@@ -18,7 +18,8 @@ MATLAB): SMC 1/8, ADP-FT 1/2, Kanayama 1/4, CL 1/4, ADP-AC 1/4 (vòng 2 cũ: ADP
 | CL | 1.675 / 1.504 / 2.920 | 6.099 | 31.1 s |
 | ADP-AC | 3.760 / 5.139 / 5.051 | 13.951 | 37.5 s |
 
-Kết luận chính (đều có trong luận văn 84 trang):
+Kết luận chính (luận văn 73 trang sau khi rút gọn Ch.5 ngày 27/10; phân tích hàm mô tả và khảo sát
+Q, R chỉ còn trong repo, không còn trong luận văn):
 
 - ADP-FT ngang NTSMC (chênh 0,2% < độ phân giải lưới gain) → trình bày là "nhóm thứ hai", hạng 3
   có chú thích. Kém SMC 7,9%.
@@ -28,7 +29,7 @@ Kết luận chính (đều có trong luận văn 84 trang):
 - Phần M (vòng 2): số hạng FT hạ z_rms 21–23%; t_e ≤ 0,17 s; K_c = M đổi Jc nhỏ (ADP-FT −1,2%).
   K_c = 10M: ADP-FT 3,833 < SMC nhưng Kanayama +12,8% → tương đương chỉnh gain vòng 1 không đều, giữ K_c = M.
 - **Số hạng chéo đi vòng qua bộ kẹp η_d**: khi z_x lớn, v thực tới 0,57–0,62 m/s (> v_max 0,5);
-  vòng 2 cũ ≤ 0,52. Hàng "cận dưới vật lý" ở Bảng 5.16 vì thế chỉ còn là tham chiếu.
+  vòng 2 cũ ≤ 0,52. Hàng "cận dưới vật lý" ở bảng thời gian quá độ theo z₀ (Mục 5.5.4) vì thế chỉ còn là tham chiếu.
 - Tham số gốc Wang (β = diag(1e5,1e5,1)): Jc ×23,4/13,3/7,0, Ju chiếm 58–78%, z_y dư 1,7–3,2 cm
   khi z_x, z_θ ≈ 0 — xác nhận Bổ đề 4.1(b) trên mô hình đầy đủ.
 - Thiếu ghép nonholonomic: Jc ×3,2–5,6, kẹt |z_y| ≈ 1,4 m ở ‖z0‖ = 3,5. Chiếu không kích hoạt (λmin ≥ 0,121).

@@ -1,6 +1,6 @@
 ---
 name: project-progress
-description: 27/10/2026 đã chạy lại bằng MATLAB, đổi cách gọi sang vòng 1/vòng 2, sửa bookmark PDF (luận văn 86 tr, tóm tắt 13 tr, PR #3); review yêu cầu của thầy: 5/5 đạt, còn sửa tên "BS", "NTSMC" — rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
+description: 27/10/2026 chạy lại bằng MATLAB, gọi vòng 1/vòng 2, review yêu cầu thầy (5/5 đạt), đổi "BS" → "Kanayama", rút gọn Ch.5 (luận văn 86 → 73 tr, PR #3); còn Trung đọc lại rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
@@ -12,8 +12,11 @@ Kiểm chứng tiền đề "thầy xoay quanh khái niệm cơ bản" với bá
 đã ghi). Còn hai chỗ gọi tên lỏng: nhãn "BS" cho luật Kanayama, tên/mô tả "NTSMC" (Mục 4.5.2).
 Kết luận lượt đầu ("SMC/NTSMC chưa đạt, làm SMC tầng mô-men") đã rút lại. Trung đồng ý → đã sửa
 tên "BS" → "Kanayama" và mô tả NTSMC. Kiểm chứng số Định lý 4.1: phần dư 0,4–1,2% số hạng tương
-tác. Đang bàn: Chương 5 dài (26/67 trang thân bài) — Trung muốn chỉ trình bày kết quả, điểm
-mạnh/yếu.
+tác.
+
+Rút gọn Chương 5 (Trung đồng ý): 11 mục/26 trang → 6 mục/15 trang, luận văn còn 73 trang; bỏ
+phân tích hàm mô tả, mục Q/R, mục mô-men riêng ([[feedback-defensible-scope]]). Còn lại (Trung):
+đọc lại Ch.4–6, merge PR #3, gửi thầy Nam.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 
