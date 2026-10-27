@@ -18,8 +18,10 @@ phải chứng minh đầy đủ các cách làm". Đếm lúc đó: 65 lần "W
 - Không viết "phương trình (xx)/Định lý/Nhận xét/phụ lục của bài báo", "luật của Wang", "tham số gốc của
   Wang" — dùng số công thức của luận văn, "bộ tham số tham khảo [n]".
 - Chứng minh không được dựa vào "bài báo đã chứng minh": 27/10 đã thêm Bổ đề 3.1 (cố định thời gian dạng
-  thực dụng, có chứng minh) và Bổ đề 4.2 (chặn sai số trọng số, chứng minh bằng Young); bất đẳng thức "Bổ
-  đề 2 của Wang" thay bằng tính dưới cộng tính của hàm lõm và Cauchy–Schwarz.
+  thực dụng, có chứng minh) và Bổ đề 4.2 (chặn sai số trọng số). Cùng đêm đó hạ về mức thạc sĩ: Bổ đề 4.2
+  chỉ còn phát biểu + ý tưởng chứng minh + trích Ioannou & Sun; phần cuối Định lý 4.1 (cần bất đẳng thức
+  "Bổ đề 2 của Wang") đã bỏ ([[feedback-defensible-scope]]). Tự đứng được ≠ chứng minh mọi chi tiết:
+  kết quả chuẩn thì trích dẫn, chỉ chứng minh đầy đủ phần của luận văn.
 - Sau sửa: chữ "Wang" chỉ còn ở danh mục tài liệu; 17 trích dẫn [n] ở các chỗ kế thừa.
 - Còn đúng một chỗ chưa có chứng minh: hội tụ của z_y ở vòng 1 khi có số hạng ghép (đang ghi là hạn chế,
   kiểm chứng bằng mô phỏng). Chứng minh đầy đủ đòi hỏi thiết kế lại vòng 1 theo hàm Lyapunov kiểu Kanayama.
