@@ -238,7 +238,7 @@ Seminar 2 (tháng 4/2026) triển khai phương pháp Critic-only kết hợp Co
 \section{Kết quả chính: mô hình đầy đủ, bộ điều khiển hai vòng thiết kế theo backstepping}
 % ================================================================
 
-Phần này thực hiện trên \textbf{mô hình đầy đủ 5 trạng thái} (MATLAB R2023a); mọi luật vòng 1 dùng chung vòng 2 đầy đủ ($K_d = 20I$, $K_c = M$, $K_\alpha = K_\beta = 10I$). Điều kiện mô phỏng: $T = 60$\,s, Euler $\Delta t = 1$\,ms, $Q = 10I_3$, $R = 2I_2$, sai lệch ban đầu $z_0 = [0{,}2;\ -0{,}1;\ 0{,}1]$, robot xuất phát đứng yên, nhiễu đồng pha 20\%. Ba quỹ đạo: đường tròn ($R_c = 2$\,m, $v_r = 0{,}3$\,m/s), đường thẳng ($v_r = 0{,}3$\,m/s) và hình số 8 (lemniscate, $\omega_8 = 0{,}1$\,rad/s).
+Phần này thực hiện trên \textbf{mô hình đầy đủ 5 trạng thái} (MATLAB R2023a); mọi luật vòng 1 dùng chung vòng 2 đầy đủ ($K_d = 20I$, $K_c = M$, $K_\alpha = K_\beta = 10I$). Điều kiện mô phỏng: $T = 60$\,s, Euler $\Delta t = 1$\,ms, $Q = 10I_3$, $R = 2I_2$, sai lệch ban đầu $q(0) - q_r(0) = [0{,}2;\ -0{,}1;\ 0{,}1]$, robot xuất phát đứng yên, nhiễu đồng pha 20\%. Ba quỹ đạo: đường tròn ($R_c = 2$\,m, $v_r = 0{,}3$\,m/s), đường thẳng ($v_r = 0{,}3$\,m/s) và hình số 8 (lemniscate, $\omega_8 = 0{,}1$\,rad/s).
 
 \subsection{Chỉnh gain đều nhau trước khi so sánh}
 
@@ -382,7 +382,7 @@ Luật cập nhật $W$ & eq.(17) & eq.(17) & Giữ nguyên \\
 \textbf{Kết quả phân tích thành phần} (bỏ hoặc thay từng thành phần, nhiễu 20\%):
 \begin{itemize}
     \item \textbf{Tham số gốc của Wang et al.:} không phát tán nhưng bám kém -- chi phí gấp $23{,}4$ / $13{,}3$ / $7{,}0$ lần trên tròn / thẳng / số 8 (năng lượng điều khiển chiếm $58$--$78\%$ chi phí), và sai số ngang dư $1{,}7$--$3{,}2$\,cm khi $z_x, z_\theta \approx 0$ -- đúng tình huống của khoảng hở trong chứng minh gốc.
-    \item \textbf{Ghép nonholonomic là thành phần quyết định:} thiếu nó, chi phí gấp $3{,}2$--$5{,}6$ lần và robot kẹt gần điểm cân bằng giả (tại $\|z_0\| = 3{,}5$: $|z_y| \approx 1{,}4$\,m trong khi $|z_x| \approx 0{,}11$\,m, $|z_\theta| \approx 0{,}05$\,rad).
+    \item \textbf{Ghép nonholonomic là thành phần quyết định:} thiếu nó, chi phí gấp $3{,}2$--$5{,}6$ lần và sai số ngang giảm rất chậm (tại $\|z_0\| = 3{,}5$: $|z_x|$, $|z_\theta|$ đã nhỏ từ giây thứ 20 nhưng $|z_y|$ chỉ giảm từ $2{,}3$ xuống $1{,}0$\,m sau 60\,s, khoảng $3$\,cm/s).
     \item \textbf{Toán tử chiếu} không kích hoạt trong mọi kịch bản ($\lambda_{\min}(P(W)) > 0{,}12$).
     \item \textbf{Các số hạng cố định thời gian ở vòng 1} không cải thiện chi phí: bỏ chúng (ADP-UUB, eq.32--33 của bài báo) còn giảm nhẹ $1{,}4$--$1{,}8\%$.
     \item \textbf{Việc học của Critic:} số hạng $\sigma$-modification chi phối hoàn toàn $W(t)$ ở điều kiện danh nghĩa -- $\|W(60)\| = 0{,}494$, so với $0{,}492$ nếu bỏ hẳn số hạng học; đóng băng Critic cho chi phí thấp hơn $3\%$. Ở sai lệch lớn, luật học làm hội tụ chậm gần ba lần so với đóng băng ($42{,}3$\,s so với $15{,}8$\,s).
