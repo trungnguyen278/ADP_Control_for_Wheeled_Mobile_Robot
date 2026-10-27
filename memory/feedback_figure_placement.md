@@ -1,14 +1,19 @@
 ---
 name: feedback-figure-placement
-description: Figures must not be placed between equations and their explanations — place at natural section breaks
+description: Hình không chen giữa công thức và giải thích; chú giải ngoài vùng vẽ, căn trái; nhãn/mũi tên không đè nhau — soát bằng mắt ở 200–300 dpi bằng pdftoppm
 metadata:
   type: feedback
 ---
 
-Không đặt hình giữa công thức và phần giải thích ký hiệu. Đặt hình tại điểm chuyển đoạn tự nhiên (cuối mục, trước subsection mới).
+Không đặt hình giữa công thức và phần giải thích ký hiệu. Đặt hình tại điểm chuyển đoạn tự nhiên (cuối mục, trước subsection mới). Chú giải không che nội dung đồ thị: đặt ngoài vùng vẽ (bên phải hoặc dưới), chữ căn trái. Trên hình TikZ, nhãn không đè lên mũi tên/trục/nhãn khác.
 
-**Why:** User reported "nhiều hình bị chèn giữa phần giải thích ký hiệu và nội dung" — figures splitting equations from their explanations breaks the reading flow.
+**Why:** Trung phàn nàn hai lần. Lần đầu: "nhiều hình bị chèn giữa phần giải thích ký hiệu và nội dung". Lần hai (27/10/2026): "các ký tự bị đè lên nhau... nhiều hình khác cũng bị", chú giải "căn lề chưa đều" (pgfplots mặc định căn giữa từng ô), mũi tên hình Concurrent Learning đè nhau. Lượt sửa đầu chỉ tính tọa độ rồi xem cả trang ở ~100 dpi nên vẫn sót: nhãn ω nằm trên viền thân robot, z_θ đè mũi tên θ_r, (v, ω) lửng giữa hai đường hồi tiếp, đầu mũi tên đè góc rẽ. Chỉ phóng to mới thấy.
 
-**How to apply:** When inserting TikZ figures or includegraphics in LaTeX, check that the figure does not land between an equation and the paragraph that explains its symbols. Also: legends must not cover plot content — place outside the plot area (e.g. right side or below). For TikZ diagrams, verify labels don't overlap arrows/axes by checking coordinate geometry.
+**How to apply:**
+
+- Sau khi sửa hình: `pdftoppm -r 300 -f N -l N -x .. -y .. -W .. -H .. -png thesis.pdf out` (có sẵn trong MiKTeX) rồi xem ảnh cắt; tìm trang bằng pypdf, tìm "Hình X.Y:".
+- Nhãn góc: góc hẹp (< 40°) thì đặt nhãn ra ngoài góc, đừng đặt ở giữa. Nhãn đường hồi tiếp: đặt về phía không có đường khác. Nhánh rẽ vào hai khối: cho hai khối cùng rộng, đoạn ngang ≥ 0,5 cm.
+- pgfplots: `\node` đặt ngoài [ymin, ymax] bị cắt mất (nhãn T_f = π ở Hình 3.2 từng biến mất). `legend cell align=left` đặt ở `\pgfplotsset` toàn cục.
+- MATLAB: tín hiệu tần số cao trên cửa sổ dài thành dải màu đặc, và đường vẽ sau che đường vẽ trước. Dùng cửa sổ phóng to vài chu kỳ (Hình 5.6). Chữ trên hình chỉ dùng Latin-1 (xem [[feedback-vietnamese]]).
 
 Related: [[feedback-vietnamese]], [[project-progress]]

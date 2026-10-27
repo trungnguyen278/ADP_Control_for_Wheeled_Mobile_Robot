@@ -706,6 +706,23 @@ o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay l
   minh; bat dang thuc "Bo de 2 cua Wang" thay bang bat dang thuc co ban. Bo dem bo de reset theo chuong.
   Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull, 0 anchor trung.
 
+### 2026-10-27 (dem) — VE LAI HINH, MO HINH 5 TRANG THAI VIET DU 5 PHUONG TRINH
+
+- Hinh TikZ het chu/mui ten de nhau (soat bang `pdftoppm -r 300`, khong chi nhin ca trang):
+  H2.1 (cung omega ra ngoai than robot; nhan banh xe, L), H2.2 (nhan z_theta ra ngoai goc hep 25 do),
+  H3.1, H3.3 CL (bo tri luoi, mui ten khong cat nhau), H4.1 (nhan (v, omega) tren dung duong cua no,
+  khoi sai so 1 dong), H4.2 (hai khoi cung rong, diem re nhanh khong de dau mui ten).
+- Chu giai do thi can trai (pgfplots `legend cell align=left`), dat ngoai vung ve (H2.3, H3.2);
+  H3.2 hien lai nhan T_f = pi (truoc nam duoi ymin nen bi cat mat).
+- H5.6 (torque_dist) ve lai: (a) 3 s dau, (b) 3 chu ky nhieu o xac lap cung d(t). Ban cu 60 s chi la
+  dai mau dac, tau_R bi tau_L che. So lieu khop van ban: corr(tau_R dao dong, -d) = 0.761,
+  max|tau| sau 1 s = 0.171. Chi xuat lai hinh nay (khoi "SM1 full figures" cua export_all_figures.m).
+- (2.7) viet thanh he 5 phuong trinh, moi trang thai mot dong. Ban cu de hang cuoi M^-1(B tau - F) la
+  vec-to 2 phan tu nen nhin nhu chi co 4 hang.
+- Bo Muc 4.6 (tom tat phan ke thua / phan cua luan van) -- Trung: khong can. Sua "Bo de (3.13)" (la
+  cong thuc, khong phai bo de) va ghi ro gia thiet Gamma/2 = I o Muc 4.2.2. hyperref `hidelinks`.
+- Thesis 71 trang; 0 loi, 0 ref treo, 0 Overfull.
+
 ---
 
 ## VIEC CAN LAM

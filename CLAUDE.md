@@ -135,7 +135,9 @@ Quy trình đầy đủ (sim → export figure → compile): [docs/guides/workfl
 - **Không đặt hình giữa công thức và phần giải thích ký hiệu.** Đặt hình ở điểm chuyển
   đoạn tự nhiên (cuối mục, trước subsection mới).
 - **Legend không được che nội dung plot.** Đặt ra ngoài vùng vẽ (bên phải hoặc dưới).
-- Với hình TikZ: kiểm tra tọa độ để nhãn không đè lên mũi tên/trục.
+- Với hình TikZ: kiểm tra tọa độ để nhãn không đè lên mũi tên/trục, rồi **nhìn tận mắt ở 200–300 dpi**
+  (`pdftoppm -r 300 -f N -l N -png thesis.pdf out`, có sẵn trong MiKTeX) — xem cả trang không thấy được
+  chỗ đè. Chú giải pgfplots căn trái (`legend cell align=left` ở preamble).
 - Sau khi sửa `.tex`, luôn compile lại và kiểm tra `Overfull \hbox` trong `.log`.
 - **Luận văn chỉ dùng tiếng Việt.** Thuật ngữ tiếng Anh giữ nguyên (backstepping, Critic...) phải có
   trong DANH MỤC THUẬT NGỮ; không viết kèm ngoặc tiếng Anh sau thuật ngữ Việt.

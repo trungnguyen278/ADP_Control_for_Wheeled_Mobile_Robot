@@ -11,7 +11,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{geometry}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{cite}
 \usepackage{enumitem}
 \usepackage{float}
@@ -27,7 +27,7 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc, decorations.pathreplacing, patterns, fit}
 \usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
+\pgfplotsset{compat=1.18, legend cell align=left}
 
 % === GEOMETRY (chuẩn HUST) ===
 \geometry{right=2cm, left=3cm, top=2cm, bottom=2.5cm}
@@ -160,7 +160,7 @@ CHO XE TỰ HÀNH}\\[1.5cm]
 
 Tôi xin cam đoan luận văn ``Ứng dụng điều khiển ADP cho xe tự hành'' là công trình nghiên cứu của riêng tôi, được thực hiện dưới sự hướng dẫn của PGS.TS. Nguyễn Hoài Nam.
 
-Luận văn sử dụng các kết quả đã công bố về luật điều khiển ADP hội tụ cố định thời gian \cite{Wang2025}, mô hình động lực học robot di động \cite{Fierro1997} và thủ tục backstepping \cite{Krstic1995}; các công thức và kết quả thuộc về những công trình này đều được trích dẫn tại vị trí sử dụng. Phần đóng góp riêng của tôi -- bao gồm vòng 2 của bộ điều khiển hai vòng thiết kế theo backstepping (số hạng chéo, các số hạng cố định thời gian và hàm Lyapunov chung), phân tích Lyapunov của vòng 1, việc điều chỉnh tham số, cơ chế ghép nonholonomic và toán tử chiếu, cùng toàn bộ chương trình mô phỏng và phân tích so sánh -- được nêu rõ trong Mục 1.4 và Mục 4.6.
+Luận văn sử dụng các kết quả đã công bố về luật điều khiển ADP hội tụ cố định thời gian \cite{Wang2025}, mô hình động lực học robot di động \cite{Fierro1997} và thủ tục backstepping \cite{Krstic1995}; các công thức và kết quả thuộc về những công trình này đều được trích dẫn tại vị trí sử dụng. Phần đóng góp riêng của tôi -- bao gồm vòng 2 của bộ điều khiển hai vòng thiết kế theo backstepping (số hạng chéo, các số hạng cố định thời gian và hàm Lyapunov chung), phân tích Lyapunov của vòng 1, việc điều chỉnh tham số, cơ chế ghép nonholonomic và toán tử chiếu, cùng toàn bộ chương trình mô phỏng và phân tích so sánh -- được nêu rõ trong Mục 1.4.
 
 Các số liệu và kết quả mô phỏng trình bày trong luận văn là trung thực, do tôi tự thực hiện trên MATLAB và có thể tái tạo được bằng mã nguồn kèm theo. Những hạn chế phát hiện được trong quá trình nghiên cứu đều được báo cáo đầy đủ, không lược bỏ.
 
@@ -413,7 +413,7 @@ Tuy nhiên, các luật này thường chỉ xét \textbf{mô hình động họ
     \item \textbf{Phân tích độ bền và phân tích thành phần:} ba dạng nhiễu, điều kiện đầu, và thí nghiệm loại bỏ từng thành phần của ADP-FT để xác định thành phần nào thực sự đóng góp.
 \end{enumerate}
 
-Các công thức kế thừa từ tài liệu tham khảo được trích dẫn tại chỗ sử dụng; Bảng \ref{tab:attribution} (Mục 4.6) phân định chi tiết phần kế thừa và phần của luận văn.
+Các công thức kế thừa từ tài liệu tham khảo được trích dẫn tại chỗ sử dụng.
 
 \subsection*{1.5\quad Cấu trúc luận văn}
 \phantomsection\addcontentsline{toc}{subsection}{1.5\quad Cấu trúc luận văn}
@@ -470,38 +470,43 @@ trong đó $r$ là bán kính bánh xe và $2L$ là khoảng cách giữa hai b�
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[scale=1.2, >=Stealth]
-    \draw[->, thick] (-0.5,0) -- (5.5,0) node[right] {$X_W$};
-    \draw[->, thick] (0,-0.5) -- (0,4.0) node[above] {$Y_W$};
+\begin{tikzpicture}[scale=1.1, >=Stealth]
+    % He toa do quan tinh
+    \draw[->, thick] (-0.3,0) -- (6.4,0) node[right] {$X_W$};
+    \draw[->, thick] (0,-0.3) -- (0,4.8) node[above] {$Y_W$};
     \node[below left] at (0,0) {$O$};
-    \coordinate (C) at (3, 2);
-    \def\thetaR{35}
+    \coordinate (C) at (3.4,2.3);
+    \def\thetaR{30}
+    % Hinh chieu toa do va duong tham chieu goc (ve truoc, than robot che phan ben trong)
+    \draw[dashed, gray] (C) -- (3.4,0) node[below, black] {$x$};
+    \draw[dashed, gray] (C) -- (0,2.3) node[left, black] {$y$};
+    \draw[dashed, gray] (C) -- ++(2.7,0);
     \begin{scope}[shift={(C)}, rotate=\thetaR]
-        \draw[fill=blue!10, thick] (0,0) ellipse (0.8 and 0.5);
-        \node at (0.15,0) {\small $C$};
-        \draw[fill=gray!60, thick] (0, 0.55) rectangle (0.25, 0.75);
-        \node[above, font=\scriptsize] at (0.12, 0.75) {$\omega_R$};
-        \draw[fill=gray!60, thick] (0, -0.75) rectangle (0.25, -0.55);
-        \node[below, font=\scriptsize] at (0.12, -0.75) {$\omega_L$};
-        \draw[fill=gray!40] (-0.65, 0) circle (0.08);
-        \draw[->, red, very thick] (0,0) -- (1.6,0) node[right] {$X_B$};
-        \draw[->, red, very thick] (0,0) -- (0,1.3) node[above left] {$Y_B$};
-        \draw[->, blue, very thick] (0,-0.15) -- (0.9,-0.15);
-        \node[blue, font=\small, below] at (0.45, -0.18) {$v$};
-        \draw[<->, thin] (-0.3, -0.65) -- (-0.3, 0.65);
-        \node[left, font=\scriptsize] at (-0.3, 0) {$2L$};
-        \draw[<->, thin] (0.35, 0.55) -- (0.35, 0.75);
-        \node[right, font=\scriptsize] at (0.35, 0.65) {$r$};
+        % Banh phai (phia -Y_B) va banh trai (phia +Y_B)
+        \draw[fill=gray!60, thick] (-0.35,-1.12) rectangle (0.35,-0.88);
+        \draw[fill=gray!60, thick] (-0.35, 0.88) rectangle (0.35, 1.12);
+        \node[font=\small] at (0.75,-1.38) {$\omega_R$};
+        \node[font=\small] at (0.75, 1.38) {$\omega_L$};
+        % Than robot, banh do, truc banh
+        \draw[fill=blue!8, thick] (0,0) circle (0.85);
+        \draw[fill=gray!40] (-0.62,0) circle (0.07);
+        \draw[thin] (0,-0.88) -- (0,0.88);
+        \node[font=\scriptsize] at (-0.16,-0.5) {$L$};
+        % Van toc dai v (song song X_B)
+        \draw[->, blue, very thick] (0,-0.26) -- (1.05,-0.26) node[right, font=\small] {$v$};
+        % He toa do than robot
+        \draw[->, red, very thick] (0,0) -- (2.4,0) node[right] {$X_B$};
+        \draw[->, red, very thick] (0,0) -- (0,1.8) node[above] {$Y_B$};
     \end{scope}
-    \draw[dashed, thin] (C) -- ++(2.0, 0);
-    \draw[->, thick] ($(C)+(1.2,0)$) arc[start angle=0, end angle=\thetaR, radius=1.2];
-    \node at ($(C)+(1.5, 0.45)$) {$\theta$};
-    \draw[->, green!60!black, very thick] ($(C)+(0.3,0.8)$) arc[start angle=90, end angle=200, radius=0.3];
-    \node[green!60!black, font=\small] at ($(C)+(0.0,1.3)$) {$\omega$};
-    \draw[dashed, thin] (C) -- (3, 0) node[midway, right, font=\small] {$y$};
-    \draw[dashed, thin] (C) -- (0, 2) node[midway, above, font=\small] {$x$};
+    \node[font=\small] at ($(C)+(75:0.34)$) {$C$};
+    % Van toc goc quanh C (chieu duong nguoc chieu kim dong ho), ve o goc trong
+    \draw[->, green!50!black, very thick] ($(C)+(200:1.15)$) arc[start angle=200, end angle=250, radius=1.15];
+    \node[green!50!black, font=\small] at ($(C)+(225:1.45)$) {$\omega$};
+    % Goc huong
+    \draw[->, thick] ($(C)+(1.9,0)$) arc[start angle=0, end angle=\thetaR, radius=1.9];
+    \node at ($(C)+(12:2.17)$) {$\theta$};
 \end{tikzpicture}
-\caption{Mô hình robot di động vi sai: hệ tọa độ quán tính $\{O, X_W, Y_W\}$, hệ tọa độ thân robot $\{C, X_B, Y_B\}$ (đỏ), vận tốc dài $v$ (xanh), vận tốc góc $\omega$ (xanh lá)}
+\caption{Mô hình robot di động vi sai: hệ tọa độ quán tính $\{O, X_W, Y_W\}$, hệ tọa độ thân robot $\{C, X_B, Y_B\}$ (đỏ), vận tốc dài $v$ (xanh), vận tốc góc $\omega$ (xanh lá); bánh phải ở phía $-Y_B$, hai bánh cách tâm $C$ một khoảng $L$}
 \label{fig:wmr_schematic}
 \end{figure}
 
@@ -523,7 +528,11 @@ Các ma trận và véc-tơ trong (\ref{eq:dynamics}) có ý nghĩa vật lý r�
 \end{equation}
 chuyển đổi từ mô-men hai bánh $\tau = [\tau_R, \tau_L]^\T$ (N$\cdot$m) sang lực/mô-men tác dụng tại tâm robot. Hàng thứ nhất: lực đẩy dọc $F = (\tau_R + \tau_L)/r$ (hai bánh cùng chiều tạo lực tiến). Hàng thứ hai: mô-men quay $N = L(\tau_R - \tau_L)/r$ (hai bánh ngược chiều tạo quay).
 
-Cần phân biệt (\ref{eq:B_matrix}) với ma trận trong (\ref{eq:wheel_vel}). Ma trận $J = \begin{bmatrix} r/2 & r/2 \\ r/(2L) & -r/(2L) \end{bmatrix}$ biến vận tốc bánh thành vận tốc thân xe, còn $B$ biến mô-men bánh thành lực/mô-men thân xe. Theo nguyên lý công ảo, công suất ở hai phía phải bằng nhau: $\tau^\T [\omega_R, \omega_L]^\T = [F, N]\,\eta$, suy ra $B = J^{-\T}$. Kiểm tra thứ nguyên cũng cho thấy điều này: $(\tau_R + \tau_L)/r$ có đơn vị N, đúng là lực.
+Cần phân biệt (\ref{eq:B_matrix}) với ma trận trong (\ref{eq:wheel_vel}),
+\[
+    J = \begin{bmatrix} r/2 & r/2 \\ r/(2L) & -r/(2L) \end{bmatrix},
+\]
+biến vận tốc bánh thành vận tốc thân xe, còn $B$ biến mô-men bánh thành lực/mô-men thân xe. Theo nguyên lý công ảo, công suất ở hai phía phải bằng nhau: $\tau^\T [\omega_R, \omega_L]^\T = [F, N]\,\eta$, suy ra $B = J^{-\T}$. Kiểm tra thứ nguyên cũng cho thấy điều này: $(\tau_R + \tau_L)/r$ có đơn vị N, đúng là lực.
 
 \textbf{Véc-tơ ma sát} $F(\eta)$ mô hình hóa tổn thất ma sát:
 \begin{equation}\label{eq:friction}
@@ -561,11 +570,18 @@ Với $\tau_\text{max} = 1$\,N$\cdot$m, gia tốc tịnh tiến lớn nhất rob
 
 Ghép mô hình động học (\ref{eq:kinematics}) và động lực học (\ref{eq:dynamics}), ta được mô hình đầy đủ 5 trạng thái $[x, y, \theta, v, \omega]^\T$:
 \begin{equation}\label{eq:full_model}
-    \frac{d}{dt}\begin{bmatrix} x \\ y \\ \theta \\ v \\ \omega \end{bmatrix}
-    = \begin{bmatrix} v\cos\theta \\ v\sin\theta \\ \omega \\ \hdashline M^{-1}(B\tau - F(\eta)) \end{bmatrix}
+    \left\{
+    \begin{aligned}
+        \dot x &= v\cos\theta \\
+        \dot y &= v\sin\theta \\
+        \dot\theta &= \omega \\
+        \dot v &= \frac{1}{m}\Big(\frac{\tau_R + \tau_L}{r} - f_v v - f_c\tanh(v/\varepsilon)\Big) \\
+        \dot\omega &= \frac{1}{I}\Big(\frac{L(\tau_R - \tau_L)}{r} - f_\omega\omega - f_{c\omega}\tanh(\omega/\varepsilon)\Big)
+    \end{aligned}
+    \right.
 \end{equation}
 
-Mô hình (\ref{eq:full_model}) phản ánh đầy đủ vật lý robot: ba trạng thái đầu $(x, y, \theta)$ mô tả hình học (vị trí và hướng), hai trạng thái sau $(v, \omega)$ mô tả động lực (vận tốc). Đầu vào thực sự là mô-men $\tau = [\tau_R, \tau_L]^\T$ chứ không phải vận tốc $(v, \omega)$ như mô hình động học giả định. Sự phân biệt này rất quan trọng: trên mô hình động học, vận tốc thay đổi tức thời; trên mô hình đầy đủ, vận tốc thay đổi theo quán tính -- cần thời gian và năng lượng.
+Ba phương trình đầu là mô hình động học (\ref{eq:kinematics}); hai phương trình cuối là (\ref{eq:dynamics}) viết theo từng thành phần với $M$, $B$, $F(\eta)$ ở (\ref{eq:B_matrix})--(\ref{eq:friction}): gia tốc dài do tổng mô-men hai bánh, gia tốc góc do hiệu mô-men. Mô hình (\ref{eq:full_model}) phản ánh đầy đủ vật lý robot: ba trạng thái đầu $(x, y, \theta)$ mô tả hình học (vị trí và hướng), hai trạng thái sau $(v, \omega)$ mô tả động lực (vận tốc). Đầu vào thực sự là mô-men $\tau = [\tau_R, \tau_L]^\T$ chứ không phải vận tốc $(v, \omega)$ như mô hình động học giả định. Sự phân biệt này rất quan trọng: trên mô hình động học, vận tốc thay đổi tức thời; trên mô hình đầy đủ, vận tốc thay đổi theo quán tính -- cần thời gian và năng lượng.
 
 \subsection*{2.4\quad Sai số bám trong hệ tọa độ thân robot}
 \phantomsection\addcontentsline{toc}{subsection}{2.4\quad Sai số bám trong hệ tọa độ thân robot}
@@ -593,62 +609,42 @@ Hình~\ref{fig:error_body_frame} minh họa các thành phần sai số trong h�
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[scale=0.75, >=Stealth]
-    % World frame
-    \draw[->, thick] (-0.5,0) -- (11,0) node[right] {$X_W$};
-    \draw[->, thick] (0,-0.5) -- (0,8) node[above] {$Y_W$};
-
-    % Actual position
-    \coordinate (A) at (2, 1.5);
-    \def\thetaA{25}
-
-    % Robot body
-    \begin{scope}[shift={(A)}, rotate=\thetaA]
-        \draw[blue, thick, fill=blue!8] (0,0) ellipse (0.55 and 0.35);
-        % Body frame axes (short, clear labels away from error arrows)
-        \draw[->, red, thick] (0,0) -- (1.6,0) node[below right, font=\small] {$X_B$};
-        \draw[->, red, thick] (0,0) -- (0,1.4) node[above left, font=\small] {$Y_B$};
-    \end{scope}
-    \node[below, blue, font=\small] at ($(A)+(0,-0.6)$) {Robot $(x, y)$};
-
-    % Theta arc (close to robot, small radius to avoid overlap with error arrows)
-    \draw[->, thick, brown] ($(A)+(1.2,0)$) arc[start angle=0, end angle=\thetaA, radius=1.2];
-    \node[brown, font=\bfseries] at ($(A)+(1.55,0.45)$) {$\theta$};
-
-    % Reference position (far away)
-    \coordinate (R) at (9.5, 6.5);
-    \fill[green!60!black] (R) circle (3pt);
-    \node[above, green!60!black, font=\small] at (R) {$(x_r, y_r)$};
-    \draw[->, green!60!black, thick] (R) -- ++(35:1.2);
-    \node[green!60!black, font=\small, right] at ($(R)+(35:1.3)$) {$\theta_r$};
-
-    % Error vector (dashed world frame)
+\begin{tikzpicture}[scale=0.85, >=Stealth]
+    % He toa do quan tinh
+    \draw[->, thick] (-0.3,0) -- (8.6,0) node[right] {$X_W$};
+    \draw[->, thick] (0,-0.3) -- (0,7.0) node[above] {$Y_W$};
+    \coordinate (A) at (1.5,1.3);
+    \def\thetaA{20}
+    % Diem tham chieu: z_x = 5,0 va z_y = 2,2 trong he toa do than robot
+    \coordinate (F) at ($(A)+(\thetaA:5.0)$);
+    \coordinate (R) at ($(F)+(\thetaA+90:2.2)$);
+    % Vec-to sai so trong he toa do quan tinh
     \draw[dashed, gray, thick] (A) -- (R);
-
-    % Error components in body frame
-    \begin{scope}[shift={(A)}, rotate=\thetaA]
-        \pgfmathsetmacro{\exW}{9.5-2}
-        \pgfmathsetmacro{\eyW}{6.5-1.5}
-        \pgfmathsetmacro{\cosT}{cos(\thetaA)}
-        \pgfmathsetmacro{\sinT}{sin(\thetaA)}
-        \pgfmathsetmacro{\zx}{\exW*\cosT + \eyW*\sinT}
-        \pgfmathsetmacro{\zy}{-\exW*\sinT + \eyW*\cosT}
-
-        % z_x (along X_B, start well past X_B label)
-        \draw[->, orange, line width=2.5pt] (2.2,0) -- (\zx, 0);
-        \node[orange, font=\bfseries, below] at ({(\zx+2.2)/2}, -0.3) {$z_x$};
-
-        % z_y (perpendicular, from tip of z_x)
-        \draw[->, purple, line width=2.5pt] (\zx, 0) -- (\zx, \zy);
-        \node[purple, font=\bfseries, right] at (\zx+0.15, \zy/2) {$z_y$};
-    \end{scope}
-
-    % z_theta arc between theta_r and theta directions
-    \draw[->, magenta, thick] ($(A)+(25:3.5)$) arc[start angle=25, end angle=35, radius=3.5];
-    \node[magenta, font=\bfseries, right] at ($(A)+(30:3.8)$) {$z_\theta$};
-
+    % Truc X_B (keo dai) va Y_B
+    \draw[->, red, thick] (A) -- ($(A)+(\thetaA:6.4)$) node[right, font=\small] {$X_B$};
+    \draw[->, red, thick] (A) -- ($(A)+(\thetaA+90:1.4)$) node[above left, font=\small] {$Y_B$};
+    % Robot
+    \draw[blue, thick, fill=blue!8, rotate around={\thetaA:(A)}] (A) ellipse (0.5 and 0.32);
+    \node[below, blue, font=\small] at ($(A)+(0,-0.45)$) {Robot $(x, y)$};
+    % Goc huong theta
+    \draw[dashed, gray] (A) -- ++(1.9,0);
+    \draw[->, thick, brown] ($(A)+(1.45,0)$) arc[start angle=0, end angle=\thetaA, radius=1.45];
+    \node[brown] at ($(A)+(9:1.75)$) {$\theta$};
+    % z_x doc theo X_B, z_y vuong goc
+    \draw[->, orange, line width=2.5pt] (A) -- (F);
+    \node[orange!90!black, below right, font=\small] at ($(A)!0.5!(F)$) {$z_x$};
+    \draw[->, purple, line width=2.5pt] (F) -- (R);
+    \node[purple, right, font=\small] at ($(F)!0.5!(R)+(\thetaA:0.15)$) {$z_y$};
+    % Diem tham chieu va huong tham chieu
+    \fill[green!50!black] (R) circle (3pt);
+    \node[green!50!black, above left, font=\small] at (R) {$(x_r, y_r)$};
+    \draw[->, green!50!black, thick] (R) -- ($(R)+(45:1.7)$) node[above right, font=\small] {$\theta_r$};
+    % z_theta = theta_r - theta, ve tai diem tham chieu
+    \draw[dashed, red!70] (R) -- ($(R)+(\thetaA:1.7)$);
+    \draw[->, magenta, thick] ($(R)+(\thetaA:1.1)$) arc[start angle=\thetaA, end angle=45, radius=1.1];
+    \node[magenta, font=\small, anchor=north west] at ($(R)+(\thetaA:1.15)+(0.02,-0.06)$) {$z_\theta$};
 \end{tikzpicture}
-\caption{Sai số bám trong hệ tọa độ thân robot: $z_x$ (cam) là sai số dọc theo $X_B$, $z_y$ (tím) là sai số ngang theo $Y_B$, $z_\theta = \theta_r - \theta$ là sai số góc hướng}
+\caption{Sai số bám trong hệ tọa độ thân robot: $z_x$ (cam) là sai số dọc theo $X_B$, $z_y$ (tím) là sai số ngang theo $Y_B$, $z_\theta = \theta_r - \theta$ là sai số góc hướng, vẽ tại điểm tham chiếu giữa hướng $\theta_r$ và đường song song với $X_B$}
 \label{fig:error_body_frame}
 \end{figure}
 
@@ -745,7 +741,7 @@ Hình số 8 là bài kiểm tra khắt khe nhất vì: (i) độ cong thay đ�
 
 % Line
 \addplot[red, very thick, dashed, domain=0:5] (x, 0);
-\addlegendentry{Đường thẳng ($v_r=0.3$\,m/s)}
+\addlegendentry{Đường thẳng ($v_r=0{,}3$\,m/s)}
 
 % Figure-8
 \addplot[green!60!black, very thick, dashdotted, domain=0:360, samples=300] ({2*sin(x)}, {sin(2*x)});
@@ -840,9 +836,9 @@ Luận văn sử dụng cả hai kiến trúc để so sánh: Actor-Critic (phư
     % Arrows
     \draw[arrow] (plant) -- node[above, font=\scriptsize] {$z(t)$} (critic);
     \draw[arrow] (critic) -- node[right, font=\scriptsize] {$\nabla V$} (policy);
-    \draw[arrow] (policy.west) -| node[below left, font=\scriptsize] {$u_o$} (plant.south);
+    \draw[arrow] (policy.west) -| node[pos=0.25, below, font=\scriptsize] {$u_o$} (plant.south);
     \draw[arrow] (critic) -- node[above, font=\scriptsize] {$W, \sigma$} (bellman);
-    \draw[arrow] (bellman) |- node[above right, font=\scriptsize] {$\delta$} (update);
+    \draw[arrow] (bellman.north) |- node[pos=0.25, right, font=\scriptsize] {$\delta$} (update.east);
     \draw[arrow] (update) -- node[left, font=\scriptsize] {$W$} (critic);
 
 \end{tikzpicture}%
@@ -950,11 +946,11 @@ Viết $\dot V \leq -\epsilon\alpha V^p - \epsilon\beta V^q - \big[(1-\epsilon)\
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-    width=11cm, height=6.5cm,
+    width=9cm, height=6.5cm,
     xlabel={Thời gian $t$ (s)},
     ylabel={$\|x(t)\|$},
     xmin=0, xmax=6, ymin=-0.05, ymax=1.1,
-    legend style={at={(0.98,0.98)}, anchor=north east, font=\small},
+    legend style={at={(1.02,0.5)}, anchor=west, font=\small},
     grid=major, grid style={gray!30},
     thick
 ]
@@ -965,7 +961,7 @@ Viết $\dot V \leq -\epsilon\alpha V^p - \epsilon\beta V^q - \big[(1-\epsilon)\
 \addplot[green!60!black, very thick, dashdotted, domain=0:6, samples=200] {(tan(max(0, 45 - deg(x/2))))^2};
 \addlegendentry{Cố định: $\dot x = -x^{1/2} - x^{3/2}$}
 \draw[black, dashed, thin] (axis cs:3.1416,-0.05) -- (axis cs:3.1416,0.5);
-\node[font=\small] at (axis cs:3.1416,-0.12) {$T_f = \pi$};
+\node[font=\small, anchor=south] at (axis cs:3.1416,0.5) {$T_f = \pi$};
 \addplot[blue, thick, domain=0:6, samples=100, opacity=0.4] {0.5*exp(-0.5*x)};
 \addplot[red, thick, dashed, domain=0:6, samples=200, opacity=0.4] {(max(0, 0.7071 - 0.5*x))^2};
 \addplot[green!60!black, thick, dashdotted, domain=0:6, samples=200, opacity=0.4] {(tan(max(0, 35.264 - deg(x/2))))^2};
@@ -1008,41 +1004,21 @@ Viết $\dot V \leq -\epsilon\alpha V^p - \epsilon\beta V^q - \big[(1-\epsilon)\
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[
-    block/.style={draw, thick, minimum width=2.2cm, minimum height=0.9cm, align=center, rounded corners=2pt},
+    block/.style={draw, thick, minimum width=3.4cm, minimum height=1.1cm, align=center, rounded corners=3pt, font=\small},
     arrow/.style={->, >=Stealth, thick},
-    node distance=1.0cm
 ]
-    % Online branch
-    \node[block, fill=blue!10] (online) {Dữ liệu trực tuyến\\$(\sigma(t), c(t))$};
-
-    % History stack
-    \node[block, fill=orange!15, below=1.2cm of online] (history) {Bộ nhớ lịch sử\\$\{(\sigma_j, c_j)\}_{j=1}^{N_H}$};
-
-    % Gradient online
-    \node[block, fill=green!10, right=1.8cm of online] (grad_on) {Gradient trực tuyến\\$-\alpha\bar\sigma\delta$};
-
-    % Gradient history
-    \node[block, fill=green!10, right=1.8cm of history] (grad_hist) {Gradient lịch sử\\$-\frac{\alpha_h}{N_H}\sum\bar\sigma_j\delta_j$};
-
-    % Sum
-    \node[draw, circle, thick, right=1.2cm of $(grad_on)!0.5!(grad_hist)$, minimum size=0.6cm] (sum) {$+$};
-
-    % Weight update
-    \node[block, fill=red!10, right=1.0cm of sum] (wdot) {$\dot{W}$};
-
-    % Arrows
-    \draw[arrow] -- (grad_on);
-    \draw[arrow] -- (grad_hist);
-    \draw[arrow] (grad_on) -| (sum);
-    \draw[arrow] (grad_hist) -| (sum);
+    \node[block, fill=blue!10] (online) at (0,0) {Dữ liệu trực tuyến\\$(\sigma(t), c(t))$};
+    \node[block, fill=orange!15] (history) at (0,-2.4) {Bộ nhớ lịch sử\\$\{(\sigma_j, c_j)\}_{j=1}^{N_H}$};
+    \node[block, fill=green!10] (grad_on) at (5.0,0) {Gradient trực tuyến\\$-\alpha\bar\sigma\delta$};
+    \node[block, fill=green!10] (grad_hist) at (5.0,-2.4) {Gradient lịch sử\\$-\frac{\alpha_h}{N_H}\sum_j\bar\sigma_j\delta_j$};
+    \node[draw, circle, thick, minimum size=0.6cm, inner sep=0pt] (sum) at (8.3,-1.2) {$+$};
+    \node[block, fill=red!10, minimum width=1.4cm] (wdot) at (10.0,-1.2) {$\dot W$};
+    \draw[arrow] (online) -- (grad_on);
+    \draw[arrow] (history) -- (grad_hist);
+    \draw[arrow, dashed] (online) -- node[left, font=\small] {lưu trữ} (history);
+    \draw[arrow] (grad_on.east) -| (sum.north);
+    \draw[arrow] (grad_hist.east) -| (sum.south);
     \draw[arrow] (sum) -- (wdot);
-
-    % Store arrow
-    \draw[arrow, dashed] (online.south) -- node[left, font=\scriptsize] {lưu trữ} (history.north);
-
-    % Labels
-    \node[font=\scriptsize, gray, below=0.1cm of history] {Chỉ cần điều kiện hạng, không cần PE};
-
 \end{tikzpicture}
 \caption{Concurrent Learning: kết hợp gradient trực tuyến và gradient từ dữ liệu lịch sử, loại bỏ yêu cầu kích thích liên tục (PE)}
 \label{fig:cl_concept}
@@ -1089,8 +1065,8 @@ Năm phương pháp so sánh ở Chương 5 chỉ khác nhau ở vòng 1 (luật
     sum/.style={draw, circle, thick, minimum size=0.45cm, inner sep=0pt, font=\small},
 ]
     \node[block, fill=yellow!15] (ref) {Quỹ đạo\\tham chiếu\\$q_r(t)$};
-    \node[block, fill=gray!10, minimum width=1.9cm, right=0.6cm of ref] (err) {Sai số\\$z = R(\theta)$\\$\cdot(q_r - q)$};
-    \node[block, fill=blue!15, right=1.3cm of err] (step1) {\textbf{Vòng 1}\\vận tốc ảo $\eta_d$\\{\scriptsize ADP-FT}};
+    \node[block, fill=gray!10, minimum width=1.9cm, right=0.6cm of ref] (err) {Sai số\\$z = R(\theta)(q_r - q)$};
+    \node[block, fill=blue!15, right=1.1cm of err] (step1) {\textbf{Vòng 1}\\vận tốc ảo $\eta_d$\\{\scriptsize ADP-FT}};
     \node[block, fill=green!15, right=2.1cm of step1] (step2) {\textbf{Vòng 2}\\mô-men $\tau$\\{\scriptsize số hạng chéo}\\{\scriptsize và cố định thời gian}};
     \node[sum, right=1.1cm of step2] (dsum) {$+$};
     \node[smallblock, fill=red!10, above=0.55cm of dsum] (dist) {$d(t)$};
@@ -1104,8 +1080,12 @@ Năm phương pháp so sánh ở Chương 5 chỉ khác nhau ở vòng 1 (luật
     \draw[arrow] (dist) -- (dsum);
     \draw[arrow] (dsum) -- (plant);
     % phan hoi van toc (vong trong) va tu the (vong ngoai)
-    \draw[arrow] (plant.south) -- ++(0, -0.75) -| node[pos=0.25, below, font=\scriptsize] {$(v, \omega)$} (step2.south);
-    \draw[arrow] (plant.south) ++(0, -0.75) -- ++(0, -0.65) -| node[pos=0.25, below, font=\scriptsize] {$(x, y, \theta)$} (err.south);
+    \coordinate (fb1) at ($(ctrl.south)+(0,-0.5)$);
+    \coordinate (fb2) at ($(ctrl.south)+(0,-1.1)$);
+    \draw[thick] (plant.south) -- (plant.south |- fb1);
+    \fill (plant.south |- fb1) circle (1.6pt);
+    \draw[arrow] (plant.south |- fb1) -| node[pos=0.25, above, font=\scriptsize] {$(v, \omega)$} (step2.south);
+    \draw[arrow] (plant.south |- fb1) -- (plant.south |- fb2) -| node[pos=0.25, below, font=\scriptsize] {$(x, y, \theta)$} (err.south);
 \end{tikzpicture}%
 }
 \caption{Bộ điều khiển hai vòng thiết kế theo backstepping: vòng 1 tính vận tốc ảo $\eta_d$ từ sai số $z$; vòng 2 tính mô-men $\tau$ từ sai lệch vận tốc $e_\eta = \eta_d - \eta$, đạo hàm $\dot\eta_d$ và số hạng chéo theo $\zeta = [z_x; z_\theta]$. Nhiễu $d(t)$ cộng vào mô-men. Vòng 1 (vòng ngoài) khép qua $(x, y, \theta)$, vòng 2 (vòng trong) khép qua $(v, \omega)$}
@@ -1169,45 +1149,29 @@ Theo bổ đề (\ref{eq:ft_lyapunov}), (iii) và (iv) là hai số hạng tạo
 \centering
 \resizebox{0.92\textwidth}{!}{%
 \begin{tikzpicture}[
-    block/.style={draw, thick, minimum width=2.0cm, minimum height=0.8cm, align=center, rounded corners=2pt, font=\small},
+    block/.style={draw, thick, minimum height=1.0cm, align=center, rounded corners=3pt, font=\small},
     arrow/.style={->, >=Stealth, thick},
-    sum/.style={draw, circle, thick, minimum size=0.45cm, inner sep=0pt, font=\small},
-    node distance=0.6cm
+    sum/.style={draw, circle, thick, minimum size=0.5cm, inner sep=0pt, font=\small},
 ]
-    % Input z
-    \node (z_in) {$z$};
-
-    % ADP branch
-    \node[block, fill=blue!10, right=0.8cm of z_in, yshift=0.8cm] (adp) {Critic\\$-\frac{1}{2}R^{-1}g^\T\nabla\phi^\T W$};
-
-    % Robust branch
-    \node[block, fill=red!10, right=0.8cm of z_in, yshift=-0.8cm] (robust) {Thành phần bền vững\\$-g^\dagger r(z)$};
-
-    % Sum
-    \node[sum, right=1.2cm of $(adp)!0.5!(robust)$] (sum1) {$+$};
-
-    % Clamp
-    \node[block, fill=yellow!15, right=0.6cm of sum1] (clamp) {Giới hạn\\$\pm u_{o,\max}$};
-
-    % Feedforward sum
-    \node[sum, right=0.6cm of clamp] (sum2) {$+$};
-
-    % Feedforward
-    \node[block, fill=green!10, above=0.4cm of sum2] (ff) {$u_f$\\truyền thẳng};
-
-    % Output
-    \node[right=0.6cm of sum2] (out) {$\eta_d = (v_d, \omega_d)$};
-
-    % Arrows
-    \draw[arrow] (z_in) |- (adp);
-    \draw[arrow] (z_in) |- (robust);
-    \draw[arrow] (adp) -| (sum1);
-    \draw[arrow] (robust) -| (sum1);
+    \node (z_in) at (0,0) {$z$};
+    \coordinate (split) at (0.5,0);
+    \node[block, fill=blue!10, minimum width=5.0cm] (adp) at (3.6,1.0) {Thành phần ADP (Critic)\\$-\frac{1}{2}R^{-1}g^\T\nabla\phi^\T W$};
+    \node[block, fill=red!10, minimum width=5.0cm] (robust) at (3.6,-1.0) {Thành phần bền vững\\$-g^\dagger r(z)$};
+    \node[sum] (sum1) at (6.9,0) {$+$};
+    \node[block, fill=yellow!15, minimum width=2.2cm] (clamp) at (9.0,0) {Giới hạn\\$\pm u_{o,\max}$};
+    \node[sum] (sum2) at (11.1,0) {$+$};
+    \node[block, fill=green!10, minimum width=2.2cm] (ff) at (11.1,1.6) {$u_f$ (truyền thẳng)};
+    \node[anchor=west] (out) at (11.9,0) {$\eta_d = (v_d, \omega_d)$};
+    \draw[thick] (z_in) -- (split);
+    \fill (split) circle (1.5pt);
+    \draw[arrow] (split) |- (adp.west);
+    \draw[arrow] (split) |- (robust.west);
+    \draw[arrow] (adp.east) -| (sum1.north);
+    \draw[arrow] (robust.east) -| (sum1.south);
     \draw[arrow] (sum1) -- node[above, font=\scriptsize] {$u_o$} (clamp);
     \draw[arrow] (clamp) -- (sum2);
     \draw[arrow] (ff) -- (sum2);
     \draw[arrow] (sum2) -- (out);
-
 \end{tikzpicture}%
 }
 \caption{Sơ đồ tín hiệu của vòng 1 (ADP-FT): tổng hợp thành phần ADP (gần tối ưu) và thành phần bền vững, giới hạn biên độ rồi cộng truyền thẳng để được vận tốc ảo $\eta_d$}
@@ -1230,7 +1194,7 @@ Phân tích ba thành phần:
 
     \item $\kappa_1 W$: \textbf{$\sigma$-modification} (Lewis \cite{Lewis2012}), ngăn $\|W\|$ phân kỳ khi tín hiệu học nhỏ. Hiệu ứng: kéo $W$ về gốc với tốc độ $\kappa_1$, đánh đổi một chút sai lệch để lấy tính bền vững.
 
-    \item $\kappa_2 (W^\T W) W$: \textbf{$\sigma$-modification bậc ba}. Thành phần bậc ba $(W^\T W)W$ tạo ra hội tụ cố định thời gian cho \textit{sai số ước lượng trọng số} (Bổ đề \ref{lem:weight}). Cụ thể, nếu bỏ qua thành phần học, $\dot{W} = -\kappa_1 W - \kappa_2\|W\|^2 W$ với hàm Lyapunov $V_W = W^\T W$ cho $\dot{V}_W \leq -\kappa_1 V_W - \kappa_2 V_W^2$, tương ứng $q = 2$ trong Bổ đề (\ref{eq:ft_lyapunov}).
+    \item $\kappa_2 (W^\T W) W$: \textbf{$\sigma$-modification bậc ba}. Thành phần bậc ba $(W^\T W)W$ tạo ra hội tụ cố định thời gian cho \textit{sai số ước lượng trọng số} (Bổ đề \ref{lem:weight}). Cụ thể, nếu bỏ qua thành phần học và lấy $\frac12\Gamma = I$ thì $\dot{W} = -\kappa_1 W - \kappa_2\|W\|^2 W$; với $V_W = W^\T W$ được $\dot{V}_W = -2\kappa_1 V_W - 2\kappa_2 V_W^2$. Số hạng $V_W^2$ đóng vai trò số hạng $\beta V^q$ với $q = 2$ trong (\ref{eq:ft_lyapunov}): nó kéo $V_W$ từ giá trị đầu bất kỳ về một mức cho trước trong thời gian không phụ thuộc giá trị đầu.
 \end{itemize}
 
 \textbf{Phương án thay thế đã khảo sát.} Trong quá trình phát triển, luận văn có thử một luật cập nhật khác, dựa trên phương pháp giảm gradient của sai số Bellman:
@@ -1634,33 +1598,6 @@ Hai mạng riêng biệt (Vamvoudakis \& Lewis \cite{Vamvoudakis2010}): Critic $
 \end{equation}
 với $\delta$ là sai số Bellman (\ref{eq:bellman_error}), $e_a$ là sai lệch giữa chính sách của Actor và chính sách suy từ Critic, và số hạng cuối kéo Actor về Critic. Để thỏa điều kiện PE, tín hiệu kích thích $n(t) = \sum_{i=1}^{8} A_i \sin(\omega_i t)$ được cộng vào $u_o$ trong 30\,s đầu rồi tắt. Trọng số khởi tạo $\hat W_c(0) = \hat W_a(0) = [0{,}75;\ 0{,}75;\ 0{,}75;\ 0;\ 0;\ 0]^\T$, chọn theo quy trình chỉnh hệ số.
 
-\subsection*{4.6\quad Tóm tắt: phần kế thừa và phần của luận văn}
-\phantomsection\addcontentsline{toc}{subsection}{4.6\quad Tóm tắt: phần kế thừa và phần của luận văn}
-\seclabel{sec:ch4_summary}{4.6}
-
-Bảng \ref{tab:attribution} phân định nguồn gốc từng thành phần của bộ điều khiển. Mọi công thức không thuộc luận văn được trích dẫn tại chỗ sử dụng.
-
-\begin{table}[H]
-\centering
-\caption{Nguồn gốc các thành phần của bộ điều khiển}
-\label{tab:attribution}
-\small
-\begin{tabular}{>{\raggedright\arraybackslash}p{8.2cm} >{\raggedright\arraybackslash}p{5.4cm}}
-\toprule
-\textbf{Thành phần} & \textbf{Nguồn} \\
-\midrule
-Mô hình động học, sai số trong hệ tọa độ thân robot & Kanayama et al. \cite{Kanayama1990} \\
-Mô hình động lực học $M\dot\eta = B\tau - F(\eta)$ & Fierro \& Lewis \cite{Fierro1997} \\
-Thủ tục backstepping & Krstić et al. \cite{Krstic1995}; cho WMR: \cite{Fierro1997, Jiang1997} \\
-Vòng 1: luật (\ref{eq:ft_control})--(\ref{eq:robust}), luật cập nhật (\ref{eq:ft_weight_update_wang}) và tính chất hội tụ của trọng số (Bổ đề \ref{lem:weight}) & \cite{Wang2025} \\
-Phân tích Lyapunov của vòng 1, Bổ đề \ref{lem:gap} & Luận văn \\
-Số hạng ghép (\ref{eq:czy}), bộ tham số, giới hạn $u_{o,\max}$ & Luận văn \\
-Toán tử chiếu (\ref{eq:projection}) & Luận văn, theo kỹ thuật của \cite{Ioannou1996} \\
-Vòng 2: số hạng chéo theo $V_1$ của ADP-FT, số hạng cố định thời gian, Định lý \ref{thm:composite}, Hệ quả \ref{cor:step2_ft} & Luận văn, theo thủ tục chuẩn của \cite{Krstic1995} \\
-Bốn luật vòng 1 dùng để so sánh & \cite{Kanayama1990, Slotine1991, Feng2002, YuMan2002, Chowdhary2010, Vamvoudakis2010} \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 
 % ================================================================
@@ -1895,12 +1832,12 @@ $60\%$ & 1.281 & \textbf{1.217} & 1.690 & 1.319 & $1.27\times10^{-3}$ & $1.26\ti
 
 Ở cả ba dạng, chi phí của Kanayama và ADP-FT thay đổi dưới $1\%$, và $z_\text{rms}$ của hai phương pháp gần như bằng nhau. Nhiễu vi sai gây sai số lớn hơn nhiễu đồng pha khoảng $3$ lần, vì với cùng biên độ mô-men $d_0$, gia tốc góc do nhiễu vi sai ($2Ld_0/(rI)$, rad/s$^2$) lớn gấp $Lm/I = 3$ lần gia tốc dài do nhiễu đồng pha ($2d_0/(rm)$, m/s$^2$).
 
-\textbf{Mô-men điều khiển.} Ở mọi phương pháp, mô-men chạm giới hạn $\pm 1$\,N$\cdot$m chỉ trong giây đầu, khi robot tăng tốc từ trạng thái đứng yên ($7$--$12\%$ thời gian của giây đầu; vận tốc đạt $95\%\,v_r$ sau khoảng $0{,}07$\,s). Sau đó $|\tau|$ không vượt $0{,}19$\,N$\cdot$m (ADP-FT: $0{,}17$\,N$\cdot$m), trung bình khoảng $0{,}10$\,N$\cdot$m; tính trên cả 60\,s, mô-men bão hòa không quá $0{,}21\%$ thời gian. Riêng ADP-AC còn chạm giới hạn sau giây đầu do tín hiệu PE. Như vậy giả thiết (A1) của Định lý \ref{thm:composite} được thỏa gần như suốt quá trình, trừ lúc khởi động. Hình \ref{fig:torque} cho thấy phần lớn mô-men ở chế độ xác lập là phản ứng của vòng 2 với nhiễu: thành phần dao động của $\tau_R$ gần như ngược pha với nhiễu (hệ số tương quan với $-d$ là $0{,}76$) -- vòng 2 bù phần lớn nhiễu, phần còn lại được quán tính robot lọc.
+\textbf{Mô-men điều khiển.} Ở mọi phương pháp, mô-men chạm giới hạn $\pm 1$\,N$\cdot$m chỉ trong giây đầu, khi robot tăng tốc từ trạng thái đứng yên ($7$--$12\%$ thời gian của giây đầu; vận tốc đạt $95\%\,v_r$ sau khoảng $0{,}07$\,s). Sau đó $|\tau|$ không vượt $0{,}19$\,N$\cdot$m (ADP-FT: $0{,}17$\,N$\cdot$m), trung bình khoảng $0{,}10$\,N$\cdot$m; tính trên cả 60\,s, mô-men bão hòa không quá $0{,}21\%$ thời gian. Riêng ADP-AC còn chạm giới hạn sau giây đầu do tín hiệu PE. Như vậy giả thiết (A1) của Định lý \ref{thm:composite} được thỏa gần như suốt quá trình, trừ lúc khởi động. Hình \ref{fig:torque}(b) cho thấy phần lớn mô-men ở chế độ xác lập là phản ứng của vòng 2 với nhiễu: thành phần dao động của $\tau_R$ gần như ngược pha với nhiễu (hệ số tương quan với $-d$ là $0{,}76$) -- vòng 2 bù phần lớn nhiễu, phần còn lại được quán tính robot lọc.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.75\textwidth]{torque_dist.pdf}
-\caption{Mô-men điều khiển $\tau_R, \tau_L$ (trên) và nhiễu $d(t)$ (dưới) của ADP-FT trên đường tròn, nhiễu 20\%}
+\caption{Mô-men điều khiển $\tau_R, \tau_L$ của ADP-FT trên đường tròn, nhiễu 20\%: (a) ba giây đầu -- mô-men chạm giới hạn $1$\,N$\cdot$m khi khởi động; (b) ba chu kỳ nhiễu ở chế độ xác lập, cùng nhiễu $d(t)$ -- mô-men gần như ngược pha với nhiễu}
 \label{fig:torque}
 \end{figure}
 

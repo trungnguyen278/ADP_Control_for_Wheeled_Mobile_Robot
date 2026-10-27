@@ -304,18 +304,29 @@ clear results_A results_B results_C;
 load('../results/sm1_full_results.mat', 'results', 's', 'p');
 fig_dir_th = '../docs/thesis/figures';
 
-% Torque + disturbance (ADP-FT, dist)
-f = figure('Position', [100 100 620 380], 'Visible', 'off');
+% Torque + disturbance (ADP-FT, dist). Nhieu sin(30t) co chu ky 0.21 s nen ca
+% 60 s chi la mot dai mau dac: ve (a) 3 s dau (bao hoa khi khoi dong) va
+% (b) 3 chu ky nhieu o che do xac lap (mo-men nguoc pha voi nhieu).
+f = figure('Position', [100 100 620 420], 'Visible', 'off');
 d = results.adp_ft_dist;
 ax = gobjects(1, 2);
 ax(1) = subplot(2,1,1);
-plot(d.t, d.tau(1,:), 'b-', d.t, d.tau(2,:), 'r-', 'LineWidth', 0.8);
+i1 = d.t <= 3;
+plot(d.t(i1), d.tau(1,i1), 'b-', d.t(i1), d.tau(2,i1), 'r--', 'LineWidth', 0.8);
 ylabel('$\tau$ [N$\cdot$m]', 'Interpreter', 'latex'); grid on;
+ylim([-0.3, 1.1]);
+title('(a)', 'FontWeight', 'normal');
 ax(2) = subplot(2,1,2);
-plot(d.t, d.dist(1,:), 'm-', 'LineWidth', 0.8);
-ylabel('$d(t)$ [N$\cdot$m]', 'Interpreter', 'latex');
+t_win = [30, 30 + 3*2*pi/s.dist_freq];
+i2 = d.t >= t_win(1) & d.t <= t_win(2);
+plot(d.t(i2), d.tau(1,i2), 'b-', d.t(i2), d.tau(2,i2), 'r--', ...
+     d.t(i2), d.dist(1,i2), 'm-', 'LineWidth', 1.0);
+ylabel('[N$\cdot$m]', 'Interpreter', 'latex');
 xlabel('$t$ [s]', 'Interpreter', 'latex'); grid on;
-legend_out(ax, {'$\tau_R$', '$\tau_L$'}, 'Interpreter', 'latex');
+xlim(t_win); ylim([-0.25, 0.25]);
+title('(b)', 'FontWeight', 'normal');
+% legend dat o truc (b) vi chi truc nay co du ba duong
+legend_out([ax(2), ax(1)], {'$\tau_R$', '$\tau_L$', '$d$'}, 'Interpreter', 'latex');
 exportgraphics(f, fullfile(fig_dir_th, 'torque_dist.pdf'), 'ContentType', 'vector');
 fprintf('  torque_dist.pdf\n');
 

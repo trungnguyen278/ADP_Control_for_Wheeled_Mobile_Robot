@@ -1,6 +1,6 @@
 ---
 name: project-progress
-description: 27/10/2026 chạy lại bằng MATLAB, gọi vòng 1/vòng 2, review yêu cầu thầy (5/5 đạt), đổi "BS" → "Kanayama", rút gọn Ch.5 (luận văn 86 → 73 tr, PR #3); còn Trung đọc lại rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
+description: 27/10/2026 review yêu cầu thầy (5/5 đạt), đổi "BS" → "Kanayama", rút gọn Ch.5, chỉ tiếng Việt, luận văn tự đứng được, hình vẽ lại (71 tr, PR #4); còn Trung đọc lại, merge PR #4, gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
@@ -25,7 +25,10 @@ Trạng thái PR: Trung đã merge PR #3 lúc 23:23 ngày 26/10, khi nhánh mớ
 đó nằm ở PR #4 (mở 27/10, cùng nhánh docs/ket-qua-buoc-2-matlab). PR #2 (claude/sweet-edison-vur249)
 vẫn mở nhưng đã lỗi thời. Đẩy commit lên nhánh của một PR đã merge thì phải mở PR mới.
 Đã bỏ trang ABSTRACT tiếng Anh và bảng đối chiếu Việt–Anh. Tên đề tài theo đăng ký; luận văn tự đứng
-được, thêm Bổ đề 3.1 và 4.2 có chứng minh ([[feedback-self-contained]]); luận văn 72 trang. Còn lại (Trung): đọc lại, merge PR #4, gửi thầy Nam.
+được, thêm Bổ đề 3.1 và 4.2 có chứng minh ([[feedback-self-contained]]); luận văn 72 trang.
+Đêm 27/10: vẽ lại các hình bị đè chữ/mũi tên, chú giải căn trái ở ngoài vùng vẽ, Hình 5.6 vẽ lại
+thành cửa sổ phóng to ([[feedback-figure-placement]]); (2.7) viết thành hệ 5 phương trình; bỏ Mục 4.6
+(bảng kế thừa/đóng góp). Luận văn 71 trang. Còn lại (Trung): đọc lại, merge PR #4, gửi thầy Nam.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 
