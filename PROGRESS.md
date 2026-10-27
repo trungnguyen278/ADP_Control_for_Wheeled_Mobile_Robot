@@ -668,6 +668,22 @@ Trung chon goi **vong 1 (vong ngoai, dong hoc) / vong 2 (vong trong, dong luc ho
   Script verify_lyapunov.m o scratchpad phien 27/10 (chua dua vao repo).
 - Build: thesis 86 trang, summary 13 trang; 0 loi, 0 ref treo, 0 Overfull (4 bang thu tabcolsep).
 
+### 2026-10-27 (khuya) — RUT GON CHUONG 5: 86 -> 73 TRANG
+
+Trung: Chuong 5 chi nen trinh bay ket qua de thay diem manh/diem yeu; giai thich dan ve cong thuc
+o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay lai, quen nhieu).
+
+- Chuong 5: 11 muc / 26 trang -> 6 muc / 15 trang: 5.1 thiet lap + chinh gain; 5.2 so sanh 6 PP
+  (5.2.1 so voi SMC/NTSMC); 5.3 do ben (5.3.1 khoi luong, 5.3.2 nhieu mo-men + mo-men dieu khien);
+  5.4 dong gop vong 2; 5.5 vai tro thanh phan ADP-FT (tham so goc + ghep + chieu, FT vong 1, hoc
+  critic, z0 lon); 5.6 diem manh / diem yeu. Bang giu lai trich nguyen van tu ban cu.
+- Bo: phan tich ham mo ta (K_eq, E, z_rms du doan -- van dung, con ghi o README), muc mo-men rieng,
+  muc Q/R (giu 1 cau: Q khong co trong luat dieu khien), tach J_u, hinh trong so, 4 hinh khoi
+  luong/nhieu, cap hinh duong thang, hang 'he co dinh thoi gian ly tuong'.
+- Sua theo: tom tat VI/EN, Ch.1 (cau truc), Ch.2-4 va Ch.6 (so muc moi, bo ham mo ta, Backstepping
+  -> luat Kanayama o Ch.6), bao cao tom tat (bo ham mo ta), README.
+- Build: thesis 73 trang (Ch.5 = tr. 53-67), summary 13 trang; 0 loi, 0 ref treo, 0 Overfull.
+
 ---
 
 ## VIEC CAN LAM

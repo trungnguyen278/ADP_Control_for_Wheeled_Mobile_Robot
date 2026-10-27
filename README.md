@@ -42,7 +42,7 @@ Chi tiết ranh giới trích dẫn: [CLAUDE.md §2](CLAUDE.md).
 | 1 | Bộ điều khiển hai vòng thiết kế theo backstepping cho robot điều khiển bằng mô-men, **hàm Lyapunov chung** | Định lý 4.1, `dynamic_backstepping.m` |
 | 2 | Phân tích lại chứng minh của Wang (**khoảng hở kênh ngang**, Bổ đề 4.1) + **ghép nonholonomic** (quyết định) + toán tử chiếu + tham số | Mục 4.2 luận văn |
 | 3 | So sánh công bằng 5 luật vòng 1 với cùng vòng 2 (chỉnh gain đều nhau) | `sweep_gains.m` |
-| 4 | Robustness + công thức dự đoán sai số do nhiễu + phân tích thành phần + đóng góp vòng 2 | Mục 5.3–5.8 |
+| 4 | Độ bền (khối lượng, nhiễu) + đóng góp vòng 2 + vai trò các thành phần của ADP-FT | Mục 5.3–5.5 |
 
 SM1/SM2 (kinematic): Actor-Critic cần PE → Critic-only + Concurrent Learning bỏ PE.
 
@@ -216,9 +216,9 @@ T = 60 s, nhiễu đồng pha 20%, gain chỉnh đều nhau (MATLAB R2023a, 2026
 
 - ADP-FT ngang NTSMC (chênh 0.2%, dưới độ phân giải của lưới chỉnh gain), kém SMC 7.9%,
   về các ngưỡng 0.05 / 0.02 / 0.01 m sớm nhất trên cả 3 quỹ đạo.
-- Sai số xác lập ≈ 4.1–4.3e-4 m ở Kanayama/SMC/NTSMC/ADP-FT = sàn do nhiễu lọt qua vòng 2. Dự đoán
-  bằng hàm mô tả: z_rms ≈ 2d₀/(√2·r·m·ω_n·√(ω_n²+K_eq²)), K_eq = K_d + 1.021·K_α·E^(p/q−1) + ¾K_β·E²
-  (K_eq ≈ 35.7 ở 20%) — khớp < 3% cả ba dạng nhiễu. Số hạng fixed-time của vòng 2 hạ sàn này 23%.
+- Sai số xác lập ≈ 4.1–4.3e-4 m ở Kanayama/SMC/NTSMC/ADP-FT = sàn do nhiễu lọt qua vòng 2, như
+  nhau ở mọi luật vòng 1; số hạng fixed-time của vòng 2 hạ sàn này 21–23%. (Phân tích hàm mô tả
+  dự đoán đúng sàn này, sai lệch < 3%, nhưng đã bỏ khỏi luận văn 27/10 để giữ phạm vi — xem PROGRESS.md.)
 - Vòng 2 (Phần M): t_e (‖e_η‖ < 0.05) ≤ 0.17 s; K_c = 10M kéo ADP-FT xuống 3.833 (< SMC) nhưng
   Kanayama +12.8% — tương đương chỉnh gain vòng 1 không đều nên giữ K_c = M. Số hạng chéo cho vận tốc
   thực vượt v_max (tới 0.62 m/s khi ‖z0‖ = 3.5).
