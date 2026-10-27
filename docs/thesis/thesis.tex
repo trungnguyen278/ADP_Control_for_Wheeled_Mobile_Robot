@@ -1049,7 +1049,7 @@ Bộ điều khiển của luận văn vì vậy có \textbf{hai vòng}:
     \item \textbf{Vòng 2 -- vòng trong (động lực học):} chọn mô-men $\tau$ để vận tốc thực $\eta$ bám $\eta_d$, đồng thời triệt số hạng tương tác mà sai lệch $\eta \neq \eta_d$ sinh ra trong đạo hàm của $V_1$. Vòng 2 khép qua vận tốc $(v, \omega)$. Kết quả là một hàm Lyapunov chung cho toàn hệ năm trạng thái (Mục \ref{sec:step2} và \ref{sec:stability}).
 \end{itemize}
 
-Hai vòng \textbf{không} phải hai bộ điều khiển thiết kế độc lập rồi ghép nối tiếp. Vòng 2 dùng đạo hàm $\dot\eta_d$ của đầu ra vòng 1 và dùng cả sai số vị trí $z$ (qua số hạng chéo) -- tức được suy ra từ hàm Lyapunov của vòng 1. Nhờ đó ổn định được chứng minh cho từng vòng và cho toàn hệ (Mục \ref{sec:stability}) mà không cần giả thiết vòng trong nhanh hơn vòng ngoài. Hình \ref{fig:architecture} minh họa hai vòng.
+Hai vòng \textbf{không} phải hai bộ điều khiển thiết kế độc lập rồi ghép nối tiếp. Vòng 2 dùng đạo hàm $\dot\eta_d$ của đầu ra vòng 1 và dùng cả sai số vị trí $z$ (qua số hạng chéo) -- tức được suy ra từ hàm Lyapunov của vòng 1. Nhờ đó ổn định được chứng minh cho từng vòng và cho toàn hệ (Mục \ref{sec:stability}) mà không cần giả thiết vòng trong nhanh hơn vòng ngoài. Hình \ref{fig:architecture} minh họa hai vòng; sơ đồ đầy đủ, với công thức của từng khối, ở Hình \ref{fig:controller_full} cuối Mục \ref{sec:step2}.
 
 \textbf{Liên hệ với các công trình trước.} Fierro \& Lewis \cite{Fierro1997} đã dùng cấu trúc này cho WMR, với vòng 1 là luật động học của Kanayama et al. \cite{Kanayama1990}; Jiang \& Nijmeijer \cite{Jiang1997} cũng giải bài toán bám của WMR theo thủ tục backstepping. Vì vậy luật Kanayama thường được gọi là ``backstepping'' dù bản thân nó chỉ là vòng 1. Các luật ADP cho WMR, ví dụ \cite{Wang2025}, thường chỉ được thiết kế trên mô hình động học, tức coi $\eta$ là đầu vào thật và dừng ở vòng 1. Luận văn dùng luật ADP làm vòng 1 và \textbf{thiết kế vòng 2}, để bộ điều khiển là một bộ backstepping đúng nghĩa cho robot nhận lệnh mô-men.
 
@@ -1437,6 +1437,100 @@ Khi $K_c = K_\alpha = K_\beta = 0$, (\ref{eq:inner_loop}) trở về đúng lu�
     \item $K_c = M = \diag(10;\ 0{,}5)$ về giá trị số. Với lựa chọn này hàm Lyapunov chung ở Mục \ref{sec:stability} có dạng đối xứng $V = V_1 + \frac12 e_\eta^\T e_\eta$ -- sai số vị trí, sai số vận tốc và sai số trọng số có cùng trọng số -- và số hạng chéo tương đương phản hồi $c_v = c_\omega = 1/K_d = 0{,}05$ cộng vào lệnh vận tốc, nhỏ so với hệ số của mọi luật vòng 1. Lựa chọn xuất phát từ cấu trúc hàm Lyapunov, không chỉnh để có lợi cho phương pháp nào. Khảo sát ở Mục \ref{sec:step2_results} cho thấy $K_c$ lớn hơn tương đương tăng hệ số vòng 1 ở kênh dọc và kênh góc mà không tăng ghép kênh ngang -- có lợi cho phương pháp này, bất lợi cho phương pháp khác; riêng lò xo góc lớn làm ``cứng'' hướng robot, cản trở việc quay đầu cần thiết để sửa sai số ngang (Bổ đề \ref{lem:gap}).
     \item $K_\alpha = K_\beta = \diag(10, 10)$: theo Hệ quả \ref{cor:step2_ft}, $e_\eta$ về không trước $T_2 \leq 1{,}0$\,s khi mô-men chưa bão hòa -- nhanh hơn vòng 1 hàng chục lần.
 \end{itemize}
+
+\textbf{Toàn bộ bộ điều khiển.} Hình \ref{fig:controller_full} ghép các thành phần ở Mục \ref{sec:step1} và \ref{sec:step2} thành một sơ đồ, mỗi khối ghi công thức và số hiệu công thức tương ứng. Ở mỗi chu kỳ lấy mẫu, bộ điều khiển đo tư thế $q$ và vận tốc $\eta$ của robot, tính $z$ và $u_f$; vòng 1 tính $\eta_d$ với trọng số hiện tại $W$, sau đó cập nhật $W$ theo (\ref{eq:ft_weight_update_wang}) và chiếu theo (\ref{eq:projection}); vòng 2 tính $\tau$ theo (\ref{eq:inner_loop}) rồi bão hòa ở $\pm\tau_{\max}$.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    blk/.style={draw, thick, align=center, rounded corners=3pt, font=\small, inner sep=4pt},
+    arrow/.style={->, >=Stealth, thick},
+    sum/.style={draw, circle, thick, minimum size=0.5cm, inner sep=0pt, font=\small},
+    sig/.style={font=\footnotesize},
+    loopbox/.style={draw, dashed, thick, rounded corners=6pt},
+    jdot/.style={circle, fill, inner sep=0pt, minimum size=3.2pt},
+]
+    % Luoi toa do (cm, truoc khi thu nho): cot trai x in [0.3, 8.85], chuoi ra cua
+    % vong 1 o x = 12.05, robot o x = 18.3; bus z o x = -0.4.
+    % ---------- Tham chieu, sai so va truyen thang ----------
+    \node[blk, fill=yellow!15] (ref) at (2.3,0) {Quỹ đạo tham chiếu\\$q_r,\ v_r,\ \omega_r$};
+    \node[blk, fill=gray!10] (err) at (8.0,0) {Sai số (\ref{eq:error_def}), truyền thẳng (\ref{eq:control_split})\\$z = R(\theta)(q_r - q)$\\$u_f = [v_r\cos z_\theta;\ \omega_r]^\T$};
+    \draw[arrow] (ref) -- (err);
+    % ---------- Vong 1 ----------
+    \draw[loopbox] (0,-1.85) rectangle (15.2,-9.6);
+    \node[anchor=south west, font=\small] at (0.1,-9.55) {Vòng 1 -- ADP-FT (Mục \ref{sec:step1})};
+    \node[blk, fill=blue!6, minimum width=8.55cm] (wupd) at (4.575,-3.15) {Cập nhật trọng số (\ref{eq:ft_weight_update_wang}) và chiếu (\ref{eq:projection})\\$\dot W = \frac12\Gamma\big[\nabla\phi\, g R^{-1} g^\T z - \kappa_1 W - \kappa_2 (W^\T W) W\big]$\\$W \leftarrow \operatorname{Proj}_\Omega(W)$};
+    \node[blk, fill=blue!15, minimum width=4.8cm] (critic) at (12.05,-3.15) {Critic (\ref{eq:ft_control})\\$u_{o,\text{adp}} = -\frac12 R^{-1} g^\T \nabla\phi^\T W$};
+    \node[blk, fill=red!10, minimum width=8.55cm] (robust) at (4.575,-5.35) {Bền vững (\ref{eq:robust}) và ghép nonholonomic (\ref{eq:czy})\\$-g^\dagger r(z)$, \ $r_\theta \leftarrow r_\theta + c_{zy} v_r \tanh(z_y/\varsigma)$};
+    \node[sum] (s1) at (12.05,-5.35) {$+$};
+    \node[blk, fill=yellow!15] (clamp) at (12.05,-6.5) {Giới hạn (\ref{eq:clamp}): $\pm u_{o,\max}$};
+    \node[sum] (s2) at (12.05,-7.6) {$+$};
+    \node[blk, fill=yellow!15] (lim) at (12.05,-8.75) {$|v_d| \le v_{\max},\ |\omega_d| \le \omega_{\max}$};
+    \draw[arrow] (wupd) -- node[above, sig] {$W$} (critic);
+    \draw[arrow] (critic) -- node[right, sig] {$u_{o,\text{adp}}$} (s1);
+    \draw[arrow] (robust) -- (s1);
+    \draw[arrow] (s1) -- node[right, sig] {$u_o$} (clamp);
+    \draw[arrow] (clamp) -- (s2);
+    \draw[arrow] (s2) -- (lim);
+    \draw[arrow] ($(robust.south)+(2.6,-0.7)$) node[below, sig] {$v_r$} -- ($(robust.south)+(2.6,0)$);
+    % ---------- Vong 2 ----------
+    \draw[loopbox] (0,-10.3) rectangle (15.6,-15.0);
+    \node[anchor=south west, font=\small] at (0.1,-14.95) {Vòng 2 -- luật mô-men (Mục \ref{sec:step2})};
+    \node[blk, fill=green!6] (zeta) at (2.35,-11.35) {Số hạng chéo (\ref{eq:zeta})\\$\zeta = -g^\T z = [z_x;\ z_\theta]^\T$};
+    \node[blk, fill=green!6] (deriv) at (7.525,-11.35) {Đạo hàm số\\$\dot\eta_d \approx [\eta_d(k) - \eta_d(k-1)]/\Delta t$};
+    \node[draw, circle, thick, minimum size=0.5cm, inner sep=0pt] (cmp) at (12.05,-11.35) {};
+    \node[sig] at ($(cmp)+(-0.38,0.36)$) {$+$};
+    \node[sig] at ($(cmp)+(0.42,-0.3)$) {$-$};
+    \node[blk, fill=green!15, minimum width=13.1cm] (torque) at (6.85,-13.55) {Luật mô-men (\ref{eq:inner_loop})\\$\tau = B^{-1}\big[M\big(\dot\eta_d + K_d e_\eta + K_\alpha \operatorname{sig}(e_\eta)^{p/q} + K_\beta e_\eta^3\big) + F(\eta) + K_c\,\zeta\big]$};
+    \node[blk, fill=yellow!15, minimum width=1.5cm] (sat) at (14.65,-13.55) {$\pm\tau_{\max}$};
+    \draw[arrow] (zeta.south) -- node[right, sig] {$\zeta$} (zeta.south |- torque.north);
+    \draw[arrow] (deriv.south) -- node[right, sig] {$\dot\eta_d$} (deriv.south |- torque.north);
+    \draw[arrow] (cmp.south) -- node[left, sig] {$e_\eta$} (cmp.south |- torque.north);
+    \draw[arrow] (torque) -- (sat);
+    % ---------- Robot ----------
+    \node[blk, fill=orange!10, minimum width=4.6cm] (kin) at (18.3,-2.6) {Động học (\ref{eq:kinematics})\\$\dot q = [v\cos\theta;\ v\sin\theta;\ \omega]^\T$};
+    \node[blk, fill=orange!10, minimum width=4.6cm] (dyn) at (18.3,-8.0) {Động lực học (\ref{eq:dynamics})\\$M\dot\eta = B(\tau + d) - F(\eta)$};
+    \node[sum] (dsum) at (18.3,-13.55) {$+$};
+    \node[blk, fill=red!10] (dist) at (18.3,-14.75) {$d(t)$};
+    \draw[arrow] (sat) -- node[above, sig] {$\tau$} (dsum);
+    \draw[arrow] (dist) -- (dsum);
+    \draw[arrow] (dsum) -- node[right, sig] {$\tau + d$} (dyn);
+    % ---------- Tin hieu z: tu khoi sai so toi cac khoi dung z ----------
+    \coordinate (zb) at (8.0,-1.45);
+    \draw[thick] (err.south) -- (zb);
+    \draw[arrow] (zb) -| (critic.north);
+    \draw[thick] (zb) -- (-0.4,-1.45) -- (-0.4,-11.35);
+    \node[above, sig] at (4.7,-1.45) {$z$};
+    \draw[arrow] (-0.4,-11.35) -- (zeta.west);
+    \draw[arrow] (-0.4,-3.15) -- (wupd.west);
+    \draw[arrow] (-0.4,-5.35) -- (robust.west);
+    \node[jdot] at (zb) {};
+    \node[jdot] at (-0.4,-3.15) {};
+    \node[jdot] at (-0.4,-5.35) {};
+    % ---------- Tin hieu u_f va eta_d ----------
+    \draw[arrow] (err.east) -- node[above, sig] {$u_f$} (14.9,0) -- (14.9,-7.6) -- (s2.east);
+    \coordinate (jd) at (12.05,-9.95);
+    \draw[thick] (lim.south) -- (jd);
+    \draw[arrow] (jd) -- node[right, sig, pos=0.5] {$\eta_d$} (cmp.north);
+    \draw[arrow] (jd) -| (deriv.north);
+    \node[jdot] at (jd) {};
+    % ---------- Phan hoi eta (vong 2) va q (vong 1) ----------
+    \coordinate (je) at (18.3,-5.3);
+    \draw[thick] (dyn.north) -- (je);
+    \draw[arrow] (je) -- node[right, sig] {$\eta$} (kin.south);
+    \draw[thick] (je) -- (15.95,-5.3) -- (15.95,-11.35);
+    \draw[arrow] (15.95,-11.35) -- (cmp.east);
+    \coordinate (jf) at (12.9,-11.35);
+    \draw[arrow] (jf) -- node[right, sig] {$\eta$} (jf |- torque.north);
+    \node[jdot] at (je) {};
+    \node[jdot] at (jf) {};
+    \draw[arrow] (kin.north) -- (18.3,1.6) -- node[above, sig] {$q$} (8.0,1.6) -- (err.north);
+\end{tikzpicture}%
+}
+\caption{Sơ đồ đầy đủ của bộ điều khiển hai vòng, mỗi khối ghi công thức tương ứng. Vòng 1 (ADP-FT) tính vận tốc ảo $\eta_d$ từ sai số $z$ và trọng số Critic $W$, với $W$ được cập nhật trực tuyến và chiếu về tập $\Omega$; vòng 2 tính mô-men $\tau$ từ sai lệch vận tốc $e_\eta$, đạo hàm $\dot\eta_d$ và số hạng chéo $\zeta$. Nhiễu $d(t)$ cộng vào mô-men trước khi tác động lên robot}
+\label{fig:controller_full}
+\end{figure}
 
 \subsection*{4.4\quad Chứng minh ổn định của hệ hai vòng}
 \phantomsection\addcontentsline{toc}{subsection}{4.4\quad Chứng minh ổn định của hệ hai vòng}

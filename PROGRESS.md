@@ -722,6 +722,11 @@ o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay l
 - Bo Muc 4.6 (tom tat phan ke thua / phan cua luan van) -- Trung: khong can. Sua "Bo de (3.13)" (la
   cong thuc, khong phai bo de) va ghi ro gia thiet Gamma/2 = I o Muc 4.2.2. hyperref `hidelinks`.
 - Thesis 71 trang; 0 loi, 0 ref treo, 0 Overfull.
+- Them Hinh 4.3 (cuoi Muc 4.3): so do DAY DU bo dieu khien hai vong, moi khoi ghi cong thuc + so hieu.
+  Truoc do H4.1 chi ghi ten khoi, H4.2 chi co phan tinh cua vong 1; khong hinh nao co vong cap nhat W
+  (4.5) + chieu (4.14), so hang ghep (4.12), cac bo gioi han, ben trong vong 2 (e_eta, dao ham so, F(eta),
+  K_c zeta, bao hoa tau_max), robot tach dong luc hoc / dong hoc. Thu tu tinh moi chu ky khop code
+  (eta_d tinh bang W hien tai roi moi cap nhat W). Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull.
 
 ---
 
