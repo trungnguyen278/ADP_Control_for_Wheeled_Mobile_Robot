@@ -144,7 +144,7 @@
     \node (c1) at (0,0)
       {{\bfseries\color{hustred}1\enspace Vòng 2 theo backstepping}\\[2pt]{\footnotesize Luật mô-men có số hạng chéo; Định lý 4.1: vòng 2 không làm hỏng vòng 1.}};
     \node (c2) at (7.45,0)
-      {{\bfseries\color{hustred}2\enspace Khoảng hở kênh ngang}\\[2pt]{\footnotesize Bổ đề 4.1: luật gốc không tác động được lên $z_y$; khắc phục bằng số hạng ghép.}};
+      {{\bfseries\color{hustred}2\enspace Khoảng hở kênh ngang}\\[2pt]{\footnotesize Bổ đề 4.1: khi $z_x = z_\theta = 0$, luật gốc không tác động được lên $z_y$; khắc phục bằng số hạng ghép.}};
     \node (c3) at ($(c1.south west)+(0,-0.22)$)
       {{\bfseries\color{hustred}3\enspace So sánh công bằng}\\[2pt]{\footnotesize Năm phương pháp, cùng vòng 2, cùng quy trình chỉnh hệ số, ba quỹ đạo.}};
     \node (c4) at ($(c2.south west)+(0,-0.22)$)
@@ -240,7 +240,7 @@
   \hint{Liên tục hóa hàm dấu, phản hồi tuyến tính, lũy thừa phân số (gần gốc), bậc ba (xa gốc).}
   \[ \dot W = \tfrac12\Gamma\big[\nabla\phi\, g R^{-1} g^\T z - \kappa_1 W - \kappa_2 (W^\T W) W\big], \qquad W \leftarrow \Proj_\Omega(W) \]
   \hint{Học trực tuyến, không cần sai số Bellman; chiếu giữ $\hat V$ xác định dương. Cuối cùng $\eta_d = u_f + \mathrm{sat}(u_o)$.}\\[0.25cm]
-  {\footnotesize\textbf{Kế thừa} (Wang et al.): cấu trúc Critic-only, luật cập nhật.\quad \textbf{Bổ sung}: số hạng ghép, toán tử chiếu, giới hạn $u_o$, bộ hệ số cho robot nhận mô-men.}
+  {\footnotesize\textbf{Kế thừa} (Wang et al.): luật điều khiển (Critic + thành phần bền vững) và luật cập nhật.\quad \textbf{Bổ sung}: số hạng ghép, toán tử chiếu, giới hạn $u_o$, bộ hệ số cho robot nhận mô-men.}
   \end{minipage}
 \end{frame}
 
@@ -282,7 +282,7 @@
   \end{itemize}
   \vspace{0.2cm}
   \begin{tikzpicture}
-    \node[card, text width=4.6cm, minimum height=1.55cm] (a) {\stat{×\,3,2--5,6}{chi phí khi \textbf{bỏ} số hạng ghép: robot kẹt song song quỹ đạo}};
+    \node[card, text width=4.6cm, minimum height=1.55cm] (a) {\stat{×\,3,2--5,6}{chi phí khi \textbf{bỏ} số hạng ghép: sai số ngang giảm rất chậm}};
     \node[card, text width=4.6cm, minimum height=1.55cm, right=0.3cm of a] {\stat{×\,7,0--23,4}{chi phí với bộ tham số gốc của bài báo}};
   \end{tikzpicture}
   \end{minipage}
@@ -334,7 +334,7 @@
         Robot & $m = 10$\,kg, $I = 0{,}5$\,kg$\cdot$m$^2$, $r = 0{,}05$\,m \\
               & $L = 0{,}15$\,m, $\tau_{\max} = 1$\,N$\cdot$m \\
         Tích phân & Euler, $\Delta t = 1$\,ms, $T = 60$\,s \\
-        Sai lệch đầu & $z_0 = [0{,}2;\ -0{,}1;\ 0{,}1]$, robot đứng yên \\
+        Sai lệch đầu & $q(0) - q_r(0) = [0{,}2;\ -0{,}1;\ 0{,}1]$, $\eta(0) = 0$ \\
         Nhiễu & $d = 0{,}2\,\tau_{\max}\sin(30t)\,[1;\ 1]$ \\
         Quỹ đạo & tròn $R = 2$\,m, thẳng, hình số 8; $v_r = 0{,}3$\,m/s \\
         Chi phí & $J_c = \int_0^T (z^\T Q z + u_o^\T R u_o)\,dt$ \\
