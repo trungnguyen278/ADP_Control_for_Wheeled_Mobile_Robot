@@ -19,7 +19,7 @@
 - [Mẫu slide HUST](reference_hust_template.md) — "HUST | Powerpoint Template" 2022 trên hust.edu.vn, cách tải bằng curl; slide làm Beamer + XeLaTeX (máy không có PowerPoint)
 - [MATLAB CLI](reference_matlab_cli.md) — MATLAB ở C:\MATLAB\R2023a, MiKTeX ở Program Files; script `clear` phá lệnh bọc tic/toc
 - [Chỉ mô phỏng](feedback_simulation_only.md) — Không có robot/motor thật: τ_max = 1 N·m là tham số mô phỏng đã chốt; đừng hỏi "chốt thông số thật"
-- [Progress](project_progress.md) — 27/10: yêu cầu thầy 5/5 đạt, "BS" → "Kanayama", Ch.5 rút gọn, chỉ tiếng Việt, tự đứng được, hình vẽ lại, sơ đồ đầy đủ = Hình 4.2 (72 tr, PR #4); còn Trung đọc lại, merge PR #4, gửi thầy
+- [Progress](project_progress.md) — 27/10: yêu cầu thầy 5/5 đạt, "BS" → "Kanayama", Ch.5 rút gọn, chỉ tiếng Việt, tự đứng được, hình vẽ lại, sơ đồ đầy đủ = Hình 4.2 (72 tr, PR #4); khuya 27/10 rà soát toàn bộ, đã sửa; còn Trung đọc lại, merge PR #4, gửi thầy
 - [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10 khuya: ADP-FT ngang NTSMC, sau SMC 7,9%; z_rms theo hàm mô tả (chỉ còn trong repo, đã bỏ khỏi luận văn); số hạng chéo vượt v_max
 - [Hai vòng theo backstepping](feedback_backstepping_framing.md) — ⭐ Gọi "vòng 1/vòng 2" (không gọi "bước", từ 27/10); vòng 2 suy từ V₁ (số hạng chéo, K_c = M); chứng minh từng vòng rồi toàn hệ
 - [Khoảng hở chứng minh Wang](feedback_wang_gap.md) — ⭐ g·g† ≠ I₃; luật gốc có điểm cân bằng (0, z_y, 0) trên quỹ đạo thẳng (đã kiểm chứng); cơ sở của số hạng ghép

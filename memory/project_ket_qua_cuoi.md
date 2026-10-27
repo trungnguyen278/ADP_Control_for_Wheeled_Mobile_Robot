@@ -32,7 +32,11 @@ Q, R chỉ còn trong repo, không còn trong luận văn):
   vòng 2 cũ ≤ 0,52. Hàng "cận dưới vật lý" ở bảng thời gian quá độ theo z₀ (Mục 5.5.4) vì thế chỉ còn là tham chiếu.
 - Tham số gốc Wang (β = diag(1e5,1e5,1)): Jc ×23,4/13,3/7,0, Ju chiếm 58–78%, z_y dư 1,7–3,2 cm
   khi z_x, z_θ ≈ 0 — xác nhận Bổ đề 4.1(b) trên mô hình đầy đủ.
-- Thiếu ghép nonholonomic: Jc ×3,2–5,6, kẹt |z_y| ≈ 1,4 m ở ‖z0‖ = 3,5. Chiếu không kích hoạt (λmin ≥ 0,121).
+- Thiếu ghép nonholonomic: Jc ×3,2–5,6. Ở ‖z0‖ = 3,5 KHÔNG "kẹt quanh 1,4 m": |z_x|, |z_θ| nhỏ từ giây 20,
+  còn |z_y| giảm đều 2,3 → 1,0 m từ giây 20 đến 60 (~3 cm/s); 1,4 m chỉ là trung bình 30–60 s, z_rms 5 s cuối
+  = 1,06 (kiểm lại từ thesis_extra.mat ngày 27/10 khuya). Chiếu không kích hoạt (λmin ≥ 0,121).
+- Kiểm thêm từ .mat (27/10 khuya): Ju thấp nhất là Kanayama trên cả 3 quỹ đạo; Ju/Jc < 9% trừ ADP-AC
+  (17–24%); ≥ 97,2% Jc tích lũy trong 10 s đầu; ‖W(T)‖ = 0,49; SMC hội tụ cả 5 z0 (Phần I2).
 - Critic: đóng băng tốt hơn học 2,6–2,8%; ở ‖z0‖ = 3,5: Wang 42,3 s, đóng băng 15,8 s, SMC 17,0 s,
   Kanayama 22,0 s, Bellman 19,3 s (nhưng 39,1 s ở 2,375 — không nhất quán). ADP-UUB giảm Jc 1,4–1,8%.
 - Khối lượng 16 kg / nhiễu 60%: Jc đổi < 3% mọi PP.

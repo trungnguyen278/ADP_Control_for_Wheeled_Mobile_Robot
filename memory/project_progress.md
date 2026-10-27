@@ -34,6 +34,11 @@ Luận văn 72 trang. Cùng đêm: hạ về mức thạc sĩ ([[feedback-defens
 vi — không thêm nội dung mới. Slide bảo vệ đã có: `docs/slides/defense_slides.pdf` (20 slide, mẫu
 HUST 2022, [[reference-hust-template]]). Còn lại (Trung): đọc lại, merge PR #4, gửi thầy Nam, ôn để bảo vệ.
 
+Khuya 27/10 (Trung: "review lại một lượt all"): rà soát toàn bộ luận văn + slide + tóm tắt, đối chiếu code,
+.mat và bài báo; sửa 1 mâu thuẫn (Bellman 4.2.2 vs 5.5.3), 1 mô tả sai dữ liệu ("kẹt 1,4 m"), phạm vi
+khẳng định, 7 chỗ "phiên bản trước", ký hiệu Ω, 1 tài liệu không trích. Để lại cho Trung quyết: dấu thập
+phân "." trong bảng vs "," trong lời, thứ tự danh mục tài liệu.
+
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 
 - Đổi "bước 1/2" → "vòng 1/2" toàn bộ luận văn + tóm tắt ([[feedback-backstepping-framing]]); Mục 4.4

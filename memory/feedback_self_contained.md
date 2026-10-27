@@ -23,6 +23,10 @@ phải chứng minh đầy đủ các cách làm". Đếm lúc đó: 65 lần "W
   "Bổ đề 2 của Wang") đã bỏ ([[feedback-defensible-scope]]). Tự đứng được ≠ chứng minh mọi chi tiết:
   kết quả chuẩn thì trích dẫn, chỉ chứng minh đầy đủ phần của luận văn.
 - Sau sửa: chữ "Wang" chỉ còn ở danh mục tài liệu; 17 trích dẫn [n] ở các chỗ kế thừa.
+- Không kể lịch sử phát triển trong luận văn ("các phiên bản trước", "trong quá trình phát triển", "vốn
+  trước đó chỉ phát hiện qua mô phỏng"): hội đồng không có các bản cũ. Viết thẳng điều đang đúng ("không
+  cần lập luận tách thang thời gian"). Báo cáo tóm tắt gửi thầy thì được nhắc "các bản trước". Đợt rà soát
+  27/10 khuya đã bỏ 7 chỗ như vậy.
 - Còn đúng một chỗ chưa có chứng minh: hội tụ của z_y ở vòng 1 khi có số hạng ghép (đang ghi là hạn chế,
   kiểm chứng bằng mô phỏng). Chứng minh đầy đủ đòi hỏi thiết kế lại vòng 1 theo hàm Lyapunov kiểu Kanayama.
 
