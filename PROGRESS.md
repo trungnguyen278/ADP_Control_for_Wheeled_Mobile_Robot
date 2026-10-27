@@ -753,6 +753,24 @@ o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay l
   het luan van; hinh MATLAB dung lai PDF trong docs/thesis/figures.
 - Soat tung slide o 110-240 dpi: khong de chu, khong lan vao dai lua/bang do; 0 loi, 0 thieu ky tu.
 
+### 2026-10-27 (khuya) — RA SOAT TOAN BO (luan van, slide, bao cao tom tat)
+
+Doc het thesis.tex, doi chieu cong thuc voi controllers/*.m + ctrl_params.m, so lieu voi results/*.mat
+(script MATLAB trong scratchpad), tham so/ADP-UUB voi bai bao goc. Khop: moi cong thuc Ch.4, Bang 4.1,
+moi tong/ti le % o Ch.5, tom tat, Ch.6, slide. Da sua (khong them noi dung moi):
+- Mau thuan: Muc 4.2.2 noi "Bellman nhanh hon khi sai lech lon", Muc 5.5.3 la "khong nhat quan".
+- Sai voi du lieu: thieu ghep o ||z0|| = 3.5 khong "ket quanh 1.4 m" ma |zy| giam deu 2.3 -> 1.0 m
+  (giay 20 -> 60); sua luan van, slide, tom tat, memory.
+- Ghi sai pham vi: t_e <= 0.17 s chi dung voi vong 2 day du; "moi phuong phap" o thi nghiem nhieu ->
+  "cac phuong phap duoc khao sat"; ADP-AC cung cham gioi han mo-men sau giay dau.
+- Bo 7 cho ke "cac phien ban truoc"; Bo de 4.2 + Muc 4.4(iii) them dieu kien "z bi chan"; phep chieu
+  ghi du buoc chan ||W||; luat Kanayama ghi ro k3*sin(zth) khac ban goc k3*vr*sin(zth).
+- Ky hieu: ban kinh lan can doi Omega -> nu (Omega danh cho tap chieu); bo tai lieu DeLaCruz2008
+  khong duoc trich; nhan "z0 = [0.2; -0.1; 0.1]" la q(0) - q_r(0) (run_extra_sim: q = qr0 + offset).
+- Slide: dong "Ke thua" ghi ca thanh phan ben vung (ranh gioi dong gop).
+- Kiem tu .mat: SMC hoi tu ca 5 z0; Kanayama Ju thap nhat ca 3 quy dao; >= 97.2% Jc trong 10 s dau.
+Build: luan van 72 tr, slide 20, tom tat 13 tr; 0 loi, 0 ref treo, 0 Overfull.
+
 ---
 
 ## VIEC CAN LAM
