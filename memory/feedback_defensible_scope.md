@@ -36,6 +36,11 @@ chấm + người bảo vệ, Trung chọn hạ mức:
   thì thầy sẽ tìm kỹ hơn". Đừng tốn lượt build để đánh bóng.
 - Gom sửa nhỏ vào cùng đợt với sửa lớn để build một lần.
 
+**Chốt phạm vi (Trung, 27/10 đêm):** "cơ bản tôi không muốn thêm nhiều để dễ học lại còn bảo vệ thôi".
+Từ đây luận văn coi như chốt nội dung: không thêm phần mới, chỉ sửa lỗi khi Trung chỉ ra. Không đề
+xuất lại việc thiết kế vòng 1 theo hàm Lyapunov kiểu Kanayama để chứng minh hội tụ z_y (đã để ở Hướng
+phát triển). Việc hữu ích tiếp theo là giúp Trung ôn để bảo vệ, không phải viết thêm.
+
 Thí nghiệm cũng theo tinh thần luận văn nghiên cứu (Trung, 27/10): không khảo sát riêng bất định
 khối lượng ("liên quan thực tế"); sai lệch tham số tương đương nhiễu cộng vào mô-men
 (−B⁻¹ΔMη̇, nhiễu khớp) nên gộp vào nhiễu đầu vào — ghi ở (A2) Mục 4.4.
