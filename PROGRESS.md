@@ -731,6 +731,16 @@ o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay l
   cuoi Muc 4.1 (nay la Hinh 4.2, ban do cho ca Chuong 4); dau Muc 4.2.1-4.2.6, 4.3, 4.4, 4.5 co mot cau
   chi khoi tuong ung tren hinh; bo hinh tin hieu vong 1 cu (tap con cua so do, khong cho nao dan toi).
   Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull.
+- Ha ve muc thac si (Trung: "viet cao qua ma toi khong bao ve duoc cung hong"), danh gia tu goc nguoi
+  cham + nguoi bao ve, Trung chon:
+  A) Muc 1.4 khong noi qua (Dinh ly 4.1 gia thiet mo-men chua bao hoa); trich Polyakov cho bo de co dinh
+     thoi gian; thong nhat "nam phuong phap (SMC kem bien the NTSMC)".
+  B) Bo de 4.2 chi con phat bieu + y tuong chung minh + trich Ioannou & Sun; bo phan cuoi Dinh ly 4.1
+     (hang so a, b, gamma, T_max - khong ap dung cho ADP-FT); bo cong thuc chieu g g^+ = I - n n^T;
+     bo nhac bo loc lenh / mat dong o Muc 4.4 (bo bibitem Swaroop2000).
+  C) Ket luan "Critic hoc / so hang co dinh thoi gian vong 1 chua giup" giu so lieu o 5.5 nhung chuyen
+     sang Han che voi loi vua phai; bo y 5 cua Muc 6.1 va khuyen nghi "dong bang Critic"; sua 6.4.
+  Loi trinh bay nho (ngat trang, chia doan) de nguyen theo y Trung. Thesis 72 trang; build 1 lan sach.
 
 ---
 
