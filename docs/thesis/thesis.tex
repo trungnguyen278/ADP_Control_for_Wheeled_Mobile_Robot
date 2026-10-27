@@ -199,24 +199,6 @@ Luận văn báo cáo đầy đủ các kết quả bất lợi: tính hội t�
 \vspace{0.4cm}
 \noindent\textbf{Từ khóa:} robot di động bánh xe, quy hoạch động thích nghi, điều khiển tối ưu, hội tụ cố định thời gian, điều khiển hai vòng, backstepping, mạng Critic.
 
-% --- ABSTRACT ---
-\newpage
-\section*{ABSTRACT}
-\phantomsection\addcontentsline{toc}{section}{ABSTRACT}
-
-This thesis studies optimal trajectory tracking control for differential-drive wheeled mobile robots, building on the fixed-time Adaptive Dynamic Programming (ADP) method of Wang et al. \cite{Wang2025}.
-
-The original work considers only a three-state kinematic model $[x, y, \theta]$ whose control input is the velocity pair $(v, \omega)$. Since a real robot is driven by torques, this thesis completes the method for a \textbf{full five-state model} $[x, y, \theta, v, \omega]$ with friction, torque limits and a high-frequency sinusoidal disturbance added to the torques, with the \textbf{wheel torques} $(\tau_R, \tau_L)$ as the control output. The controller has \textbf{two loops designed by backstepping}: loop 1 (outer) uses the fixed-time ADP law of the paper as the virtual velocity, keeping its weight update law and control-law structure; loop 2 (inner) is a torque law built on the dynamic model of Fierro \& Lewis \cite{Fierro1997}, augmented with a cross term and fixed-time terms in the velocity error. Stability is proved for each loop and for the whole system with a common Lyapunov function: the cross term cancels the interaction between the two loops exactly, so loop 2 preserves every property of loop 1.
-
-Re-deriving the proof of the paper reveals a gap in the lateral-error channel: under the original law the robot can run parallel to a straight reference indefinitely. A \textbf{nonholonomic coupling term} is added to close this gap, together with a \textbf{projection operator} that keeps the approximated value function positive definite and a parameter set for bounded velocity commands. With the original parameters the system does not diverge but tracks poorly (cost $7$--$23$ times higher); an ablation study shows that the coupling term is decisive: without it the robot is trapped near a spurious equilibrium, running parallel to the reference.
-
-Five loop-1 laws -- Kanayama's law, Actor-Critic ADP, SMC (with an NTSMC variant), critic-only Concurrent Learning and fixed-time ADP -- are compared with the same loop 2 on three trajectories, after tuning every method with the same procedure. The main method matches NTSMC in total cost (within $0.2\%$), is $7.9\%$ above SMC, beats Kanayama's law, Concurrent Learning and Actor-Critic, and is the fastest to reach a small neighbourhood of the reference. Torque disturbances up to $60\%$ change the cost by at most $2\%$ for every method because loop 2 absorbs most of their effect. The disturbance-induced steady-state error is the same for every loop-1 law because loop 2 determines it; the fixed-time terms of loop 2 lower this error by $21$--$23\%$ compared with the law of Fierro \& Lewis.
-
-Adverse findings are reported in full: fixed-time convergence is not preserved under bounded velocity commands; the fixed-time terms of loop 1 do not reduce the cost; and online critic learning does not improve the policy under nominal conditions and slows convergence from large initial errors. These results point to the next step: a learning law suited to the two-loop controller.
-
-\vspace{0.4cm}
-\noindent\textbf{Keywords:} wheeled mobile robot, adaptive dynamic programming, optimal control, fixed-time convergence, two-loop control, backstepping, critic neural network.
-
 % --- MỤC LỤC & DANH MỤC ---
 \newpage
 \tableofcontents

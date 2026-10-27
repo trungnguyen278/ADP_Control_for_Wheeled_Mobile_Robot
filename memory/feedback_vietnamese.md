@@ -25,4 +25,7 @@ thêm: luận văn tiếng Việt thì chỉ dùng tiếng Việt, từ tiếng 
 - Thay theo từ bằng script thì phải che \label/\ref và tên nút TikZ (đã từng làm vỡ nút (online),
   (history) của hình CL).
 
+- Đã bỏ trang ABSTRACT tiếng Anh (27/10, Trung chỉ ra nó vẫn còn). Nếu mẫu của trường yêu cầu
+  Abstract thì khôi phục từ commit 53e6415.
+
 Related: [[project-thesis]], [[feedback-advisor-nam]], [[feedback-defensible-scope]]
