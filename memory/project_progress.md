@@ -1,21 +1,60 @@
 ---
 name: project-progress
-description: 26/10/2026 khuya đã chạy lại toàn bộ bằng MATLAB với bước 2 đầy đủ, xuất hình, build MiKTeX (luận văn 84 tr, tóm tắt 12 tr); còn Trung đọc lại, chốt τ_max, gửi thầy Nam (thầy chỉ có v2, chưa đọc)
+description: 27/10/2026 review yêu cầu thầy (5/5 đạt), đổi "BS" → "Kanayama", rút gọn Ch.5, chỉ tiếng Việt, luận văn tự đứng được, hình vẽ lại (71 tr, PR #4); còn Trung đọc lại, merge PR #4, gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
 
-## Cập nhật 2026-10-26 (khuya): bước 2 đầy đủ, chạy lại bằng MATLAB, build xong
+## Cập nhật 2026-10-27 (tối): review yêu cầu của thầy
 
-- PR #1 (bước 2 đầy đủ, Chương 4 mới) đã merge vào master. Phiên local kéo về, chạy lại
+Kiểm chứng tiền đề "thầy xoay quanh khái niệm cơ bản" với báo cáo SM1: đúng phần lớn, có 3 điều chỉnh
+([[feedback-advisor-nam]]). Review theo cách đọc đã chỉnh: 5/5 yêu cầu đạt (BC kèm hạn chế bước 1
+đã ghi). Còn hai chỗ gọi tên lỏng: nhãn "BS" cho luật Kanayama, tên/mô tả "NTSMC" (Mục 4.5.2).
+Kết luận lượt đầu ("SMC/NTSMC chưa đạt, làm SMC tầng mô-men") đã rút lại. Trung đồng ý → đã sửa
+tên "BS" → "Kanayama" và mô tả NTSMC. Kiểm chứng số Định lý 4.1: phần dư 0,4–1,2% số hạng tương
+tác.
+
+Rút gọn Chương 5 (Trung đồng ý): 11 mục/26 trang → 6 mục/15 trang, luận văn còn 73 trang; bỏ
+phân tích hàm mô tả, mục Q/R, mục mô-men riêng ([[feedback-defensible-scope]]).
+
+Sau đó (Trung yêu cầu): bỏ câu "theo yêu cầu của GVHD", bỏ thí nghiệm bất định khối lượng (gộp vào
+nhiễu đầu vào), luận văn chỉ dùng tiếng Việt + DANH MỤC THUẬT NGỮ ([[feedback-vietnamese]]); hình
+MATLAB dùng ký hiệu/(a)(b)(c). Luận văn 74 trang.
+
+Trạng thái PR: Trung đã merge PR #3 lúc 23:23 ngày 26/10, khi nhánh mới có 4 commit đầu; 12 commit sau
+đó nằm ở PR #4 (mở 27/10, cùng nhánh docs/ket-qua-buoc-2-matlab). PR #2 (claude/sweet-edison-vur249)
+vẫn mở nhưng đã lỗi thời. Đẩy commit lên nhánh của một PR đã merge thì phải mở PR mới.
+Đã bỏ trang ABSTRACT tiếng Anh và bảng đối chiếu Việt–Anh. Tên đề tài theo đăng ký; luận văn tự đứng
+được, thêm Bổ đề 3.1 và 4.2 có chứng minh ([[feedback-self-contained]]); luận văn 72 trang.
+Đêm 27/10: vẽ lại các hình bị đè chữ/mũi tên, chú giải căn trái ở ngoài vùng vẽ, Hình 5.6 vẽ lại
+thành cửa sổ phóng to ([[feedback-figure-placement]]); (2.7) viết thành hệ 5 phương trình; bỏ Mục 4.6
+(bảng kế thừa/đóng góp). Thêm sơ đồ đầy đủ bộ điều khiển, mỗi khối ghi công thức, đặt cuối Mục 4.1
+(Hình 4.2) làm bản đồ cho Chương 4, đầu mỗi mục chỉ khối tương ứng ([[feedback-map-first]]).
+Luận văn 72 trang. Cùng đêm: hạ về mức thạc sĩ ([[feedback-defensible-scope]]), rồi Trung chốt phạm
+vi — không thêm nội dung mới. Còn lại (Trung): đọc lại, merge PR #4, gửi thầy Nam, ôn để bảo vệ.
+
+## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
+
+- Đổi "bước 1/2" → "vòng 1/2" toàn bộ luận văn + tóm tắt ([[feedback-backstepping-framing]]); Mục 4.4
+  sắp chứng minh theo vòng 1 → vòng 2 + toàn hệ; báo cáo tóm tắt Mục 2 viết lại đúng thứ tự thiết kế,
+  có chứng minh rút gọn.
+- Sửa bookmark PDF (chương sau bị gộp vào Chương 1 do anchor trùng) và anchor công thức trùng giữa các
+  chương. Mọi thay đổi nằm trên nhánh `docs/ket-qua-buoc-2-matlab` (PR #3), chưa merge.
+- Còn lại (Trung): đọc lại Ch.4–6 và Mục 2 báo cáo tóm tắt, merge PR #3, gửi thầy Nam bản mới kèm
+  giải thích lỗi B và vòng 2. Không còn thông số nào phải "chốt theo phần cứng": luận văn chỉ thiết kế
+  và mô phỏng ([[feedback-simulation-only]]); việc v thực vượt v_max đã ghi trong luận văn, không sửa.
+
+## Cập nhật 2026-10-26 (khuya): vòng 2 đầy đủ, chạy lại bằng MATLAB, build xong
+
+- PR #1 (vòng 2 đầy đủ, Chương 4 mới) đã merge vào master. Phiên local kéo về, chạy lại
   `sim_thesis`, `sim_sm1_full`, `sim_thesis_extra`, `sweep_gains` bằng MATLAB R2023a; xuất 13 hình
   luận văn; KHÔNG chạy lại `sim_sm2` (giữ hình SM2 đã nộp).
-- Viết lại Ch.5 (thêm Mục 5.6 bước 2, Mục 5.4 dùng hàm mô tả), Ch.6, tóm tắt VI/EN, lời cam đoan,
+- Viết lại Ch.5 (thêm Mục 5.6 vòng 2, Mục 5.4 dùng hàm mô tả), Ch.6, tóm tắt VI/EN, lời cam đoan,
   phần kết quả báo cáo tóm tắt; README, workflow, CLAUDE.md (đường dẫn MATLAB/MiKTeX mới).
   Số liệu: [[ket-qua-cuoi]]. Build MiKTeX: 0 lỗi, 0 ref treo, 0 Overfull.
 - Kết quả đổi so với bản 72 trang: ADP-FT không còn "thứ hai" mà ngang NTSMC (4,140 vs 4,130).
-- Còn lại (Trung): đọc lại Ch.4–6, quyết τ_max thật của motor (đổi → chạy lại hết), gửi thầy
-  Nam bản mới kèm giải thích lỗi B và bước 2.
+- Còn lại (Trung): đọc lại Ch.4–6, gửi thầy Nam bản mới kèm giải thích lỗi B và vòng 2.
+  (Ghi "quyết τ_max thật" ở bản ghi này là hiểu nhầm — xem cập nhật 27/10.)
 
 ## Cập nhật 2026-10-26 (tối): đã viết lại xong
 
@@ -27,7 +66,7 @@ metadata:
   SMC đã chỉnh thấp nhất) báo cáo đầy đủ.
 - Còn lại (Trung): chạy MATLAB `sim_sm2; sim_sm1_full; sim_thesis; sim_thesis_extra` rồi
   `export_all_figures` (hình trong repo VẪN là mô hình cũ), build MiKTeX, đọc lại, commit
-  PDF, gửi thầy kèm giải thích lỗi B. τ_max thật của motor vẫn chưa chốt (đang 1 N·m).
+  PDF, gửi thầy kèm giải thích lỗi B. τ_max = 1 N·m (tham số mô phỏng, Trung đã chốt chiều 26/10).
 
 ## Cập nhật 2026-10-26 (chiều): quyết định của Trung
 

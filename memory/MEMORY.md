@@ -1,6 +1,9 @@
 - [User profile](user_profile.md) — Trung, cao học Điều khiển & Tự động hóa HUST, thích giải thích lý thuyết trước khi code
-- [Thesis project](project_thesis.md) — ADP-FT của Wang et al. 2025 hoàn thiện thành bộ backstepping hai bước cho WMR điều khiển bằng mô-men
-- [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03: nhiễu sin 20% ở mô-men vòng trong, SMC cơ bản/NTSMC, bắt buộc vòng kinetic, BC bậc 2
+- [Thesis project](project_thesis.md) — Tên đề tài "Ứng dụng điều khiển ADP cho xe tự hành"; nội dung: ADP-FT của Wang hoàn thiện thành bộ hai vòng cho WMR nhận mô-men
+- [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03 (phản hồi SM1): nhiễu mô-men vòng trong, SMC/NTSMC, vòng kinetic, BC bậc 2; chỉ ý BC là sửa khái niệm; review 27/10: 5/5 đạt, đã sửa tên "BS" → "Kanayama", mô tả NTSMC
+- [Phạm vi bảo vệ được](feedback_defensible_scope.md) — Mức thạc sĩ, không viết như bài báo: kết quả phụ chỉ phát biểu + ý tưởng + trích dẫn; kết quả bất lợi để ở Hạn chế; lỗi trình bày nhỏ cứ để; gom sửa để build một lần
+- [Luận văn tự đứng được](feedback_self_contained.md) — Wang chỉ là mẫu tham khảo; không kể lại bài báo, chứng minh đầy đủ tại chỗ, chỉ trích dẫn [n]
+- [Kiểm chứng tiền đề](feedback_verify_premises.md) — Tiền đề Trung đưa ra phải kiểm chứng bằng bằng chứng trước khi làm theo; phản biện là điều Trung muốn
 - [ADP-FT tuning](feedback_adp_ft_tuning.md) — Gain hiện dùng, chọn bằng chỉnh gain đều nhau (k* = 1/2); tham số gốc Wang không phát tán, chỉ bám kém
 - [Baseline fairness](feedback_baseline_fairness.md) — SMC tune vs thông dụng; số liệu mô hình B sai (7x → nay chỉ 1,2–1,4x)
 - [Wang citation mismatch](feedback_wang_citation_mismatch.md) — ⚠ Sai tên tác giả, eq.(17) không phải của Wang, cột "Wang" ở Bảng 4.1 sai toàn bộ
@@ -10,10 +13,12 @@
 - [Lỗi ma trận B](feedback_b_matrix_error.md) — ⛔ B dùng Jacobian động học thay vì (1/r)[1 1; L −L]; actuator yếu 800x; phần lớn kết luận Ch.5–6 phải chạy lại
 - [Ghép nonholonomic](feedback_nonholonomic_coupling.md) — ⭐ Đóng góp mạnh nhất, vẫn đúng với B đã sửa: ADP-FT thiếu kênh tác động lên zy
 - [Nhiễu chỉ 1 kênh](feedback_disturbance_one_channel.md) — d=[1;1] chỉ tác động kênh v (B·[1;1] = [2/r; 0]); thầy chỉ yêu cầu nhiễu mô-men ở vòng trong — đã đạt
-- [Vietnamese docs](feedback_vietnamese.md) — Mọi báo cáo/luận văn viết tiếng Việt có dấu (T5 fontenc)
-- [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
+- [Vietnamese docs](feedback_vietnamese.md) — Luận văn chỉ dùng tiếng Việt có dấu; từ tiếng Anh giữ lại phải có trong DANH MỤC THUẬT NGỮ; hình MATLAB không chứa chữ có dấu
+- [Bản đồ trước, chi tiết sau](feedback_map_first.md) — Sơ đồ đầy đủ đặt trước phân tích từng phần, đầu mỗi mục chỉ khối; dùng cho cả slide bảo vệ
+- [Figure placement](feedback_figure_placement.md) — Hình không chen giữa công thức và giải thích; chú giải ngoài vùng vẽ, căn trái; soát đè chữ ở 300 dpi bằng pdftoppm
 - [MATLAB CLI](reference_matlab_cli.md) — MATLAB ở C:\MATLAB\R2023a, MiKTeX ở Program Files; script `clear` phá lệnh bọc tic/toc
-- [Progress](project_progress.md) — 26/10 khuya: chạy lại bằng MATLAB với bước 2 đầy đủ, build xong (84 tr); còn Trung đọc lại, chốt τ_max, gửi thầy
-- [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10 khuya: ADP-FT ngang NTSMC, sau SMC 7,9%; z_rms theo hàm mô tả; số hạng chéo vượt v_max
-- [Backstepping hai bước](feedback_backstepping_framing.md) — ⭐ MỘT bộ BC hai bước (bước 2 có số hạng chéo, K_c = M), không chia "vòng ngoài/vòng trong"; chứng minh lại có trích dẫn
+- [Chỉ mô phỏng](feedback_simulation_only.md) — Không có robot/motor thật: τ_max = 1 N·m là tham số mô phỏng đã chốt; đừng hỏi "chốt thông số thật"
+- [Progress](project_progress.md) — 27/10: yêu cầu thầy 5/5 đạt, "BS" → "Kanayama", Ch.5 rút gọn, chỉ tiếng Việt, tự đứng được, hình vẽ lại, sơ đồ đầy đủ = Hình 4.2 (72 tr, PR #4); còn Trung đọc lại, merge PR #4, gửi thầy
+- [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10 khuya: ADP-FT ngang NTSMC, sau SMC 7,9%; z_rms theo hàm mô tả (chỉ còn trong repo, đã bỏ khỏi luận văn); số hạng chéo vượt v_max
+- [Hai vòng theo backstepping](feedback_backstepping_framing.md) — ⭐ Gọi "vòng 1/vòng 2" (không gọi "bước", từ 27/10); vòng 2 suy từ V₁ (số hạng chéo, K_c = M); chứng minh từng vòng rồi toàn hệ
 - [Khoảng hở chứng minh Wang](feedback_wang_gap.md) — ⭐ g·g† ≠ I₃; luật gốc có điểm cân bằng (0, z_y, 0) trên quỹ đạo thẳng (đã kiểm chứng); cơ sở của số hạng ghép

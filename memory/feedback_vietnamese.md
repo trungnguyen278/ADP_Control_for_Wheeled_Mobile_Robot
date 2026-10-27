@@ -1,14 +1,32 @@
 ---
 name: feedback-vietnamese
-description: All reports/thesis must be written in Vietnamese with diacritics (tiếng Việt có dấu)
+description: Luận văn chỉ dùng tiếng Việt có dấu; thuật ngữ tiếng Anh giữ nguyên phải có trong DANH MỤC THUẬT NGỮ, không viết kèm ngoặc tiếng Anh; hình MATLAB không chứa chữ có dấu
 metadata:
   type: feedback
 ---
 
-Mọi báo cáo và luận văn đều phải viết bằng tiếng Việt có dấu.
+Mọi báo cáo và luận văn đều phải viết bằng tiếng Việt có dấu. Riêng luận văn (Trung nhắc 27/10/2026):
+**chỉ dùng tiếng Việt**; thuật ngữ chuyên môn tiếng Anh được giữ nguyên (backstepping, Critic, Actor,
+Concurrent Learning, σ-modification, nonholonomic, gradient, affine, lemniscate...) nhưng phải có trong
+bảng **DANH MỤC THUẬT NGỮ** (đặt sau danh mục từ viết tắt), giống cách làm với bảng viết tắt.
 
-**Why:** User explicitly corrected when initial documents were written without Vietnamese diacritics — this is a hard requirement for all academic deliverables submitted to advisor.
+**Why:** Ban đầu tài liệu viết không dấu nên bị nhắc phải có dấu (T5 fontenc). Ngày 27/10 Trung nhắc
+thêm: luận văn tiếng Việt thì chỉ dùng tiếng Việt, từ tiếng Anh nào giữ lại phải có bảng chú thích.
 
-**How to apply:** Any LaTeX document (thesis, reports, summaries) must use T5 fontenc for Vietnamese encoding and all content must be in proper Vietnamese with diacritics. Never default to English or unaccented Vietnamese for these documents.
+**How to apply:**
+- LaTeX dùng T5 fontenc. Không viết kiểu "thuật ngữ Việt (English term)". DANH MỤC THUẬT NGỮ chỉ giải
+  thích từ tiếng Anh bằng tiếng Việt; KHÔNG có bảng đối chiếu Việt → Anh (Trung, 27/10: người chấm và
+  người viết đều dùng tiếng Việt). Thêm từ tiếng Anh mới vào luận văn thì thêm luôn vào bảng.
+- Cách dịch đã thống nhất: gain → hệ số; robust → bền vững; feedforward/feedback → truyền thẳng/phản
+  hồi; vector → véc-tơ; body/world frame → hệ tọa độ thân robot/quán tính; transient → quá độ;
+  chattering → rung; computed torque → mô-men tính toán; Lemma/Theorem/Remark → Bổ đề/Định lý/Nhận xét.
+- Hình MATLAB: exportgraphics dạng vector chỉ hỗ trợ Latin-1, chữ như "Đ", "ư", "ẳ" bị thay bằng
+  "#". Không đặt chữ tiếng Việt trong hình; dùng ký hiệu ($q_r$, $A$) hoặc (a)(b)(c) và ghi tên ở chú
+  thích LaTeX.
+- Thay theo từ bằng script thì phải che \label/\ref và tên nút TikZ (đã từng làm vỡ nút (online),
+  (history) của hình CL).
 
-Related: [[project-thesis]], [[feedback-advisor-nam]]
+- Đã bỏ trang ABSTRACT tiếng Anh (27/10, Trung chỉ ra nó vẫn còn). Nếu mẫu của trường yêu cầu
+  Abstract thì khôi phục từ commit 53e6415.
+
+Related: [[project-thesis]], [[feedback-advisor-nam]], [[feedback-defensible-scope]]

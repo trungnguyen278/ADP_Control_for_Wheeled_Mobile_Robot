@@ -21,7 +21,7 @@ Chi tiet o muc "2026-10-26 (khuya)" ben duoi.
 **Da build:** thesis.pdf 84 trang, summary_report.pdf 12 trang (MiKTeX, 0 loi, 0 ref treo,
 0 Overfull); 13 hinh luan van xuat lai tu MATLAB. Hinh SM2 giu nguyen ban da nop.
 
-**Con lai (Trung lam, xem VIEC CAN LAM muc 1):** doc lai Ch.4-6, chot tau_max that, gui thay.
+**Con lai (Trung lam, xem VIEC CAN LAM muc 1):** doc lai Ch.4-6 va bao cao tom tat, gui thay.
 
 **GVHD:** thay Nam da nhan ban v2 (43 trang, commit 7fedea9) + bao cao tom tat
 (13 trang, commit 5e1a452) qua Teams 2026-05-26 nhung CHUA DOC. Hai ban nay mang loi B.
@@ -626,22 +626,142 @@ len duong ke). README, workflow.md, CLAUDE.md, skill run-sim/build-doc: duong da
 `C:\MATLAB\R2023a`, MiKTeX `C:\Program Files\MiKTeX`. Commit bb47603 (luan van + hinh),
 e86f0d7 (tom tat), 6188a6f (README, duong dan).
 
+### 2026-10-27 — CACH GOI "VONG 1 / VONG 2", CHUNG MINH THEO TUNG VONG, SUA BOOKMARK PDF
+
+Trung chon goi **vong 1 (vong ngoai, dong hoc) / vong 2 (vong trong, dong luc hoc)** thay cho
+"buoc 1 / buoc 2" (dung yeu cau "2 vong" + "BC bac 2" cua thay Nam). Toan khong doi.
+
+- Luan van: doi ~230 cho (co loai tru "phep chieu qua hai buoc", buoc tich phan, buoc (19)->(20)).
+  Ten Chuong 4 "Thiet ke bo dieu khien hai vong theo phuong phap backstepping"; Muc 4.1 viet lai:
+  hai he phuong trinh noi tiep -> hai vong, moi buoc cua backstepping thiet ke mot vong; bo cau
+  "vong ngoai/trong chi mo ta vi tri tin hieu". Muc 4.4 them lo trinh chung minh: vong 1 (Bo de
+  4.1), vong 2 + toan he (Dinh ly 4.1, V = V1 + V2), thoi gian hoi tu vong 2 (He qua 4.1).
+- Sua theo ra soat buoc thiet ke: (A2) ghi ro eta_d phai kha vi -- thuc te chi kha vi tung khuc
+  (bo kep, sig(z)^(p/q) co dao ham |z|^(-2/19)); trich command filtered backstepping (Farrell 2009),
+  DSC (Swaroop 2000). Dinh nghia u_o := eta_d - u_f (sau bo kep). Cau ve Fierro & Lewis o 4.3 sua
+  thanh "cac phien ban truoc cua luan van" (repo khong co PDF bai goc de doi chieu).
+- Bao cao tom tat Muc 2 viet lai dung thu tu: mo hinh (hai he PT) -> sai so z -> vong 1 (cong thuc
+  ADP-FT, luat (17)) -> vong 2 -> chung minh rut gon (V1 + V2, triet so hang tuong tac, T2 <= 1 s).
+- **Bookmark PDF bi gop vao Chuong 1:** \section* khong tao anchor nen \addcontentsline muon anchor
+  gan nhat; CHUONG 2 trung anchor Item.4 voi muc 1.5 => hyperref coi cac muc 2.x la con cua 1.5,
+  cac chuong sau truot vao Chuong 1. Sua: \phantomsection truoc moi \addcontentsline (62 cho).
+  Them: \theHequation/\theHfigure/\theHtable kem so chuong (truoc do equation.N trung giua cac
+  chuong => link cong thuc nhay nham chuong), bia \pagenumbering{Alph} (page.1 trung), them
+  5.7.1-5.7.3 vao muc luc. Kiem tra bang pypdf: 6 chuong o cap cao nhat, moi muc nhay dung trang.
+- Build: thesis 86 trang, summary 13 trang; 0 loi, 0 ref treo, 0 Overfull, 0 anchor trung.
+
+### 2026-10-27 (toi) — DOI CHIEU YEU CAU CUA THAY, DOI TEN "BS", KIEM CHUNG BO DIEU KHIEN
+
+- Doi chieu chat 28/03 voi bao cao SM1: 5/5 yeu cau cua thay dat. Chi y "BC bac 2" la sua khai
+  niem (SM1 goi luat Kanayama la "BC" theo Wang); 4 y con lai la bo sung thanh phan chuan.
+- Nhan "BS" -> "Kanayama" (luan van 50 cho, tom tat, README, 11 hinh xuat lai tu .mat; muc Seminar
+  1-2 cua bao cao tom tat giu "BS" vi hinh SM2 da nop). Muc 4.5.1 them: k2*vr*zy la so hang cheo
+  cua mot buoc backstepping tren chuoi z_th -> z_y (V = (zx^2+zy^2)/2 + (1-cos zth)/k2), nhung luat
+  dung o van toc nen goi theo ten tac gia. Muc 1.3 sua: backstepping la cua Krstic, khong phai
+  Kanayama 1990.
+- Muc 4.5.2 + chu thich ntsmc_kinematic.m: bo cau sai "he bac mot" (z_y bac hai theo omega qua
+  z_th); mat truot la dang dau cuoi nhanh (Yu & Man) tren chuoi z_th -> z_y, chong ky di bang noi
+  tuyen tinh, khong theo cau truc Feng.
+- Kiem chung bo dieu khien: code vong 2 khop (4.19), mo hinh khop (2.x). Kiem tra so dang thuc
+  Dinh ly 4.1 tren mo phong (circle, 20 s, t >= 1 s): phan du = 0,4-1,2% so hang tuong tac zeta'e
+  (ADP-FT va Kanayama, co/khong nhieu doc lap); neu so hang cheo sai dau phan du se ~2 lan.
+  Script verify_lyapunov.m o scratchpad phien 27/10 (chua dua vao repo).
+- Build: thesis 86 trang, summary 13 trang; 0 loi, 0 ref treo, 0 Overfull (4 bang thu tabcolsep).
+
+### 2026-10-27 (khuya) — RUT GON CHUONG 5: 86 -> 73 TRANG
+
+Trung: Chuong 5 chi nen trinh bay ket qua de thay diem manh/diem yeu; giai thich dan ve cong thuc
+o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay lai, quen nhieu).
+
+- Chuong 5: 11 muc / 26 trang -> 6 muc / 15 trang: 5.1 thiet lap + chinh gain; 5.2 so sanh 6 PP
+  (5.2.1 so voi SMC/NTSMC); 5.3 do ben (5.3.1 khoi luong, 5.3.2 nhieu mo-men + mo-men dieu khien);
+  5.4 dong gop vong 2; 5.5 vai tro thanh phan ADP-FT (tham so goc + ghep + chieu, FT vong 1, hoc
+  critic, z0 lon); 5.6 diem manh / diem yeu. Bang giu lai trich nguyen van tu ban cu.
+- Bo: phan tich ham mo ta (K_eq, E, z_rms du doan -- van dung, con ghi o README), muc mo-men rieng,
+  muc Q/R (giu 1 cau: Q khong co trong luat dieu khien), tach J_u, hinh trong so, 4 hinh khoi
+  luong/nhieu, cap hinh duong thang, hang 'he co dinh thoi gian ly tuong'.
+- Sua theo: tom tat VI/EN, Ch.1 (cau truc), Ch.2-4 va Ch.6 (so muc moi, bo ham mo ta, Backstepping
+  -> luat Kanayama o Ch.6), bao cao tom tat (bo ham mo ta), README.
+- Build: thesis 73 trang (Ch.5 = tr. 53-67), summary 13 trang; 0 loi, 0 ref treo, 0 Overfull.
+
+### 2026-10-27 (khuya, tiep) — CHI DUNG TIENG VIET, BO THI NGHIEM KHOI LUONG
+
+- Bo cac cau "theo yeu cau cua giao vien huong dan" (Muc 5.1, 5.2.1; bao cao tom tat): gop y cua
+  thay giup hoan thien, khong dua vao luan van.
+- Bo thi nghiem bat dinh khoi luong (Muc 5.3.1, 2 cot 14/16 kg o bang co che, tom tat, Ch.1, Ch.6).
+  (A2) o Muc 4.4 ghi: sai lech tham so cho them Delta_M*eta_dot, B kha nghich nen tuong duong nhieu
+  -B^-1*Delta_M*eta_dot cong vao mo-men -> gop vao nhieu d (nhieu khop). Muc 5.3 = do ben voi nhieu.
+- Chi dung tieng Viet: bo ~40 ngoac tieng Anh, dich gain -> he so (69 cho), robust -> ben vung,
+  feedforward/feedback, vector, body/world frame, transient, chattering, Lemma/Theorem/Remark...;
+  them DANH MUC THUAT NGU (11 thuat ngu giu nguyen + bang doi chieu Viet-Anh).
+- Hinh: MATLAB xuat PDF vector chi ho tro Latin-1 (chu Viet thanh '#'), nen nhan hinh doi sang ky
+  hieu/(a)(b)(c): q_r cho quy dao tham chieu, A cho bien do nhieu; ten ghi trong chu thich LaTeX.
+- Build: thesis 74 trang, summary 13 trang; 0 loi, 0 ref treo, 0 Overfull.
+- Bo trang ABSTRACT tieng Anh (Trung: luan van chi dung tieng Viet) -> thesis 72 trang. Neu mau
+  cua truong yeu cau Abstract thi khoi phuc tu commit 53e6415.
+- DANH MUC THUAT NGU chi giai thich tu tieng Anh bang tieng Viet; bo bang doi chieu Viet-Anh -> 71 trang.
+- Ten de tai theo dang ky: "Ung dung dieu khien ADP cho xe tu hanh" (bia, cam doan, tom tat, README).
+- Luan van tu dung duoc: 65 lan "Wang" + 32 lan "bai bao" -> chi con 17 trich dan [n] o cho ke thua;
+  them Bo de 3.1 (co dinh thoi gian dang thuc dung) va Bo de 4.2 (chan sai so trong so), ca hai co chung
+  minh; bat dang thuc "Bo de 2 cua Wang" thay bang bat dang thuc co ban. Bo dem bo de reset theo chuong.
+  Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull, 0 anchor trung.
+
+### 2026-10-27 (dem) — VE LAI HINH, MO HINH 5 TRANG THAI VIET DU 5 PHUONG TRINH
+
+- Hinh TikZ het chu/mui ten de nhau (soat bang `pdftoppm -r 300`, khong chi nhin ca trang):
+  H2.1 (cung omega ra ngoai than robot; nhan banh xe, L), H2.2 (nhan z_theta ra ngoai goc hep 25 do),
+  H3.1, H3.3 CL (bo tri luoi, mui ten khong cat nhau), H4.1 (nhan (v, omega) tren dung duong cua no,
+  khoi sai so 1 dong), H4.2 (hai khoi cung rong, diem re nhanh khong de dau mui ten).
+- Chu giai do thi can trai (pgfplots `legend cell align=left`), dat ngoai vung ve (H2.3, H3.2);
+  H3.2 hien lai nhan T_f = pi (truoc nam duoi ymin nen bi cat mat).
+- H5.6 (torque_dist) ve lai: (a) 3 s dau, (b) 3 chu ky nhieu o xac lap cung d(t). Ban cu 60 s chi la
+  dai mau dac, tau_R bi tau_L che. So lieu khop van ban: corr(tau_R dao dong, -d) = 0.761,
+  max|tau| sau 1 s = 0.171. Chi xuat lai hinh nay (khoi "SM1 full figures" cua export_all_figures.m).
+- (2.7) viet thanh he 5 phuong trinh, moi trang thai mot dong. Ban cu de hang cuoi M^-1(B tau - F) la
+  vec-to 2 phan tu nen nhin nhu chi co 4 hang.
+- Bo Muc 4.6 (tom tat phan ke thua / phan cua luan van) -- Trung: khong can. Sua "Bo de (3.13)" (la
+  cong thuc, khong phai bo de) va ghi ro gia thiet Gamma/2 = I o Muc 4.2.2. hyperref `hidelinks`.
+- Thesis 71 trang; 0 loi, 0 ref treo, 0 Overfull.
+- Them Hinh 4.3 (cuoi Muc 4.3): so do DAY DU bo dieu khien hai vong, moi khoi ghi cong thuc + so hieu.
+  Truoc do H4.1 chi ghi ten khoi, H4.2 chi co phan tinh cua vong 1; khong hinh nao co vong cap nhat W
+  (4.5) + chieu (4.14), so hang ghep (4.12), cac bo gioi han, ben trong vong 2 (e_eta, dao ham so, F(eta),
+  K_c zeta, bao hoa tau_max), robot tach dong luc hoc / dong hoc. Thu tu tinh moi chu ky khop code
+  (eta_d tinh bang W hien tai roi moi cap nhat W). Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull.
+- Trung: "doc phan tich tung phan nhung khong hieu no o dau trong bo dieu khien" -> dua so do day du len
+  cuoi Muc 4.1 (nay la Hinh 4.2, ban do cho ca Chuong 4); dau Muc 4.2.1-4.2.6, 4.3, 4.4, 4.5 co mot cau
+  chi khoi tuong ung tren hinh; bo hinh tin hieu vong 1 cu (tap con cua so do, khong cho nao dan toi).
+  Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull.
+- Ha ve muc thac si (Trung: "viet cao qua ma toi khong bao ve duoc cung hong"), danh gia tu goc nguoi
+  cham + nguoi bao ve, Trung chon:
+  A) Muc 1.4 khong noi qua (Dinh ly 4.1 gia thiet mo-men chua bao hoa); trich Polyakov cho bo de co dinh
+     thoi gian; thong nhat "nam phuong phap (SMC kem bien the NTSMC)".
+  B) Bo de 4.2 chi con phat bieu + y tuong chung minh + trich Ioannou & Sun; bo phan cuoi Dinh ly 4.1
+     (hang so a, b, gamma, T_max - khong ap dung cho ADP-FT); bo cong thuc chieu g g^+ = I - n n^T;
+     bo nhac bo loc lenh / mat dong o Muc 4.4 (bo bibitem Swaroop2000).
+  C) Ket luan "Critic hoc / so hang co dinh thoi gian vong 1 chua giup" giu so lieu o 5.5 nhung chuyen
+     sang Han che voi loi vua phai; bo y 5 cua Muc 6.1 va khuyen nghi "dong bang Critic"; sua 6.4.
+  Loi trinh bay nho (ngat trang, chia doan) de nguyen theo y Trung. Thesis 72 trang; build 1 lan sach.
+
 ---
 
 ## VIEC CAN LAM
 
 ### 1. Truoc khi in nop (Trung lam)
 - [x] Chay MATLAB, xuat hinh, build PDF bang MiKTeX, commit PDF (2026-10-26 khuya).
-- [ ] Doc lai toan bo, dac biet Ch.4-6 (Muc 5.6 moi, Muc 5.4 viet lai theo ham mo ta).
-- [ ] **Trung quyet:** tau_max that cua motor (dang tam 1 N*m). Doi gia tri => chay lai het.
-- [ ] **Trung quyet:** co bao hoa so hang cheo de van toc thuc khong vuot v_max khong (hien vuot
-      toi 0.62 m/s khi z0 lon; neu sua => chay lai Phan E, L, M).
-- [ ] Gui thay Nam ban moi + noi ro loi B, buoc 2 va cac ket luan da doi so voi v2.
+- [ ] Doc lai toan bo, dac biet Ch.4-6 (Muc 4.1, 4.4 viet lai theo hai vong; Muc 5.6 moi; Muc 5.4
+      viet lai theo ham mo ta) va Muc 2 bao cao tom tat.
+- [x] tau_max = 1 N*m la tham so mo phong da chot (2026-10-27: luan van chi thiet ke + mo phong,
+      khong co robot/motor that => khong con "chot thong so that").
+- [x] Van toc thuc vuot v_max (toi 0.62 m/s khi z0 lon) do so hang cheo: da ghi trong luan van
+      (Muc 4.3, 5.6, 5.8); chi mo phong nen khong phai van de an toan, khong sua.
+- [ ] Gui thay Nam ban moi + noi ro loi B, vong 2 (backstepping) va cac ket luan da doi so voi v2.
+- [ ] Doi chieu cau ve luat Fierro & Lewis (Muc 4.3) voi bai goc neu co PDF.
 - [ ] (khong gap) Gom trung lap plot_sm1_results.m va plot_sm1_full.m.
 
 ### 2. Huong mo rong neu con thoi gian (Muc 6.3 luan van)
-- [ ] Luat hoc critic hop voi bo dieu khien hai buoc (phai tot hon critic dong bang, nhat la khi z0 lon).
-- [ ] Ham Lyapunov kieu Kanayama cho buoc 1 co so hang ghep (chung minh hoi tu z_y).
+- [ ] Luat hoc critic hop voi bo dieu khien hai vong (phai tot hon critic dong bang, nhat la khi z0 lon).
+- [ ] Ham Lyapunov kieu Kanayama cho vong 1 co so hang ghep (chung minh hoi tu z_y).
+- [ ] Bo loc lenh (command filtered backstepping) cho vong 2 de khong can eta_d kha vi.
 - [ ] Them ghep nonholonomic cho CL (CL con sai so ngang cung nguyen nhan).
 
 ### 3. Dang bi chan (cho GVHD)

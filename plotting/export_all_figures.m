@@ -139,11 +139,13 @@ fig_dir = '../docs/thesis/figures';
 % Danh sach phuong phap + mau, KHONG hardcode so luong.
 % Them phuong phap moi = them 1 dong vao m5/l5/cmap5, phan con lai tu dong theo.
 m5    = {'bs', 'adp', 'smc', 'ntsmc', 'cl', 'adp_ft'};
-l5    = {'BS', 'ADP-AC', 'SMC', 'NTSMC', 'CL', 'ADP-FT'};
+l5    = {'Kanayama', 'ADP-AC', 'SMC', 'NTSMC', 'CL', 'ADP-FT'};
 cmap5 = [1 0 0; 0 0 1; 0 0.6 0; 0 0.7 0.7; 0.8 0 0.8; 0.9 0.5 0];
 nM    = numel(m5);
 trajs = {'circle', 'line', 'figure8'};
-traj_titles = {'Circle', 'Line', 'Figure-8'};
+traj_titles = {'(a)', '(b)', '(c)'};   % ten quy dao ghi o chu thich LaTeX
+% Khong dat chu tieng Viet trong hinh: exportgraphics vector chi ho tro Latin-1,
+% cac ky tu nhu 'D-gach', 'u-moc' bi thay bang '#'.
 
 % TH-1,2,3: XY trajectory (3 quy dao)
 for t_idx = 1:3
@@ -155,7 +157,7 @@ for t_idx = 1:3
         plot(d.q(1,:), d.q(2,:), '-', 'Color', cmap5(i,:), 'LineWidth', 1.2);
     end
     xlabel('$x$ [m]', 'Interpreter', 'latex'); ylabel('$y$ [m]', 'Interpreter', 'latex');
-    legend(['Ref', l5], 'Location', 'eastoutside'); axis equal; grid on;
+    legend(['q_r', l5], 'Location', 'eastoutside'); axis equal; grid on;
     exportgraphics(f, fullfile(fig_dir, sprintf('xy_%s.pdf', trajs{t_idx})), 'ContentType', 'vector');
     fprintf('  xy_%s.pdf\n', trajs{t_idx});
 end
@@ -215,7 +217,7 @@ fprintf('  weights_adp_ft.pdf\n');
 
 % TH-9: Robustness mass - ||z|| vs time
 colors3.bs = [1 0 0]; colors3.cl = [0.8 0 0.8]; colors3.adp_ft = [0.9 0.5 0];
-rm = {'bs', 'cl', 'adp_ft'}; rl = {'BS', 'CL', 'ADP-FT'};
+rm = {'bs', 'cl', 'adp_ft'}; rl = {'Kanayama', 'CL', 'ADP-FT'};
 masses = [10, 12, 14];
 
 % Voi mo hinh da sua, qua do ket thuc trong ~10 s: chi ve 20 s dau cho de doc.
@@ -290,7 +292,7 @@ end
 b = bar(Jc_dist);
 for i = 1:3, b(i).FaceColor = rob_colors(i,:); end
 set(gca, 'XTickLabel', {'0%', '20%', '40%', '60%'});
-xlabel('Disturbance amplitude ($\%\,\tau_{\max}$)', 'Interpreter', 'latex');
+xlabel('$A$ ($\%\,\tau_{\max}$)', 'Interpreter', 'latex');
 ylabel('$J_c$', 'Interpreter', 'latex');
 legend(rl, 'Location', 'eastoutside'); grid on;
 exportgraphics(f, fullfile(fig_dir, 'bar_jc_dist.pdf'), 'ContentType', 'vector');
@@ -302,18 +304,29 @@ clear results_A results_B results_C;
 load('../results/sm1_full_results.mat', 'results', 's', 'p');
 fig_dir_th = '../docs/thesis/figures';
 
-% Torque + disturbance (ADP-FT, dist)
-f = figure('Position', [100 100 620 380], 'Visible', 'off');
+% Torque + disturbance (ADP-FT, dist). Nhieu sin(30t) co chu ky 0.21 s nen ca
+% 60 s chi la mot dai mau dac: ve (a) 3 s dau (bao hoa khi khoi dong) va
+% (b) 3 chu ky nhieu o che do xac lap (mo-men nguoc pha voi nhieu).
+f = figure('Position', [100 100 620 420], 'Visible', 'off');
 d = results.adp_ft_dist;
 ax = gobjects(1, 2);
 ax(1) = subplot(2,1,1);
-plot(d.t, d.tau(1,:), 'b-', d.t, d.tau(2,:), 'r-', 'LineWidth', 0.8);
+i1 = d.t <= 3;
+plot(d.t(i1), d.tau(1,i1), 'b-', d.t(i1), d.tau(2,i1), 'r--', 'LineWidth', 0.8);
 ylabel('$\tau$ [N$\cdot$m]', 'Interpreter', 'latex'); grid on;
+ylim([-0.3, 1.1]);
+title('(a)', 'FontWeight', 'normal');
 ax(2) = subplot(2,1,2);
-plot(d.t, d.dist(1,:), 'm-', 'LineWidth', 0.8);
-ylabel('$d(t)$ [N$\cdot$m]', 'Interpreter', 'latex');
+t_win = [30, 30 + 3*2*pi/s.dist_freq];
+i2 = d.t >= t_win(1) & d.t <= t_win(2);
+plot(d.t(i2), d.tau(1,i2), 'b-', d.t(i2), d.tau(2,i2), 'r--', ...
+     d.t(i2), d.dist(1,i2), 'm-', 'LineWidth', 1.0);
+ylabel('[N$\cdot$m]', 'Interpreter', 'latex');
 xlabel('$t$ [s]', 'Interpreter', 'latex'); grid on;
-legend_out(ax, {'$\tau_R$', '$\tau_L$'}, 'Interpreter', 'latex');
+xlim(t_win); ylim([-0.25, 0.25]);
+title('(b)', 'FontWeight', 'normal');
+% legend dat o truc (b) vi chi truc nay co du ba duong
+legend_out([ax(2), ax(1)], {'$\tau_R$', '$\tau_L$', '$d$'}, 'Interpreter', 'latex');
 exportgraphics(f, fullfile(fig_dir_th, 'torque_dist.pdf'), 'ContentType', 'vector');
 fprintf('  torque_dist.pdf\n');
 

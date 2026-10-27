@@ -43,8 +43,8 @@ $REPO   = "c:\Users\LEGION\Desktop\luan van\ADP_Control_for_Wheeled_Mobile_Robot
 | `sim_sm2` | SM2 kinematic, 4 phương pháp × 2 quỹ đạo | ~2 phút | `sm2_results.mat` |
 | `sim_sm1_full` | 5 phương pháp × 2 điều kiện, full model (hình `torque_dist`) | ~2 phút | `sm1_full_results.mat` |
 | `sim_thesis` | Phần A–C: 3 quỹ đạo (kèm bảng A2 quá độ, A3 mô-men) + robustness khối lượng + nhiễu | **~5 phút** | `thesis_results.mat` (340 MB) |
-| `sim_thesis_extra` | Phần D–M: ablation, quét z0, nhiễu 2 kênh, SMC, cơ chế, đổi Q/R, vai trò học critic, bước 2 cũ/đầy đủ | ~20 phút | `thesis_extra.mat` (970 MB) |
-| `sweep_gains` | Chỉnh gain đều nhau cho 5 phương pháp (chạy lại khi đổi mô hình hoặc bước 2) | ~6 phút | `sweep_gains.mat` |
+| `sim_thesis_extra` | Phần D–M: ablation, quét z0, nhiễu 2 kênh, SMC, cơ chế, đổi Q/R, vai trò học critic, vòng 2 cũ/đầy đủ | ~20 phút | `thesis_extra.mat` (970 MB) |
+| `sweep_gains` | Chỉnh gain đều nhau cho 5 phương pháp (chạy lại khi đổi mô hình hoặc vòng 2) | ~6 phút | `sweep_gains.mat` |
 
 > `-batch` chạy rồi thoát, không mở GUI, in output ra terminal.
 > Đặt timeout ≥ 300000 ms cho `sim_thesis`; các script dài nên chạy nền. Ba tiến trình MATLAB

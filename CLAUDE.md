@@ -7,6 +7,7 @@ Hướng dẫn cho Claude Code khi làm việc trên repo này.
 ## 1. Bối cảnh dự án
 
 Luận văn Thạc sĩ — Điều khiển & Tự động hóa, ĐHBK Hà Nội.
+Tên đề tài (đã đăng ký, dùng nguyên văn): **Ứng dụng điều khiển ADP cho xe tự hành**.
 Học viên: Nguyễn Thành Trung. GVHD: PGS.TS. Nguyễn Hoài Nam.
 
 Repo vừa là **nơi phát triển mô phỏng MATLAB**, vừa là **kho lưu trữ luận văn LaTeX**.
@@ -29,9 +30,9 @@ Mục tiêu chính là lưu trữ có hệ thống + tái tạo được kết q
 |---|---|---|
 | Mô hình | Chỉ **kinematic** 3 trạng thái `[x,y,θ]` | **Full model 5 trạng thái** `[x,y,θ,v,ω]` |
 | Đầu ra điều khiển | Gán trực tiếp `u = [v, ω]` | **Mô-men** `τ = [τ_R, τ_L]` |
-| Bộ điều khiển | Chỉ bước 1 (luật vận tốc) | **Một bộ backstepping hai bước**: bước 1 ADP-FT, bước 2 luật mô-men có **số hạng chéo** + số hạng cố định thời gian; hàm Lyapunov chung (Định lý 4.1) |
+| Bộ điều khiển | Chỉ vòng 1 (luật vận tốc) | **Một bộ điều khiển hai vòng thiết kế theo backstepping**: vòng 1 ADP-FT, vòng 2 luật mô-men có **số hạng chéo** + số hạng cố định thời gian; hàm Lyapunov chung (Định lý 4.1) |
 | Nhiễu | Không xét | **Nhiễu sin tần số cao** cộng vào mô-men (đồng pha chỉ tác động kênh v; có thêm kịch bản vi sai/độc lập) |
-| So sánh | — | **5 phương pháp** × 3 quỹ đạo × robustness (khối lượng, nhiễu) |
+| So sánh | — | **5 phương pháp** × 3 quỹ đạo × độ bền với nhiễu (sai lệch tham số gộp vào nhiễu đầu vào) |
 | Luật ADP eq.(16)-(18) | Đề xuất gốc | **Giữ nguyên** luật cập nhật (17)-(18) và cấu trúc (16); tune lại gain, **thêm số hạng ghép nonholonomic** vào phần robust + toán tử chiếu |
 
 **Quy tắc khi viết luận văn / báo cáo:**
@@ -39,14 +40,17 @@ Mục tiêu chính là lưu trữ có hệ thống + tái tạo được kết q
 - Công thức `(16)-(18)`, phần chứng minh hội tụ fixed-time, cấu trúc critic-only
   → **của Wang et al.**, phải trích dẫn, KHÔNG được trình bày như đóng góp.
 - Mô hình dynamic `M·η̇ = B·τ − F(η)` → **của Fierro & Lewis (1997)**, phải trích dẫn.
-- Thủ tục backstepping (số hạng chéo `−∂V₁/∂z·g` ở bước 2) → **của Krstić et al. (1995)**, phải
-  trích dẫn. Áp dụng cho `V₁` của ADP-FT, số hạng cố định thời gian ở bước 2 và Định lý 4.1 → của Trung.
+- Thủ tục backstepping (số hạng chéo `−∂V₁/∂z·g` ở vòng 2) → **của Krstić et al. (1995)**, phải
+  trích dẫn. Áp dụng cho `V₁` của ADP-FT, số hạng cố định thời gian ở vòng 2 và Định lý 4.1 → của Trung.
 - Khoảng hở trong chứng minh của Wang (bước (19)→(20) dùng `g·g† = I₃`, Bổ đề 4.1) → phát hiện của
   luận văn; trình bày tôn trọng, đúng sự thật, không phóng đại.
-- Đóng góp thực sự của luận văn = **bộ backstepping hai bước** (bước 2 + Định lý 4.1),
+- Đóng góp thực sự của luận văn = **bộ điều khiển hai vòng thiết kế theo backstepping** (vòng 2 + Định lý 4.1),
   **phân tích lại chứng minh của Wang** (Bổ đề 4.1), **tune lại gain** (chỉnh đều nhau),
   **cơ chế ghép nonholonomic + toán tử chiếu**, **phân tích robustness / phân tích thành phần**,
   **so sánh 5 phương pháp**. Chỉ nhận phần này là mới.
+- **Cách trình bày:** luận văn tự đứng được — Wang chỉ là mẫu tham khảo cho luật vòng 1. Không kể lại
+  bài báo ("phương trình (xx) của bài báo", "luật của Wang"); chứng minh viết đầy đủ trong luận văn
+  từ lý thuyết cơ bản; chỉ đặt trích dẫn [n] ở chỗ kế thừa.
 - Khi Claude thêm nội dung mới vào `docs/thesis/thesis.tex`, phải tự hỏi:
   *"cái này của Wang, của Fierro, hay của Trung?"* — rồi đặt trích dẫn cho đúng.
 
@@ -72,7 +76,7 @@ Không bao giờ mặc định viết tiếng Anh cho tài liệu nộp thầy.
 
 ```
 models/         Mô hình WMR (kinematic, dynamic, full 5-state, tham số)
-controllers/    5 luật bước 1 (kinematic) + bước 2 dynamic_backstepping.m (mô-men)
+controllers/    5 luật vòng 1 (kinematic) + vòng 2 dynamic_backstepping.m (mô-men)
 simulations/    Script chạy mô phỏng + tham số + quỹ đạo tham chiếu
 plotting/       Script vẽ + xuất figure PDF
 results/        File .mat — KHÔNG commit (xem §6)
@@ -131,8 +135,18 @@ Quy trình đầy đủ (sim → export figure → compile): [docs/guides/workfl
 - **Không đặt hình giữa công thức và phần giải thích ký hiệu.** Đặt hình ở điểm chuyển
   đoạn tự nhiên (cuối mục, trước subsection mới).
 - **Legend không được che nội dung plot.** Đặt ra ngoài vùng vẽ (bên phải hoặc dưới).
-- Với hình TikZ: kiểm tra tọa độ để nhãn không đè lên mũi tên/trục.
+- Với hình TikZ: kiểm tra tọa độ để nhãn không đè lên mũi tên/trục, rồi **nhìn tận mắt ở 200–300 dpi**
+  (`pdftoppm -r 300 -f N -l N -png thesis.pdf out`, có sẵn trong MiKTeX) — xem cả trang không thấy được
+  chỗ đè. Chú giải pgfplots căn trái (`legend cell align=left` ở preamble).
 - Sau khi sửa `.tex`, luôn compile lại và kiểm tra `Overfull \hbox` trong `.log`.
+- **Luận văn chỉ dùng tiếng Việt.** Thuật ngữ tiếng Anh giữ nguyên (backstepping, Critic...) phải có
+  trong DANH MỤC THUẬT NGỮ; không viết kèm ngoặc tiếng Anh sau thuật ngữ Việt.
+- **Không ghi "theo yêu cầu của giáo viên hướng dẫn"** trong luận văn: góp ý của thầy giúp hoàn
+  thiện luận văn, không phải nội dung của nó.
+- **Chương kết quả chỉ dẫn công thức đã có ở Ch.2–4, không dựng công thức mới**; nội dung phải ở mức
+  Trung tự bảo vệ được.
+- Hình MATLAB không chứa chữ tiếng Việt có dấu (xuất PDF vector chỉ hỗ trợ Latin-1, chữ bị thành `#`):
+  dùng ký hiệu hoặc (a)(b)(c), ghi tên trong chú thích LaTeX.
 
 ---
 
