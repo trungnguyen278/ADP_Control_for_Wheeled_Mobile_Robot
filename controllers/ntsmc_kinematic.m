@@ -9,9 +9,11 @@ function [eta_d, z] = ntsmc_kinematic(q, qr, vr, omegar, s)
 %   NTSMC goc cua Feng thiet ke cho he BAC HAI (dieu khien u xuat hien o x_ddot),
 %   mat truot s = x + (1/beta)*|x_dot|^(p/q)*sign(x_dot) voi 1 < p/q < 2.
 %
-%   Sai so kinematic WMR la BAC NHAT theo (v, omega): dieu khien xuat hien ngay
-%   o z_dot. Do do khong the ap dung truc tiep. Ban nay giu 2 y tuong cot loi
-%   cua NTSMC -- hoi tu HUU HAN THOI GIAN va KHONG KY DI -- ap cho he bac nhat.
+%   Trong sai so kinematic WMR, z_x va z_th la BAC NHAT theo (v, omega), con z_y
+%   la BAC HAI: omega -> z_th -> z_y (qua vr*sin(z_th)). Mat truot sigma_2 ben
+%   duoi la dang fast terminal cua Yu & Man (2002) dat tren chuoi z_th -> z_y.
+%   Diem ky di xu ly bang noi tuyen tinh quanh goc (sig_ns), KHONG theo cau truc
+%   mat truot cua Feng. Ten NTSMC hieu la "SMC dau cuoi co xu ly ky di".
 %
 %   Khi viet luan van: trich dan Feng et al. (2002) va Yu & Man (2002) nhu
 %   NGUON Y TUONG, khong duoc trinh bay nhu ap dung nguyen ban.

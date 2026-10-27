@@ -650,6 +650,24 @@ Trung chon goi **vong 1 (vong ngoai, dong hoc) / vong 2 (vong trong, dong luc ho
   5.7.1-5.7.3 vao muc luc. Kiem tra bang pypdf: 6 chuong o cap cao nhat, moi muc nhay dung trang.
 - Build: thesis 86 trang, summary 13 trang; 0 loi, 0 ref treo, 0 Overfull, 0 anchor trung.
 
+### 2026-10-27 (toi) — DOI CHIEU YEU CAU CUA THAY, DOI TEN "BS", KIEM CHUNG BO DIEU KHIEN
+
+- Doi chieu chat 28/03 voi bao cao SM1: 5/5 yeu cau cua thay dat. Chi y "BC bac 2" la sua khai
+  niem (SM1 goi luat Kanayama la "BC" theo Wang); 4 y con lai la bo sung thanh phan chuan.
+- Nhan "BS" -> "Kanayama" (luan van 50 cho, tom tat, README, 11 hinh xuat lai tu .mat; muc Seminar
+  1-2 cua bao cao tom tat giu "BS" vi hinh SM2 da nop). Muc 4.5.1 them: k2*vr*zy la so hang cheo
+  cua mot buoc backstepping tren chuoi z_th -> z_y (V = (zx^2+zy^2)/2 + (1-cos zth)/k2), nhung luat
+  dung o van toc nen goi theo ten tac gia. Muc 1.3 sua: backstepping la cua Krstic, khong phai
+  Kanayama 1990.
+- Muc 4.5.2 + chu thich ntsmc_kinematic.m: bo cau sai "he bac mot" (z_y bac hai theo omega qua
+  z_th); mat truot la dang dau cuoi nhanh (Yu & Man) tren chuoi z_th -> z_y, chong ky di bang noi
+  tuyen tinh, khong theo cau truc Feng.
+- Kiem chung bo dieu khien: code vong 2 khop (4.19), mo hinh khop (2.x). Kiem tra so dang thuc
+  Dinh ly 4.1 tren mo phong (circle, 20 s, t >= 1 s): phan du = 0,4-1,2% so hang tuong tac zeta'e
+  (ADP-FT va Kanayama, co/khong nhieu doc lap); neu so hang cheo sai dau phan du se ~2 lan.
+  Script verify_lyapunov.m o scratchpad phien 27/10 (chua dua vao repo).
+- Build: thesis 86 trang, summary 13 trang; 0 loi, 0 ref treo, 0 Overfull (4 bang thu tabcolsep).
+
 ---
 
 ## VIEC CAN LAM

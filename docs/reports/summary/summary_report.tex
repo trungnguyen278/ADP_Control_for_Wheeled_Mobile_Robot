@@ -67,7 +67,7 @@ Hoàn thiện phương pháp ADP-FT của Wang et al. thành \textbf{một bộ 
 
     \item \textbf{Phân tích lại và hoàn thiện vòng 1:} chỉ ra một khoảng hở ở kênh sai số ngang trong chứng minh của bài báo; bổ sung \textbf{cơ chế ghép nonholonomic} để lấp khoảng hở (thành phần quyết định), \textbf{toán tử chiếu} giữ hàm giá trị xác định dương, và bộ gain cho lệnh vận tốc bị chặn.
 
-    \item \textbf{So sánh công bằng 5 phương pháp} (BS, ADP-AC, SMC kèm biến thể NTSMC, CL, ADP-FT làm vòng 1, cùng một vòng 2) trên 3 quỹ đạo, sau khi mọi phương pháp được chỉnh gain theo cùng một quy trình.
+    \item \textbf{So sánh công bằng 5 phương pháp} (Kanayama, ADP-AC, SMC kèm biến thể NTSMC, CL, ADP-FT làm vòng 1, cùng một vòng 2) trên 3 quỹ đạo, sau khi mọi phương pháp được chỉnh gain theo cùng một quy trình.
 
     \item \textbf{Phân tích robustness và phân tích thành phần:} bất định khối lượng tới $+60\%$, ba dạng nhiễu tới $60\%\,\tau_\text{max}$, năm điều kiện đầu; công thức giải tích dự đoán sai số xác lập do nhiễu; thí nghiệm loại bỏ từng thành phần của ADP-FT.
 \end{enumerate}
@@ -156,7 +156,7 @@ cho $M\dot e_\eta = -M\big(K_d e_\eta + K_\alpha\operatorname{sig}(e_\eta)^{p/q}
     \item \textbf{Vòng 2:} khi $\zeta = 0$, $d = 0$, mỗi thành phần thỏa $\dot e_i = -K_{d,i}e_i - K_{\alpha,i}\operatorname{sig}(e_i)^{p/q} - K_{\beta,i}e_i^3$, nên về đúng không trước $T_2 \leq \frac{q}{(q-p)K_\alpha} + \frac{1}{2K_\beta} = 1$\,s (Hệ quả 4.1).
 \end{itemize}
 
-\textbf{Các phương pháp so sánh} chỉ khác nhau ở vòng 1: luật Kanayama (BS), SMC và biến thể NTSMC, Critic-only Concurrent Learning (CL), Actor-Critic ADP (ADP-AC) và ADP-FT; vòng 2 dùng chung để mọi khác biệt đến từ vòng 1.
+\textbf{Các phương pháp so sánh} chỉ khác nhau ở vòng 1: luật Kanayama, SMC và biến thể NTSMC, Critic-only Concurrent Learning (CL), Actor-Critic ADP (ADP-AC) và ADP-FT; vòng 2 dùng chung để mọi khác biệt đến từ vòng 1.
 
 Nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)\,[1,\ 1]^\T$, mặc định $A = 20\%$, được cộng vào mô-men hai bánh, mô phỏng nhiễu loạn tần số cao (theo yêu cầu của thầy hướng dẫn sau Seminar 1). Ngoài dạng đồng pha này, luận văn khảo sát thêm nhiễu vi sai $[1,\ -1]^\T$ và nhiễu độc lập trên hai bánh.
 
@@ -164,7 +164,7 @@ Nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)\,[1,\ 1]^\T$, m�
 \section{Kết quả Seminar 1: Actor-Critic ADP trên mô hình Kinematic}
 % ================================================================
 
-Seminar 1 (tháng 3/2026) tập trung triển khai và so sánh phương pháp ADP Actor-Critic (Vamvoudakis \& Lewis, 2010)~\cite{Vamvoudakis2010} với Backstepping trên \textbf{mô hình kinematic đơn giản} (chưa có vòng trong dynamic). Mạng Actor và Critic sử dụng cấu trúc 2 lớp với hàm kích hoạt polynomial.
+Seminar 1 (tháng 3/2026) tập trung triển khai và so sánh phương pháp ADP Actor-Critic (Vamvoudakis \& Lewis, 2010)~\cite{Vamvoudakis2010} với luật Kanayama (khi đó gọi là Backstepping, viết tắt BS) trên \textbf{mô hình kinematic đơn giản} (chưa có vòng trong dynamic). Mạng Actor và Critic sử dụng cấu trúc 2 lớp với hàm kích hoạt polynomial.
 
 Kịch bản mô phỏng: hai quỹ đạo tham chiếu (đường tròn bán kính 1\,m và đường thẳng), thời gian $T = 120$\,s, không có nhiễu ngoài. Ba phương pháp được so sánh: BS (Backstepping), AC+PE (Actor-Critic có tín hiệu Persistence of Excitation), và AC (không PE).
 
@@ -254,7 +254,7 @@ Mỗi phương pháp xuất phát từ bộ gain danh nghĩa, nhân \textit{toà
 \midrule
 SMC    & 1/8 & 4.887 & 3.837 & $-21.5\%$ \\
 ADP-FT & 1/2 & 4.260 & 4.140 & $-2.8\%$ \\
-BS     & 1/4 & 4.901 & 4.290 & $-12.5\%$ \\
+Kanayama     & 1/4 & 4.901 & 4.290 & $-12.5\%$ \\
 CL     & 1/4 & 21.437 & 6.099 & $-71.5\%$ \\
 ADP-AC & 1/4 & 20.833 & 13.951 & $-33.0\%$ \\
 \bottomrule
@@ -272,7 +272,7 @@ Bước này là điều kiện tiên quyết: ở gain thông dụng, SMC có t
 \toprule
 \textbf{Phương pháp} & \textbf{Tròn} & \textbf{Thẳng} & \textbf{Số 8} & \textbf{Tổng} & $t_{0,01}$ (s) \\
 \midrule
-BS     & 1.277 & 0.877 & 2.136 & 4.290 & 9.9 \\
+Kanayama     & 1.277 & 0.877 & 2.136 & 4.290 & 9.9 \\
 ADP-AC & 3.760 & 5.139 & 5.051 & 13.951 & 37.5 \\
 SMC    & \textbf{1.214} & \textbf{0.661} & \textbf{1.962} & \textbf{3.837} & 10.1 \\
 NTSMC  & 1.237 & 0.838 & 2.055 & 4.130 & 9.1 \\
@@ -291,9 +291,9 @@ ADP-FT & 1.318 & 0.790 & 2.033 & 4.140 & \textbf{6.0} \\
 
 \textbf{Nhận xét:}
 \begin{itemize}
-    \item \textbf{SMC thấp nhất} trên cả ba quỹ đạo. \textbf{ADP-FT ngang NTSMC} về tổng chi phí ($4{,}140$ so với $4{,}130$, chênh $0{,}2\%$ -- nhỏ hơn độ phân giải của quy trình chỉnh gain), cao hơn SMC $7{,}9\%$, tốt hơn BS, CL và ADP-AC; trên đường tròn ADP-FT cao hơn BS $3{,}2\%$.
+    \item \textbf{SMC thấp nhất} trên cả ba quỹ đạo. \textbf{ADP-FT ngang NTSMC} về tổng chi phí ($4{,}140$ so với $4{,}130$, chênh $0{,}2\%$ -- nhỏ hơn độ phân giải của quy trình chỉnh gain), cao hơn SMC $7{,}9\%$, tốt hơn Kanayama, CL và ADP-AC; trên đường tròn ADP-FT cao hơn Kanayama $3{,}2\%$.
     \item ADP-FT \textbf{về lân cận nhỏ của quỹ đạo sớm nhất} trên cả ba quỹ đạo (ngưỡng $0{,}05$; $0{,}02$; $0{,}01$\,m). $J_c$ của SMC vẫn thấp hơn vì $J_c$ bị chi phối bởi vài giây đầu, khi SMC giảm sai số lớn nhanh hơn.
-    \item Với BS, SMC, NTSMC, ADP-FT, sai số xác lập đều $\approx 4{,}1$--$4{,}3\times10^{-4}$\,m: đây là \textbf{sàn do nhiễu} lọt qua vòng 2, không do vòng 1 (Mục \ref{sec:bc} dưới đây). ADP-AC (tín hiệu PE tới giây 30) và CL hội tụ chậm hơn.
+    \item Với Kanayama, SMC, NTSMC, ADP-FT, sai số xác lập đều $\approx 4{,}1$--$4{,}3\times10^{-4}$\,m: đây là \textbf{sàn do nhiễu} lọt qua vòng 2, không do vòng 1 (Mục \ref{sec:bc} dưới đây). ADP-AC (tín hiệu PE tới giây 30) và CL hội tụ chậm hơn.
     \item Năng lượng $J_u = J_c - 10J_e$ chỉ chiếm dưới $9\%$ $J_c$ (trừ ADP-AC): so sánh $J_c$ thực chất là so sánh sai số tích lũy.
 \end{itemize}
 
@@ -322,7 +322,7 @@ ADP-FT & 1.318 & 0.790 & 2.033 & 4.140 & \textbf{6.0} \\
 \caption{Mức tăng $J_c$ so với điều kiện danh nghĩa (đường tròn)}
 \begin{tabular}{lrrrr}
 \toprule
-\textbf{Kịch bản} & \textbf{BS} & \textbf{SMC} & \textbf{CL} & \textbf{ADP-FT} \\
+\textbf{Kịch bản} & \textbf{Kanayama} & \textbf{SMC} & \textbf{CL} & \textbf{ADP-FT} \\
 \midrule
 Khối lượng thực $16$\,kg ($+60\%$) & $+2.7\%$ & $+2.1\%$ & $+1.5\%^{(*)}$ & $+1.5\%$ \\
 Nhiễu đồng pha $60\%$ (so với $0\%$) & $+0.3\%$ & $+0.3\%$ & $+1.7\%$ & $+0.2\%$ \\
@@ -336,7 +336,7 @@ Nhiễu đồng pha $60\%$ (so với $0\%$) & $+0.3\%$ & $+0.3\%$ & $+1.7\%$ & $
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{bar_jc_dist.pdf}
-    \caption{$J_c$ theo mức nhiễu (BS, CL, ADP-FT).}
+    \caption{$J_c$ theo mức nhiễu (Kanayama, CL, ADP-FT).}
     \label{fig:bar_jc_dist}
 \end{figure}
 
@@ -344,7 +344,7 @@ Bất định khối lượng và nhiễu chỉ làm chi phí thay đổi không
 \begin{equation}
     z_\text{rms} \approx \frac{1}{\sqrt 2}\cdot\frac{2 d_0}{r\, m\, \omega_n \sqrt{\omega_n^2 + K_\text{eq}^2}}, \qquad d_0 = A\,\tau_\text{max},\ \omega_n = 30\ \text{rad/s},
 \end{equation}
-cho $K_\text{eq} = 35{,}7$ và $z_\text{rms} \approx 4{,}05\times10^{-4}$\,m ở $A = 20\%$, khớp mô phỏng (BS: $4{,}31\times10^{-4}$; ADP-FT: $4{,}15\times10^{-4}$) với sai lệch dưới $3\%$ ở mọi biên độ và cả ba dạng nhiễu (trừ BS ở $20\%$: $6{,}5\%$, do sai số dư không đến từ nhiễu). Với vòng 2 cũ ($K_\text{eq} = K_d = 20$) công thức cho $5{,}23\times10^{-4}$\,m: các số hạng cố định thời gian của vòng 2 hạ sàn nhiễu $23\%$. Công thức không chứa tham số nào của vòng 1: \textbf{kháng nhiễu ở tầng mô-men là nhiệm vụ của vòng 2}, và các thí nghiệm khối lượng, nhiễu không phân biệt được các luật vòng 1.
+cho $K_\text{eq} = 35{,}7$ và $z_\text{rms} \approx 4{,}05\times10^{-4}$\,m ở $A = 20\%$, khớp mô phỏng (Kanayama: $4{,}31\times10^{-4}$; ADP-FT: $4{,}15\times10^{-4}$) với sai lệch dưới $3\%$ ở mọi biên độ và cả ba dạng nhiễu (trừ Kanayama ở $20\%$: $6{,}5\%$, do sai số dư không đến từ nhiễu). Với vòng 2 cũ ($K_\text{eq} = K_d = 20$) công thức cho $5{,}23\times10^{-4}$\,m: các số hạng cố định thời gian của vòng 2 hạ sàn nhiễu $23\%$. Công thức không chứa tham số nào của vòng 1: \textbf{kháng nhiễu ở tầng mô-men là nhiệm vụ của vòng 2}, và các thí nghiệm khối lượng, nhiễu không phân biệt được các luật vòng 1.
 
 \subsection{Đóng góp của vòng 2}
 
@@ -355,7 +355,7 @@ Giữ nguyên gain vòng 1, so sánh vòng 2 cũ (luật Fierro \& Lewis, $K_c =
 \caption{Vòng 2 cũ và đầy đủ: tổng $J_c$ trên 3 quỹ đạo, $z_\text{rms}$ của ADP-FT trên đường tròn}
 \begin{tabular}{lrrrr}
 \toprule
-\textbf{Vòng 2} & \textbf{BS} & \textbf{SMC} & \textbf{ADP-FT} & $z_\text{rms}$ ADP-FT \\
+\textbf{Vòng 2} & \textbf{Kanayama} & \textbf{SMC} & \textbf{ADP-FT} & $z_\text{rms}$ ADP-FT \\
 \midrule
 Fierro \& Lewis (cũ) & 4.310 & 3.836 & 4.192 & $5.32\times10^{-4}$ \\
 Đầy đủ, $K_c = M$ (mặc định) & 4.290 & 3.837 & 4.140 & $4.15\times10^{-4}$ \\
@@ -366,13 +366,13 @@ Fierro \& Lewis (cũ) & 4.310 & 3.836 & 4.192 & $5.32\times10^{-4}$ \\
 
 \begin{itemize}
     \item Sai lệch vận tốc giữa hai vòng về dưới $0{,}05$ trong không quá $0{,}17$\,s ở mọi luật và quỹ đạo -- nhanh hơn quá độ của vòng 1 hàng chục lần, đúng với Định lý 4.1 và cận $T_2 \leq 1$\,s. Các số hạng cố định thời gian hạ $z_\text{rms}$ $21$--$23\%$; ảnh hưởng tới $J_c$ ở điều kiện danh nghĩa nhỏ.
-    \item $K_c$ lớn hơn có lợi cho ADP-FT (ở $K_c = 10M$ thấp hơn cả SMC) nhưng làm BS xấu đi $12{,}8\%$: số hạng chéo tương đương cộng phản hồi $k_c/(MK_d)$ vào lệnh vận tốc, bằng $0{,}5$ khi $K_c = 10M$ -- tức chỉnh thêm gain vòng 1, không đều giữa các phương pháp. Luận văn giữ $K_c = M$, giá trị suy ra từ cấu trúc hàm Lyapunov.
+    \item $K_c$ lớn hơn có lợi cho ADP-FT (ở $K_c = 10M$ thấp hơn cả SMC) nhưng làm Kanayama xấu đi $12{,}8\%$: số hạng chéo tương đương cộng phản hồi $k_c/(MK_d)$ vào lệnh vận tốc, bằng $0{,}5$ khi $K_c = 10M$ -- tức chỉnh thêm gain vòng 1, không đều giữa các phương pháp. Luận văn giữ $K_c = M$, giá trị suy ra từ cấu trúc hàm Lyapunov.
     \item Ở sai lệch ban đầu lớn, vòng 2 đầy đủ giảm chi phí $12$--$35\%$ ở cả ba luật; một phần do số hạng chéo tác động thẳng vào mô-men nên vận tốc thực có thể vượt giới hạn lệnh $v_{\max} = 0{,}5$\,m/s (tới $0{,}62$\,m/s). Nếu $v_{\max}$ là giới hạn an toàn cứng, cần bão hòa số hạng chéo.
 \end{itemize}
 
 \subsection{Điều kiện đầu và tính cố định thời gian}
 
-Quét 5 điều kiện đầu với $\|z_0\|$ từ $0{,}245$ đến $3{,}5$: BS, SMC, ADP-FT hội tụ về sàn nhiễu ở cả 5 (CL chỉ 1/5). Thời gian về $\|z\| < 0{,}05$ tại $\|z_0\| = 3{,}5$: ADP-FT $42{,}3$\,s, BS $22{,}0$\,s, SMC $17{,}0$\,s, ADP-FT với Critic đóng băng $15{,}8$\,s. Vì lệnh $|v_d| \leq 0{,}5$\,m/s và $v_r = 0{,}3$\,m/s, tốc độ đuổi kịp chỉ cỡ $0{,}2$\,m/s nên thời gian quá độ buộc phải tăng theo sai lệch ban đầu: \textbf{với vận tốc bị chặn, không bộ điều khiển nào hội tụ cố định thời gian trên toàn miền}. Luận văn vì vậy không tuyên bố tính chất này cho robot điều khiển bằng mô-men.
+Quét 5 điều kiện đầu với $\|z_0\|$ từ $0{,}245$ đến $3{,}5$: Kanayama, SMC, ADP-FT hội tụ về sàn nhiễu ở cả 5 (CL chỉ 1/5). Thời gian về $\|z\| < 0{,}05$ tại $\|z_0\| = 3{,}5$: ADP-FT $42{,}3$\,s, Kanayama $22{,}0$\,s, SMC $17{,}0$\,s, ADP-FT với Critic đóng băng $15{,}8$\,s. Vì lệnh $|v_d| \leq 0{,}5$\,m/s và $v_r = 0{,}3$\,m/s, tốc độ đuổi kịp chỉ cỡ $0{,}2$\,m/s nên thời gian quá độ buộc phải tăng theo sai lệch ban đầu: \textbf{với vận tốc bị chặn, không bộ điều khiển nào hội tụ cố định thời gian trên toàn miền}. Luận văn vì vậy không tuyên bố tính chất này cho robot điều khiển bằng mô-men.
 
 % ================================================================
 \section{Điều chỉnh ADP-FT và phân tích thành phần}

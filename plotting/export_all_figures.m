@@ -139,7 +139,7 @@ fig_dir = '../docs/thesis/figures';
 % Danh sach phuong phap + mau, KHONG hardcode so luong.
 % Them phuong phap moi = them 1 dong vao m5/l5/cmap5, phan con lai tu dong theo.
 m5    = {'bs', 'adp', 'smc', 'ntsmc', 'cl', 'adp_ft'};
-l5    = {'BS', 'ADP-AC', 'SMC', 'NTSMC', 'CL', 'ADP-FT'};
+l5    = {'Kanayama', 'ADP-AC', 'SMC', 'NTSMC', 'CL', 'ADP-FT'};
 cmap5 = [1 0 0; 0 0 1; 0 0.6 0; 0 0.7 0.7; 0.8 0 0.8; 0.9 0.5 0];
 nM    = numel(m5);
 trajs = {'circle', 'line', 'figure8'};
@@ -215,7 +215,7 @@ fprintf('  weights_adp_ft.pdf\n');
 
 % TH-9: Robustness mass - ||z|| vs time
 colors3.bs = [1 0 0]; colors3.cl = [0.8 0 0.8]; colors3.adp_ft = [0.9 0.5 0];
-rm = {'bs', 'cl', 'adp_ft'}; rl = {'BS', 'CL', 'ADP-FT'};
+rm = {'bs', 'cl', 'adp_ft'}; rl = {'Kanayama', 'CL', 'ADP-FT'};
 masses = [10, 12, 14];
 
 % Voi mo hinh da sua, qua do ket thuc trong ~10 s: chi ve 20 s dau cho de doc.

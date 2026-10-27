@@ -1,5 +1,8 @@
 function [u, z] = backstepping_controller(q, qr, vr, omegar, s)
-% BACKSTEPPING_CONTROLLER  Bo dieu khien backstepping kinematic cho WMR
+% BACKSTEPPING_CONTROLLER  Luat dong hoc Kanayama (1990) cho WMR -- luat vong 1 de so sanh
+%
+% Ten file giu theo lich su. Tu 2026-10-27 luan van goi luat nay la 'Kanayama':
+% rieng no chi la vong 1 (dung o van toc), chua phai bo backstepping hai vong.
 %
 % [u, z] = backstepping_controller(q, qr, vr, omegar, s)
 %

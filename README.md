@@ -82,7 +82,7 @@ pdflatex -interaction=nonstopmode thesis.tex; pdflatex -interaction=nonstopmode 
 
 ```
 models/        Mô hình WMR: kinematic, dynamic, full 5-state, tham số robot
-controllers/   5 luật vòng 1 (BS, ADP-AC, SMC, CL, ADP-FT) + vòng 2 (dynamic_backstepping.m)
+controllers/   5 luật vòng 1 (Kanayama, ADP-AC, SMC, CL, ADP-FT) + vòng 2 (dynamic_backstepping.m)
 simulations/   Kịch bản mô phỏng + tham số controller + quỹ đạo tham chiếu
 plotting/      Vẽ màn hình (plot_*) và xuất PDF vào docs/ (export_*)
 results/       File .mat — KHÔNG commit, tái tạo bằng sim_*.m
@@ -191,7 +191,7 @@ c_zy = 1.0, ς = 0.2                 (ghép nonholonomic)   luật cập nhật:
 
 > Gain của mọi phương pháp chọn bằng `sweep_gains.m`: nhân toàn bộ gain danh nghĩa với
 > cùng hệ số k ∈ {1/16 … 4}, lấy k* cho tổng Jc 3 quỹ đạo nhỏ nhất (với vòng 2 đầy đủ:
-> ADP-FT k* = 1/2, SMC 1/8, BS 1/4, CL 1/4, ADP-AC 1/4).
+> ADP-FT k* = 1/2, SMC 1/8, Kanayama 1/4, CL 1/4, ADP-AC 1/4).
 
 **Nhiễu:** `dist_amp = 0.2` (20% τ_max), `dist_freq = 30 rad/s` (~4.8 Hz), cộng cùng pha
 vào hai bánh — chỉ tác động kênh v (`B·[1;1] = [2/r; 0]`). Kịch bản nhiễu độc lập hai
@@ -210,23 +210,23 @@ T = 60 s, nhiễu đồng pha 20%, gain chỉnh đều nhau (MATLAB R2023a, 2026
 | SMC (k* = 1/8) | **1.214** | **0.661** | **1.962** | **3.837** | 10.1 s |
 | NTSMC (cùng gain SMC) | 1.237 | 0.838 | 2.055 | 4.130 | 9.1 s |
 | ADP-FT | 1.318 | 0.790 | 2.033 | 4.140 | **6.0 s** |
-| BS | 1.277 | 0.877 | 2.136 | 4.290 | 9.9 s |
+| Kanayama | 1.277 | 0.877 | 2.136 | 4.290 | 9.9 s |
 | CL | 1.675 | 1.504 | 2.920 | 6.099 | 31.1 s |
 | ADP-AC | 3.760 | 5.139 | 5.051 | 13.951 | 37.5 s |
 
 - ADP-FT ngang NTSMC (chênh 0.2%, dưới độ phân giải của lưới chỉnh gain), kém SMC 7.9%,
   về các ngưỡng 0.05 / 0.02 / 0.01 m sớm nhất trên cả 3 quỹ đạo.
-- Sai số xác lập ≈ 4.1–4.3e-4 m ở BS/SMC/NTSMC/ADP-FT = sàn do nhiễu lọt qua vòng 2. Dự đoán
+- Sai số xác lập ≈ 4.1–4.3e-4 m ở Kanayama/SMC/NTSMC/ADP-FT = sàn do nhiễu lọt qua vòng 2. Dự đoán
   bằng hàm mô tả: z_rms ≈ 2d₀/(√2·r·m·ω_n·√(ω_n²+K_eq²)), K_eq = K_d + 1.021·K_α·E^(p/q−1) + ¾K_β·E²
   (K_eq ≈ 35.7 ở 20%) — khớp < 3% cả ba dạng nhiễu. Số hạng fixed-time của vòng 2 hạ sàn này 23%.
 - Vòng 2 (Phần M): t_e (‖e_η‖ < 0.05) ≤ 0.17 s; K_c = 10M kéo ADP-FT xuống 3.833 (< SMC) nhưng
-  BS +12.8% — tương đương chỉnh gain vòng 1 không đều nên giữ K_c = M. Số hạng chéo cho vận tốc
+  Kanayama +12.8% — tương đương chỉnh gain vòng 1 không đều nên giữ K_c = M. Số hạng chéo cho vận tốc
   thực vượt v_max (tới 0.62 m/s khi ‖z0‖ = 3.5).
 - Khối lượng tới 16 kg và nhiễu tới 60% (ba kiểu): Jc đổi < 3% ở mọi phương pháp.
 - Ablation ADP-FT: ghép nonholonomic là quyết định (thiếu nó Jc ×3.2–5.6, kẹt gần điểm cân bằng
   giả); toán tử chiếu không kích hoạt (λmin(P) ≥ 0.12); bỏ số hạng fixed-time ở vòng 1 giảm Jc
   1.4–1.8%; critic đóng băng tốt hơn critic học ~3% (danh nghĩa) và hội tụ nhanh 2.7 lần khi
-  ‖z0‖ = 3.5 (15.8 s vs 42.3 s; BS 22.0 s). Tham số gốc Wang: Jc ×7–23, z_y dư 1.7–3.2 cm.
+  ‖z0‖ = 3.5 (15.8 s vs 42.3 s; Kanayama 22.0 s). Tham số gốc Wang: Jc ×7–23, z_y dư 1.7–3.2 cm.
 - Fixed-time không được bảo toàn: vận tốc bị chặn nên thời gian quá độ buộc tăng theo ‖z0‖.
 
 ---

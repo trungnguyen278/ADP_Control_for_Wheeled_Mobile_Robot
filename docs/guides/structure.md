@@ -22,13 +22,13 @@ ADP_Control_for_Wheeled_Mobile_Robot/
 │
 ├── controllers/                ── TẦNG 2: Bộ điều khiển ──
 │   │  ── Vòng ngoài (kinematic): q → η_d = [v_d, ω_d] ──
-│   ├── backstepping_controller.m   Backstepping (baseline)
+│   ├── backstepping_controller.m   Luật Kanayama (vòng 1 so sánh)
 │   ├── actor_critic_adp.m          SM1: Actor-Critic ADP (2 mạng, cần PE)
 │   ├── smc_kinematic.m             SMC thường (baseline theo yêu cầu GVHD)
 │   ├── critic_only_cl.m            SM2: Critic-only + Concurrent Learning
 │   ├── adp_fixed_time.m            LUẬN VĂN: ADP fixed-time (Wang eq.16-18)
 │   │  ── Vòng trong (dynamic): η_d → τ = [τ_R, τ_L] ──
-│   └── dynamic_backstepping.m      Backstepping bậc 2 (Fierro & Lewis 1997)
+│   └── dynamic_backstepping.m      Vòng 2: luật mô-men (số hạng chéo + FT)
 │
 ├── simulations/                ── TẦNG 3: Kịch bản mô phỏng ──
 │   ├── sm1_params.m            Tham số controller + mô phỏng (dùng chung)
