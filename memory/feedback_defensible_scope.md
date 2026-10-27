@@ -19,4 +19,8 @@ giải thích được không, nó có phục vụ trực tiếp một đóng g�
 rút gọn, không cắt bằng chứng của các đóng góp và không giấu kết quả bất lợi. Khi giải thích cho
 Trung, nói ngắn và nhắc lại bối cảnh vì Trung đã quên nhiều chi tiết.
 
+Thí nghiệm cũng theo tinh thần luận văn nghiên cứu (Trung, 27/10): không khảo sát riêng bất định
+khối lượng ("liên quan thực tế"); sai lệch tham số tương đương nhiễu cộng vào mô-men
+(−B⁻¹ΔMη̇, nhiễu khớp) nên gộp vào nhiễu đầu vào — ghi ở (A2) Mục 4.4.
+
 Related: [[feedback-verify-premises]], [[user-profile]], [[project-progress]]

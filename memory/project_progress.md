@@ -15,8 +15,11 @@ tên "BS" → "Kanayama" và mô tả NTSMC. Kiểm chứng số Định lý 4.1
 tác.
 
 Rút gọn Chương 5 (Trung đồng ý): 11 mục/26 trang → 6 mục/15 trang, luận văn còn 73 trang; bỏ
-phân tích hàm mô tả, mục Q/R, mục mô-men riêng ([[feedback-defensible-scope]]). Còn lại (Trung):
-đọc lại Ch.4–6, merge PR #3, gửi thầy Nam.
+phân tích hàm mô tả, mục Q/R, mục mô-men riêng ([[feedback-defensible-scope]]).
+
+Sau đó (Trung yêu cầu): bỏ câu "theo yêu cầu của GVHD", bỏ thí nghiệm bất định khối lượng (gộp vào
+nhiễu đầu vào), luận văn chỉ dùng tiếng Việt + DANH MỤC THUẬT NGỮ ([[feedback-vietnamese]]); hình
+MATLAB dùng ký hiệu/(a)(b)(c). Luận văn 74 trang. Còn lại (Trung): đọc lại, merge PR #3, gửi thầy Nam.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 

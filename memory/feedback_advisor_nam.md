@@ -47,5 +47,7 @@ bền vững trước khi sang phần chính của luận văn.
 - Lượt review đầu 27/10 kết luận "SMC/NTSMC chưa đạt, phải làm SMC tầng mô-men" — ĐÃ RÚT LẠI, do
   áp tiền đề khi chưa kiểm chứng ([[feedback-verify-premises]]).
 - Vòng 2 hiện tại = luật mô-men có số hạng chéo + FT, xem [[feedback-backstepping-framing]].
+- **Không ghi "theo yêu cầu của giáo viên hướng dẫn" trong luận văn** (Trung, 27/10): góp ý của thầy
+  giúp hoàn thiện, không phải nội dung luận văn. Lời cảm ơn vẫn giữ.
 
 Related: [[feedback-disturbance-one-channel]], [[feedback-backstepping-framing]], [[project-progress]]
