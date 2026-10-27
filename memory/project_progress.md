@@ -10,8 +10,10 @@ metadata:
 Kiểm chứng tiền đề "thầy xoay quanh khái niệm cơ bản" với báo cáo SM1: đúng phần lớn, có 3 điều chỉnh
 ([[feedback-advisor-nam]]). Review theo cách đọc đã chỉnh: 5/5 yêu cầu đạt (BC kèm hạn chế bước 1
 đã ghi). Còn hai chỗ gọi tên lỏng: nhãn "BS" cho luật Kanayama, tên/mô tả "NTSMC" (Mục 4.5.2).
-Kết luận lượt đầu ("SMC/NTSMC chưa đạt, làm SMC tầng mô-men") đã rút lại. Chưa sửa luận văn —
-chờ Trung đồng ý cách đọc.
+Kết luận lượt đầu ("SMC/NTSMC chưa đạt, làm SMC tầng mô-men") đã rút lại. Trung đồng ý → đã sửa
+tên "BS" → "Kanayama" và mô tả NTSMC. Kiểm chứng số Định lý 4.1: phần dư 0,4–1,2% số hạng tương
+tác. Đang bàn: Chương 5 dài (26/67 trang thân bài) — Trung muốn chỉ trình bày kết quả, điểm
+mạnh/yếu.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 

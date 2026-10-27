@@ -41,9 +41,9 @@ bền vững trước khi sang phần chính của luận văn.
   (mọi PP chạm τ_max = 1 N·m trong giây đầu nên 20% τ_max = 20% max|τ|). Kịch bản vi sai/độc lập
   là kiểm tra thêm.
 - Kết quả review 27/10 (theo cách đọc trên): 5/5 yêu cầu đạt; ý 5 kèm hạn chế đã ghi (bước 1 với
-  ADP-FT không có V₁ chặt, Bổ đề 4.1). Còn hai chỗ gọi tên lỏng — đúng kiểu lỗi ý 5: nhãn "BS" cho
-  luật Kanayama (đề xuất đổi "Kanayama"); tên "NTSMC" (thực chất mặt trượt đầu cuối nhanh của Yu &
-  Man trên chuỗi z_y → z_θ, chống kỳ dị bằng nối tuyến tính; Mục 4.5.2 viết sai là "hệ bậc một").
+  ADP-FT không có V₁ chặt, Bổ đề 4.1). Hai chỗ gọi tên lỏng — đúng kiểu lỗi ý 5 — ĐÃ SỬA 27/10: nhãn
+  "BS" → "Kanayama" (luận văn, tóm tắt, hình); mô tả NTSMC ở Mục 4.5.2 (mặt trượt đầu cuối nhanh
+  của Yu & Man trên chuỗi z_θ → z_y, chống kỳ dị bằng nối tuyến tính; giữ tên NTSMC kèm định nghĩa).
 - Lượt review đầu 27/10 kết luận "SMC/NTSMC chưa đạt, phải làm SMC tầng mô-men" — ĐÃ RÚT LẠI, do
   áp tiền đề khi chưa kiểm chứng ([[feedback-verify-premises]]).
 - Vòng 2 hiện tại = luật mô-men có số hạng chéo + FT, xem [[feedback-backstepping-framing]].
