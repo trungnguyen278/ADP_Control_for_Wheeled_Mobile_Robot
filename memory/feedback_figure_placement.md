@@ -15,7 +15,7 @@ Không đặt hình giữa công thức và phần giải thích ký hiệu. Đ�
 - Nhãn góc: góc hẹp (< 40°) thì đặt nhãn ra ngoài góc, đừng đặt ở giữa. Nhãn đường hồi tiếp: đặt về phía không có đường khác. Nhánh rẽ vào hai khối: cho hai khối cùng rộng, đoạn ngang ≥ 0,5 cm.
 - pgfplots: `\node` đặt ngoài [ymin, ymax] bị cắt mất (nhãn T_f = π ở Hình 3.2 từng biến mất). `legend cell align=left` đặt ở `\pgfplotsset` toàn cục.
 - Cỡ chữ gốc 13pt (`\changefontsizes{13pt}`): `\small` ≈ 12pt, `\footnotesize` chỉ nhỏ hơn ~6%, nên đổi cỡ chữ không cứu được hình chật. Trước khi xếp tọa độ hình nhiều khối, đo bề rộng chữ bằng `\settowidth` + `\typeout` với chính preamble luận văn, rồi thử trên tài liệu độc lập (vài giây) trước khi ghép vào thesis.tex.
-- Hình 4.3 là sơ đồ ĐẦY ĐỦ bộ điều khiển (Trung 27/10: "chưa có 1 hình nào cho bộ điều khiển của chúng ta 1 cách đầy đủ"). Đổi/thêm/bớt thành phần nào của bộ điều khiển thì phải sửa cả hình này.
+- `fig:controller_full` (Hình 4.2, cuối Mục 4.1) là sơ đồ ĐẦY ĐỦ bộ điều khiển (Trung 27/10: "chưa có 1 hình nào cho bộ điều khiển của chúng ta 1 cách đầy đủ"). Đổi/thêm/bớt thành phần nào của bộ điều khiển thì phải sửa cả hình này và câu chỉ khối ở đầu mục tương ứng ([[feedback-map-first]]).
 - MATLAB: tín hiệu tần số cao trên cửa sổ dài thành dải màu đặc, và đường vẽ sau che đường vẽ trước. Dùng cửa sổ phóng to vài chu kỳ (Hình 5.6). Chữ trên hình chỉ dùng Latin-1 (xem [[feedback-vietnamese]]).
 
 Related: [[feedback-vietnamese]], [[project-progress]]

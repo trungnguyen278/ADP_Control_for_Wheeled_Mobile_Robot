@@ -727,6 +727,10 @@ o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay l
   (4.5) + chieu (4.14), so hang ghep (4.12), cac bo gioi han, ben trong vong 2 (e_eta, dao ham so, F(eta),
   K_c zeta, bao hoa tau_max), robot tach dong luc hoc / dong hoc. Thu tu tinh moi chu ky khop code
   (eta_d tinh bang W hien tai roi moi cap nhat W). Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull.
+- Trung: "doc phan tich tung phan nhung khong hieu no o dau trong bo dieu khien" -> dua so do day du len
+  cuoi Muc 4.1 (nay la Hinh 4.2, ban do cho ca Chuong 4); dau Muc 4.2.1-4.2.6, 4.3, 4.4, 4.5 co mot cau
+  chi khoi tuong ung tren hinh; bo hinh tin hieu vong 1 cu (tap con cua so do, khong cho nao dan toi).
+  Thesis 72 trang; 0 loi, 0 ref treo, 0 Overfull.
 
 ---
 

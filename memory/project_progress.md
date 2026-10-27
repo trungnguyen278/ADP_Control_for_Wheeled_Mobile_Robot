@@ -28,7 +28,8 @@ vẫn mở nhưng đã lỗi thời. Đẩy commit lên nhánh của một PR đ
 được, thêm Bổ đề 3.1 và 4.2 có chứng minh ([[feedback-self-contained]]); luận văn 72 trang.
 Đêm 27/10: vẽ lại các hình bị đè chữ/mũi tên, chú giải căn trái ở ngoài vùng vẽ, Hình 5.6 vẽ lại
 thành cửa sổ phóng to ([[feedback-figure-placement]]); (2.7) viết thành hệ 5 phương trình; bỏ Mục 4.6
-(bảng kế thừa/đóng góp). Thêm Hình 4.3 — sơ đồ đầy đủ bộ điều khiển, mỗi khối ghi công thức.
+(bảng kế thừa/đóng góp). Thêm sơ đồ đầy đủ bộ điều khiển, mỗi khối ghi công thức, đặt cuối Mục 4.1
+(Hình 4.2) làm bản đồ cho Chương 4, đầu mỗi mục chỉ khối tương ứng ([[feedback-map-first]]).
 Luận văn 72 trang. Còn lại (Trung): đọc lại, merge PR #4, gửi thầy Nam.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
