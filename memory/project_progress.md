@@ -1,9 +1,17 @@
 ---
 name: project-progress
-description: 27/10/2026 đã chạy lại bằng MATLAB, đổi cách gọi sang vòng 1/vòng 2, sửa bookmark PDF (luận văn 86 tr, tóm tắt 13 tr, PR #3); còn Trung đọc lại, chốt τ_max, gửi thầy Nam (thầy chỉ có v2, chưa đọc)
+description: 27/10/2026 đã chạy lại bằng MATLAB, đổi cách gọi sang vòng 1/vòng 2, sửa bookmark PDF (luận văn 86 tr, tóm tắt 13 tr, PR #3); review theo khái niệm cơ bản thấy SMC/NTSMC bậc 1 chưa đạt — chờ Trung quyết rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
+
+## Cập nhật 2026-10-27 (tối): review theo khái niệm cơ bản
+
+Trung nhắc: yêu cầu của thầy phải đọc theo khái niệm cơ bản, không theo cách bài báo dùng
+([[feedback-advisor-nam]]). Review lại: nhiễu, vòng kinetic, thủ tục BC hai bước đạt; bước 1 của
+BC với ADP-FT không có hàm Lyapunov chặt (đã ghi là hạn chế); SMC/NTSMC đang là luật bậc 1 ở vòng 1
+nên chưa đạt (nhiễu mô-men không tới khâu trượt). Đề xuất: SMC (và/hoặc NTSMC) bậc 2 ở tầng mô-men,
+đổi nhãn "BS" → "Kanayama". Chưa sửa gì trong luận văn — chờ Trung quyết.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 
