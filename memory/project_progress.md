@@ -19,7 +19,12 @@ phân tích hàm mô tả, mục Q/R, mục mô-men riêng ([[feedback-defensibl
 
 Sau đó (Trung yêu cầu): bỏ câu "theo yêu cầu của GVHD", bỏ thí nghiệm bất định khối lượng (gộp vào
 nhiễu đầu vào), luận văn chỉ dùng tiếng Việt + DANH MỤC THUẬT NGỮ ([[feedback-vietnamese]]); hình
-MATLAB dùng ký hiệu/(a)(b)(c). Luận văn 74 trang. Còn lại (Trung): đọc lại, merge PR #3, gửi thầy Nam.
+MATLAB dùng ký hiệu/(a)(b)(c). Luận văn 74 trang.
+
+Trạng thái PR: Trung đã merge PR #3 lúc 23:23 ngày 26/10, khi nhánh mới có 4 commit đầu; 12 commit sau
+đó nằm ở PR #4 (mở 27/10, cùng nhánh docs/ket-qua-buoc-2-matlab). PR #2 (claude/sweet-edison-vur249)
+vẫn mở nhưng đã lỗi thời. Đẩy commit lên nhánh của một PR đã merge thì phải mở PR mới.
+Còn lại (Trung): đọc lại, merge PR #4, quyết giữ/bỏ trang ABSTRACT, gửi thầy Nam.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 
