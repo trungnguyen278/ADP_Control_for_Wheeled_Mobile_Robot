@@ -1,4 +1,4 @@
-# ADP Fixed-Time Optimal Control for Wheeled Mobile Robot
+# Ứng dụng điều khiển ADP cho xe tự hành
 
 Luận văn Thạc sĩ — Điều khiển & Tự động hóa
 Đại học Bách khoa Hà Nội | GVHD: PGS.TS. Nguyễn Hoài Nam

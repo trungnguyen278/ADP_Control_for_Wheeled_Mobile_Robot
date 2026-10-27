@@ -1,5 +1,5 @@
 - [User profile](user_profile.md) — Trung, cao học Điều khiển & Tự động hóa HUST, thích giải thích lý thuyết trước khi code
-- [Thesis project](project_thesis.md) — ADP-FT của Wang et al. 2025 hoàn thiện thành bộ backstepping hai bước cho WMR điều khiển bằng mô-men
+- [Thesis project](project_thesis.md) — Tên đề tài "Ứng dụng điều khiển ADP cho xe tự hành"; nội dung: ADP-FT của Wang hoàn thiện thành bộ hai vòng cho WMR nhận mô-men
 - [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03 (phản hồi SM1): nhiễu mô-men vòng trong, SMC/NTSMC, vòng kinetic, BC bậc 2; chỉ ý BC là sửa khái niệm; review 27/10: 5/5 đạt, đã sửa tên "BS" → "Kanayama", mô tả NTSMC
 - [Phạm vi bảo vệ được](feedback_defensible_scope.md) — Luận văn chỉ chứa thứ Trung tự bảo vệ được; Ch.5 chỉ kết quả + giải thích ngắn dẫn về Ch.2–4, không dựng công thức mới
 - [Kiểm chứng tiền đề](feedback_verify_premises.md) — Tiền đề Trung đưa ra phải kiểm chứng bằng bằng chứng trước khi làm theo; phản biện là điều Trung muốn

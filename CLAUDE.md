@@ -7,6 +7,7 @@ Hướng dẫn cho Claude Code khi làm việc trên repo này.
 ## 1. Bối cảnh dự án
 
 Luận văn Thạc sĩ — Điều khiển & Tự động hóa, ĐHBK Hà Nội.
+Tên đề tài (đã đăng ký, dùng nguyên văn): **Ứng dụng điều khiển ADP cho xe tự hành**.
 Học viên: Nguyễn Thành Trung. GVHD: PGS.TS. Nguyễn Hoài Nam.
 
 Repo vừa là **nơi phát triển mô phỏng MATLAB**, vừa là **kho lưu trữ luận văn LaTeX**.

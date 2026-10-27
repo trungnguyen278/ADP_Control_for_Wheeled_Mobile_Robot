@@ -122,9 +122,8 @@
 
 {\fontsize{20}{24}\selectfont\bfseries LUẬN VĂN THẠC SĨ}\\[1.0cm]
 
-{\fontsize{15}{18}\selectfont\bfseries ĐIỀU KHIỂN TỐI ƯU THÍCH NGHI DỰA TRÊN\\[6pt]
-QUY HOẠCH ĐỘNG HỘI TỤ CỐ ĐỊNH THỜI GIAN\\[6pt]
-CHO ROBOT DI ĐỘNG HAI BÁNH}\\[1.5cm]
+{\fontsize{18}{22}\selectfont\bfseries ỨNG DỤNG ĐIỀU KHIỂN ADP\\[8pt]
+CHO XE TỰ HÀNH}\\[1.5cm]
 
 \begin{tabular}{rl}
 {\fontsize{14}{16}\selectfont \textbf{Học viên:}} & {\fontsize{14}{16}\selectfont \textbf{NGUYỄN THÀNH TRUNG}} \\[4pt]
@@ -155,7 +154,7 @@ CHO ROBOT DI ĐỘNG HAI BÁNH}\\[1.5cm]
 \section*{LỜI CAM ĐOAN}
 \phantomsection\addcontentsline{toc}{section}{LỜI CAM ĐOAN}
 
-Tôi xin cam đoan luận văn ``Điều khiển tối ưu thích nghi dựa trên quy hoạch động hội tụ cố định thời gian cho robot di động hai bánh'' là công trình nghiên cứu của riêng tôi, được thực hiện dưới sự hướng dẫn của PGS.TS. Nguyễn Hoài Nam.
+Tôi xin cam đoan luận văn ``Ứng dụng điều khiển ADP cho xe tự hành'' là công trình nghiên cứu của riêng tôi, được thực hiện dưới sự hướng dẫn của PGS.TS. Nguyễn Hoài Nam.
 
 Luận văn kế thừa và mở rộng phương pháp điều khiển tối ưu cố định thời gian do Wang và cộng sự đề xuất \cite{Wang2025}, cùng mô hình động lực học robot di động của Fierro và Lewis \cite{Fierro1997} và thủ tục backstepping của Krstić và cộng sự \cite{Krstic1995}. Các công thức, kết quả lý thuyết và số liệu thuộc về những công trình này đều được trích dẫn đầy đủ tại vị trí sử dụng. Phần đóng góp riêng của tôi -- bao gồm vòng 2 của bộ điều khiển hai vòng thiết kế theo backstepping (số hạng chéo, các số hạng cố định thời gian và hàm Lyapunov chung), việc phân tích lại chứng minh của bài báo gốc, việc điều chỉnh tham số, cơ chế ghép nonholonomic và toán tử chiếu, cùng toàn bộ chương trình mô phỏng và phân tích so sánh -- được nêu rõ trong Mục 1.4 và Mục 4.6.
 
@@ -186,7 +185,7 @@ Cuối cùng, tôi xin cảm ơn gia đình và bạn bè đã luôn động vi�
 \section*{TÓM TẮT LUẬN VĂN}
 \phantomsection\addcontentsline{toc}{section}{TÓM TẮT LUẬN VĂN}
 
-Luận văn nghiên cứu bài toán điều khiển bám quỹ đạo tối ưu cho robot di động bánh xe vi sai, trên cơ sở phương pháp Quy hoạch động thích nghi (ADP) hội tụ cố định thời gian của Wang và cộng sự \cite{Wang2025}.
+Luận văn nghiên cứu bài toán điều khiển bám quỹ đạo tối ưu cho xe tự hành dạng robot di động bánh xe vi sai, trên cơ sở phương pháp Quy hoạch động thích nghi (ADP) hội tụ cố định thời gian của Wang và cộng sự \cite{Wang2025}.
 
 Công trình gốc chỉ xét mô hình động học ba trạng thái $[x, y, \theta]$, trong đó tín hiệu điều khiển là vận tốc $(v, \omega)$. Robot thực nhận lệnh mô-men, nên luận văn hoàn thiện phương pháp cho \textbf{mô hình đầy đủ năm trạng thái} $[x, y, \theta, v, \omega]$ có ma sát, giới hạn mô-men và nhiễu sin tần số cao cộng vào mô-men, với đầu ra là \textbf{mô-men hai bánh} $(\tau_R, \tau_L)$. Bộ điều khiển có \textbf{hai vòng, thiết kế theo phương pháp backstepping}: vòng 1 (vòng ngoài) dùng luật ADP cố định thời gian của bài báo để tính vận tốc ảo, giữ nguyên luật cập nhật trọng số và cấu trúc luật điều khiển; vòng 2 (vòng trong) là luật mô-men trên mô hình động lực học của Fierro \& Lewis \cite{Fierro1997}, bổ sung một số hạng chéo và các số hạng cố định thời gian theo sai lệch vận tốc. Luận văn chứng minh ổn định cho từng vòng và cho toàn hệ bằng một hàm Lyapunov chung: số hạng chéo triệt chính xác tương tác giữa hai vòng, nên vòng 2 không làm mất tính chất nào của vòng 1.
 
@@ -354,7 +353,7 @@ Robot di động bánh xe (WMR) là một trong những nền tảng phổ biế
 \label{fig:agv_example}
 \end{figure}
 
-Robot di động bánh xe vi sai là cấu hình đơn giản và phổ biến nhất, gồm hai bánh chủ động độc lập và một hoặc nhiều bánh đỡ. Mặc dù cấu trúc cơ khí đơn giản, việc điều khiển WMR vi sai đặt ra nhiều thách thức lý thuyết đáng kể:
+Luận văn xét xe tự hành ở dạng robot di động bánh xe vi sai -- cấu hình đơn giản và phổ biến nhất, gồm hai bánh chủ động độc lập và một hoặc nhiều bánh đỡ. Mặc dù cấu trúc cơ khí đơn giản, việc điều khiển WMR vi sai đặt ra nhiều thách thức lý thuyết đáng kể:
 
 \begin{itemize}
     \item \textbf{Ràng buộc nonholonomic:} Robot không thể dịch chuyển ngang. Ràng buộc này biểu hiện dưới dạng $\dot{x}\sin\theta - \dot{y}\cos\theta = 0$, nghĩa là véc-tơ vận tốc của robot luôn hướng theo trục dọc của thân xe. Hệ quả là không gian trạng thái có thể đạt được bị giới hạn tại mỗi thời điểm, khiến các phương pháp điều khiển tuyến tính thông thường không áp dụng trực tiếp được.
