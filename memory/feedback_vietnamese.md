@@ -14,8 +14,9 @@ bảng **DANH MỤC THUẬT NGỮ** (đặt sau danh mục từ viết tắt), g
 thêm: luận văn tiếng Việt thì chỉ dùng tiếng Việt, từ tiếng Anh nào giữ lại phải có bảng chú thích.
 
 **How to apply:**
-- LaTeX dùng T5 fontenc. Không viết kiểu "thuật ngữ Việt (English term)" — đối chiếu Việt–Anh đã nằm ở
-  bảng thứ hai của DANH MỤC THUẬT NGỮ. Thêm từ tiếng Anh mới vào luận văn thì thêm luôn vào bảng.
+- LaTeX dùng T5 fontenc. Không viết kiểu "thuật ngữ Việt (English term)". DANH MỤC THUẬT NGỮ chỉ giải
+  thích từ tiếng Anh bằng tiếng Việt; KHÔNG có bảng đối chiếu Việt → Anh (Trung, 27/10: người chấm và
+  người viết đều dùng tiếng Việt). Thêm từ tiếng Anh mới vào luận văn thì thêm luôn vào bảng.
 - Cách dịch đã thống nhất: gain → hệ số; robust → bền vững; feedforward/feedback → truyền thẳng/phản
   hồi; vector → véc-tơ; body/world frame → hệ tọa độ thân robot/quán tính; transient → quá độ;
   chattering → rung; computed torque → mô-men tính toán; Lemma/Theorem/Remark → Bổ đề/Định lý/Nhận xét.
