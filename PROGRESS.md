@@ -742,6 +742,17 @@ o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay l
      sang Han che voi loi vua phai; bo y 5 cua Muc 6.1 va khuyen nghi "dong bang Critic"; sua 6.4.
   Loi trinh bay nho (ngat trang, chia doan) de nguyen theo y Trung. Thesis 72 trang; build 1 lan sach.
 
+### 2026-10-27 (dem) — SLIDE BAO VE (docs/slides/)
+
+- Mau chinh thuc "HUST | Powerpoint Template" (HUST PPT template 2022) tai tu hust.edu.vn (he thong nhan
+  dien thuong hieu). May khong co PowerPoint/LibreOffice nen dung Beamer + XeLaTeX voi dung anh nen,
+  logo, mau do #CD1628 va font Lato cua mau; ra PDF, trinh chieu duoc tren moi may.
+- 20 slide (~20 phut): dat van de, mo hinh, bo dieu khien (so do day du + 5 slide chi tiet co ban do thu
+  nho to sang khoi), ket qua (thiet lap, so 8, so sanh 5 PP, do ben), ket luan, han che, cam on.
+- Hinh TikZ tach thang tu thesis.tex (extract_figures.py, doc so hieu cong thuc tu thesis.aux) nen giong
+  het luan van; hinh MATLAB dung lai PDF trong docs/thesis/figures.
+- Soat tung slide o 110-240 dpi: khong de chu, khong lan vao dai lua/bang do; 0 loi, 0 thieu ky tu.
+
 ---
 
 ## VIEC CAN LAM

@@ -62,6 +62,7 @@ chore(repo): them gitignore, bo results/*.mat khoi tracking
 | Scope | Tương ứng |
 |---|---|
 | `thesis` | `docs/thesis/` |
+| `slides` | `docs/slides/` (slide bảo vệ) |
 | `sm1`, `sm2`, `summary` | `docs/reports/*/` |
 | `guides` | `docs/guides/` |
 | `memory` | `memory/` |

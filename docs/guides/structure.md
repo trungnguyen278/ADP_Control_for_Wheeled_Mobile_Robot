@@ -60,6 +60,11 @@ ADP_Control_for_Wheeled_Mobile_Robot/
 │   │   ├── thesis.tex
 │   │   ├── thesis.pdf
 │   │   └── figures/            PDF từ MATLAB + PNG (logo, ảnh minh họa)
+│   ├── slides/                 SLIDE BẢO VỆ (Beamer + XeLaTeX, mẫu HUST 2022)
+│   │   ├── defense_slides.tex  xelatex 2 lần → defense_slides.pdf
+│   │   ├── extract_figures.py  Tách hình TikZ từ thesis.tex → figures/
+│   │   ├── figures/            Hình TikZ tách từ luận văn + khung bao sơ đồ đầy đủ
+│   │   └── hust/               Ảnh nền, logo từ "HUST PPT template 2022" (hust.edu.vn)
 │   └── reports/                Báo cáo seminar
 │       ├── sm1/                Seminar 1 — Actor-Critic
 │       ├── sm2/                Seminar 2 — Critic-only + CL

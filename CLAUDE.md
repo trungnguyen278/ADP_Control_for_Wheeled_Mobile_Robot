@@ -81,6 +81,7 @@ simulations/    Script chạy mô phỏng + tham số + quỹ đạo tham chiế
 plotting/       Script vẽ + xuất figure PDF
 results/        File .mat — KHÔNG commit (xem §6)
 docs/thesis/    Luận văn LaTeX (sản phẩm chính)
+docs/slides/    Slide bảo vệ (Beamer/XeLaTeX, mẫu HUST 2022; hình TikZ tách từ thesis.tex)
 docs/reports/   Báo cáo seminar sm1/, sm2/, summary/
 docs/guides/    Tài liệu quy ước repo
 references/     Bài báo gốc + tài liệu tham khảo PDF

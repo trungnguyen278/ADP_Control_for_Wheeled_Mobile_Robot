@@ -16,6 +16,7 @@
 - [Vietnamese docs](feedback_vietnamese.md) — Luận văn chỉ dùng tiếng Việt có dấu; từ tiếng Anh giữ lại phải có trong DANH MỤC THUẬT NGỮ; hình MATLAB không chứa chữ có dấu
 - [Bản đồ trước, chi tiết sau](feedback_map_first.md) — Sơ đồ đầy đủ đặt trước phân tích từng phần, đầu mỗi mục chỉ khối; dùng cho cả slide bảo vệ
 - [Figure placement](feedback_figure_placement.md) — Hình không chen giữa công thức và giải thích; chú giải ngoài vùng vẽ, căn trái; soát đè chữ ở 300 dpi bằng pdftoppm
+- [Mẫu slide HUST](reference_hust_template.md) — "HUST | Powerpoint Template" 2022 trên hust.edu.vn, cách tải bằng curl; slide làm Beamer + XeLaTeX (máy không có PowerPoint)
 - [MATLAB CLI](reference_matlab_cli.md) — MATLAB ở C:\MATLAB\R2023a, MiKTeX ở Program Files; script `clear` phá lệnh bọc tic/toc
 - [Chỉ mô phỏng](feedback_simulation_only.md) — Không có robot/motor thật: τ_max = 1 N·m là tham số mô phỏng đã chốt; đừng hỏi "chốt thông số thật"
 - [Progress](project_progress.md) — 27/10: yêu cầu thầy 5/5 đạt, "BS" → "Kanayama", Ch.5 rút gọn, chỉ tiếng Việt, tự đứng được, hình vẽ lại, sơ đồ đầy đủ = Hình 4.2 (72 tr, PR #4); còn Trung đọc lại, merge PR #4, gửi thầy
