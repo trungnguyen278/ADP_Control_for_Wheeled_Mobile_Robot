@@ -1,6 +1,7 @@
 - [User profile](user_profile.md) — Trung, cao học Điều khiển & Tự động hóa HUST, thích giải thích lý thuyết trước khi code
 - [Thesis project](project_thesis.md) — ADP-FT của Wang et al. 2025 hoàn thiện thành bộ backstepping hai bước cho WMR điều khiển bằng mô-men
-- [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03, đọc theo khái niệm cơ bản: nhiễu mô-men vòng trong, SMC/NTSMC, vòng kinetic, BC bậc 2; review 27/10: SMC/NTSMC bậc 1 chưa đạt
+- [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03 (phản hồi SM1): nhiễu mô-men vòng trong, SMC/NTSMC, vòng kinetic, BC bậc 2; chỉ ý BC là sửa khái niệm; review 27/10: 5/5 đạt, còn tên "BS"/"NTSMC"
+- [Kiểm chứng tiền đề](feedback_verify_premises.md) — Tiền đề Trung đưa ra phải kiểm chứng bằng bằng chứng trước khi làm theo; phản biện là điều Trung muốn
 - [ADP-FT tuning](feedback_adp_ft_tuning.md) — Gain hiện dùng, chọn bằng chỉnh gain đều nhau (k* = 1/2); tham số gốc Wang không phát tán, chỉ bám kém
 - [Baseline fairness](feedback_baseline_fairness.md) — SMC tune vs thông dụng; số liệu mô hình B sai (7x → nay chỉ 1,2–1,4x)
 - [Wang citation mismatch](feedback_wang_citation_mismatch.md) — ⚠ Sai tên tác giả, eq.(17) không phải của Wang, cột "Wang" ở Bảng 4.1 sai toàn bộ
@@ -14,7 +15,7 @@
 - [Figure placement](feedback_figure_placement.md) — Không đặt hình giữa công thức và giải thích; legend không che plot
 - [MATLAB CLI](reference_matlab_cli.md) — MATLAB ở C:\MATLAB\R2023a, MiKTeX ở Program Files; script `clear` phá lệnh bọc tic/toc
 - [Chỉ mô phỏng](feedback_simulation_only.md) — Không có robot/motor thật: τ_max = 1 N·m là tham số mô phỏng đã chốt; đừng hỏi "chốt thông số thật"
-- [Progress](project_progress.md) — 27/10: chạy lại bằng MATLAB, gọi vòng 1/vòng 2, sửa bookmark PDF (86 tr, PR #3); chờ Trung quyết sửa SMC/NTSMC bậc 2 rồi gửi thầy
+- [Progress](project_progress.md) — 27/10: chạy lại bằng MATLAB, gọi vòng 1/vòng 2, sửa bookmark PDF (86 tr, PR #3); yêu cầu thầy 5/5 đạt, còn sửa tên "BS"/"NTSMC" rồi gửi thầy
 - [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10 khuya: ADP-FT ngang NTSMC, sau SMC 7,9%; z_rms theo hàm mô tả; số hạng chéo vượt v_max
 - [Hai vòng theo backstepping](feedback_backstepping_framing.md) — ⭐ Gọi "vòng 1/vòng 2" (không gọi "bước", từ 27/10); vòng 2 suy từ V₁ (số hạng chéo, K_c = M); chứng minh từng vòng rồi toàn hệ
 - [Khoảng hở chứng minh Wang](feedback_wang_gap.md) — ⭐ g·g† ≠ I₃; luật gốc có điểm cân bằng (0, z_y, 0) trên quỹ đạo thẳng (đã kiểm chứng); cơ sở của số hạng ghép

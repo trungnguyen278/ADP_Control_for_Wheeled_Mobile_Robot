@@ -1,50 +1,51 @@
 ---
 name: feedback-advisor-nam
-description: Yêu cầu của PGS.TS. Nguyễn Hoài Nam (chat 28/03/2026) — đọc theo KHÁI NIỆM CƠ BẢN (sách giáo khoa), không theo cách bài báo dùng; nhiễu mô-men vòng trong, SMC/NTSMC, vòng kinetic, BC bậc 2
+description: Yêu cầu của PGS.TS. Nguyễn Hoài Nam (chat 28/03/2026, phản hồi báo cáo SM1) — nhiễu mô-men vòng trong, SMC/NTSMC, vòng kinetic, BC bậc 2; cách đọc đã kiểm chứng: 1 yêu cầu sửa khái niệm, 4 yêu cầu bổ sung thành phần chuẩn
 metadata:
   type: feedback
 ---
 
-Nguồn: ảnh chụp đoạn chat Trung gửi ngày 2026-10-26 (tin nhắn ngày 28/03/2026).
-Bản luận văn v2 và báo cáo tóm tắt (26/05/2026) được làm SAU đoạn chat này để đáp ứng
-các yêu cầu dưới đây. Thầy chưa đọc hai bản đó.
+Nguồn: ảnh chụp đoạn chat Trung gửi ngày 2026-10-26 (tin nhắn ngày 28/03/2026), là phản hồi cho
+báo cáo SM1 cùng ngày. Bản luận văn v2 và báo cáo tóm tắt (26/05/2026) được làm SAU đoạn chat này
+để đáp ứng các yêu cầu dưới đây. Thầy chưa đọc hai bản đó.
 
-Nguyên văn ý của thầy:
+Nguyên văn ý của thầy (cột phải: SM1 đã trình bày gì, `docs/reports/sm1/sm1_report.tex`):
 1. "Cho thêm disturbance dạng sin với tần số cao và biên độ 20% tín hiệu điều khiển lớn
-   nhất". "Disturbance cộng vào tín hiệu đầu vào".
+   nhất". "Disturbance cộng vào tín hiệu đầu vào". — SM1 không có nhiễu.
 2. Trung hỏi "nhiễu cộng vào cả 2 kênh (v và ω) hay chỉ 1 kênh" → thầy trả lời:
    "Vòng trong. Mô men e nhé. Kinetic." Tức là nhiễu ở **mức mô-men của vòng trong**;
    thầy **không** yêu cầu cụ thể "cả 2 kênh v, ω".
-3. "So sánh với trượt": "SMC cơ bản hoặc NTSMC".
-4. "Mô phỏng phải có vòng điều khiển kinetic nữa" / "Thêm vòng trong nữa".
-5. "Vòng ngoài bậc nhất e thiết kế BC như nào — BC phải hệ bậc 2" → backstepping phải
-   gồm cả bước động lực học (vòng trong), không chỉ BC động học bậc 1.
+3. "So sánh với trượt": "SMC cơ bản hoặc NTSMC". — SM1 chỉ so "BC" với ADP.
+4. "Mô phỏng phải có vòng điều khiển kinetic nữa" / "Thêm vòng trong nữa". — SM1 chỉ có mô hình
+   động học.
+5. "Vòng ngoài bậc nhất e thiết kế BC như nào — BC phải hệ bậc 2". — SM1 gọi luật Kanayama là
+   "BC" (trích Wang 2025), chỉ đưa công thức, không có các bước thiết kế.
 
-**Nguyên tắc đọc (Trung nhắc 27/10/2026):** các yêu cầu của thầy xoay quanh **khái niệm cơ
-bản** (định nghĩa sách giáo khoa), không phải khái niệm mở rộng hay cách gọi lỏng trong bài
-báo. Ví dụ: "BC" mà Wang et al. so sánh (eq. 31) là luật Kanayama một vòng, nhưng BC đúng nghĩa
-phải có hai bước/hai vòng cho hệ bậc 2.
+**Cách đọc (kiểm chứng 27/10/2026).** Trung đề xuất "yêu cầu của thầy xoay quanh khái niệm cơ bản,
+không phải khái niệm mở rộng (BC của bài báo 1 vòng, BC cơ bản phải 2 vòng)". Đối chiếu SM1: đúng
+phần lớn — cả 5 ý kéo luận văn về chuẩn nền tảng thay vì cách bài báo làm, rõ nhất ở ý 5. Ba điều
+chỉnh:
+- BC cơ bản = thiết kế đệ quy theo Lyapunov qua ≥ 2 bước trên hệ dạng chuỗi bậc ≥ 2, cho ra MỘT
+  luật; "2 vòng" chỉ là cách đọc khi chuỗi là động học → động lực học. Mô hình động học không thuần
+  bậc 1 (z_y bậc 2 theo ω qua z_θ): BC chỉ trên động học vẫn có (Jiang & Nijmeijer 1997); luật
+  Kanayama đọc được thành BC 2 bước (k₂v_r z_y là số hạng chéo với V = ½(z_x²+z_y²) + (1−cos z_θ)/k₂).
+- Chỉ ý 5 là sửa khái niệm; ý 1–4 là bổ sung thành phần chuẩn còn thiếu ở SM1 → tiêu chí đạt là
+  "có, đúng chỗ thầy chỉ", KHÔNG soi định nghĩa rồi suy thêm yêu cầu.
+- Không cấm phần mở rộng: thầy chấp nhận NTSMC; "SMC cơ bản" là đặt mức tối thiểu.
 
 **Why:** Thầy muốn kiến trúc điều khiển đúng (hai vòng, đầu ra mô-men) và phân tích
 bền vững trước khi sang phần chính của luận văn.
 
 **How to apply:**
-- Kiểm tra mỗi yêu cầu bằng định nghĩa gốc của khái niệm (BC: mỗi bước có hàm Lyapunov;
-  SMC cho hệ bậc n: s = (d/dt + λ)^{n−1}e, chuyển mạch lấn át nhiễu khớp; NTSMC: định nghĩa
-  cho hệ bậc 2, Feng 2002), không chấp nhận "gọi tên giống" là đạt.
-- Nhiễu `d = 0,2·τ_max·sin(30t)·[1;1]` cộng vào mô-men: đạt (mọi PP chạm τ_max = 1 N·m trong
-  giây đầu, nên 20% τ_max đúng bằng 20% max|τ|).
-- Vòng 2 hiện tại = luật mô-men có số hạng chéo + FT (không còn là F&L thuần), xem
-  [[feedback-backstepping-framing]].
-
-**Review 27/10/2026 theo khái niệm cơ bản** (chờ Trung quyết hướng sửa):
-- Đạt: nhiễu (vị trí, dạng, biên độ), vòng kinetic, thủ tục BC hai bước (số hạng chéo, V chung).
-- Hở: bước 1 của BC với ADP-FT không có hàm Lyapunov chặt (Bổ đề 4.1, z_y chỉ kiểm chứng mô
-  phỏng) — sửa thật phải đổi cấu trúc g†r(z) của Wang.
-- Chưa đạt: SMC, NTSMC đang thiết kế cho hệ động học bậc 1 ở vòng 1 (luận văn tự ghi NTSMC gốc
-  là cho hệ bậc 2); nhiễu mô-men không tới khâu chuyển mạch, Mục 5.4 tự kết luận thí nghiệm nhiễu
-  không phân biệt được luật vòng 1. Cách sửa đề xuất: SMC (và/hoặc NTSMC) bậc 2 ở tầng mô-men,
-  mặt trượt s = η_d(z) − η, chuyển mạch lấn át biên nhiễu.
-- Nhãn "BS" cho luật Kanayama là đúng kiểu gọi lỏng thầy đã bắt → đề xuất đổi "Kanayama".
+- Mọi mô phỏng dùng kiến trúc hai vòng; nhiễu `d = A·τ_max·sin(30t)·[1;1]` cộng vào mô-men — đạt
+  (mọi PP chạm τ_max = 1 N·m trong giây đầu nên 20% τ_max = 20% max|τ|). Kịch bản vi sai/độc lập
+  là kiểm tra thêm.
+- Kết quả review 27/10 (theo cách đọc trên): 5/5 yêu cầu đạt; ý 5 kèm hạn chế đã ghi (bước 1 với
+  ADP-FT không có V₁ chặt, Bổ đề 4.1). Còn hai chỗ gọi tên lỏng — đúng kiểu lỗi ý 5: nhãn "BS" cho
+  luật Kanayama (đề xuất đổi "Kanayama"); tên "NTSMC" (thực chất mặt trượt đầu cuối nhanh của Yu &
+  Man trên chuỗi z_y → z_θ, chống kỳ dị bằng nối tuyến tính; Mục 4.5.2 viết sai là "hệ bậc một").
+- Lượt review đầu 27/10 kết luận "SMC/NTSMC chưa đạt, phải làm SMC tầng mô-men" — ĐÃ RÚT LẠI, do
+  áp tiền đề khi chưa kiểm chứng ([[feedback-verify-premises]]).
+- Vòng 2 hiện tại = luật mô-men có số hạng chéo + FT, xem [[feedback-backstepping-framing]].
 
 Related: [[feedback-disturbance-one-channel]], [[feedback-backstepping-framing]], [[project-progress]]

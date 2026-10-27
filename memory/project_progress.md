@@ -1,17 +1,17 @@
 ---
 name: project-progress
-description: 27/10/2026 đã chạy lại bằng MATLAB, đổi cách gọi sang vòng 1/vòng 2, sửa bookmark PDF (luận văn 86 tr, tóm tắt 13 tr, PR #3); review theo khái niệm cơ bản thấy SMC/NTSMC bậc 1 chưa đạt — chờ Trung quyết rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
+description: 27/10/2026 đã chạy lại bằng MATLAB, đổi cách gọi sang vòng 1/vòng 2, sửa bookmark PDF (luận văn 86 tr, tóm tắt 13 tr, PR #3); review yêu cầu của thầy: 5/5 đạt, còn sửa tên "BS", "NTSMC" — rồi gửi thầy Nam (thầy chỉ có v2, chưa đọc)
 metadata:
   type: project
 ---
 
-## Cập nhật 2026-10-27 (tối): review theo khái niệm cơ bản
+## Cập nhật 2026-10-27 (tối): review yêu cầu của thầy
 
-Trung nhắc: yêu cầu của thầy phải đọc theo khái niệm cơ bản, không theo cách bài báo dùng
-([[feedback-advisor-nam]]). Review lại: nhiễu, vòng kinetic, thủ tục BC hai bước đạt; bước 1 của
-BC với ADP-FT không có hàm Lyapunov chặt (đã ghi là hạn chế); SMC/NTSMC đang là luật bậc 1 ở vòng 1
-nên chưa đạt (nhiễu mô-men không tới khâu trượt). Đề xuất: SMC (và/hoặc NTSMC) bậc 2 ở tầng mô-men,
-đổi nhãn "BS" → "Kanayama". Chưa sửa gì trong luận văn — chờ Trung quyết.
+Kiểm chứng tiền đề "thầy xoay quanh khái niệm cơ bản" với báo cáo SM1: đúng phần lớn, có 3 điều chỉnh
+([[feedback-advisor-nam]]). Review theo cách đọc đã chỉnh: 5/5 yêu cầu đạt (BC kèm hạn chế bước 1
+đã ghi). Còn hai chỗ gọi tên lỏng: nhãn "BS" cho luật Kanayama, tên/mô tả "NTSMC" (Mục 4.5.2).
+Kết luận lượt đầu ("SMC/NTSMC chưa đạt, làm SMC tầng mô-men") đã rút lại. Chưa sửa luận văn —
+chờ Trung đồng ý cách đọc.
 
 ## Cập nhật 2026-10-27: cách gọi vòng 1/vòng 2, chứng minh theo từng vòng, bookmark PDF
 
