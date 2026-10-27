@@ -31,7 +31,7 @@ Mục tiêu chính là lưu trữ có hệ thống + tái tạo được kết q
 | Đầu ra điều khiển | Gán trực tiếp `u = [v, ω]` | **Mô-men** `τ = [τ_R, τ_L]` |
 | Bộ điều khiển | Chỉ vòng 1 (luật vận tốc) | **Một bộ điều khiển hai vòng thiết kế theo backstepping**: vòng 1 ADP-FT, vòng 2 luật mô-men có **số hạng chéo** + số hạng cố định thời gian; hàm Lyapunov chung (Định lý 4.1) |
 | Nhiễu | Không xét | **Nhiễu sin tần số cao** cộng vào mô-men (đồng pha chỉ tác động kênh v; có thêm kịch bản vi sai/độc lập) |
-| So sánh | — | **5 phương pháp** × 3 quỹ đạo × robustness (khối lượng, nhiễu) |
+| So sánh | — | **5 phương pháp** × 3 quỹ đạo × độ bền với nhiễu (sai lệch tham số gộp vào nhiễu đầu vào) |
 | Luật ADP eq.(16)-(18) | Đề xuất gốc | **Giữ nguyên** luật cập nhật (17)-(18) và cấu trúc (16); tune lại gain, **thêm số hạng ghép nonholonomic** vào phần robust + toán tử chiếu |
 
 **Quy tắc khi viết luận văn / báo cáo:**
@@ -133,6 +133,14 @@ Quy trình đầy đủ (sim → export figure → compile): [docs/guides/workfl
 - **Legend không được che nội dung plot.** Đặt ra ngoài vùng vẽ (bên phải hoặc dưới).
 - Với hình TikZ: kiểm tra tọa độ để nhãn không đè lên mũi tên/trục.
 - Sau khi sửa `.tex`, luôn compile lại và kiểm tra `Overfull \hbox` trong `.log`.
+- **Luận văn chỉ dùng tiếng Việt.** Thuật ngữ tiếng Anh giữ nguyên (backstepping, Critic...) phải có
+  trong DANH MỤC THUẬT NGỮ; không viết kèm ngoặc tiếng Anh sau thuật ngữ Việt.
+- **Không ghi "theo yêu cầu của giáo viên hướng dẫn"** trong luận văn: góp ý của thầy giúp hoàn
+  thiện luận văn, không phải nội dung của nó.
+- **Chương kết quả chỉ dẫn công thức đã có ở Ch.2–4, không dựng công thức mới**; nội dung phải ở mức
+  Trung tự bảo vệ được.
+- Hình MATLAB không chứa chữ tiếng Việt có dấu (xuất PDF vector chỉ hỗ trợ Latin-1, chữ bị thành `#`):
+  dùng ký hiệu hoặc (a)(b)(c), ghi tên trong chú thích LaTeX.
 
 ---
 

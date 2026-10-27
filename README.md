@@ -42,7 +42,7 @@ Chi tiết ranh giới trích dẫn: [CLAUDE.md §2](CLAUDE.md).
 | 1 | Bộ điều khiển hai vòng thiết kế theo backstepping cho robot điều khiển bằng mô-men, **hàm Lyapunov chung** | Định lý 4.1, `dynamic_backstepping.m` |
 | 2 | Phân tích lại chứng minh của Wang (**khoảng hở kênh ngang**, Bổ đề 4.1) + **ghép nonholonomic** (quyết định) + toán tử chiếu + tham số | Mục 4.2 luận văn |
 | 3 | So sánh công bằng 5 luật vòng 1 với cùng vòng 2 (chỉnh gain đều nhau) | `sweep_gains.m` |
-| 4 | Độ bền (khối lượng, nhiễu) + đóng góp vòng 2 + vai trò các thành phần của ADP-FT | Mục 5.3–5.5 |
+| 4 | Độ bền với nhiễu + đóng góp vòng 2 + vai trò các thành phần của ADP-FT | Mục 5.3–5.5 |
 
 SM1/SM2 (kinematic): Actor-Critic cần PE → Critic-only + Concurrent Learning bỏ PE.
 

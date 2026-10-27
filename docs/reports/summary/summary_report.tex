@@ -69,7 +69,7 @@ Hoàn thiện phương pháp ADP-FT của Wang et al. thành \textbf{một bộ 
 
     \item \textbf{So sánh công bằng 5 phương pháp} (Kanayama, ADP-AC, SMC kèm biến thể NTSMC, CL, ADP-FT làm vòng 1, cùng một vòng 2) trên 3 quỹ đạo, sau khi mọi phương pháp được chỉnh gain theo cùng một quy trình.
 
-    \item \textbf{Phân tích robustness và phân tích thành phần:} bất định khối lượng tới $+60\%$, ba dạng nhiễu tới $60\%\,\tau_\text{max}$, năm điều kiện đầu; công thức giải tích dự đoán sai số xác lập do nhiễu; thí nghiệm loại bỏ từng thành phần của ADP-FT.
+    \item \textbf{Phân tích độ bền và phân tích thành phần:} ba dạng nhiễu tới $60\%\,\tau_\text{max}$, năm điều kiện đầu; thí nghiệm loại bỏ từng thành phần của ADP-FT.
 \end{enumerate}
 
 % ================================================================
@@ -158,7 +158,7 @@ cho $M\dot e_\eta = -M\big(K_d e_\eta + K_\alpha\operatorname{sig}(e_\eta)^{p/q}
 
 \textbf{Các phương pháp so sánh} chỉ khác nhau ở vòng 1: luật Kanayama, SMC và biến thể NTSMC, Critic-only Concurrent Learning (CL), Actor-Critic ADP (ADP-AC) và ADP-FT; vòng 2 dùng chung để mọi khác biệt đến từ vòng 1.
 
-Nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)\,[1,\ 1]^\T$, mặc định $A = 20\%$, được cộng vào mô-men hai bánh, mô phỏng nhiễu loạn tần số cao (theo yêu cầu của thầy hướng dẫn sau Seminar 1). Ngoài dạng đồng pha này, luận văn khảo sát thêm nhiễu vi sai $[1,\ -1]^\T$ và nhiễu độc lập trên hai bánh.
+Nhiễu ngoài $d(t) = A \cdot \tau_\text{max} \cdot \sin(30t)\,[1,\ 1]^\T$, mặc định $A = 20\%$, được cộng vào mô-men hai bánh, mô phỏng nhiễu loạn tần số cao. Ngoài dạng đồng pha này, luận văn khảo sát thêm nhiễu vi sai $[1,\ -1]^\T$ và nhiễu độc lập trên hai bánh.
 
 % ================================================================
 \section{Kết quả Seminar 1: Actor-Critic ADP trên mô hình Kinematic}
@@ -285,7 +285,7 @@ ADP-FT & 1.318 & 0.790 & 2.033 & 4.140 & \textbf{6.0} \\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{bar_jc_traj.pdf}
-    \caption{$J_c$ của các phương pháp trên 3 quỹ đạo.}
+    \caption{$J_c$ của các phương pháp trên 3 quỹ đạo: (a) đường tròn, (b) đường thẳng, (c) hình số 8.}
     \label{fig:bar_jc_traj}
 \end{figure}
 
@@ -302,7 +302,7 @@ ADP-FT & 1.318 & 0.790 & 2.033 & 4.140 & \textbf{6.0} \\
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{xy_circle.pdf}
-        \caption{Quỹ đạo bám đường tròn.}
+        \caption{Quỹ đạo bám đường tròn (nét đứt: tham chiếu $q_r$).}
         \label{fig:xy_circle}
     \end{minipage}
     \hfill
@@ -314,33 +314,17 @@ ADP-FT & 1.318 & 0.790 & 2.033 & 4.140 & \textbf{6.0} \\
     \end{minipage}
 \end{figure}
 
-\subsection{Phần B, C: Bất định khối lượng và nhiễu}
+\subsection{Phần C: Độ bền với nhiễu}
 \label{sec:bc}
-
-\begin{table}[H]
-\centering
-\caption{Mức tăng $J_c$ so với điều kiện danh nghĩa (đường tròn)}
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Kịch bản} & \textbf{Kanayama} & \textbf{SMC} & \textbf{CL} & \textbf{ADP-FT} \\
-\midrule
-Khối lượng thực $16$\,kg ($+60\%$) & $+2.7\%$ & $+2.1\%$ & $+1.5\%^{(*)}$ & $+1.5\%$ \\
-Nhiễu đồng pha $60\%$ (so với $0\%$) & $+0.3\%$ & $+0.3\%$ & $+1.7\%$ & $+0.2\%$ \\
-\bottomrule
-\end{tabular}
-
-\vspace{0.1cm}
-{\footnotesize $^{(*)}$ CL tại $14$\,kg.}
-\end{table}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{bar_jc_dist.pdf}
-    \caption{$J_c$ theo mức nhiễu (Kanayama, CL, ADP-FT).}
+    \caption{$J_c$ theo biên độ nhiễu $A$ (Kanayama, CL, ADP-FT).}
     \label{fig:bar_jc_dist}
 \end{figure}
 
-Bất định khối lượng và nhiễu chỉ làm chi phí thay đổi không quá $3\%$ ở \textit{mọi} phương pháp: vòng 2 hấp thụ phần lớn tác động. Sai lệch khối lượng đi vào vòng 2 như một nhiễu tỉ lệ với gia tốc thực, chỉ đáng kể khi khởi động. Với nhiễu, sai số xác lập tăng gần như tuyến tính theo biên độ và như nhau ở mọi luật vòng 1 (ở $A = 20\%$: Kanayama $4{,}31\times10^{-4}$\,m, ADP-FT $4{,}15\times10^{-4}$\,m); các số hạng cố định thời gian của vòng 2 hạ sai số này $21$--$23\%$. Vì vậy \textbf{kháng nhiễu ở tầng mô-men là nhiệm vụ của vòng 2}, và các thí nghiệm khối lượng, nhiễu không phân biệt được các luật vòng 1.
+Tăng nhiễu đồng pha từ $0$ lên $60\%\,\tau_\text{max}$ chỉ làm chi phí tăng $0{,}2$--$0{,}3\%$ ở Kanayama, SMC, ADP-FT và $1{,}7\%$ ở CL: vòng 2 hấp thụ phần lớn tác động. Sai lệch tham số mô hình (ví dụ khối lượng) tương đương một nhiễu cộng vào mô-men nên được gộp vào nhiễu này. Sai số xác lập tăng gần như tuyến tính theo biên độ và như nhau ở mọi luật vòng 1 (ở $A = 20\%$: Kanayama $4{,}31\times10^{-4}$\,m, ADP-FT $4{,}15\times10^{-4}$\,m); các số hạng cố định thời gian của vòng 2 hạ sai số này $21$--$23\%$. Vì vậy \textbf{kháng nhiễu ở tầng mô-men là nhiệm vụ của vòng 2}, và thí nghiệm nhiễu không phân biệt được các luật vòng 1.
 
 \subsection{Đóng góp của vòng 2}
 
@@ -409,7 +393,7 @@ Luật cập nhật $W$ & eq.(17) & eq.(17) & Giữ nguyên \\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{weights_adp_ft.pdf}
-    \caption{Trọng số Critic $W(t)$ của ADP-FT trên 3 quỹ đạo.}
+    \caption{Trọng số Critic $W(t)$ của ADP-FT trên 3 quỹ đạo: (a) đường tròn, (b) đường thẳng, (c) hình số 8.}
     \label{fig:weights_adp_ft}
 \end{figure}
 

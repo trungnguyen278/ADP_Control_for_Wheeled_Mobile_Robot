@@ -143,7 +143,9 @@ l5    = {'Kanayama', 'ADP-AC', 'SMC', 'NTSMC', 'CL', 'ADP-FT'};
 cmap5 = [1 0 0; 0 0 1; 0 0.6 0; 0 0.7 0.7; 0.8 0 0.8; 0.9 0.5 0];
 nM    = numel(m5);
 trajs = {'circle', 'line', 'figure8'};
-traj_titles = {'Circle', 'Line', 'Figure-8'};
+traj_titles = {'(a)', '(b)', '(c)'};   % ten quy dao ghi o chu thich LaTeX
+% Khong dat chu tieng Viet trong hinh: exportgraphics vector chi ho tro Latin-1,
+% cac ky tu nhu 'D-gach', 'u-moc' bi thay bang '#'.
 
 % TH-1,2,3: XY trajectory (3 quy dao)
 for t_idx = 1:3
@@ -155,7 +157,7 @@ for t_idx = 1:3
         plot(d.q(1,:), d.q(2,:), '-', 'Color', cmap5(i,:), 'LineWidth', 1.2);
     end
     xlabel('$x$ [m]', 'Interpreter', 'latex'); ylabel('$y$ [m]', 'Interpreter', 'latex');
-    legend(['Ref', l5], 'Location', 'eastoutside'); axis equal; grid on;
+    legend(['q_r', l5], 'Location', 'eastoutside'); axis equal; grid on;
     exportgraphics(f, fullfile(fig_dir, sprintf('xy_%s.pdf', trajs{t_idx})), 'ContentType', 'vector');
     fprintf('  xy_%s.pdf\n', trajs{t_idx});
 end
@@ -290,7 +292,7 @@ end
 b = bar(Jc_dist);
 for i = 1:3, b(i).FaceColor = rob_colors(i,:); end
 set(gca, 'XTickLabel', {'0%', '20%', '40%', '60%'});
-xlabel('Disturbance amplitude ($\%\,\tau_{\max}$)', 'Interpreter', 'latex');
+xlabel('$A$ ($\%\,\tau_{\max}$)', 'Interpreter', 'latex');
 ylabel('$J_c$', 'Interpreter', 'latex');
 legend(rl, 'Location', 'eastoutside'); grid on;
 exportgraphics(f, fullfile(fig_dir, 'bar_jc_dist.pdf'), 'ContentType', 'vector');

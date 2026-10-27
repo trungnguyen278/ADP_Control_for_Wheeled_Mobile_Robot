@@ -684,6 +684,20 @@ o Ch.2-4, khong dung cong thuc moi; noi dung phai tu bao ve duoc (lau moi quay l
   -> luat Kanayama o Ch.6), bao cao tom tat (bo ham mo ta), README.
 - Build: thesis 73 trang (Ch.5 = tr. 53-67), summary 13 trang; 0 loi, 0 ref treo, 0 Overfull.
 
+### 2026-10-27 (khuya, tiep) — CHI DUNG TIENG VIET, BO THI NGHIEM KHOI LUONG
+
+- Bo cac cau "theo yeu cau cua giao vien huong dan" (Muc 5.1, 5.2.1; bao cao tom tat): gop y cua
+  thay giup hoan thien, khong dua vao luan van.
+- Bo thi nghiem bat dinh khoi luong (Muc 5.3.1, 2 cot 14/16 kg o bang co che, tom tat, Ch.1, Ch.6).
+  (A2) o Muc 4.4 ghi: sai lech tham so cho them Delta_M*eta_dot, B kha nghich nen tuong duong nhieu
+  -B^-1*Delta_M*eta_dot cong vao mo-men -> gop vao nhieu d (nhieu khop). Muc 5.3 = do ben voi nhieu.
+- Chi dung tieng Viet: bo ~40 ngoac tieng Anh, dich gain -> he so (69 cho), robust -> ben vung,
+  feedforward/feedback, vector, body/world frame, transient, chattering, Lemma/Theorem/Remark...;
+  them DANH MUC THUAT NGU (11 thuat ngu giu nguyen + bang doi chieu Viet-Anh).
+- Hinh: MATLAB xuat PDF vector chi ho tro Latin-1 (chu Viet thanh '#'), nen nhan hinh doi sang ky
+  hieu/(a)(b)(c): q_r cho quy dao tham chieu, A cho bien do nhieu; ten ghi trong chu thich LaTeX.
+- Build: thesis 74 trang, summary 13 trang; 0 loi, 0 ref treo, 0 Overfull.
+
 ---
 
 ## VIEC CAN LAM
