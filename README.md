@@ -222,9 +222,9 @@ T = 60 s, nhiễu đồng pha 20%, gain chỉnh đều nhau (MATLAB R2023a, 2026
 - Vòng 2 (Phần M): t_e (‖e_η‖ < 0.05) ≤ 0.17 s; K_c = 10M kéo ADP-FT xuống 3.833 (< SMC) nhưng
   Kanayama +12.8% — tương đương chỉnh gain vòng 1 không đều nên giữ K_c = M. Số hạng chéo cho vận tốc
   thực vượt v_max (tới 0.62 m/s khi ‖z0‖ = 3.5).
-- Khối lượng tới 16 kg và nhiễu tới 60% (ba kiểu): Jc đổi < 3% ở mọi phương pháp.
-- Ablation ADP-FT: ghép nonholonomic là quyết định (thiếu nó Jc ×3.2–5.6, kẹt gần điểm cân bằng
-  giả); toán tử chiếu không kích hoạt (λmin(P) ≥ 0.12); bỏ số hạng fixed-time ở vòng 1 giảm Jc
+- Khối lượng tới 16 kg và nhiễu tới 60% (ba kiểu): Jc đổi < 3% ở các phương pháp được khảo sát.
+- Ablation ADP-FT: ghép nonholonomic là quyết định (thiếu nó Jc ×3.2–5.6, sai số ngang giảm rất
+  chậm: ở ‖z0‖ = 3.5, |z_y| chỉ từ 2.3 xuống 1.0 m trong 40 s); toán tử chiếu không kích hoạt (λmin(P) ≥ 0.12); bỏ số hạng fixed-time ở vòng 1 giảm Jc
   1.4–1.8%; critic đóng băng tốt hơn critic học ~3% (danh nghĩa) và hội tụ nhanh 2.7 lần khi
   ‖z0‖ = 3.5 (15.8 s vs 42.3 s; Kanayama 22.0 s). Tham số gốc Wang: Jc ×7–23, z_y dư 1.7–3.2 cm.
 - Fixed-time không được bảo toàn: vận tốc bị chặn nên thời gian quá độ buộc tăng theo ‖z0‖.
