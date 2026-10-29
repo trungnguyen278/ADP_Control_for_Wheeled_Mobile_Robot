@@ -5,6 +5,14 @@ metadata:
   type: project
 ---
 
+## Cập nhật 2026-10-29: thầy bảo in bản cứng
+
+Thầy Nam bảo in (Trung đoán thầy chưa đọc file mềm, muốn đọc bản cứng). Bản thầy có = v2 43 trang gửi qua
+tin nhắn 26/05: đúng file `docs/thesis/thesis.pdf` ở commit `7fedea9` (PDF tạo 26/05/2026 10:01; 81f6fb2 chỉ
+build lại 12/08). Lịch sử git trước 12/08 không còn, nên so sánh với bản thầy có thì dùng commit này.
+PR #4 ĐÃ merge (27/10 16:19, tới c3f6236); slide + đợt rà soát khuya 27/10 (6 commit, tới 30b086d) chỉ nằm
+trên nhánh → bản để in là thesis.pdf ở đầu nhánh, cần PR mới nếu muốn vào master.
+
 ## Cập nhật 2026-10-27 (tối): review yêu cầu của thầy
 
 Kiểm chứng tiền đề "thầy xoay quanh khái niệm cơ bản" với báo cáo SM1: đúng phần lớn, có 3 điều chỉnh
