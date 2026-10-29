@@ -9,6 +9,12 @@ Nguồn: ảnh chụp đoạn chat Trung gửi ngày 2026-10-26 (tin nhắn ngà
 báo cáo SM1 cùng ngày. Bản luận văn v2 và báo cáo tóm tắt (26/05/2026) được làm SAU đoạn chat này
 để đáp ứng các yêu cầu dưới đây. Thầy chưa đọc hai bản đó.
 
+**v2 chưa đáp ứng ý 5** (kiểm chứng 29/10 trên commit `7fedea9`): v2 vẫn có mục "4.3 Vòng ngoài 1:
+Backstepping (BS)" (luật Kanayama trên vòng ngoài bậc nhất — đúng chỗ thầy hỏi) và "4.2 Vòng trong: Dynamic
+Backstepping" = luật mô-men tính toán thiết kế riêng, chứng minh chỉ với V₂ = ½eᵀMe, ổn định toàn hệ dựa vào
+tách thang thời gian (K_d = 20). Bản hiện tại mới đáp ứng (vòng 2 suy từ V₁, Định lý 4.1) → khi nộp bản in,
+đây là điểm chính (Trung chốt 29/10).
+
 Nguyên văn ý của thầy (cột phải: SM1 đã trình bày gì, `docs/reports/sm1/sm1_report.tex`):
 1. "Cho thêm disturbance dạng sin với tần số cao và biên độ 20% tín hiệu điều khiển lớn
    nhất". "Disturbance cộng vào tín hiệu đầu vào". — SM1 không có nhiễu.

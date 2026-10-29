@@ -13,6 +13,10 @@ build lại 12/08). Lịch sử git trước 12/08 không còn, nên so sánh v�
 PR #4 ĐÃ merge (27/10 16:19, tới c3f6236); slide + đợt rà soát khuya 27/10 (6 commit, tới 30b086d) chỉ nằm
 trên nhánh → bản để in là thesis.pdf ở đầu nhánh, cần PR mới nếu muốn vào master.
 
+Điểm chính khi nộp bản in (Trung chốt 29/10): **BC đã đúng (ý 5 của thầy)**, vì v2 chưa đáp ứng ý này
+([[feedback-advisor-nam]]). Các thay đổi khác (ma trận B, nhãn luật cập nhật, số hạng ghép, phép chiếu, chỉnh
+hệ số) là thứ yếu. Kết luận số đảo ngược so với v2 không cần nêu vì thầy chưa đọc v2 — chỉ nói nếu thầy hỏi.
+
 ## Cập nhật 2026-10-27 (tối): review yêu cầu của thầy
 
 Kiểm chứng tiền đề "thầy xoay quanh khái niệm cơ bản" với báo cáo SM1: đúng phần lớn, có 3 điều chỉnh

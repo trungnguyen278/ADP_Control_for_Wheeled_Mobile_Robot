@@ -1,6 +1,6 @@
 - [User profile](user_profile.md) — Trung, cao học Điều khiển & Tự động hóa HUST, thích giải thích lý thuyết trước khi code
 - [Thesis project](project_thesis.md) — Tên đề tài "Ứng dụng điều khiển ADP cho xe tự hành"; nội dung: ADP-FT của Wang hoàn thiện thành bộ hai vòng cho WMR nhận mô-men
-- [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03 (phản hồi SM1): nhiễu mô-men vòng trong, SMC/NTSMC, vòng kinetic, BC bậc 2; chỉ ý BC là sửa khái niệm; review 27/10: 5/5 đạt, đã sửa tên "BS" → "Kanayama", mô tả NTSMC
+- [Advisor feedback](feedback_advisor_nam.md) — Chat 28/03 (phản hồi SM1): nhiễu mô-men vòng trong, SMC/NTSMC, vòng kinetic, BC bậc 2; chỉ ý BC là sửa khái niệm — v2 chưa đáp ứng, bản hiện tại mới đáp ứng (điểm chính khi nộp bản in); review 27/10: 5/5 đạt, đã sửa tên "BS" → "Kanayama", mô tả NTSMC
 - [Phạm vi bảo vệ được](feedback_defensible_scope.md) — Mức thạc sĩ, không viết như bài báo: kết quả phụ chỉ phát biểu + ý tưởng + trích dẫn; kết quả bất lợi để ở Hạn chế; lỗi trình bày nhỏ cứ để; gom sửa để build một lần
 - [Luận văn tự đứng được](feedback_self_contained.md) — Wang chỉ là mẫu tham khảo; không kể lại bài báo, chứng minh đầy đủ tại chỗ, chỉ trích dẫn [n]
 - [Kiểm chứng tiền đề](feedback_verify_premises.md) — Tiền đề Trung đưa ra phải kiểm chứng bằng bằng chứng trước khi làm theo; phản biện là điều Trung muốn
@@ -19,7 +19,7 @@
 - [Mẫu slide HUST](reference_hust_template.md) — "HUST | Powerpoint Template" 2022 trên hust.edu.vn, cách tải bằng curl; slide làm Beamer + XeLaTeX (máy không có PowerPoint)
 - [MATLAB CLI](reference_matlab_cli.md) — MATLAB ở C:\MATLAB\R2023a, MiKTeX ở Program Files; script `clear` phá lệnh bọc tic/toc
 - [Chỉ mô phỏng](feedback_simulation_only.md) — Không có robot/motor thật: τ_max = 1 N·m là tham số mô phỏng đã chốt; đừng hỏi "chốt thông số thật"
-- [Progress](project_progress.md) — 27/10: yêu cầu thầy 5/5 đạt, "BS" → "Kanayama", Ch.5 rút gọn, chỉ tiếng Việt, tự đứng được, hình vẽ lại, sơ đồ đầy đủ = Hình 4.2 (72 tr, PR #4); khuya 27/10 rà soát toàn bộ, đã sửa; 29/10 thầy bảo in — bản thầy có = v2 commit 7fedea9; PR #4 đã merge, 6 commit sau chưa vào master
+- [Progress](project_progress.md) — 27/10: yêu cầu thầy 5/5 đạt, "BS" → "Kanayama", Ch.5 rút gọn, chỉ tiếng Việt, tự đứng được, hình vẽ lại, sơ đồ đầy đủ = Hình 4.2 (72 tr, PR #4); khuya 27/10 rà soát toàn bộ, đã sửa; 29/10 thầy bảo in — bản thầy có = v2 commit 7fedea9, điểm chính khi nộp: BC đã đúng; PR #4 đã merge, 6 commit sau chưa vào master
 - [Kết quả cuối](project_ket_qua_cuoi.md) — ⭐ Số chốt 26/10 khuya: ADP-FT ngang NTSMC, sau SMC 7,9%; z_rms theo hàm mô tả (chỉ còn trong repo, đã bỏ khỏi luận văn); số hạng chéo vượt v_max
 - [Hai vòng theo backstepping](feedback_backstepping_framing.md) — ⭐ Gọi "vòng 1/vòng 2" (không gọi "bước", từ 27/10); vòng 2 suy từ V₁ (số hạng chéo, K_c = M); chứng minh từng vòng rồi toàn hệ
 - [Khoảng hở chứng minh Wang](feedback_wang_gap.md) — ⭐ g·g† ≠ I₃; luật gốc có điểm cân bằng (0, z_y, 0) trên quỹ đạo thẳng (đã kiểm chứng); cơ sở của số hạng ghép
